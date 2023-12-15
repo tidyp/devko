@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path')
 
 const authGoogle = require('./routers/authGoogle')
-// const authNaver = require('./routers/authNaver')
+const authNaver = require('./routers/authNaver')
 
 const app = express();
 const port = 3000;
@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 
 // 라우터
 app.use("/api/authGoogle", authGoogle)
-// app.use("/api/authNaver", authNaver)
+app.use("/api/authNaver", authNaver)
 
 
 // 서버
