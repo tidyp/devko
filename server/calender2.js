@@ -5,7 +5,7 @@ const {authenticate} = require('@google-cloud/local-auth');
 const {google} = require('googleapis');
 
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/calendar'];
+const SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
@@ -78,7 +78,6 @@ async function listEvents(auth) {
     singleEvents: true,
     orderBy: 'startTime',
   });
-  
   const events = res.data.items;
   if (!events || events.length === 0) {
     console.log('No upcoming events found.');
@@ -89,49 +88,6 @@ async function listEvents(auth) {
     const start = event.start.dateTime || event.start.date;
     console.log(`${start} - ${event.summary}`);
   });
-
-  const newevent = {
-    'summary': 'Google I/O 2015',
-    'location': '800 Howard St., San Francisco, CA 94103',
-    'description': 'A chance to hear more about Google\'s developer products.',
-    'start': {
-      'dateTime': '2023-12-28T09:00:00-07:00',
-      'timeZone': 'America/Los_Angeles',
-    },
-    'end': {
-      'dateTime': '2023-12-28T17:00:00-07:00',
-      'timeZone': 'America/Los_Angeles',
-    },
-    'recurrence': [
-      'RRULE:FREQ=DAILY;COUNT=2'
-    ],
-    'attendees': [
-      {'email': 'jinyr5654@gmail.com'},
-      {'email': 'sbrin@example.com'},
-    ],
-    'reminders': {
-      'useDefault': false,
-      'overrides': [
-        {'method': 'email', 'minutes': 24 * 60},
-        {'method': 'popup', 'minutes': 10},
-      ],
-    },
-  };
-  
-  calendar.events.insert({
-    auth: auth,
-    calendarId: 'primary',
-    resource: newevent,
-  }, function(err, event) {
-    if (err) {
-      console.log('There was an error contacting the Calendar service: ' + err);
-      return;
-    }
-    console.log('Event created: %s', event.htmlLink);
-  });
 }
 
 authorize().then(listEvents).catch(console.error);
-// authorize().then(async (auth) => {
-//   await listEvents(auth);
-// }).catch(console.error);
