@@ -7,9 +7,10 @@ const authNaver = require('./routers/authNaver')
 const app = express();
 const port = 3000;
 
+
 // 메인 페이지
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'client', 'main.html'));
+    res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
 });
 
 // 라우터
