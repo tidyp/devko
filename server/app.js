@@ -1,10 +1,6 @@
 const express = require('express');
 const path = require('path')
 
-const authGoogle = require('./routers/authGoogle')
-const authNaver = require('./routers/authNaver')
-const NaverProfile = require('./routers/NaverProfile')
-
 const app = express();
 const port = 3000;
 
@@ -15,13 +11,12 @@ app.get('/', (req, res) => {
 });
 
 // 라우터
-app.use("/api/authGoogle", authGoogle)
-app.use("/api/authNaver", authNaver)
-app.use("/api/NaverProfile", NaverProfile)
+app.use("/api/authGoogle", require('./routers/authGoogle'))
+app.use("/api/authNaver", require('./routers/authNaver'))
+app.use("/api/NaverProfile", require('./routers/NaverProfile'))
 
 
 // 서버
 app.listen(port, () => {
     console.log(`server is running at ${port}`);
 });
-
