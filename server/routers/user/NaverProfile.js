@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 require('dotenv').config();
 
-var token = process.env.NAVER_CLIENT_TOKEN.access_token;
+var token = process.env.NAVER_CLIENT_TOKEN;
 var header = "Bearer " + token; // Bearer 다음에 공백 추가
 
 router.get('/member', function (req, res) {

@@ -6,15 +6,13 @@ const port = 3000;
 
 
 // 메인 페이지
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
-});
+app.use(express.static(path.resolve(__dirname, './public')));
+// app.get('/', (req, res) => {
+//     res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
+// });
 
 // 라우터
-app.use("/api/authGoogle", require('./routers/authGoogle'))
-app.use("/api/authNaver", require('./routers/authNaver'))
-app.use("/api/NaverProfile", require('./routers/NaverProfile'))
-
+app.use(require('./routers/index'));
 
 // 서버
 app.listen(port, () => {
