@@ -4,9 +4,9 @@ import styles from "./Main.module.scss";
 const Mainpage = () => {
   const dummyData = [
     {
-      name: "김김김",
+      name: "김8ㅗ120로23로1390ㄹ23ㅗ90ㄹ13ㅗ90랴ㅗ랴ㅗ이박",
       Like: 123,
-      imgurl: "https://th.bing.com/th/id/OIG.t.FGYWQLl5x7CQ1WKfJj",
+      imgurl: "https://th.bing.com/th/id/OIG.hSKc.XhLnL7SPxOdkRsU",
     },
     {
       name: "이이이",
@@ -16,7 +16,7 @@ const Mainpage = () => {
     {
       name: "박박박",
       Like: 135,
-      imgurl: "https://th.bing.com/th/id/OIG.hSKc.XhLnL7SPxOdkRsU",
+      imgurl: "https://th.bing.com/th/id/OIG.t.FGYWQLl5x7CQ1WKfJj",
     },
     {
       name: "최최최",

@@ -1,0 +1,65 @@
+// Define variables for reusable styles
+$primaryColor: #000000;
+$secondaryColor: #2ecc71;
+
+.navigationBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $primaryColor;
+  padding: 10px;
+  height: 75px;
+  padding: 0 25px;
+
+  .logo {
+    a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+  }
+
+  .tabs {
+    display: flex;
+
+    .tab {
+      margin-right: 20px;
+      cursor: pointer;
+      color: #fff;
+      font-weight: bold;
+      text-transform: uppercase;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .tools {
+    display: flex;
+    align-items: center;
+
+    .searchBar {
+      margin-right: 10px;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .searchIcon {
+      div {
+        cursor: pointer;
+        color: #fff;
+      }
+    }
+
+    .profilePicture {
+      a {
+        text-decoration: none;
+        color: #fff;
+        font-weight: bold;
+        margin-left: 10px;
+      }
+    }
+  }
+}
