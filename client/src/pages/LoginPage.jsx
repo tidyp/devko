@@ -1,7 +1,9 @@
 import React from "react";
-import styles from "./Login.module.scss";
+import styles from "./LoginPage.module.scss";
+import {Link} from 'react-router-dom'
 
-const Login = () => {
+const LoginPage = () => {
+  
   const handleGoogleLogin = async () => {
     console.log('click g login')
     try {
@@ -37,6 +39,7 @@ const Login = () => {
   return (
     <>
       <div className={styles.container}>
+        <Link to='/api/authGoogle/login'><div>test</div></Link>
         <div className={styles.header}>
           <p>Create your account</p>
           <p>Let's get started</p>
@@ -63,4 +66,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;
