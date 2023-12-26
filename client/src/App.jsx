@@ -1,18 +1,21 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import NaviBar from "./Layout/NaviBar";
+import Layout from "./Layout/Layout";
+import LoginPage from "./pages/LoginPage";
+
 import Mainpage from "./pages/Mainpage";
-import Login from "./pages/Login";
-
-import "./App.module.scss";
-
+import ExploerPage from './pages/ExploerPage'
+import DiscussPage from './pages/DiscussPage'
+import QnaPage from './pages/QnaPage'
+import EventPage from './pages/EventPage'
+``
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <NaviBar />,
+    element: <Layout />,
     children: [
       { path: "/", element: <Mainpage /> },
-      { path: "/login", element: <Login /> },
+      { path: "/login", element: <LoginPage /> },
     ],
   },
 ]);
