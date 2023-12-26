@@ -2,6 +2,7 @@ import { Outlet, Link, NavLink } from "react-router-dom";
 import styles from "./GlobalNaviBar.module.scss";
 
 import { FaSearch } from "react-icons/fa";
+import { FaBell } from "react-icons/fa";
 
 const NaviBar = () => {
   return (
@@ -11,10 +12,18 @@ const NaviBar = () => {
           <Link to="/">DEVKO</Link>
         </div>
         <div className={styles.tabs}>
-          <div className={styles.tab}>EXPLOER</div>
-          <div className={styles.tab}>DISCUSS</div>
-          <div className={styles.tab}>QnA</div>
-          <div className={styles.tab}>EVENT</div>
+          <div className={styles.tab}>
+            <NavLink to="exploer">EXPLOER</NavLink>
+          </div>
+          <div className={styles.tab}>
+            <NavLink to="discuss">DISCUSS</NavLink>
+          </div>
+          <div className={styles.tab}>
+            <NavLink to="qna">QnA</NavLink>
+          </div>
+          <div className={styles.tab}>
+            <NavLink to="evnet">EVENT</NavLink>
+          </div>
         </div>
         <div className={styles.tools}>
           <div className={styles.searchBar}>
@@ -23,12 +32,14 @@ const NaviBar = () => {
           <div className={styles.searchIcon}>
             <div>검색</div>
           </div>
+          <div className={styles.searchBar}>
+            <FaBell />
+          </div>
           <div className={styles.profilePicture}>
-            <NavLink to="login">로그인</NavLink>
+            <Link to="login">로그인</Link>
           </div>
         </div>
       </nav>
-      <Outlet />
     </>
   );
 };

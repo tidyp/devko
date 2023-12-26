@@ -1,0 +1,8 @@
+.lside {
+  display: flex;
+  flex-direction: column;
+  padding: 0 50px;
+  background-color: #ffd300;
+  // box-sizing: content-box;
+  box-sizing: border-box;
+}

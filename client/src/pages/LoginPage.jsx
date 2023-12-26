@@ -1,68 +1,50 @@
-import React from "react";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useEffect, useState } from "react";
 import styles from "./LoginPage.module.scss";
-import {Link} from 'react-router-dom'
 
+import axios from 'axios'
 const LoginPage = () => {
   
-  const handleGoogleLogin = async () => {
-    console.log('click g login')
-    try {
-      const response = await fetch("/api/authGoogle/login", {
-        method: "GET",
-      });
+  const [user, setUser] = useState("");
 
-      if (!response.ok) {
-        console.error("Google login failed");
-        return;
-      }
-    } catch (error) {
-      console.error("Error during Google login:", error);
+  // 2. 클라이언트 =>  인증서버: 접근 권한 요청
+  const login = useGoogleLogin({
+    onSuccess: (codeResponse) => {
+      // 3. 인증서버 => 클라이언트: Access Token 전달
+      setUser(codeResponse);
+      console.log('codeResponse', codeResponse);
+    },
+    onError: (error) => console.log("Login Failed:", error),
+  });
+
+  // 4. 클라이언트 => 인증서버: 보호된 자원 획득 요청
+  useEffect(() => {
+    if (user) {
+      axios
+        .get(
+          `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
+          {
+            headers: {
+              Authorization: `Bearer ${user.access_token}`,
+              Accept: "application/json",
+            },
+          }
+        )
+        // 5. 인증서버 => 클라이언트: 요청 자원 전달
+        .then((res) => {
+          // 6. 클라이언트 => 유저: 완료
+          console.log(res.data)
+        })
+        .catch((err) => console.log(err));
     }
-  };
-
-  const handleNaverLogin = async () => {
-    console.log('click n login')
-    try {
-      const response = await fetch("/api/authNaver/naverlogin", {
-        method: "GET",
-      });
-
-      if (!response.ok) {
-        console.error("Naver login failed");
-        return;
-      }
-    } catch (error) {
-      console.error("Error during Naver login:", error);
-    }
-  };
+  }, [user]);
 
   return (
-    <>
-      <div className={styles.container}>
-        <Link to='/api/authGoogle/login'><div>test</div></Link>
-        <div className={styles.header}>
-          <p>Create your account</p>
-          <p>Let's get started</p>
-        </div>
-        <button className={styles.googleBtn} onClick={handleGoogleLogin}>
-          Login with Google
-        </button>
-        <button className={styles.naverBtn} onClick={handleNaverLogin}>
-          Login with Naver
-        </button>
-        <p>
-          Already have an account?<a href="#">login</a>
-        </p>
-        <div className={styles.test}>
-          <br />
-          <a href="/api/authGoogle/signup">구글 signup</a>
-          <br />
-          <a href="/api/authGoogle/login">구글 login</a>
-          <br />
-          <a href="/api/authNaver/naverlogin">네이버 login</a>
-        </div>
-      </div>
-    </>
+    <div className={styles.container}>
+      <h1>Google Login Test</h1>
+      {/* 1. 유저 => 클라이언트: 사용요청 */}
+      <button onClick={login}>google login</button>
+    </div>
   );
 };
 

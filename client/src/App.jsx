@@ -4,11 +4,11 @@ import Layout from "./Layout/Layout";
 import LoginPage from "./pages/LoginPage";
 
 import Mainpage from "./pages/Mainpage";
-import ExploerPage from './pages/ExploerPage'
-import DiscussPage from './pages/DiscussPage'
-import QnaPage from './pages/QnaPage'
-import EventPage from './pages/EventPage'
-``
+import ExploerPage from "./pages/ExploerPage";
+import DiscussPage from "./pages/DiscussPage";
+import QnaPage from "./pages/QnaPage";
+import EventPage from "./pages/EventPage";
+``;
 const router = createBrowserRouter([
   {
     path: "/",
@@ -20,7 +20,6 @@ const router = createBrowserRouter([
       { path: "/discuss", element: <DiscussPage /> },
       { path: "/qna", element: <QnaPage /> },
       { path: "/evnet", element: <EventPage /> },
-
     ],
   },
 ]);
