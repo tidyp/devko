@@ -1,0 +1,88 @@
+// nav {
+//   .logo {
+//     width: 200px;
+//   }
+//   .navibar {
+//     list-style: none;
+//     display: flex;
+//     width: 600px;
+//     li {
+//       padding: 0 20px;
+//       width: 200px;
+//     }
+//   }
+//   .tab,
+//   .tools {
+//     list-style: none;
+//     display: flex;
+//   }
+// }
+
+section {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  .lside {
+    width: 20%;
+    height: 100%;
+    background-color: #ffd300;
+    .a1 {
+      width: 90%;
+      height: 30%;
+      background-color: #ff6c37;
+    }
+    .a2 {
+      width: 90%;
+      height: 20%;
+      background-color: #2b2b2b;
+    }
+    .a3 {
+      width: 90%;
+      height: 10%;
+      background-color: #3c3c3c;
+    }
+    .a4 {
+      width: 90%;
+      height: 40%;
+      background-color: #9d3ce9;
+    }
+  }
+  .main {
+    width: 60%;
+    height: 100%;
+    background-color: #80b3ff;
+
+    .inner {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      // align-content: center;
+      // display: grid;
+      // grid-template-columns: repeat(2, 1fr);
+      // place-items: center;
+      // gap: 70px 0px;
+      // margin: 0 auto;
+      // margin-top: 35px;
+      // .c1 {
+      //   width: 90%;
+      //   height: 300px;
+      //   background-color: #fa7e7f;
+      // }
+    }
+  }
+  .rside {
+    width: 20%;
+    height: 100%;
+    background-color: #8dd35f;
+    .b1 {
+      width: 90%;
+      height: 50%;
+      background-color: #4c6238;
+    }
+    .b2 {
+      width: 90%;
+      height: 50%;
+      background-color: #299b48;
+    }
+  }
+}

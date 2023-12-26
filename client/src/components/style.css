@@ -1,0 +1,258 @@
+.frame {
+  background-color: #f2f2f2;
+  height: 771px;
+  overflow: hidden;
+  width: 966px;
+}
+
+.frame .div {
+  align-items: center;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: center;
+  left: 30px;
+  padding: 0px 0px 41px;
+  position: relative;
+  top: 30px;
+}
+
+.frame .div-2 {
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 8px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: center;
+  padding: 16px;
+  position: relative;
+}
+
+.frame .div-3 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 24px;
+  justify-content: center;
+  position: relative;
+}
+
+.frame .div-4 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 16px 16px;
+  justify-content: center;
+  position: relative;
+}
+
+.frame .rectangle {
+  height: 60px;
+  object-fit: cover;
+  position: relative;
+  width: 60px;
+}
+
+.frame .div-5 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  position: relative;
+}
+
+.frame .text-wrapper {
+  color: #10100e;
+  font-family: "Poppins-Medium", Helvetica;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1px;
+  position: relative;
+  width: fit-content;
+}
+
+.frame .div-6 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 7px 7px;
+  justify-content: center;
+  position: relative;
+}
+
+.frame .img-wrapper {
+  align-items: center;
+  background-color: #cfcfcf;
+  border-radius: 10.64px;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 1.06px;
+  justify-content: center;
+  padding: 1.06px;
+  position: relative;
+}
+
+.frame .img {
+  height: 17.87px;
+  object-fit: cover;
+  position: relative;
+  width: 17.87px;
+}
+
+.frame .div-7 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 8px 8px;
+  justify-content: center;
+  position: relative;
+}
+
+.frame .text-wrapper-2 {
+  color: #3e8be4;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1px;
+  position: relative;
+  width: fit-content;
+}
+
+.frame .line {
+  height: 20px;
+  object-fit: cover;
+  position: relative;
+  width: 1px;
+}
+
+.frame .text-wrapper-3 {
+  color: #a7a7a7;
+  font-family: "Poppins-Regular", Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1px;
+  position: relative;
+  width: fit-content;
+}
+
+.frame .p {
+  color: transparent;
+  font-family: "Poppins-Medium", Helvetica;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  text-align: justify;
+  width: 874px;
+}
+
+.frame .span {
+  color: #10100e;
+  font-weight: 500;
+}
+
+.frame .text-wrapper-4 {
+  color: #3f8be4;
+  font-family: "Poppins-SemiBold", Helvetica;
+  font-weight: 600;
+}
+
+.frame .div-8 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: center;
+  position: relative;
+}
+
+.frame .thumbnail {
+  height: 437px;
+  position: relative;
+  width: 874px;
+}
+
+.frame .div-9 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 4px 4px;
+  justify-content: center;
+  position: relative;
+}
+
+.frame .text-wrapper-5 {
+  color: #a7a7a7;
+  font-family: "Poppins-Medium", Helvetica;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1px;
+  position: relative;
+  text-align: justify;
+  width: fit-content;
+}
+
+.frame .div-10 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 522px 522px;
+  justify-content: center;
+  position: relative;
+}
+
+.frame .div-11 {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 24px;
+  position: relative;
+}
+
+.frame .img-2 {
+  height: 24px;
+  position: relative;
+  width: 24px;
+}
+
+.frame .text-wrapper-6 {
+  color: #10100e;
+  font-family: "Poppins-Medium", Helvetica;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  text-align: justify;
+  width: fit-content;
+}
+
+.frame .div-12 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 513px 513px;
+  justify-content: center;
+  position: relative;
+}

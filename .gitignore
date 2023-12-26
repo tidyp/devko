@@ -1,5 +1,9 @@
 # dependencies
 node_modules
+<<<<<<< HEAD
 *.env
 client_secret.json
 token.json
+=======
+*.env
+>>>>>>> main
