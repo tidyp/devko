@@ -36,7 +36,8 @@ app.get('/signup/redirect', async (req, res) => {
         },
     });
     
-    // 기존 회원 여부 확인 및 신규 회원 가입
+    console.log(resp2)
+
     const googleId = resp2.data.id;
     const googleEmail = resp2.data.email;
 
