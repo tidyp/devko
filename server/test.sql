@@ -15,7 +15,7 @@
 --      selfDescription TEXT,
 --      createdAt DATETIME,
 --      updatedAt DATETIME,
---      grade INTEGER,
+--      grade INT,
 --      notification TINYINT(1)
 -- );
 SELECT * FROM devko.users
