@@ -77,7 +77,7 @@ router.get('/login/redirect', async (req, res) => {
         redirect_uri: GOOGLE_LOGIN_REDIRECT_URI,
         grant_type: 'authorization_code',
     });
-
+    console.log(resp)
     // 사용자의 구글 계정 정보
     const resp2 = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
         headers: {
