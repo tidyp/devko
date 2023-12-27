@@ -72,11 +72,50 @@ async function authorize() {
 async function listEvents(auth) {
   const calendar = google.calendar({version: 'v3', auth});
   const res = await calendar.events.list({
-    calendarId: 'primary',
+    calendarId: process.env.GOOGLE_CALENDAR_ID,
     timeMin: new Date().toISOString(),
     maxResults: 10,
     singleEvents: true,
     orderBy: 'startTime',
+  });
+  const event = {
+    'summary': 'Google I/O 2023',
+    'location': '800 Howard St., San Francisco, CA 94103',
+    'description': 'A chance to hear more about Google\'s developer products.',
+    'start': {
+      'dateTime': '2023-12-28T09:00:00-07:00',
+      'timeZone': 'America/Los_Angeles',
+    },
+    'end': {
+      'dateTime': '2023-12-29T17:00:00-07:00',
+      'timeZone': 'America/Los_Angeles',
+    },
+    'recurrence': [
+      'RRULE:FREQ=DAILY;COUNT=2'
+    ],
+    'attendees': [
+      {'email': 'jinyr5654@gmail.com'},
+      {'email': 'sbrin@example.com'},
+    ],
+    'reminders': {
+      'useDefault': false,
+      'overrides': [
+        {'method': 'email', 'minutes': 24 * 60},
+        {'method': 'popup', 'minutes': 10},
+      ],
+    },
+  };
+  
+  calendar.events.insert({
+    auth: auth,
+    calendarId: process.env.GOOGLE_CALENDAR_ID,
+    resource: event,
+  }, function(err, event) {
+    if (err) {
+      console.log('There was an error contacting the Calendar service: ' + err);
+      return;
+    }
+    console.log('Event created: %s', event.htmlLink);
   });
   const events = res.data.items;
   if (!events || events.length === 0) {
