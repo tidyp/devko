@@ -1,14 +1,14 @@
 const express = require('express');
+const router = express.Router();
 const axios = require('axios');
-const db = require("../../config/db")
-const app = express();
-require("dotenv").config();
+const db = require('../../config/db')
+require('dotenv').config();
 
-const GOOGLE_LOGIN_REDIRECT_URI = 'http://localhost:3000/api/authGoogle/login/redirect';
-const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/api/authGoogle/signup/redirect';
+const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/signup/redirect';
+const GOOGLE_LOGIN_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/login/redirect';
 
 // 회원가입
-app.get('/signup', (req, res) => {
+router.get('/signup', (req, res) => {
     let url = 'https://accounts.google.com/o/oauth2/v2/auth';
     url += `?client_id=${process.env.GOOGLE_CLIENT_ID}`
     url += `&redirect_uri=${GOOGLE_SIGNUP_REDIRECT_URI}`
@@ -17,7 +17,7 @@ app.get('/signup', (req, res) => {
     res.redirect(url);
 });
 
-app.get('/signup/redirect', async (req, res) => {
+router.get('/signup/redirect', async (req, res) => {
     const { code } = req.query;
 
     // 구글 토큰 정보
@@ -35,20 +35,19 @@ app.get('/signup/redirect', async (req, res) => {
             Authorization: `Bearer ${resp.data.access_token}`,
         },
     });
-    
-    console.log(resp2)
 
     const googleId = resp2.data.id;
     const googleEmail = resp2.data.email;
+    const googleImage = resp2.data.picture;
 
     try {
-        const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ?', [googleId, googleEmail]);
+        const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ?', [googleId, googleEmail, googleImage]);
         console.log(rows)
 
         if (rows.length > 0) {
             res.status(400).json({ message: '이미 가입된 회원입니다' });
         } else {
-            await db.execute('INSERT INTO users (googleId, googleEmail) VALUES (?, ?)', [googleId, googleEmail]);
+            await db.execute('INSERT INTO users (googleId, googleEmail, profileImage) VALUES (?, ?. ?)', [googleId, googleEmail, googleImage]);
             res.json({ message: '회원가입 완료. 추가 정보를 입력하세요.' });
         }
     } catch (error) {
@@ -59,7 +58,7 @@ app.get('/signup/redirect', async (req, res) => {
 
 
 // 로그인 
-app.get('/login', (req, res) => {
+router.get('/login', (req, res) => {
     let url = 'https://accounts.google.com/o/oauth2/v2/auth';
     url += `?client_id=${process.env.GOOGLE_CLIENT_ID}`
     url += `&redirect_uri=${GOOGLE_LOGIN_REDIRECT_URI}`
@@ -68,7 +67,7 @@ app.get('/login', (req, res) => {
     res.redirect(url);
 });
 
-app.get('/login/redirect', async (req, res) => {
+router.get('/login/redirect', async (req, res) => {
     const { code } = req.query;
     
     // 구글 토큰 정보
@@ -79,20 +78,21 @@ app.get('/login/redirect', async (req, res) => {
         redirect_uri: GOOGLE_LOGIN_REDIRECT_URI,
         grant_type: 'authorization_code',
     });
-
     // 사용자의 구글 계정 정보
     const resp2 = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
         headers: {
             Authorization: `Bearer ${resp.data.access_token}`,
         },
     });
+    console.log(resp2)
     
     // 기존 회원 여부 확인 및 신규 회원 가입
     const googleId = resp2.data.id;
     const googleEmail = resp2.data.email;
+    const googleImage = resp2.data.picture;
 
     try {
-        const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ?', [googleId, googleEmail]);
+        const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ?', [googleId, googleEmail, googleImage]);
         console.log(rows)
 
         if (rows.length > 0) {
@@ -106,5 +106,5 @@ app.get('/login/redirect', async (req, res) => {
     }
 });
 
-module.exports = app;
+module.exports = router;
 

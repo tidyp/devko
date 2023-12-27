@@ -24,11 +24,16 @@ $secondaryColor: #2ecc71;
     display: flex;
 
     .tab {
-      margin-right: 20px;
-      cursor: pointer;
-      color: #fff;
-      font-weight: bold;
-      text-transform: uppercase;
+      // margin-right: 20px;
+      a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 0 40px;
+        text-transform: uppercase;
+      }
 
       &:last-child {
         margin-right: 0;

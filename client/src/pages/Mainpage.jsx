@@ -1,6 +1,8 @@
 import Board from "../components/Board";
 import styles from "./Main.module.scss";
 
+import SideBar from "../layout/SideBar";
+
 const Mainpage = () => {
   const dummyData = [
     {
@@ -32,21 +34,23 @@ const Mainpage = () => {
 
   return (
     <>
-      <header></header>
-      <section>
-        <aside className={styles.lside}>
-          <div className={styles.a1}></div>
-          <div className={styles.a2}></div>
-          <div className={styles.a3}></div>
-          <div className={styles.a4}></div>
-        </aside>
-        <main className={styles.main}>
-          <div className={styles.inner}>
-            {dummyData.map((el) => (
-              <Board el={el} />
-            ))}
-          </div>
-        </main>
+      <section className={styles.container}>
+        <div className={styles.inner}>
+          <SideBar />
+          <main className={styles.main}>
+            <div className={styles.title}>
+              <p>usestate?</p>
+              <p>게시판 title</p>
+              <p>게시판 소개 4ㅗ190ㅗ19012ㅓ어129ㅓ1ㅇ29어129어1209어1290</p>
+            </div>
+            <div className={styles.newpost}>+ 새글작성</div>
+            <div className={styles.board}>
+              {dummyData.map((el) => (
+                <Board el={el} />
+              ))}
+            </div>
+          </main>
+        </div>
       </section>
     </>
   );

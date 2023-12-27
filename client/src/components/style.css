@@ -2,7 +2,8 @@
   background-color: #f2f2f2;
   height: 771px;
   overflow: hidden;
-  width: 966px;
+  width: 100%;
+  
 }
 
 .frame .div {
@@ -12,9 +13,10 @@
   gap: 30px;
   justify-content: center;
   left: 30px;
-  padding: 0px 0px 41px;
+  
   position: relative;
   top: 30px;
+  padding: 40px;
 }
 
 .frame .div-2 {
