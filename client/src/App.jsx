@@ -1,7 +1,7 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import Layout from "./Layout/Layout";
-import LoginPage from "./pages/LoginPage";
+import LoginPage from "./pages/login";
 
 import Mainpage from "./pages/Mainpage";
 import ExploerPage from "./pages/ExploerPage";
@@ -14,12 +14,14 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
+      // 홈페이지
       { path: "/", element: <Mainpage /> },
-      { path: "/login", element: <LoginPage /> },
       { path: "/exploer", element: <ExploerPage /> },
       { path: "/discuss", element: <DiscussPage /> },
       { path: "/qna", element: <QnaPage /> },
       { path: "/evnet", element: <EventPage /> },
+      // 로그인페이지
+      { path: "/login", element: <LoginPage /> },
     ],
   },
 ]);
