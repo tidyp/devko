@@ -1,7 +1,7 @@
 const express = require('express');
-const request = require('request-promise');
-const db = require("../../config/db")
 const router = express.Router();
+const request = require('request-promise');
+const db = require('../../config/db');
 require('dotenv').config();
 
 const client_id = process.env.NAVER_CLIENT_ID;

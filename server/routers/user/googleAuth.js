@@ -1,14 +1,14 @@
 const express = require('express');
+const router = express.Router();
 const axios = require('axios');
-const db = require("../../config/db")
-const app = express();
-require("dotenv").config();
+const db = require('../../config/db')
+require('dotenv').config();
 
-const GOOGLE_LOGIN_REDIRECT_URI = 'http://localhost:3000/api/authGoogle/login/redirect';
-const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/api/authGoogle/signup/redirect';
+const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/signup/redirect';
+const GOOGLE_LOGIN_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/login/redirect';
 
 // 회원가입
-app.get('/signup', (req, res) => {
+router.get('/signup', (req, res) => {
     let url = 'https://accounts.google.com/o/oauth2/v2/auth';
     url += `?client_id=${process.env.GOOGLE_CLIENT_ID}`
     url += `&redirect_uri=${GOOGLE_SIGNUP_REDIRECT_URI}`
@@ -17,7 +17,7 @@ app.get('/signup', (req, res) => {
     res.redirect(url);
 });
 
-app.get('/signup/redirect', async (req, res) => {
+router.get('/signup/redirect', async (req, res) => {
     const { code } = req.query;
 
     // 구글 토큰 정보
@@ -35,8 +35,6 @@ app.get('/signup/redirect', async (req, res) => {
             Authorization: `Bearer ${resp.data.access_token}`,
         },
     });
-    
-    console.log(resp2)
 
     const googleId = resp2.data.id;
     const googleEmail = resp2.data.email;
@@ -59,7 +57,7 @@ app.get('/signup/redirect', async (req, res) => {
 
 
 // 로그인 
-app.get('/login', (req, res) => {
+router.get('/login', (req, res) => {
     let url = 'https://accounts.google.com/o/oauth2/v2/auth';
     url += `?client_id=${process.env.GOOGLE_CLIENT_ID}`
     url += `&redirect_uri=${GOOGLE_LOGIN_REDIRECT_URI}`
@@ -68,7 +66,7 @@ app.get('/login', (req, res) => {
     res.redirect(url);
 });
 
-app.get('/login/redirect', async (req, res) => {
+router.get('/login/redirect', async (req, res) => {
     const { code } = req.query;
     
     // 구글 토큰 정보
@@ -106,5 +104,5 @@ app.get('/login/redirect', async (req, res) => {
     }
 });
 
-module.exports = app;
+module.exports = router;
 
