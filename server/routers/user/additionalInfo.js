@@ -8,28 +8,29 @@ router.get('/step2', (req, res) => {
     res.sendFile(path.join(__dirname, '..', '..', 'public', 'userInfo.html'));
 });
 
-router.get('/step3', async (req, res) => {
-    const id = uuid();
-    const userName = ds
-    const workPosition = ds
-    const interestArea = ds
-    const selfDescription = ds
-    const createdAt = now()
-    const updatedAt = now()
-    const grade = DS
-    const notification = ds
+router.post('/step3', async (req, res) => {
+    const id = uuid;
+    const userName = req.body.userName
+    const workPosition = req.body.workPosition
+    const interestArea = req.body.interestArea
+    const selfDescription = req.body.selfDescription
+    let createdAt;
+    let updatedAt;
+    const grade = req.body.grade
+    const notification = req.body.notification
     try {
-        const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ? OR profileImage = ?', [googleId, googleEmail, googleImage]);
+        const [rows, fields] = await db.execute('SELECT * FROM users WHERE id = ? OR userName = ? OR workPosition = ? OR interestArea = ? OR selfDescription = ? OR createdAt = ? OR updatedAt = ? OR grade = ? OR notification = ?', [id, userName, workPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification]);
         console.log(rows)
 
         if (rows.length > 0) {
-            res.redirect('http://localhost:5173');
+            res.send('실패')
+            // res.redirect('http://localhost:5173');
 
             // res.status(400).json({ message: '이미 가입된 회원입니다' });
         } else {
-            await db.execute('INSERT INTO users (googleId, googleEmail, profileImage) VALUES (?, ?, ?)', [googleId, googleEmail, googleImage]);
-            res.redirect('http://localhost:5173');
-
+            await db.execute(`UPDATE users SET (id = ?, userName = ?, workPosition = ?, interestArea = ?, selfDescription = ?, createdAt = ${now()}, updatedAt = ${now()}, grade = ?, notification = ?)`, [id, userName, workPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification]);
+            // res.redirect('http://localhost:5173');
+            res.send('성공')
             // res.json({ message: '회원가입 완료. 추가 정보를 입력하세요.' });
         }
     } catch (error) {
