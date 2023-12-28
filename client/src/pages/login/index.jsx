@@ -13,6 +13,7 @@ const LoginPage = () => {
         <p className={styles.title}>Create your account</p>
         <p className={styles.sub}>Let's get started</p>
       </div>
+      <a href="http://localhost:3000/api/googleAuth/signup">dwqdhqdkq</a>
       <button
         className={styles.btn}
         onClick={() => {
