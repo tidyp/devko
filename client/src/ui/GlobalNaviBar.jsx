@@ -13,7 +13,7 @@ const NaviBar = () => {
         </div>
         <div className={styles.tabs}>
           <div className={styles.tab}>
-            <NavLink to="exploer">EXPLOER</NavLink>
+            <NavLink to="/">EXPLOER</NavLink>
           </div>
           <div className={styles.tab}>
             <NavLink to="discuss">DISCUSS</NavLink>
@@ -22,15 +22,16 @@ const NaviBar = () => {
             <NavLink to="qna">QnA</NavLink>
           </div>
           <div className={styles.tab}>
-            <NavLink to="evnet">EVENT</NavLink>
+            <NavLink to="event">EVENT</NavLink>
+          </div>
+          <div className={styles.tab}>
+            <NavLink to="group">GROUP</NavLink>
           </div>
         </div>
         <div className={styles.tools}>
           <div className={styles.searchBar}>
             <FaSearch />
-          </div>
-          <div className={styles.searchIcon}>
-            <div>검색</div>
+            <input type="text" placeholder="검색어를 입력하세요."/>
           </div>
           <div className={styles.searchBar}>
             <FaBell />

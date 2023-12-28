@@ -4,8 +4,8 @@ const db = require("../../config/db")
 const app = express();
 require("dotenv").config();
 
-const GOOGLE_LOGIN_REDIRECT_URI = 'http://localhost:3000/api/authGoogle/login/redirect';
-const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/api/authGoogle/signup/redirect';
+const GOOGLE_LOGIN_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/login/redirect';
+const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/signup/redirect';
 
 // 회원가입
 app.get('/signup', (req, res) => {

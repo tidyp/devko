@@ -7,12 +7,28 @@ const SideBox = ({ children }) => {
       <div className={styles.inner}>
         <div className={styles.title}>{children}</div>
         <div className={styles.content}>
-          <p>nf23fj39fj23-0fk23-0fk320f3k2-f230k</p>
-          <p>nf23fj39fj23-0fk23-0fk320f3k2-f230k</p>
-          <p>nf23fj39fj23-0fk23-0fk320f3k2-f230k</p>
-          <p>nf23fj39fj23-0fk23-0fk320f3k2-f230k</p>
-          <p>nf23fj39fj23-0fk23-0fk320f3k2-f230k</p>
-          <p>nf23fj39fj23-0fk23-0fk320f3k2-f230k</p>
+          <div className={styles.main}>
+            <p>nf23fj39fj23-0fk23</p>
+          </div>
+          <div className={styles.sub}>
+            <p>nf23fj39fj23-0fk23</p>
+          </div>
+        </div>
+        <div className={styles.content}>
+          <div className={styles.main}>
+            <p>nf23fj39fj23-0fk23</p>
+          </div>
+          <div className={styles.sub}>
+            <p>nf23fj39fj23-0fk23</p>
+          </div>
+        </div>
+        <div className={styles.content}>
+          <div className={styles.main}>
+            <p>nf23fj39fj23-0fk23</p>
+          </div>
+          <div className={styles.sub}>
+            <p>nf23fj39fj23-0fk23</p>
+          </div>
         </div>
       </div>
     </div>

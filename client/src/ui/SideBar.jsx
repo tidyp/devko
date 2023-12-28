@@ -4,7 +4,7 @@ import styles from "./SideBar.module.scss";
 import SideBox from "../components/SideBox";
 
 const SideBar = () => {
-  return (
+  return (  
     <>
       <aside className={styles.lside}>
         <SideBox className={styles.a}>

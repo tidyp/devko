@@ -1,10 +1,12 @@
 const express = require('express');
 const path = require('path')
 require('dotenv').config();
+const cors = require('cors')
 
 const app = express();
 const port = process.env.SERVER_PORT;
 
+app.use(cors());
 
 // 메인 페이지
 app.use(express.static(path.resolve(__dirname, './public')));
