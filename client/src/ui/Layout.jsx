@@ -1,22 +1,21 @@
 import { Outlet } from "react-router-dom";
+import styles from './Layout.module.scss'
+
 import GlobalNaviBar from "./GlobalNaviBar";
-import Banner from "../components/Banner";
+import Header from "./Header";
 import Footer from "./Footer";
 
-import styles from "./Layout.module.scss";
 
 const Layout = () => {
   return (
-    <>
+    <div className={styles.layout}>
       <GlobalNaviBar />
-      <div className={styles.banner}>
-        <Banner />
-      </div>
-
-      <Outlet />
-
+      <Header />
+      <main>
+        <Outlet />
+      </main>
       <Footer />
-    </>
+    </div>
   );
 };
 

@@ -44,24 +44,37 @@ $secondaryColor: #2ecc71;
   .tools {
     display: flex;
     align-items: center;
+    gap: 1rem;
 
     .searchBar {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      gap: 1rem;
       margin-right: 10px;
       color: #fff;
+      // color: #000;
+      font-size: 1.5rem;
+      font-weight: bold;
       cursor: pointer;
-    }
-
-    .searchIcon {
-      div {
-        cursor: pointer;
-        color: #fff;
+      // background-color: #fff;
+      input{
+        border: none;
+        height: 2rem;
+        width: 16rem;
+        border-radius: 4px;
+        font-size: 16px;
+        padding-left: 20px;
       }
     }
+
 
     .profilePicture {
       a {
         text-decoration: none;
         color: #fff;
+        font-size: 1.5rem;
         font-weight: bold;
         margin-left: 10px;
       }

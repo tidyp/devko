@@ -4,8 +4,10 @@ const axios = require('axios');
 const db = require('../../config/db')
 require('dotenv').config();
 
-const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/signup/redirect';
+
 const GOOGLE_LOGIN_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/login/redirect';
+const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/signup/redirect';
+
 
 // 회원가입
 router.get('/signup', (req, res) => {
