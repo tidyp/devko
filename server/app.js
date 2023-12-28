@@ -12,12 +12,15 @@ const port = process.env.SERVER_PORT;
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
 app.use(express.static(path.resolve(__dirname, './public')));
+
 app.use(session({
     secret: 'my-key2',
     resave: false,
     saveUninitialized: true
 }));
+
 // app.get('/', (req, res) => {
 //     res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
 // });
