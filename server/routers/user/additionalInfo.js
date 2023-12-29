@@ -8,7 +8,7 @@ router.get('/step2', (req, res) => {
     res.sendFile(path.join(__dirname, '..', '..', 'public', 'userInfo.html'));
 });
 
-router.post('/step3', async (req, res) => {
+router.put('/step3', async (req, res) => {
     const id = uuid;
     const userName = req.body.userName
     const workPosition = req.body.workPosition
@@ -28,7 +28,7 @@ router.post('/step3', async (req, res) => {
 
             // res.status(400).json({ message: '이미 가입된 회원입니다' });
         } else {
-            await db.execute(`UPDATE users SET (id = ?, userName = ?, workPosition = ?, interestArea = ?, selfDescription = ?, createdAt = ${now()}, updatedAt = ${now()}, grade = ?, notification = ?)`, [id, userName, workPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification]);
+            await db.execute(`UPDATE users SET (id = ?, userName = ?, workPosition = ?, interestArea = ?, selfDescription = ?, createdAt = now(), updatedAt = now(), grade = ?, notification = ?)`, [id, userName, workPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification]);
             // res.redirect('http://localhost:5173');
             res.send('성공')
             // res.json({ message: '회원가입 완료. 추가 정보를 입력하세요.' });
