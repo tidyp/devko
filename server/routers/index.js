@@ -5,6 +5,7 @@ app.use('/api/googleAuth', require('./user/googleAuth'))
 app.use('/api/naverAuth', require('./user/naverAuth'))
 app.use('/api/additionalInfo', require('./user/additionalInfo'))
 
-app.use('/api/board', require('./post/board'))
+app.use('/api/post', require('./post/list'))
+
 
 module.exports = app;
