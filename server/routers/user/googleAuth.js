@@ -4,8 +4,10 @@ const router = express.Router();
 const axios = require('axios');
 const db = require('../../config/db')
 
-const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/signup/redirect';
+
 const GOOGLE_LOGIN_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/login/redirect';
+const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/signup/redirect';
+
 
 // 회원가입
 router.get('/signup', (req, res) => {
@@ -41,15 +43,18 @@ router.get('/signup/redirect', async (req, res) => {
     const googleImage = resp2.data.picture;
 
     try {
-        const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ?', [googleId, googleEmail]);
+        const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ? OR profileImage = ?', [googleId, googleEmail, googleImage]);
+        console.log(rows)
+            if (rows.length > 0) {
+            res.redirect('http://localhost:5173');
 
-        if (rows.length > 0) {
-            res.status(400).json({ message: '이미 가입된 회원입니다' });
-        } else {
+            // res.status(400).json({ message: '이미 가입된 회원입니다' });
+            } else {
             await db.execute('INSERT INTO users (googleId, googleEmail, profileImage) VALUES (?, ?, ?)', [googleId, googleEmail, googleImage]);
-            res.json({ message: '회원가입 완료. 추가 정보를 입력하세요.' });
-        }
-    } catch (error) {
+            res.redirect('http://localhost:5173');
+            }
+            // res.json({ message: '회원가입 완료. 추가 정보를 입력하세요.' });
+        } catch (error) {
         console.error('Database query error: ', error);
         res.status(500).json({ message: 'Internal server error' });
     }

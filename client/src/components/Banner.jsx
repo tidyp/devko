@@ -5,8 +5,8 @@ const Banner = () => {
   return (
     <div className={styles.container}>
       <div className={styles.inner}>
-        <p>Banner Components</p>
-        <p>Carousel: use tailwinds</p>
+        {/* <p>Banner Components</p>
+        <p>Carousel: use tailwinds</p> */}
       </div>
     </div>
   )
