@@ -11,7 +11,7 @@ const index = () => {
 
   return (
     <>
-      <section className={styles.container}>
+      <section className="flex justify-center">
         <div className={styles.inner}>
           <SideBar />
           <PostList posts={posts} />
