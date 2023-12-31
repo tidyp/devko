@@ -4,15 +4,14 @@ const path = require('path')
 const db = require('../../config/db')
 require('dotenv').config();
 
-// 게시글 목록 보기
-router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'public', 'post.html'));
-});
+// 게시글 삭제
+router.delete(`/data/:postId?`, async (req, res) => {
+  const postId = req.params.postId;
 
-router.get("/data", async (req, res) => {
+  const sql = 'DELETE FROM posts WHERE id = ?';
+  
   try {
-    const sql = `SELECT * FROM posts`;
-    const [rows, fields] = await db.query(sql);
+    const [rows, fields] = await db.query(sql, [postId]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);

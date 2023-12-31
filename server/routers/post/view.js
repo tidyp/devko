@@ -4,11 +4,11 @@ const path = require('path')
 const db = require('../../config/db')
 require('dotenv').config();
 
+// 해당 게시글 보기
 router.get('/:id?', (req, res) => {
   res.sendFile(path.join(__dirname, '..', '..', 'public', 'postview.html'));
 });
 
-// 게시글 보기
 router.get("/data/:id?", async (req, res) => {
   const id = req.params.id;
   const sql = `SELECT * FROM posts WHERE id = '${id}'`;
