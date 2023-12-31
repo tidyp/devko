@@ -11,7 +11,6 @@ const port = process.env.SERVER_PORT;
 app.use(cors());
 
 // 메인 페이지
-
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 

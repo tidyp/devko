@@ -1,8 +1,13 @@
+-- Mysql 접속: mysql.exe -uroot -p
+SHOW DATABASES;
 CREATE DATABASE IF NOT EXISTS devko;
+USER devko;
+SHOW TABLES;
+
+
 
 -- USERS 테이블
 -- DROP TABLE devko.users;
-
 CREATE TABLE IF NOT EXISTS users (
      id VARCHAR(64),
      userName VARCHAR(45),
@@ -26,7 +31,6 @@ SELECT * FROM devko.users;
 
 -- POSTS 테이블
 -- DROP TABLE devko.posts;
-
 CREATE TABLE IF NOT EXISTS posts (
      userId VARCHAR(64),
      id INT AUTO_INCREMENT PRIMARY KEY,

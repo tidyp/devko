@@ -6,19 +6,13 @@
     <title>Server Test</title>
 </head>
 <body>
-  <div id="main">    
-    <div id="searchbar">
-      <form id="searchForm" action="/search" method="get">
-        <input type="text" id="input" name="input">
-        <button id="searchButton" type="button" onclick="submitSearch()">Search</button>
-      </form>
-    </div>
-
+  <div id="main">
     <table border="1" id="Table">
       <thead>
         <tr>
           <th>ID</th>
           <th>Title</th>
+          <th>Content</th>
           <th>UserId</th>
           <th>CreatedAt</th>
         </tr>
@@ -27,19 +21,23 @@
         <!-- Table Rows -->
       </tbody>
     </table>
-    
-    <div id="pagination">
-      <!-- Pagination Results -->
-    </div>
   </div>
 
   <script>
   document.addEventListener('DOMContentLoaded', () => {
-    fetch('/api/post/list/data')
+    const url = new URL(window.location.href);
+    const page = url.pathname.split('/')[4];
+    console.log(url, page)
+
+    fetchData(page)
+  });
+
+  function fetchData(id) {
+    fetch(`/api/post/view/data/${id}`)
     .then(response => response.json())
     .then(data => {
         console.log(data)
-
+        
         const tableBody = document.getElementById('TableBody');
         tableBody.innerHTML = '';
 
@@ -47,7 +45,8 @@
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${post.id}</td>
-                <td><a href="/api/post/view/${post.id}">${post.title}</a></td>
+                <td>${post.title}</a></td>
+                <td>${post.content}</a></td>
                 <td>${post.userId}</td>
                 <td>${post.createdAt}</td>
             `;
@@ -57,7 +56,7 @@
     .catch(error => {
         console.error('Error fetching data:', error);
     });
-  });
+  }
   </script>
 </body>
 </html>
