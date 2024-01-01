@@ -13,8 +13,9 @@ router.post("/data", async (req, res) => {
   // const user = req.session.user;
   const title = req.body.title;
   const content = req.body.content;
+  console.log(req)
 
-  const sql = `INSERT INTO posts (title, content) VALUES (?, ?, ?);`;
+  const sql = `INSERT INTO posts (title, content) VALUES (?, ?);`;
 
   try {
     const [rows, fields] = await db.query(sql, [title, content]);
