@@ -10,15 +10,15 @@ router.get('/', (req, res) => {
 });
 
 router.post("/data", async (req, res) => {
-  // const user = req.session.user;
+  const user = req.session.userid;
   const title = req.body.title;
   const content = req.body.content;
   console.log(req)
 
-  const sql = `INSERT INTO posts (title, content) VALUES (?, ?);`;
+  const sql = `INSERT INTO posts (userId, title, content) VALUES (?, ?, ?);`;
 
   try {
-    const [rows, fields] = await db.query(sql, [title, content]);
+    const [rows, fields] = await db.query(sql, [user, title, content]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
