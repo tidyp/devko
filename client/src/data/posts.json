@@ -12,7 +12,8 @@
       "Likes": 123,
       "profileImage": "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=1",
       "name": "황이김",
-      "imgurl": "https://th.bing.com/th/id/OIG.hSKc.XhLnL7SPxOdkRsU"
+      "imgurl": "https://th.bing.com/th/id/OIG.hSKc.XhLnL7SPxOdkRsU",
+      "cate": "discuss"
     },
     {
       "UserId": "이이이",
@@ -26,7 +27,8 @@
       "Likes": 456,
       "profileImage": "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=2",
       "name": "이이이",
-      "imgurl": "https://th.bing.com/th/id/OIG.OpkExVcbWNAYQoxEwsfj"
+      "imgurl": "https://th.bing.com/th/id/OIG.OpkExVcbWNAYQoxEwsfj",
+      "cate": "discuss"
     },
     {
       "UserId": "박박박",
@@ -40,7 +42,8 @@
       "Likes": 135,
       "profileImage": "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=3",
       "name": "박박박",
-      "imgurl": "https://th.bing.com/th/id/OIG.t.FGYWQLl5x7CQ1WKfJj"
+      "imgurl": "https://th.bing.com/th/id/OIG.t.FGYWQLl5x7CQ1WKfJj",
+      "cate": "discuss"
     },
     {
       "UserId": "최최최",
@@ -54,7 +57,8 @@
       "Likes": 531,
       "profileImage": "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=4",
       "name": "최최최",
-      "imgurl": "https://th.bing.com/th/id/OIG.WYvLaYwbb7ss1dJ2LkGn"
+      "imgurl": "https://th.bing.com/th/id/OIG.WYvLaYwbb7ss1dJ2LkGn",
+      "cate": "qna"
     },
     {
       "UserId": "정정정",
@@ -68,7 +72,8 @@
       "Likes": 324,
       "profileImage": "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=5",
       "name": "정정정",
-      "imgurl": "https://th.bing.com/th/id/OIG.4OSh23LQD4CNM9PPQ8Zt"
+      "imgurl": "https://th.bing.com/th/id/OIG.4OSh23LQD4CNM9PPQ8Zt",
+      "cate": "discuss"
     },
     {
       "UserId": "성성성",
@@ -82,7 +87,8 @@
       "Likes": 789,
       "profileImage": "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=6",
       "name": "성성성",
-      "imgurl": "https://th.bing.com/th/id/OIG.L0eQIThZrQNBOpHRzSzq"
+      "imgurl": "https://th.bing.com/th/id/OIG.L0eQIThZrQNBOpHRzSzq",
+      "cate": "discuss"
     },
     {
       "UserId": "김김김",
@@ -96,7 +102,8 @@
       "Likes": 432,
       "profileImage": "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=7",
       "name": "김김김",
-      "imgurl": "https://th.bing.com/th/id/OIG.TDZbD3iM8hB0lqiyz3r"
+      "imgurl": "https://th.bing.com/th/id/OIG.TDZbD3iM8hB0lqiyz3r",
+      "cate": "discuss"
     },
     {
       "UserId": "이박최",
@@ -110,7 +117,8 @@
       "Likes": 567,
       "profileImage": "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=8",
       "name": "이박최",
-      "imgurl": "https://th.bing.com/th/id/OIG.TXDDjvCHPZGPGC1hEG4w"
+      "imgurl": "https://th.bing.com/th/id/OIG.TXDDjvCHPZGPGC1hEG4w",
+      "cate": "discuss"
     },
     {
       "UserId": "박정김",
@@ -124,7 +132,8 @@
       "Likes": 654,
       "profileImage": "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=9",
       "name": "박정김",
-      "imgurl": "https://th.bing.com/th/id/OIG.jYiMmyXnQjZ8M6pbbtFqq"
+      "imgurl": "https://th.bing.com/th/id/OIG.jYiMmyXnQjZ8M6pbbtFqq",
+      "cate": "discuss"
     },
     {
       "UserId": "최김이",
@@ -138,7 +147,8 @@
       "Likes": 789,
       "profileImage": "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=10",
       "name": "최김이",
-      "imgurl": "https://th.bing.com/th/id/OIG.hqqz4eNq8w1cPObV1uPA"
+      "imgurl": "https://th.bing.com/th/id/OIG.hqqz4eNq8w1cPObV1uPA",
+      "cate": "qna"
     }
   ]
 }
