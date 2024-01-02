@@ -1,27 +1,50 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import Layout from "./Layout/Layout";
-import LoginPage from "./pages/login";
+import Layout from "./ui/Layout";
 
-import Mainpage from "./pages/Mainpage";
-import ExploerPage from "./pages/ExploerPage";
-import DiscussPage from "./pages/DiscussPage";
-import QnaPage from "./pages/QnaPage";
-import EventPage from "./pages/EventPage";
-``;
+import ExploerPage from "./pages/exploer";
+import DiscussPage from "./pages/discuss";
+import EventPage from "./pages/event";
+import QnaPage from "./pages/qna";
+import GroupPage from "./pages/group";
+
+import Postdetail from './pages/Postdetail'
+
+import LoginPage from "./pages/login";
+import Myinfo from './pages/myinfo'
+import UserInfo from './pages/userinfo'
+
 const router = createBrowserRouter([
   {
-    path: "/",
     element: <Layout />,
     children: [
-      // 홈페이지
-      { path: "/", element: <Mainpage /> },
-      { path: "/exploer", element: <ExploerPage /> },
+      // 홈페이지, EXPLOER
+      // { path: "/", element: <Mainpage /> },
+      { path: "/", element: <ExploerPage /> },
+      // { path: "/exploer", element: <ExploerPage /> },
+      // DISCUSS
       { path: "/discuss", element: <DiscussPage /> },
+      { path: "/discuss/:id", element: <Postdetail /> },
+      // Q&A
       { path: "/qna", element: <QnaPage /> },
-      { path: "/evnet", element: <EventPage /> },
-      // 로그인페이지
+      // EVENT
+      { path: "/event", element: <EventPage /> },
+      // EVENT
+      { path: "/discuss", element: <EventPage /> },
+      // EVENT
+      { path: "/group", element: <GroupPage /> },
+      // LOGIN
       { path: "/login", element: <LoginPage /> },
+      // LOGIN
+      { path: "/login", element: <LoginPage /> },
+      
+      
+      
+      // USER: INFO
+      { path: "/myinfo", element: <UserInfo /> },
+      { path: "/userinfo/:id", element: <UserInfo /> },
+
+
     ],
   },
 ]);

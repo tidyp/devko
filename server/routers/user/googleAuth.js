@@ -1,12 +1,12 @@
+require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const db = require('../../config/db');
-const path = require('path');
-require('dotenv').config();
 
-const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/signup/redirect';
 const GOOGLE_LOGIN_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/login/redirect';
+const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/signup/redirect';
+
 
 // 회원가입
 router.get('/signup', (req, res) => {
@@ -53,10 +53,9 @@ router.get('/signup/redirect', async (req, res) => {
             await db.execute('INSERT INTO users (googleId, googleEmail, profileImage) VALUES (?, ?, ?)', [googleId, googleEmail, googleImage]);
 
             res.sendFile(path.join(__dirname, '..', '..', 'public', 'userInfo.html'));
-            // res.redirect('http://localhost:5173');
-
-            // res.json({ message: '회원가입 완료. 추가 정보를 입력하세요.' });
         }
+            // res.redirect('http://localhost:5173');
+            // res.json({ message: '회원가입 완료. 추가 정보를 입력하세요.' });
     } catch (error) {
         console.error('Database query error: ', error);
         res.status(500).json({ message: 'Internal server error' });
@@ -85,13 +84,13 @@ router.get('/login/redirect', async (req, res) => {
         redirect_uri: GOOGLE_LOGIN_REDIRECT_URI,
         grant_type: 'authorization_code',
     });
+
     // 사용자의 구글 계정 정보
     const resp2 = await axios.get('https://www.googleapis.com/oauth2/v2/userinfo', {
         headers: {
             Authorization: `Bearer ${resp.data.access_token}`,
         },
     });
-    console.log(resp2)
     
     // 기존 회원 여부 확인 및 신규 회원 가입
     const googleId = resp2.data.id;
@@ -99,18 +98,17 @@ router.get('/login/redirect', async (req, res) => {
     const googleImage = resp2.data.picture;
 
     try {
-        const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ? OR profileImage = ?', [googleId, googleEmail, googleImage]);
-        console.log(rows)
+        const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ?', [googleId, googleEmail]);
+
+        req.session.googleId = googleId;
+        req.session.googleEmail = googleEmail;
+        req.session.isLogined = true;
 
         if (rows.length > 0) {
-            // const data = {
-            //     googleId: googleId, 
-            //     googleEmail: googleEmail, 
-            //     profileImage: googleImage, 
-            // };
-            // res.json(data);
-            res.sendFile(path.join(__dirname, '..', '..', 'public', 'userInfo.html'));
-            // res.send(`${googleId}, ${googleEmail} 로그인 완료`);
+            req.session.save(function(){ 
+                res.redirect('/');
+                // res.send(`${googleId}, ${googleEmail} 로그인 완료`);
+            });
         } else {
             res.send(`없는 회원입니다. 회원가입을 해주세요.`);
         }

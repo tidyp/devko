@@ -1,0 +1,44 @@
+.container {
+  // width: 100%;
+  // border: 1px solid #000;
+  border-radius: 20px;
+  padding: 40px 20px;
+  background-color: #fff;
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  .header {
+    height: 20%;
+    display: flex;
+    gap: 20px;
+    .profileImage {
+      height: 48px;
+      width: 48px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .top {
+      .title {
+        font-weight: 800;
+        font-size: 24px;
+      }
+    }
+    .bottom {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      .name {
+        color: #0f8be5;
+      }
+      .date {
+      }
+    }
+  }
+  .main {
+    height: 60%;
+  }
+  .footer {
+    height: 20%;
+  }
+}

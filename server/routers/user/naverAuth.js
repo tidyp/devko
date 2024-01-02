@@ -1,8 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const request = require('request-promise');
 const db = require('../../config/db');
-require('dotenv').config();
 
 const client_id = process.env.NAVER_CLIENT_ID;
 const client_secret = process.env.NAVER_CLIENT_SECRET;
@@ -46,10 +46,7 @@ router.get('/callback', async (req, res) => {
     const naverImage = info_result_json.profile_image;
 
     try {
-      const [rows, fields] = await db.execute('SELECT * FROM users WHERE naverId = ? OR naverEmail = ? OR profileImage = ?', [naverId, naverEmail, naverImage]);
-      console.log('rows', rows)
-      console.log('fields', fields)
-
+      const [rows, fields] = await db.execute('SELECT * FROM users WHERE naverId = ? OR naverEmail = ?', [naverId, naverEmail]);
       if (rows.length > 0) {
           res.status(400).json({ message: '이미 가입된 회원입니다' });
       } else {
