@@ -1,6 +1,5 @@
 import styles from "./PostList.module.scss";
 
-
 import Post from "./Post";
 import NewPost from "./NewPost";
 
@@ -10,7 +9,9 @@ const PostList = ({ posts }) => {
       <div className={styles.contianer}>
         <div className={styles.inner}>
           <p className={styles.title}>EXPLOER</p>
-          <p className={styles.subtitle}>EXPLOER:</p>
+          <p className={styles.subtitle}>
+          EXPLOER: 
+          </p>
         </div>
         <div className={styles.newpost}>
           <NewPost />
