@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const db = require('../../config/db')
+const db = require('../../config/db');
+const path = require('path');
 require('dotenv').config();
 
 const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/signup/redirect';
@@ -45,12 +46,14 @@ router.get('/signup/redirect', async (req, res) => {
         console.log(rows)
 
         if (rows.length > 0) {
-            res.redirect('http://localhost:5173');
+            // res.redirect('http://localhost:5173');
 
-            // res.status(400).json({ message: '이미 가입된 회원입니다' });
+            res.status(400).json({ message: '이미 가입된 회원입니다' });
         } else {
             await db.execute('INSERT INTO users (googleId, googleEmail, profileImage) VALUES (?, ?, ?)', [googleId, googleEmail, googleImage]);
-            res.redirect('http://localhost:5173');
+
+            res.sendFile(path.join(__dirname, '..', '..', 'public', 'userInfo.html'));
+            // res.redirect('http://localhost:5173');
 
             // res.json({ message: '회원가입 완료. 추가 정보를 입력하세요.' });
         }
@@ -96,11 +99,18 @@ router.get('/login/redirect', async (req, res) => {
     const googleImage = resp2.data.picture;
 
     try {
-        const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ?', [googleId, googleEmail, googleImage]);
+        const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ? OR profileImage = ?', [googleId, googleEmail, googleImage]);
         console.log(rows)
 
         if (rows.length > 0) {
-            res.send(`${googleId}, ${googleEmail} 로그인 완료`);
+            // const data = {
+            //     googleId: googleId, 
+            //     googleEmail: googleEmail, 
+            //     profileImage: googleImage, 
+            // };
+            // res.json(data);
+            res.sendFile(path.join(__dirname, '..', '..', 'public', 'userInfo.html'));
+            // res.send(`${googleId}, ${googleEmail} 로그인 완료`);
         } else {
             res.send(`없는 회원입니다. 회원가입을 해주세요.`);
         }
