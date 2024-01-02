@@ -20,7 +20,7 @@ const LoginPage = () => {
   useEffect(() => {
     // if (authcode) {
     fetch("http://localhost:3000/test", {
-      method: "POST",
+      method: "GET",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         authcode: authcode
