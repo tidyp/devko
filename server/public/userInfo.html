@@ -9,48 +9,50 @@
 
     <h2>사용자 정보 입력</h2>
 
-    <form action="/submit" method="post">
+    <form action="/api/additionalInfo/step3" method="post">
 
         <!-- 텍스트 입력 -->
-        <label for="username">사용자 이름:</label>
-        <input type="text" id="username" name="username" required>
+        <label for="userName">사용자 이름:</label>
+        <input type="text" id="userName" name="userName" required>
 
         <br>
 
         <!-- 비밀번호 입력 -->
-        <label for="password">비밀번호:</label>
-        <input type="password" id="password" name="password" required>
-
-        <br>
-
-        <!-- 라디오 버튼 -->
-        <label>성별:</label>
-        <input type="radio" id="male" name="gender" value="male">
-        <label for="male">남성</label>
-        <input type="radio" id="female" name="gender" value="female">
-        <label for="female">여성</label>
-
-        <br>
-
-        <!-- 체크 박스 -->
-        <input type="checkbox" id="subscribe" name="subscribe" value="subscribe">
-        <label for="subscribe">구독하기</label>
+        <label for="selfDescription">한줄소개:</label>
+        <input type="text" id="selfDescription" name="selfDescription" required>
 
         <br>
 
         <!-- 드롭다운 메뉴 -->
-        <label for="country">국가:</label>
-        <select id="country" name="country">
-            <option value="korea">대한민국</option>
-            <option value="usa">미국</option>
-            <option value="japan">일본</option>
+        <label for="workPosition">관심직무:</label>
+        <select id="workPosition" name="workPosition">
+            <option value="FE">FE</option>
+            <option value="BE">BE</option>
+            <option value="FULL">FULL</option>
             <!-- 다른 국가를 추가할 수 있습니다. -->
         </select>
+        
+        <br>
+        
+        <!-- 드롭다운 메뉴 -->
+        <label for="interestArea">관심분야:</label>
+        <select id="interestArea" name="interestArea">
+            <option value="java">java</option>
+            <option value="js">js</option>
+            <option value="c">c</option>
+            <!-- 다른 국가를 추가할 수 있습니다. -->
+        </select>
+        
+        <br>
+
+        <!-- 체크 박스 -->
+        <input type="checkbox" id="notification" name="notification" value="notification" >
+        <label for="notification">알림설정하기</label>
 
         <br>
 
         <!-- 제출 버튼 -->
-        <button type="submit"><a href="/api/additionalInfo/step3">제출</a></button>
+        <button type="submit">제출</button>
         <!-- <input type="submit" value="제출"><a href="userInfo2.html"></a></input> -->
 
     </form>

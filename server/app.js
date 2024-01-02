@@ -18,8 +18,8 @@ app.use(express.static(path.resolve(__dirname, './public')));
 
 app.use(session({
     secret: 'my-key2',
-    resave: false,
-    saveUninitialized: true
+    resave:false,
+    saveUninitialized:true
 }));
 
 // app.get('/', (req, res) => {

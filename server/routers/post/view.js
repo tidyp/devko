@@ -6,6 +6,7 @@ require('dotenv').config();
 
 // 해당 게시글 보기
 router.get('/:id?', (req, res) => {
+  console.log(req.session)
   res.sendFile(path.join(__dirname, '..', '..', 'public', 'postview.html'));
 });
 

@@ -2,8 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
-const db = require('../../config/db')
-
+const db = require('../../config/db');
 
 const GOOGLE_LOGIN_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/login/redirect';
 const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/signup/redirect';
@@ -45,16 +44,19 @@ router.get('/signup/redirect', async (req, res) => {
     try {
         const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ? OR profileImage = ?', [googleId, googleEmail, googleImage]);
         console.log(rows)
-            if (rows.length > 0) {
-            res.redirect('http://localhost:5173');
 
-            // res.status(400).json({ message: '이미 가입된 회원입니다' });
-            } else {
+        if (rows.length > 0) {
+            // res.redirect('http://localhost:5173');
+
+            res.status(400).json({ message: '이미 가입된 회원입니다' });
+        } else {
             await db.execute('INSERT INTO users (googleId, googleEmail, profileImage) VALUES (?, ?, ?)', [googleId, googleEmail, googleImage]);
-            res.redirect('http://localhost:5173');
-            }
+
+            res.sendFile(path.join(__dirname, '..', '..', 'public', 'userInfo.html'));
+        }
+            // res.redirect('http://localhost:5173');
             // res.json({ message: '회원가입 완료. 추가 정보를 입력하세요.' });
-        } catch (error) {
+    } catch (error) {
         console.error('Database query error: ', error);
         res.status(500).json({ message: 'Internal server error' });
     }
@@ -98,8 +100,15 @@ router.get('/login/redirect', async (req, res) => {
     try {
         const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ?', [googleId, googleEmail]);
 
+        req.session.googleId = googleId;
+        req.session.googleEmail = googleEmail;
+        req.session.isLogined = true;
+
         if (rows.length > 0) {
-            res.send(`${googleId}, ${googleEmail} 로그인 완료`);
+            req.session.save(function(){ 
+                res.redirect('/');
+                // res.send(`${googleId}, ${googleEmail} 로그인 완료`);
+            });
         } else {
             res.send(`없는 회원입니다. 회원가입을 해주세요.`);
         }
