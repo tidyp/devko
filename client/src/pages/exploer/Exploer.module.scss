@@ -1,16 +1,12 @@
 .container {
   display: flex;
   justify-content: center;
-  width: 100%;
+  // width: 100%;
   box-sizing: border-box;
-}
-
-.inner {
-  max-width: 1920px;
-  // background-color: #e74032;
-  box-sizing: border-box;
-  gap: 5%;
-  display: grid;
-  grid-template-columns: 30% 65%;
-  width: 100%;
+  .inner {
+    display: flex;
+    width: 80rem;
+    box-sizing: border-box;
+    gap: 1rem;
+  }
 }

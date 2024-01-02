@@ -6,7 +6,7 @@ import NewPost from "./NewPost";
 const PostList = ({ posts }) => {
   return (
     <>
-      <main className={styles.contianer}>
+      <div className={styles.contianer}>
         <div className={styles.inner}>
           <p className={styles.title}>EXPLOER</p>
           <p className={styles.subtitle}>
@@ -21,7 +21,7 @@ const PostList = ({ posts }) => {
             <Post post={post} key={post.Id} />
           ))}
         </div>
-      </main>
+      </div>
     </>
   );
 };
