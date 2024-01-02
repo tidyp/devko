@@ -1,21 +1,27 @@
 // Define variables for reusable styles
-$primaryColor: #000000;
+$primaryColor: #000;
 $secondaryColor: #2ecc71;
 
 .navigationBar {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background-color: $primaryColor;
-  padding: 10px;
-  height: 75px;
-  padding: 0 25px;
+
+  .inner {
+    display: flex;
+    width: 80rem;
+    justify-content: space-between;
+    align-items: center;
+    // padding: 10px;
+    height: 60px;
+  }
 
   .logo {
     a {
       text-decoration: none;
       color: #fff;
-      font-size: 1.5rem;
+      font-size: 1rem;
       font-weight: bold;
     }
   }
@@ -28,10 +34,10 @@ $secondaryColor: #2ecc71;
       a {
         text-decoration: none;
         color: #fff;
-        font-size: 1.5rem;
+        font-size: 1rem;
         font-weight: bold;
         cursor: pointer;
-        padding: 0 40px;
+        padding: 0 1rem;
         text-transform: uppercase;
       }
 
@@ -54,12 +60,12 @@ $secondaryColor: #2ecc71;
       gap: 1rem;
       margin-right: 10px;
       color: #fff;
-      // color: #000;
-      font-size: 1.5rem;
+      // color: #fff;
+      font-size: 1rem;
       font-weight: bold;
       cursor: pointer;
       // background-color: #fff;
-      input{
+      input {
         border: none;
         height: 2rem;
         width: 16rem;
@@ -69,12 +75,11 @@ $secondaryColor: #2ecc71;
       }
     }
 
-
     .profilePicture {
       a {
         text-decoration: none;
         color: #fff;
-        font-size: 1.5rem;
+        font-size: 1rem;
         font-weight: bold;
         margin-left: 10px;
       }
