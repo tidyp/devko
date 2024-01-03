@@ -32,12 +32,26 @@ const LoginPage = () => {
   // };
 
   // const googleLoginOnSuccess = useGoogleLoginSuccessHandler();
+  // let url = "https://accounts.google.com/o/oauth2/v2/auth";
+  // url += `?client_id=274353463964-kdkm3np5jbg5ts4l7vdksqj92m4or87q.apps.googleusercontent.com`;
+  // url += `&redirect_uri=${GOOGLE_SIGNUP_REDIRECT_URI}`;
+  // url += "&response_type=code";
+  // url += "&scope=email profile";
+  // console.log(url);
+  // fetch();
+  
   const handleLogin = useGoogleLogin({
     scope: "email profile",
+    client_id:
+      "274353463964-kdkm3np5jbg5ts4l7vdksqj92m4or87q.apps.googleusercontent.com",
+    redirect_uri: "http://localhost:3000/api/googleAuth/signup/redirect",
+    response_type: "code",
     onSuccess: async ({ code }) => {
       console.log(code);
 
-      const res = await fetch(`http://localhost:3000/api/googleAuth/signup/redirect?${code}`);
+      const res = await fetch(
+        `http://localhost:3000/api/googleAuth/signup/redirect?code=${code}`,
+      );
       const data = await res.json();
       return data;
       // axios
@@ -58,6 +72,8 @@ const LoginPage = () => {
       <div className={styles.text}>
         <p className={styles.title}>Create your account</p>
         <p className={styles.sub}>Let's get started</p>
+
+        <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id=274353463964-kdkm3np5jbg5ts4l7vdksqj92m4or87q.apps.googleusercontent.com&redirect_uri=http://localhost:3000/api/googleAuth/signup/redirect&response_type=code&scope=email profile">4g94jg94</a>;
       </div>
       {/* <a href="http://localhost:3000/api/googleAuth/signup">dwqdhqdkq</a> */}
 
