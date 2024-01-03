@@ -53,9 +53,9 @@ router.get('/signup/redirect', async (req, res) => {
         } else {
             await db.execute('INSERT INTO users (googleId, googleEmail, profileImage) VALUES (?, ?, ?)', [googleId, googleEmail, googleImage]);
 
-            res.sendFile(path.join(__dirname, '..', '..', 'public', 'userInfo.html'));
+            res.redirect('http://localhost:3000/api/additionalInfo/step2');
         }
-            // res.redirect('http://localhost:5173');
+        // res.sendFile(path.join(__dirname, '..', '..', 'public', 'userInfo.html'));
             // res.json({ message: '회원가입 완료. 추가 정보를 입력하세요.' });
     } catch (error) {
         console.error('Database query error: ', error);
