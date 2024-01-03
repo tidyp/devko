@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import Layout from "./ui/Layout";
 
-import ExploerPage from "./pages/exploer";
+import ExploerPage, { loader as postLoader } from "./pages/exploer";
 import DiscussPage from "./pages/discuss";
 import EventPage from "./pages/event";
 import QnaPage from "./pages/qna";
@@ -19,8 +19,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       // 홈페이지, EXPLOER
-      // { path: "/", element: <Mainpage /> },
-      { path: "/", element: <ExploerPage /> },
+      { path: "/", element: <ExploerPage />, loader: postLoader },
       // { path: "/exploer", element: <ExploerPage /> },
       // DISCUSS
       { path: "/discuss", element: <DiscussPage /> },

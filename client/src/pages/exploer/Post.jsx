@@ -1,10 +1,10 @@
 import styles from "./Post.module.scss";
 
-import {formatDate} from '../../utils/utils'
+import { formatDate } from "../../utils/utils";
+import { Link } from "react-router-dom";
 
 const Post = ({ post }) => {
-  const data = formatDate(post.WriteDate)
-
+  const data = formatDate(post.WriteDate);
 
   return (
     <>
@@ -26,9 +26,7 @@ const Post = ({ post }) => {
         {/* post 본문 */}
         <main>{post.Content}</main>
         {/* post footer */}
-        <footer>
-          조회수 댓글갯수 좋아요 댓글 공유
-        </footer>
+        <footer>조회수 댓글갯수 좋아요 댓글 공유</footer>
       </div>
     </>
   );
