@@ -100,15 +100,16 @@ router.get('/login/redirect', async (req, res) => {
     try {
         const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ?', [googleId, googleEmail]);
 
-        req.session.googleId = googleId;
-        req.session.googleEmail = googleEmail;
-        req.session.isLogined = true;
+        // req.session.googleId = googleId;
+        // req.session.googleEmail = googleEmail;
+        // req.session.isLogined = true;
 
         if (rows.length > 0) {
-            req.session.save(function(){ 
+            res.cookie(
+                
+            )
                 res.redirect('/');
                 // res.send(`${googleId}, ${googleEmail} 로그인 완료`);
-            });
         } else {
             res.send(`없는 회원입니다. 회원가입을 해주세요.`);
         }

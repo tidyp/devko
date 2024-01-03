@@ -48,7 +48,12 @@ router.get('/callback', async (req, res) => {
     try {
       const [rows, fields] = await db.execute('SELECT * FROM users WHERE naverId = ? OR naverEmail = ?', [naverId, naverEmail]);
       if (rows.length > 0) {
-          res.status(400).json({ message: '이미 가입된 회원입니다' });
+          res.cookie (
+            'naver_access',
+            {...info_result_json, access_token: token }
+          );
+          res.redirect('http://localhost:5173');
+        //   res.status(400).json({ message: '이미 가입된 회원입니다' });
       } else {
           await db.execute('INSERT INTO users (naverId, naverEmail, profileImage) VALUES (?, ?, ?)', [naverId, naverEmail, naverImage]);
           res.redirect('http://localhost:5173');
