@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 
 require('dotenv').config();
@@ -9,6 +10,7 @@ const app = express();
 const port = process.env.SERVER_PORT;
 
 app.use(cors());
+app.use(cookieParser());
 
 // 메인 페이지
 app.use(express.json());

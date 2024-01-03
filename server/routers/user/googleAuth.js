@@ -1,9 +1,10 @@
-require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const db = require("../../config/db");
 const path = require("path");
+require("dotenv").config();
+
 
 const GOOGLE_LOGIN_REDIRECT_URI =
   "http://localhost:3000/api/googleAuth/login/redirect";
@@ -46,7 +47,6 @@ router.get("/signup/redirect", async (req, res) => {
   const googleId = resp2.data.id;
   const googleEmail = resp2.data.email;
   const googleImage = resp2.data.picture;
-  console.log(googleId, googleEmail, googleImage);
 
   try {
       const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ? OR profileImage = ?', [googleId, googleEmail, googleImage]);
@@ -117,6 +117,10 @@ router.get("/login/redirect", async (req, res) => {
 
     if (rows.length > 0) {
       req.session.save(function () {
+        res.cookie('googleId', googleId);
+        res.cookie('googleEmail', googleEmail);
+        res.cookie('isLogined', 'true');
+
         res.redirect("/");
         // res.send(`${googleId}, ${googleEmail} 로그인 완료`);
       });

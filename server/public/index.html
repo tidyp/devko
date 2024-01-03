@@ -10,5 +10,13 @@
     <a href="/">/</a><br>
     <a href="/api/login/">login</a><br>
     <a href="/api/post/list">board</a><br>
+
+    <script>
+        const googleId = document.cookie.split('; ').find(row => row.startsWith('googleId=')).split('=')[1];
+        const googleEmail = document.cookie.split('; ').find(row => row.startsWith('googleEmail=')).split('=')[1];
+        const isLogined = document.cookie.split('; ').find(row => row.startsWith('isLogined=')).split('=')[1];
+
+        console.log(googleId, isLogined)
+    </script>
 </body>
 </html>
