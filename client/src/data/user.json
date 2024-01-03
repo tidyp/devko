@@ -1,0 +1,52 @@
+{
+  "user": [
+    {
+      "id": "1",
+      "userName": "User1",
+      "googleId": "google_id_1",
+      "googleEmail": "google_email_1@gmail.com",
+      "naverId": "naver_id_1",
+      "naverEmail": "naver_email_1@naver.com",
+      "profileImage": "profile_image_1.jpg",
+      "workPosition": "Developer",
+      "interestArea": "Programming",
+      "selfDescription": "Passionate coder",
+      "createdAt": "2024-01-03 12:00:00",
+      "updatedAt": "2024-01-03 12:00:00",
+      "grade": 1,
+      "notification": 1
+    },
+    {
+      "id": "2",
+      "userName": "User2",
+      "googleId": "google_id_2",
+      "googleEmail": "google_email_2@gmail.com",
+      "naverId": "naver_id_2",
+      "naverEmail": "naver_email_2@naver.com",
+      "profileImage": "profile_image_2.jpg",
+      "workPosition": "Designer",
+      "interestArea": "Graphic Design",
+      "selfDescription": "Creative designer",
+      "createdAt": "2024-01-03 12:30:00",
+      "updatedAt": "2024-01-03 12:30:00",
+      "grade": 2,
+      "notification": 0
+    },
+    {
+      "id": "N",
+      "userName": "UserN",
+      "googleId": "google_id_N",
+      "googleEmail": "google_email_N@gmail.com",
+      "naverId": "naver_id_N",
+      "naverEmail": "naver_email_N@naver.com",
+      "profileImage": "profile_image_N.jpg",
+      "workPosition": "Manager",
+      "interestArea": "Project Management",
+      "selfDescription": "Experienced manager",
+      "createdAt": "2024-01-03 13:00:00",
+      "updatedAt": "2024-01-03 13:00:00",
+      "grade": 3,
+      "notification": 1
+    }
+  ]
+}

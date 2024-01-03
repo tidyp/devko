@@ -8,11 +8,11 @@ import EventPage from "./pages/event";
 import QnaPage from "./pages/qna";
 import GroupPage from "./pages/group";
 
-import Postdetail from './pages/Postdetail'
+import Postdetail from "./pages/Postdetail";
 
 import LoginPage from "./pages/login";
-import Myinfo from './pages/myinfo'
-import UserInfo from './pages/userinfo'
+import Myinfo from "./pages/myinfo";
+import UserInfo, { loader as userLoader } from "./pages/userinfo";
 
 const router = createBrowserRouter([
   {
@@ -33,18 +33,13 @@ const router = createBrowserRouter([
       { path: "/discuss", element: <EventPage /> },
       // EVENT
       { path: "/group", element: <GroupPage /> },
+
       // LOGIN
       { path: "/login", element: <LoginPage /> },
-      // LOGIN
-      { path: "/login", element: <LoginPage /> },
-      
-      
-      
+
       // USER: INFO
       { path: "/myinfo", element: <UserInfo /> },
-      { path: "/userinfo/:id", element: <UserInfo /> },
-
-
+      { path: "/userinfo/:id", element: <UserInfo />, loader: userLoader },
     ],
   },
 ]);
