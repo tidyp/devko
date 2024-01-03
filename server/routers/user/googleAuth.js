@@ -117,7 +117,7 @@ router.get("/login/redirect", async (req, res) => {
 
     if (rows.length > 0) {
       req.session.save(function () {
-        res.cookie('googleId', googleId);
+        res.cookie('googleId', { googleId, access_token: resp.data.access_token });
         res.cookie('googleEmail', googleEmail);
         res.cookie('isLogined', 'true');
 

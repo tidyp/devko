@@ -3,12 +3,12 @@ const session = require('express-session');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-
 require('dotenv').config();
 
 const app = express();
 const port = process.env.SERVER_PORT;
 
+// 미들웨어
 app.use(cors());
 app.use(cookieParser());
 
@@ -20,8 +20,9 @@ app.use(express.static(path.resolve(__dirname, './public')));
 
 app.use(session({
     secret: 'my-key2',
-    resave:false,
-    saveUninitialized:true
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 1000 }
 }));
 
 // app.get('/', (req, res) => {
