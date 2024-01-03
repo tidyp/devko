@@ -1,12 +1,14 @@
 import styles from "./Exploer.module.scss";
 
-import postsData from "../../data/posts.json";
+// import postsData from "../../data/posts.json";
 
 import SideBar from "./SideBar";
 import PostList from "./PostList";
+import { readPosts } from "../../api/apiDevko";
+import { useLoaderData } from "react-router-dom";
 
 const index = () => {
-  const { posts } = postsData;
+  const posts = useLoaderData();
 
   return (
     <>
@@ -21,3 +23,8 @@ const index = () => {
 };
 
 export default index;
+
+export async function loader() {
+  const board = await readPosts();
+  return board;
+}
