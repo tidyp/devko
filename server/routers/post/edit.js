@@ -22,7 +22,7 @@ router.get(`/data/:postId?`, async (req, res) => {
 });
 
 router.put(`/data/:postId?`, async (req, res) => {
-  // const user = req.session.user;
+  // const user = req.session.googleEmail;
   const postId = req.params.postId;
   const title = req.body.title;
   const content = req.body.content;

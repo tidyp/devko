@@ -4,8 +4,6 @@ CREATE DATABASE IF NOT EXISTS devko;
 USER devko;
 SHOW TABLES;
 
-
-
 -- USERS 테이블
 -- DROP TABLE devko.users;
 CREATE TABLE IF NOT EXISTS users (
@@ -15,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
      googleEmail VARCHAR(45),
      naverId VARCHAR(45),
      naverEmail VARCHAR(45),
-     profileImage BLOB,
+     profileImage TEXT,
      workPosition VARCHAR(64),
      interestArea VARCHAR(64),
      selfDescription TEXT,
@@ -26,8 +24,6 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 SELECT * FROM devko.users;
-
-
 
 -- POSTS 테이블
 -- DROP TABLE devko.posts;

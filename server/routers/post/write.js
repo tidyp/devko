@@ -10,12 +10,11 @@ router.get('/', (req, res) => {
 });
 
 router.post("/data", async (req, res) => {
-  const user = req.session.userid;
+  const user = req.session.googleEmail;
   const title = req.body.title;
   const content = req.body.content;
-  console.log(req)
 
-  const sql = `INSERT INTO posts (userId, title, content) VALUES (?, ?, ?);`;
+  const sql = `INSERT INTO posts (userId, title, content, createdAt, updatedAt) VALUES (?, ?, ?, now(), now());`;
 
   try {
     const [rows, fields] = await db.query(sql, [user, title, content]);
