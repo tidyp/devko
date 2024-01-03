@@ -15,17 +15,18 @@ router.post('/step3', async (req, res) => {
     const workPosition = req.body.workPosition;
     const interestArea = req.body.interestArea;
     const selfDescription = req.body.selfDescription;
-    let notification = req.body.notification;
+    let notification = req.body.notification || req.body.not_notification;
 
-    if (notification = 'notification') {
-        notification = 1;
-    } else {
+    // console.log(notification.value)
+    if (notification = 'not_notification') {
         notification = 0;
+    } else {
+        notification = 1;
     };
 
     try {
-        const [rows, fields] = await db.execute('SELECT * FROM users WHERE id = ? OR userName = ? OR workPosition = ? OR interestArea = ? OR selfDescription = ? OR googleId = ?', [id, userName, workPosition, interestArea, selfDescription, googleId]);
-
+        const [rows, fields] = await db.execute('SELECT * FROM users WHERE id = ? OR userName = ? OR workPosition = ? OR interestArea = ? OR selfDescription = ? OR notification = ? OR googleId = ?', [id, userName, workPosition, interestArea, selfDescription, , notification, googleId]);
+        console.log(rows)
         if (rows.length > 0) {
             await db.execute(`UPDATE users SET id = ?, userName = ?, workPosition = ?, interestArea = ?, selfDescription = ?, grade = 5, createdAt = now(), updatedAt = now(), notification = ? WHERE googleId = ?`, [id, userName, workPosition, interestArea, selfDescription, notification, googleId]);
             res.send('업데이트 성공');

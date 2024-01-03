@@ -1,9 +1,9 @@
 const express = require('express');
 const session = require('express-session');
-const path = require('path')
+const cors = require('cors');
+const path = require('path');
 
 require('dotenv').config();
-const cors = require('cors')
 
 const app = express();
 const port = process.env.SERVER_PORT;

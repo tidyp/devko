@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 const db = require('../../config/db');
+const path = require('path');
 
 const GOOGLE_LOGIN_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/login/redirect';
 const GOOGLE_SIGNUP_REDIRECT_URI = 'http://localhost:3000/api/googleAuth/signup/redirect';
@@ -95,7 +96,6 @@ router.get('/login/redirect', async (req, res) => {
     // 기존 회원 여부 확인 및 신규 회원 가입
     const googleId = resp2.data.id;
     const googleEmail = resp2.data.email;
-    const googleImage = resp2.data.picture;
 
     try {
         const [rows, fields] = await db.execute('SELECT * FROM users WHERE googleId = ? OR googleEmail = ?', [googleId, googleEmail]);
