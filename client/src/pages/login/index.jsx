@@ -2,11 +2,37 @@ import styles from "./Login.module.scss";
 import { GOOGLE_CLIENT_ID, GOOGLE_REDIRECT_URI } from "../../config";
 
 import { ReactComponent as GoogleBtn } from "../../assets/web_neutral_rd_ctn.svg";
+import { useState } from "react";
 
-console.log(GOOGLE_CLIENT_ID, GOOGLE_REDIRECT_URI)
+console.log(GOOGLE_CLIENT_ID, GOOGLE_REDIRECT_URI);
 
 const LoginPage = () => {
-  
+  const [authcode, setAuthcode] = useState("");
+  console.log(authcode);
+
+  const handleLogin = useGoogleLogin({
+    // onSuccess: (codeResponse) => console.log(codeResponse),
+    onSuccess: (codeResponse) => setAuthcode(codeResponse),
+    flow: "auth-code",
+  });
+
+  const useGoogleLogin = () => {
+    useEffect(() => {
+      // if (authcode) {
+      fetch("http://localhost:3000/test", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          authcode: authcode,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error("Error:", error));
+      // }
+    }, [authcode]);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.text}>
@@ -14,19 +40,7 @@ const LoginPage = () => {
         <p className={styles.sub}>Let's get started</p>
       </div>
       <a href="http://localhost:3000/api/googleAuth/signup">dwqdhqdkq</a>
-      <button
-        className={styles.btn}
-        onClick={() => {
-          // const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
-          // url.searchParams.set("client_id", GOOGLE_CLIENT_ID);
-          // url.searchParams.set("redirect_uri", GOOGLE_REDIRECT_URI);
-          // url.searchParams.set("response_type", "code");
-          // url.searchParams.set("scope", "email profile openid");
-          // console.log(url)
-          // window.location = url.href;
-          window.location = 'http://localhost:3000/api/googleAuth/signup'
-        }}
-      >
+      <button className={styles.btn} onClick={() => handleLogin}>
         <GoogleBtn />
       </button>
     </div>
