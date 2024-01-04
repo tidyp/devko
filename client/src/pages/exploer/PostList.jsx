@@ -2,6 +2,7 @@ import Post from "./Post";
 import NewPost from "./NewPost";
 
 const PostList = ({ posts }) => {
+  console.log(posts);
   return (
     <>
       <div className="flex w-auto flex-col justify-center">

@@ -4,8 +4,9 @@ import styles from "./Exploer.module.scss";
 
 import SideBar from "./SideBar";
 import PostList from "./PostList";
-import { readPosts, readUser } from "../../api/apiDevko";
+import { readPosts } from "../../api/apiDevko";
 import { useLoaderData } from "react-router-dom";
+import ErrorServer from "./ErrorServer";
 
 const index = () => {
   const posts = useLoaderData();
@@ -17,7 +18,8 @@ const index = () => {
         <div className={styles.inner}>
           <SideBar />
           {posts === "연결실패" ? (
-            <div>서버와의 연결에 실패하였습니다.</div>
+            // connect fail
+            <ErrorServer />
           ) : (
             posts && <PostList posts={posts} />
           )}

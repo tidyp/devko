@@ -23,11 +23,26 @@ export async function readPosts() {
   }
 }
 
-export async function createPost() {
-  const res = await fetch(`${API_URL}/post`);
+export async function createPost(postData) {
+  const res = await fetch(`${API_URL}/post`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(postData),
+  });
+
+  console.log(res)
+  if (!res.ok) {
+    throw new Error(`Failed to create post. Status: ${res.status}`);
+  }
+
   const data = await res.json();
+  console.log(data)
   return data;
 }
+
+
 export async function readPost() {
   const res = await fetch(`${API_URL}/post/:id`);
   const data = await res.json();
