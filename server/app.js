@@ -1,19 +1,9 @@
-<<<<<<< HEAD
 const express = require("express");
 const session = require("express-session");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 require("dotenv").config();
-=======
-const express = require('express');
-const session = require('express-session');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-require('dotenv').config();
->>>>>>> eecea76061e38dc1a9b08649212321a155c934cb
 
 const app = express();
 const port = process.env.SERVER_PORT;
