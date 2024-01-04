@@ -35,8 +35,6 @@
     fetch(`/api/post/view/data/${id}`)
     .then(response => response.json())
     .then(data => {
-        console.log(data)
-        
         const tableBody = document.getElementById('TableBody');
         tableBody.innerHTML = '';
 
@@ -68,7 +66,7 @@
         const url = new URL(window.location.href);
         const postId = url.pathname.split('/')[4];
         
-        fetch(`/api/post/delete/data/${postId}`, {
+        fetch(`/api/post/delete/${postId}`, {
           method: 'DELETE',
         })
         .then(response => response.json())

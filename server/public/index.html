@@ -8,8 +8,10 @@
 <body>
     <h1>서버 테스트용 페이지</h1>
     <a href="/">/</a><br>
-    <a href="/api/login/">login</a><br>
-    <a href="/api/post/list">board</a><br>
+    <a href="/api/googleAuth/login">google signup/login</a><br>
+    <a href="/api/naverAuth/login">naver signup/login</a><br>
+    <a href="/api/additionalInfo/step2">additionalInfo</a><br>
+    <a href="/api/post">board</a><br>
 
     <script>
         const googleId = document.cookie.split('; ').find(row => row.startsWith('googleId=')).split('=')[1];

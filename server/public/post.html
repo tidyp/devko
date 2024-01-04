@@ -14,7 +14,7 @@
       </form>
     </div>
 
-    <button id="writeButton" onClick="location.href='../../postwrite.html'">새글쓰기</button>
+    <button id="writeButton" onClick="location.href='/api/post/write'">새글쓰기</button>
   
     <table border="1" id="Table">
       <thead>
@@ -37,11 +37,9 @@
 
   <script>
   document.addEventListener('DOMContentLoaded', () => {
-    fetch('/api/post/list/data')
+    fetch('/api/post/list')
     .then(response => response.json())
     .then(data => {
-        console.log(data)
-
         const tableBody = document.getElementById('TableBody');
         tableBody.innerHTML = '';
 
