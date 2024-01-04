@@ -1,27 +1,32 @@
 import { useState } from "react";
 import styles from "./NewPost.module.scss";
+import Modal from "../../components/Model";
+import NewPostForm from "./NewPostForm";
 
 const NewPost = () => {
-  const [isOpen, setisOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleOpen = () => {
-    setisOpen((cur) => !cur);
+    console.log("a");
+    setIsOpen((prev) => !prev);
+  };
+
+  const handleClose = () => {
+    console.log("b");
+    setIsOpen(false);
   };
 
   return (
     <div className={styles.newpost}>
-      <div className={styles.aaa}>
-        <div onClick={handleOpen}>+</div>
+      <div className={styles.aaa} onClick={handleOpen}>
+        <div>+</div>
         <div>새글작성</div>
       </div>
-      <div>
-        {isOpen && (
-          <>
-            <input type="text" />
-            <button>작성</button>
-          </>
-        )}
-      </div>
+      {isOpen && (
+        <Modal onClose={handleClose}>
+          <NewPostForm />
+        </Modal>
+      )}
     </div>
   );
 };
