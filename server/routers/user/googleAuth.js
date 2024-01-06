@@ -59,10 +59,12 @@ router.get("/callback", async (req, res) => {
         req.session.isLogined = true;
 
         req.session.save(function () {
-          res.cookie('googleId', { googleId, access_token: resp.data.access_token });
+          // res.cookie('googleId', { googleId, access_token: resp.data.access_token });
+          res.cookie('googleId', googleId);
           res.cookie('googleEmail', googleEmail);
           res.cookie('isLogined', 'true');
   
+          // res.redirect("http://localhost:5173/");
           res.redirect("/");
         });
 

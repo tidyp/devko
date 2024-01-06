@@ -1,8 +1,9 @@
 const express = require("express");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const cors = require("cors");
+const bodyParser = require('body-parser');
 const path = require("path");
+const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
@@ -39,6 +40,7 @@ app.use("/api/naverAuth", require("./routers/user/naverAuth"));
 app.use("/api/additionalInfo", require("./routers/user/additionalInfo"));
 
 app.use("/api/post", require("./routers/post/board"));
+app.use("/api/comment", require("./routers/post/comment"));
 
 // 서버
 app.listen(port, () => {

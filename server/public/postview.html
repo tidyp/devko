@@ -6,78 +6,247 @@
     <title>Server Test</title>
 </head>
 <body>
-  <div id="main">
-    <table border="1" id="Table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Title</th>
-          <th>Content</th>
-          <th>UserId</th>
-          <th>CreatedAt</th>
-        </tr>
-      </thead>
-      <tbody id="TableBody">
-        <!-- Table Rows -->
-      </tbody>
-    </table>
+    <div id="main">
+      <button onclick="editPost(postId)">수정하기</button>
+      <button onclick="deletePost(postId)">삭제하기</button>
+      <table width=1000 border=1 id="Table">
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Content</th>
+              <th>UserId</th>
+              <th>CreatedAt</th>
+              <th>UpdatedAt</th>
+            </tr>
+          </thead>
+          <tbody id="TableBody">
+              <!-- Table Rows -->
+          </tbody>
+      </table>
 
-    <button onclick="editPost()">수정하기</button>
-    <button onclick="deletePost()">삭제하기</button>
-  
-  </div>
+        <form id="commentForm">
+            <label for="userId">사용자:</label>
+            <input type="text" id="userId" name="userId" required>
+            
+            <label for="content">댓글내용:</label>
+            <input type="text" id="content" name="content" required>
+            
+            <button type="submit">작성</button>
+        </form>
 
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const url = new URL(window.location.href);
-    const id = url.pathname.split('/')[4];
+        <h3>댓글 목록</h3>
+        <table width=1000 border=1 id="commentTable">
+          <thead>
+              <tr>
+                <th>UserId</th>
+                <th>PostId</th>
+                <th>ID</th>
+                <th>Content</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+          </thead>
+          <tbody id="commentTableBody">
+              <!-- Comments Rows -->
+          </tbody>
+      </table>
+    </div>
 
-    fetch(`/api/post/view/data/${id}`)
-    .then(response => response.json())
-    .then(data => {
-        const tableBody = document.getElementById('TableBody');
-        tableBody.innerHTML = '';
+    <script>
+      const url = new URL(window.location.href);
+      const postId = url.pathname.split('/')[4];
 
-        data.forEach(post => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${post.id}</td>
-                <td>${post.title}</a></td>
-                <td>${post.content}</a></td>
-                <td>${post.userId}</td>
-                <td>${post.createdAt}</td>
-            `;
-            tableBody.appendChild(row);
-        });
-    })
-    .catch(error => {
-        console.error('Error fetching data:', error);
-    });
-  });
+      document.addEventListener('DOMContentLoaded', () => {
+          fetchPost(postId);
+          fetchComment(postId);
+          submitComment(postId);
+      });
 
-  function editPost() {
-    const postId = document.getElementById('TableBody').firstElementChild.firstElementChild.innerText;
-    window.location.href = `/api/post/edit/${postId}`;
-  }
-
-  function deletePost() {
-    const result = window.confirm("삭제하시겠습니까?");
-      if (result) {
-        const url = new URL(window.location.href);
-        const postId = url.pathname.split('/')[4];
-        
-        fetch(`/api/post/delete/${postId}`, {
-          method: 'DELETE',
-        })
+      // 게시글
+      function fetchPost(postId) {
+        fetch(`/api/post/view/data/${postId}`)
         .then(response => response.json())
         .then(data => {
-          console.log('Post deleted successfully:', data);
+            const tableBody = document.getElementById('TableBody');
+            tableBody.innerHTML = '';
+
+            data.forEach(post => {
+              console.log('post', post)
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${post.category}</td>
+                    <td>${post.id}</td>
+                    <td>${post.title}</td>
+                    <td>${post.content}</td>
+                    <td>${post.userId}</td>
+                    <td>${post.createdAt}</td>
+                    <td>${post.updatedAt}</td>
+                `;
+                tableBody.appendChild(row);
+            });
         })
         .catch(error => {
-          console.error('Error deleting post:', error);
+            console.error('Error fetching data:', error);
         });
-      } 
-  }
-  </script>
+      }
+
+      function editPost(postId) {
+        window.location.href = `/api/post/edit/${postId}`;
+      }
+
+      function deletePost() {
+          const result = window.confirm("삭제하시겠습니까?");
+          if (result) {
+              const url = new URL(window.location.href);
+              const postId = url.pathname.split('/')[4];
+              
+              fetch(`/api/post/delete/${postId}`, {
+                  method: 'DELETE',
+              })
+              .then(response => response.json())
+              .then(data => {
+                  console.log('Post deleted successfully:', data);
+              })
+              .catch(error => {
+                  console.error('Error deleting post:', error);
+              });
+          }
+      }
+
+
+      // 댓글
+      function fetchComment(postId) {
+        fetch(`/api/comment/${postId}`)
+        .then(response => response.json())
+        .then(comment => {
+            console.log('comment', comment)
+            const commentBody = document.getElementById('commentTableBody');
+            commentBody.innerHTML = '';
+            
+            for (i = 0; i < comment.length; i++) {
+                  const row = document.createElement('tr');
+                  row.innerHTML = `
+                      <td>${comment[i].userId}</td>
+                      <td>${comment[i].postId}</td>
+                      <td>${comment[i].id}</td>
+                      <td>${comment[i].content}</td>
+                      <td>${comment[i].createdAt}</td>
+                      <td>${comment[i].updatedAt}</td>
+                      <td><button onclick="editComment(${comment[i].id})">수정</button></td>
+                      <td><button onclick="deleteComment(${comment[i].id})">삭제</button></td>
+                  `;
+                  commentBody.appendChild(row);
+            }
+        })
+        .catch(error => console.error('Error fetching comments:', error));
+      }
+      
+      function submitComment(postId){
+        const commentForm = document.getElementById('commentForm');
+
+        commentForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const userId = document.getElementById('userId').value;
+            const content = document.getElementById('content').value;
+
+            fetch(`/api/comment/${postId}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', },
+                body: JSON.stringify({ userId, content }),
+            })
+            .then(response => response.json())
+            .then(comment => {
+              const commentBody = document.getElementById('commentTableBody');
+              const row = document.createElement('tr');
+              row.innerHTML = `
+              <td>${comment.userId}</td>
+              <td>${comment.postId}</td>
+              <td>${comment.id}</td>
+              <td>${comment.content}</td>
+              <td>${comment.createdAt}</td>
+              <td>${comment.updatedAt}</td>
+              <td><button onclick="editComment(${comment.id})">수정</button></td>
+              <td><button onclick="deleteComment(${comment.id})">삭제</button></td>
+              `;
+              commentBody.appendChild(row);
+
+              document.getElementById('userId').value = '';
+              document.getElementById('content').value = '';
+        })
+            .catch(error => console.error('Error posting comment:', error));
+        });
+      }
+
+      function editComment(commentId) {
+        fetch(`/api/comment/edit/${commentId}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('userId').value = comment.userId;
+            document.getElementById('content').value = comment.content;
+
+            const commentForm = document.getElementById('commentForm');
+            commentForm.removeEventListener('submit', submitComment); 
+            commentForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+
+                const updatedUserId = document.getElementById('userId').value;
+                const updatedContent = document.getElementById('content').value;
+
+                fetch(`/api/comment/edit/${commentId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId: updatedUserId, content: updatedContent }),
+                })
+                    .then(response => response.json())
+                    .then(updatedComment => {
+
+                        const commentRow = document.getElementById(`comment-${commentId}`);
+                        if (commentRow) {
+                            commentRow.innerHTML = `
+                                <td>${updatedComment.id}</td>
+                                <td>${updatedComment.title}</td>
+                                <td>${updatedComment.content}</td>
+                                <td>${updatedComment.userId}</td>
+                                <td>${updatedComment.createdAt}</td>
+                                <td><button onclick="editComment(${updatedComment.id})">수정</button></td>
+                                <td><button onclick="deleteComment(${updatedComment.id})">삭제</button></td>
+                            `;
+                        }
+
+                        document.getElementById('userId').value = '';
+                        document.getElementById('content').value = '';
+                    })
+                    .catch(error => console.error('Error updating comment:', error));
+            });
+        })
+      .catch(error => console.error('Error fetching comment data for editing:', error));
+      }
+
+      function deleteComment(commentId) {
+          const result = window.confirm("댓글을 삭제하시겠습니까?");
+          if (result) {
+              fetch(`/api/comment/${commentId}`, {
+                  method: 'DELETE',
+              })
+              .then(response => response.json())
+              .then(data => {
+                  console.log('Comment deleted successfully:', data);
+
+                  const deletedComment = document.getElementById(`comment-${commentId}`);
+                  if (deletedComment) {
+                      deletedComment.remove();
+                  }
+              })
+              .catch(error => {
+                  console.error('Error deleting comment:', error);
+              });
+          }
+      }
+    </script>
 </body>
 </html>

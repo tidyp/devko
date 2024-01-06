@@ -8,6 +8,8 @@
 <body>
   <div id="main">
     <form id="postForm">
+      Category:<br><span id="category"></span><br>
+      UserId:<br><span id="userId"></span><br>
       <label for="title">Title:</label><br>
       <input type="text" id="title" name="title" required><br>
   
@@ -23,9 +25,12 @@
     const url = new URL(window.location.href);
     const id = url.pathname.split('/')[4];
 
-    fetch(`/api/post/view/data/${id}`)
+    fetch(`/api/post/edit/data/${id}`)
     .then(response => response.json())
     .then(data => {
+        console.log(data)
+        document.getElementById('category').innerHTML = data[0].category;
+        document.getElementById('userId').innerHTML = data[0].userId;
         document.getElementById('title').value = data[0].title;
         document.getElementById('content').value = data[0].content;
     })
@@ -43,9 +48,7 @@
     console.log(postId, title, content)
     fetch(`/api/post/edit/data/${postId}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json', },
       body: JSON.stringify({ title, content }),
     })
     .then(response => response.json())

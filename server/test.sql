@@ -37,10 +37,25 @@ CREATE TABLE IF NOT EXISTS posts (
      updatedAt DATETIME
 );
 
-INSERT INTO posts (userId, category, title, content, createdAt, updatedAt) VALUES ('user_id1', 'discuss', '테스트1', '테스트1의 내용', NOW(), NOW());
-INSERT INTO posts (userId, category, title, content, createdAt, updatedAt) VALUES ('user_id2', 'discuss', '테스트2', '테스트2의 내용', NOW(), NOW());
-INSERT INTO posts (userId, category, title, content, createdAt, updatedAt) VALUES ('user_id3', 'discuss', '테스트3', '테스트3의 내용', NOW(), NOW());
-INSERT INTO posts (userId, category, title, content, createdAt, updatedAt) VALUES ('user_id4', 'discuss', '테스트4', '테스트4의 내용', NOW(), NOW());
-INSERT INTO posts (userId, category, title, content, createdAt, updatedAt) VALUES ('user_id5', 'discuss', '테스트5', '테스트5의 내용', NOW(), NOW());
+INSERT INTO posts (userId, category, title, content, createdAt, updatedAt) VALUES ('iamjaeeuncho', 'discuss', 'What is javascript?', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', NOW(), NOW());
+INSERT INTO posts (userId, category, title, content, createdAt, updatedAt) VALUES ('6worry', 'discuss', 'What is programming?', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', NOW(), NOW());
+INSERT INTO posts (userId, category, title, content, createdAt, updatedAt) VALUES ('tidypark', 'discuss', 'I hate react!', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', NOW(), NOW());
+INSERT INTO posts (userId, category, title, content, createdAt, updatedAt) VALUES ('lovehyun', 'discuss', 'Today lesson', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', NOW(), NOW());
+INSERT INTO posts (userId, category, title, content, createdAt, updatedAt) VALUES ('0unk0', 'discuss', 'Seats for this week', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', NOW(), NOW());
 
 SELECT * FROM devko.posts;
+
+
+-- COMMENTS 테이블
+-- DROP TABLE devko.comments;
+CREATE TABLE IF NOT EXISTS comments (
+     userId VARCHAR(64),
+     postId INT,
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     mainId INT,
+     content TEXT,
+     createdAt DATETIME,
+     updatedAt DATETIME
+);
+
+SELECT * FROM devko.comments;

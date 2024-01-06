@@ -7,6 +7,7 @@
 </head>
 <body>
   <div id="main">
+    User ID: <span id="userId"></span>
     <form id="postForm" action="/api/post/write/data" method="post">
       <label for="title">Title:</label><br>
       <input type="text" id="title" name="title" required><br>
@@ -17,5 +18,17 @@
       <button type="submit">등록하기</button>
     </form>
   </div>
+
+  <script>
+    fetch('/api/post/write/data')
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('userId').innerText = data.userId;
+      })
+      .catch(error => {
+        console.error('Error fetching user ID:', error);
+      });
+  </script>
 </body>
 </html>
+

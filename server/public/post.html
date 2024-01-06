@@ -16,13 +16,15 @@
 
     <button id="writeButton" onClick="location.href='/api/post/write'">새글쓰기</button>
   
-    <table border="1" id="Table">
+    <table width=1000 border="1" id="Table">
       <thead>
         <tr>
+          <th>Category</th>
           <th>ID</th>
           <th>Title</th>
           <th>UserId</th>
           <th>CreatedAt</th>
+          <th>UpdatedAt</th>
         </tr>
       </thead>
       <tbody id="TableBody">
@@ -46,10 +48,12 @@
         data.forEach(post => {
             const row = document.createElement('tr');
             row.innerHTML = `
+                <td>${post.category}</td>
                 <td>${post.id}</td>
                 <td><a href="/api/post/view/${post.id}">${post.title}</a></td>
                 <td>${post.userId}</td>
                 <td>${post.createdAt}</td>
+                <td>${post.updatedAt}</td>
             `;
             tableBody.appendChild(row);
         });

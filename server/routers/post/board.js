@@ -27,6 +27,11 @@ router.get('/write', (req, res) => {
   res.sendFile(path.join(__dirname, '..', '..', 'public', 'postwrite.html'));
 });
 
+router.get('/write/data', (req, res) => {
+  const user = req.session.googleEmail;
+  res.send(user);
+})
+
 router.post('/write/data', async (req, res) => {
   const user = req.session.googleEmail;
   const title = req.body.title;
@@ -82,15 +87,15 @@ router.get('/edit/data/:postId?', async (req, res) => {
 });
 
 router.put('/edit/data/:postId?', async (req, res) => {
-  // const user = req.session.googleEmail;
   const postId = req.params.postId;
   const title = req.body.title;
   const content = req.body.content;
+  const updatedAt = new Date();
 
-  const sql = `UPDATE posts SET title = ?, content = ? WHERE id = ?`;
+  const sql = `UPDATE posts SET title = ?, content = ?, updatedAt = ? WHERE id = ?`;
   
   try {
-    const [rows, fields] = await db.query(sql, [title, content, postId]);
+    const [rows, fields] = await db.query(sql, [title, content, updatedAt, postId]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
