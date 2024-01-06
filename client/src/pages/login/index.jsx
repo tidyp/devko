@@ -12,9 +12,9 @@ const LoginPage = () => {
     <div className={styles.container}>
       <div className={styles.text}>
         <p className={styles.title}>Create your account</p>
-        <p className={styles.sub}>Let's get started</p>
+        <p className={styles.sub}>Lets get started</p>
       </div>
-      <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id=274353463964-kdkm3np5jbg5ts4l7vdksqj92m4or87q.apps.googleusercontent.com&redirect_uri=http://localhost:3000/api/googleAuth/signup/redirect&response_type=code&scope=email profile">
+      <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id=274353463964-kdkm3np5jbg5ts4l7vdksqj92m4or87q.apps.googleusercontent.com&redirect_uri=http://localhost:3000/api/googleAuth/callback&response_type=code&scope=email profile">
         <button className={styles.btn}>
           <GoogleBtn />
         </button>
