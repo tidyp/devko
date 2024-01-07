@@ -1,17 +1,23 @@
 import { useLoaderData } from "react-router-dom";
 import { readUser } from "../../api/apiDevko";
 
+import UserTab from "./UserTab";
+import ProfileBox from "../../components/ProfileBox";
+
 const index = () => {
   const user = useLoaderData();
 
   return (
-    <div>
-      <p>USER INFO</p>
-      <p>{user.userName}</p>
-      <p>{user.googleEmail}</p>
-      <p>{user.naverEmail}</p>
-      <p>{user.workPosition}</p>
-    </div>
+    <>
+      <div className="box-border flex justify-center">
+        <div className="box-border flex w-[80rem]  gap-4">
+          <div className="flex flex-col gap-2">
+            <ProfileBox user={user} />
+          </div>
+          <UserTab />
+        </div>
+      </div>
+    </>
   );
 };
 
