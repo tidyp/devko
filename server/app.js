@@ -1,14 +1,13 @@
 const express = require("express");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 const path = require("path");
 const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
 const port = process.env.SERVER_PORT;
-
 
 // 미들웨어
 app.use(cors());
@@ -25,14 +24,12 @@ app.use(
   })
 );
 
-
 // 메인 페이지
 app.use(express.static(path.resolve(__dirname, "./public")));
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
 });
-
 
 // 라우터
 app.use("/api/googleAuth", require("./routers/user/googleAuth"));

@@ -1,15 +1,15 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const path = require('path')
-const db = require('../../config/db')
-require('dotenv').config();
+const path = require("path");
+const db = require("../../config/db");
+require("dotenv").config();
 
 // 게시글 목록 보기
-router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'public', 'post.html'));
+router.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "..", "public", "post.html"));
 });
 
-router.get('/list', async (req, res) => {
+router.get("/list", async (req, res) => {
   const sql = `SELECT * FROM posts`;
 
   try {
@@ -21,18 +21,17 @@ router.get('/list', async (req, res) => {
   }
 });
 
-
 // 게시글 쓰기
-router.get('/write', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'public', 'postwrite.html'));
+router.get("/write", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "..", "public", "postwrite.html"));
 });
 
-router.get('/write/data', (req, res) => {
+router.get("/write/data", (req, res) => {
   const user = req.session.googleEmail;
   res.send(user);
-})
+});
 
-router.post('/write/data', async (req, res) => {
+router.post("/write/data", async (req, res) => {
   const user = req.session.googleEmail;
   const title = req.body.title;
   const content = req.body.content;
@@ -48,13 +47,12 @@ router.post('/write/data', async (req, res) => {
   }
 });
 
-
 // 해당 게시글 보기
-router.get('/view/:id?', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'public', 'postview.html'));
+router.get("/view/:id?", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "..", "public", "postview.html"));
 });
 
-router.get('/view/data/:id?', async (req, res) => {
+router.get("/view/data/:id?", async (req, res) => {
   const id = req.params.id;
   const sql = `SELECT * FROM posts WHERE id = '${id}'`;
 
@@ -67,18 +65,17 @@ router.get('/view/data/:id?', async (req, res) => {
   }
 });
 
-
 // 게시글 수정
-router.get('/edit/:postId?', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'public', 'postedit.html'));
+router.get("/edit/:postId?", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "..", "public", "postedit.html"));
 });
 
-router.get('/edit/data/:postId?', async (req, res) => {
+router.get("/edit/data/:postId?", async (req, res) => {
   const postId = req.params.postId;
-  const sql = `SELECT * FROM posts WHERE id = ${postId}`
+  const sql = `SELECT * FROM posts WHERE id = ?`;
 
   try {
-    const [rows, fields] = await db.query(sql);
+    const [rows, fields] = await db.query(sql, [postId]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -86,16 +83,21 @@ router.get('/edit/data/:postId?', async (req, res) => {
   }
 });
 
-router.put('/edit/data/:postId?', async (req, res) => {
+router.put("/edit/data/:postId?", async (req, res) => {
   const postId = req.params.postId;
   const title = req.body.title;
   const content = req.body.content;
   const updatedAt = new Date();
 
   const sql = `UPDATE posts SET title = ?, content = ?, updatedAt = ? WHERE id = ?`;
-  
+
   try {
-    const [rows, fields] = await db.query(sql, [title, content, updatedAt, postId]);
+    const [rows, fields] = await db.query(sql, [
+      title,
+      content,
+      updatedAt,
+      postId,
+    ]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -103,12 +105,11 @@ router.put('/edit/data/:postId?', async (req, res) => {
   }
 });
 
-
 // 게시글 삭제
-router.delete('/delete/:postId?', async (req, res) => {
+router.delete("/delete/:postId?", async (req, res) => {
   const postId = req.params.postId;
-  const sql = 'DELETE FROM posts WHERE id = ?';
-  
+  const sql = "DELETE FROM posts WHERE id = ?";
+
   try {
     const [rows, fields] = await db.query(sql, [postId]);
     res.send(rows);

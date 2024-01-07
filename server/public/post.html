@@ -1,53 +1,57 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Server Test</title>
-</head>
-<body>
-  <div id="main">    
-    <div id="searchbar">
-      <form id="searchForm" action="/search" method="get">
-        <input type="text" id="input" name="input">
-        <button id="searchButton" type="button" onclick="submitSearch()">Search</button>
-      </form>
+  </head>
+  <body>
+    <div id="main">
+      <div id="searchbar">
+        <form id="searchForm" action="/search" method="get">
+          <input type="text" id="input" name="input" />
+          <button id="searchButton" type="button" onclick="submitSearch()">
+            Search
+          </button>
+        </form>
+      </div>
+
+      <button id="writeButton" onClick="location.href='/api/post/write'">
+        새글쓰기
+      </button>
+
+      <table width="1000" border="1" id="Table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>ID</th>
+            <th>Title</th>
+            <th>UserId</th>
+            <th>CreatedAt</th>
+            <th>UpdatedAt</th>
+          </tr>
+        </thead>
+        <tbody id="TableBody">
+          <!-- Table Rows -->
+        </tbody>
+      </table>
+
+      <div id="pagination">
+        <!-- Pagination Results -->
+      </div>
     </div>
 
-    <button id="writeButton" onClick="location.href='/api/post/write'">새글쓰기</button>
-  
-    <table width=1000 border="1" id="Table">
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>ID</th>
-          <th>Title</th>
-          <th>UserId</th>
-          <th>CreatedAt</th>
-          <th>UpdatedAt</th>
-        </tr>
-      </thead>
-      <tbody id="TableBody">
-        <!-- Table Rows -->
-      </tbody>
-    </table>
-    
-    <div id="pagination">
-      <!-- Pagination Results -->
-    </div>
-  </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        fetch("/api/post/list")
+          .then((response) => response.json())
+          .then((data) => {
+            const tableBody = document.getElementById("TableBody");
+            tableBody.innerHTML = "";
 
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    fetch('/api/post/list')
-    .then(response => response.json())
-    .then(data => {
-        const tableBody = document.getElementById('TableBody');
-        tableBody.innerHTML = '';
-
-        data.forEach(post => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
+            data.forEach((post) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
                 <td>${post.category}</td>
                 <td>${post.id}</td>
                 <td><a href="/api/post/view/${post.id}">${post.title}</a></td>
@@ -55,13 +59,13 @@
                 <td>${post.createdAt}</td>
                 <td>${post.updatedAt}</td>
             `;
-            tableBody.appendChild(row);
-        });
-    })
-    .catch(error => {
-        console.error('Error fetching data:', error);
-    });
-  });
-  </script>
-</body>
+              tableBody.appendChild(row);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+          });
+      });
+    </script>
+  </body>
 </html>

@@ -47,37 +47,39 @@ router.get("/callback", async (req, res) => {
   const googleImage = resp2.data.picture;
 
   try {
-      const [rows, fields] = await db.execute(
-        'SELECT * FROM users WHERE googleId = ? OR googleEmail = ?', 
-        [googleId, googleEmail]
-      );
+    const [rows, fields] = await db.execute(
+      "SELECT * FROM users WHERE googleId = ? OR googleEmail = ?",
+      [googleId, googleEmail]
+    );
 
-      // 이미 가입된 회원, 로그인
-      if (rows.length > 0) {
-        req.session.googleId = googleId;
-        req.session.googleEmail = googleEmail;
-        req.session.isLogined = true;
+    // 이미 가입된 회원, 로그인
+    if (rows.length > 0) {
+      req.session.googleId = googleId;
+      req.session.googleEmail = googleEmail;
+      req.session.isLogined = true;
 
-        req.session.save(function () {
-          // res.cookie('googleId', { googleId, access_token: resp.data.access_token });
-          res.cookie('googleId', googleId);
-          res.cookie('googleEmail', googleEmail);
-          res.cookie('isLogined', 'true');
-  
-          // res.redirect("http://localhost:5173/");
-          res.redirect("/");
-        });
+      req.session.save(function () {
+        // res.cookie('googleId', { googleId, access_token: resp.data.access_token });
+        res.cookie("googleId", googleId);
+        res.cookie("googleEmail", googleEmail);
+        res.cookie("isLogined", "true");
 
+        // res.redirect("http://localhost:5173/");
+        res.redirect("/");
+      });
 
       // 없는 회원, 신규 회원가입 + 추가 정보 입력
-      } else {
-          await db.execute('INSERT INTO users (googleId, googleEmail, profileImage) VALUES (?, ?, ?)', [googleId, googleEmail, googleImage]);
+    } else {
+      await db.execute(
+        "INSERT INTO users (googleId, googleEmail, profileImage) VALUES (?, ?, ?)",
+        [googleId, googleEmail, googleImage]
+      );
 
-          res.sendFile(path.join(__dirname, '..', '..', 'public', 'userInfo.html'));
-      }
+      res.sendFile(path.join(__dirname, "..", "..", "public", "userInfo.html"));
+    }
   } catch (error) {
-      console.error('Database query error: ', error);
-      res.status(500).json({ message: 'Internal server error' });
+    console.error("Database query error: ", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
