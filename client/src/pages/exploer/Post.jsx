@@ -5,16 +5,18 @@ import { Link } from "react-router-dom";
 
 const Post = ({ post }) => {
   const data = formatDate(post.WriteDate);
-
+  console.log(post);
   return (
     <>
       <div className="m-2 flex h-fit w-fit flex-col items-start justify-start gap-5 rounded-[10px] bg-white p-8">
         <div className="flex items-center justify-center gap-2.5 self-stretch">
-          <img
-            className="h-12 rounded-lg"
-            src={post.profileImage}
-            alt={post.profileImage}
-          />
+          <Link to={`/userinfo/${post.Id}`}>
+            <img
+              className="h-12 rounded-lg"
+              src={post.profileImage}
+              alt={post.profileImage}
+            />
+          </Link>
           <div className="flex h-14 shrink grow basis-0 flex-col items-start justify-center">
             <div className="text-2xl font-semibold text-black">
               {post.title}
@@ -27,9 +29,11 @@ const Post = ({ post }) => {
             </div>
           </div>
         </div>
-        <div className="self-stretch  text-base font-medium text-zinc-500">
-          {post.content}
-        </div>
+        <Link to={`/discuss/${post.Id}`}>
+          <div className="self-stretch  text-base font-medium text-zinc-500">
+            {post.content}
+          </div>
+        </Link>
         <div className="inline-flex items-start justify-start gap-2.5 self-stretch">
           <div>
             <span>태그1</span>

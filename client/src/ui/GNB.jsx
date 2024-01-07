@@ -7,8 +7,8 @@ import { FaBell } from "react-icons/fa";
 const NaviBar = () => {
   return (
     <>
-      <nav className={styles.navigationBar}>
-        <div className={styles.inner}>
+      <nav className="flex items-center justify-center bg-slate-950">
+        <div className="flex w-[80rem] justify-between items-center px-8 py-2">
           <div className={styles.logo}>
             <Link to="/">DEVKO</Link>
           </div>
