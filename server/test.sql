@@ -1,8 +1,6 @@
 -- Mysql 접속: mysql.exe -uroot -p
 SHOW DATABASES;
 CREATE DATABASE IF NOT EXISTS devko;
-USER devko;
-SHOW TABLES;
 
 -- USERS 테이블
 -- DROP TABLE devko.users;
