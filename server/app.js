@@ -1,7 +1,6 @@
 const express = require("express");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const bodyParser = require("body-parser");
 const path = require("path");
 const cors = require("cors");
 require("dotenv").config();
@@ -14,6 +13,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "./public")));
 
 app.use(
   session({
@@ -24,9 +24,8 @@ app.use(
   })
 );
 
-// 메인 페이지
-app.use(express.static(path.resolve(__dirname, "./public")));
 
+// 메인 페이지
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
