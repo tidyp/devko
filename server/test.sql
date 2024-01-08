@@ -58,4 +58,8 @@ CREATE TABLE IF NOT EXISTS comments (
      updatedAt DATETIME
 );
 
+INSERT INTO comments (userId, postId, content, createdAt, updatedAt) VALUES ('iamjaeeuncho', 2, 'OTL', NOW(), NOW());
+INSERT INTO comments (userId, postId, content, createdAt, updatedAt) VALUES ('tidypark', 2, 'IDK ', NOW(), NOW());
+INSERT INTO comments (userId, postId, content, createdAt, updatedAt) VALUES ('6worry', 2, 'OK ', NOW(), NOW());
+
 SELECT * FROM devko.comments;

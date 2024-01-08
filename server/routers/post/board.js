@@ -48,16 +48,16 @@ router.post("/write/data", async (req, res) => {
 });
 
 // 해당 게시글 보기
-router.get("/view/:id?", (req, res) => {
+router.get("/view/:postid?", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "postview.html"));
 });
 
-router.get("/view/data/:id?", async (req, res) => {
-  const id = req.params.id;
-  const sql = `SELECT * FROM posts WHERE id = '${id}'`;
+router.get("/view/data/:postid?", async (req, res) => {
+  const postid = req.params.postid;
+  const sql = `SELECT * FROM posts WHERE id = ?`;
 
   try {
-    const [rows, fields] = await db.query(sql);
+    const [rows, fields] = await db.query(sql, [postid]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);

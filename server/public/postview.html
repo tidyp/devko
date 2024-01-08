@@ -41,11 +41,13 @@
             <th>UserId</th>
             <th>PostId</th>
             <th>ID</th>
+            <th>MainID</th>
             <th>Content</th>
             <th>CreatedAt</th>
             <th>UpdatedAt</th>
             <th>Edit</th>
             <th>Delete</th>
+            <th>SubComment</th>
           </tr>
         </thead>
         <tbody id="commentTableBody">
@@ -128,11 +130,13 @@
                       <td>${comment[i].userId}</td>
                       <td>${comment[i].postId}</td>
                       <td>${comment[i].id}</td>
+                      <td>${comment[i].mainId}</td>
                       <td>${comment[i].content}</td>
                       <td>${comment[i].createdAt}</td>
                       <td>${comment[i].updatedAt}</td>
                       <td><button id="editButton${comment[i].id}" onclick="editComment(${comment[i].id})">수정</button></td>
                       <td><button id="deleteButton${comment[i].id}" onclick="deleteComment(${comment[i].id})">삭제</button></td>
+                      <td><button id="subCommentButton${comment[i].id}" onclick="subComment(${comment[i].id})">댓글</button></td>
                   `;
               commentBody.appendChild(row);
             }
@@ -162,6 +166,7 @@
               <td>${comment.userId}</td>
               <td>${comment.postId}</td>
               <td>${comment.id}</td>
+              <td>${comment.mainId}</td>
               <td>${comment.content}</td>
               <td>${comment.createdAt}</td>
               <td>${comment.updatedAt}</td>
@@ -201,7 +206,6 @@
           })
             .then((response) => response.json())
             .then((data) => {
-              console.log(data);
               contentCell.textContent = data[0].content;
 
               editButton.onclick = function () {
@@ -233,6 +237,27 @@
               console.error("Error deleting comment:", error);
             });
         }
+      }
+
+      // 대댓글 추가
+      function subComment(commentId) {
+        const commentBody = document.getElementById("commentTableBody");
+        const newRow = document.createElement("tr");
+
+        newRow.innerHTML = `
+          <td><input type="text" id="userId" name="newCommentUserId" required /></td>
+          <td>${postId}</td>
+          <td></td>
+          <td>${commentId}</td>
+          <td><input type="text" id="newCommentContent" name="newCommentContent" required /></td>
+          <td></td>
+          <td></td>
+          <td><button onclick="saveNewComment()">저장</button></td>
+          <td><button onclick="cancelNewComment()">취소</button></td>
+          <td></td>
+        `;
+
+        commentBody.appendChild(newRow);
       }
     </script>
   </body>
