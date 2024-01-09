@@ -8,7 +8,7 @@
   <body>
     <div id="main">
       User ID: <span id="userId"></span>
-      <form id="postForm" action="/api/post/write/data" method="post">
+      <form id="postForm" action="/api/post/" method="post">
         <label for="title">Title:</label><br />
         <input type="text" id="title" name="title" required /><br />
 
@@ -24,7 +24,8 @@
       fetch("/api/post/write/data")
         .then((response) => response.json())
         .then((data) => {
-          document.getElementById("userId").innerText = data.userId;
+          console.log(data);
+          document.getElementById("userId").innerText = data;
         })
         .catch((error) => {
           console.error("Error fetching user ID:", error);

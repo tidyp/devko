@@ -43,9 +43,10 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        fetch("/api/post/list")
+        fetch("/api/post/")
           .then((response) => response.json())
           .then((data) => {
+            console.log(data);
             const tableBody = document.getElementById("TableBody");
             tableBody.innerHTML = "";
 

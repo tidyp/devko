@@ -22,11 +22,11 @@
     </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const url = new URL(window.location.href);
-        const id = url.pathname.split("/")[4];
+      const url = new URL(window.location.href);
+      const postId = url.pathname.split("/")[4];
 
-        fetch(`/api/post/edit/data/${id}`)
+      document.addEventListener("DOMContentLoaded", () => {
+        fetch(`/api/post/edit/data/${postId}`)
           .then((response) => response.json())
           .then((data) => {
             console.log(data);
@@ -41,13 +41,10 @@
       });
 
       function editForm() {
-        const url = new URL(window.location.href);
-        const postId = url.pathname.split("/")[4];
-
         const title = document.getElementById("title").value;
         const content = document.getElementById("content").value;
-        console.log(postId, title, content);
-        fetch(`/api/post/edit/data/${postId}`, {
+
+        fetch(`/api/post/${postId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ title, content }),
