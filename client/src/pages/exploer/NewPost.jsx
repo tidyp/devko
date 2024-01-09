@@ -1,5 +1,4 @@
 import { useState } from "react";
-import styles from "./NewPost.module.scss";
 import Modal from "../../components/Model";
 import NewPostForm from "./NewPostForm";
 
@@ -17,17 +16,17 @@ const NewPost = () => {
   };
 
   return (
-    <div className={styles.newpost}>
-      <div className={styles.aaa} onClick={handleOpen}>
-        <div>+</div>
-        <div>새글작성</div>
+    <button className="flex flex-col h-12 rounded-2xl w-full justify-center items-center text-2xl bg-indigo-200 text-white hover:bg-indigo-700">
+      <div className="flex items-center" onClick={handleOpen}>
+        {/* <div>+</div> */}
+        <div>게시글 작성</div>
       </div>
       {isOpen && (
         <Modal onClose={handleClose}>
           <NewPostForm />
         </Modal>
       )}
-    </div>
+    </button>
   );
 };
 
