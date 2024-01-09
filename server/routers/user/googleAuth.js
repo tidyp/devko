@@ -54,19 +54,10 @@ router.get("/callback", async (req, res) => {
 
     // 이미 가입된 회원, 로그인
     if (rows.length > 0) {
-      req.session.googleId = googleId;
-      req.session.googleEmail = googleEmail;
-      req.session.isLogined = true;
+      res.cookie("googleId", googleId);
+      res.cookie("googleEmail", googleEmail);
 
-      req.session.save(function () {
-        // res.cookie('googleId', { googleId, access_token: resp.data.access_token });
-        res.cookie("googleId", googleId);
-        res.cookie("googleEmail", googleEmail);
-        res.cookie("isLogined", "true");
-
-        // res.redirect("http://localhost:5173/");
-        res.redirect("/");
-      });
+      res.redirect("http://localhost:5173/");
 
       // 없는 회원, 신규 회원가입 + 추가 정보 입력
     } else {
