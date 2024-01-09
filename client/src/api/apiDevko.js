@@ -1,5 +1,5 @@
-// const API_URL = "http://localhost:3000/api";
-const API_URL = "http://localhost:9000";
+const API_URL = "http://localhost:3000/api";
+// const API_URL = "http://localhost:9000";
 
 // Read: user/:id
 export async function readUser(id) {
@@ -11,7 +11,7 @@ export async function readUser(id) {
 // Read: posts
 export async function readPosts() {
   try {
-    const res = await fetch(`${API_URL}/board`);
+    const res = await fetch(`${API_URL}/post/list`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -24,7 +24,7 @@ export async function readPosts() {
 }
 
 export async function createPost(postData) {
-  const res = await fetch(`${API_URL}/post`, {
+  const res = await fetch(`${API_URL}/post/write/data`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -32,16 +32,15 @@ export async function createPost(postData) {
     body: JSON.stringify(postData),
   });
 
-  console.log(res)
+  console.log(res);
   if (!res.ok) {
     throw new Error(`Failed to create post. Status: ${res.status}`);
   }
 
   const data = await res.json();
-  console.log(data)
+  console.log(data);
   return data;
 }
-
 
 export async function readPost() {
   const res = await fetch(`${API_URL}/post/:id`);

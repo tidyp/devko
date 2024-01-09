@@ -8,7 +8,7 @@ const Post = ({ post }) => {
   console.log(post);
   return (
     <>
-      <div className="m-2 flex h-fit w-fit flex-col items-start justify-start gap-5 rounded-[10px] bg-white p-8">
+      <div className="m-2 flex h-fit w-fit flex-col items-start justify-start gap-5 rounded-[10px] bg-white p-8 w-full">
         <div className="flex items-center justify-center gap-2.5 self-stretch">
           <Link to={`/userinfo/${post.Id}`}>
             <img

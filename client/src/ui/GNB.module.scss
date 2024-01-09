@@ -7,7 +7,7 @@ $secondaryColor: #2ecc71;
 .logo {
   a {
     text-decoration: none;
-    color: #fff;
+    color: #000;
     font-size: 1rem;
     font-weight: bold;
   }
@@ -20,7 +20,7 @@ $secondaryColor: #2ecc71;
     // margin-right: 20px;
     a {
       text-decoration: none;
-      color: #fff;
+      color: #000;
       font-size: 1rem;
       font-weight: bold;
       cursor: pointer;
@@ -46,12 +46,12 @@ $secondaryColor: #2ecc71;
 
     gap: 1rem;
     margin-right: 10px;
-    color: #fff;
-    // color: #fff;
+    color: #000;
+    // color: #000;
     font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    // background-color: #fff;
+    // background-color: #000;
     input {
       border: none;
       height: 2rem;
@@ -65,7 +65,7 @@ $secondaryColor: #2ecc71;
   .profilePicture {
     a {
       text-decoration: none;
-      color: #fff;
+      color: #000;
       font-size: 1rem;
       font-weight: bold;
       margin-left: 10px;

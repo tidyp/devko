@@ -1,14 +1,22 @@
 import { Outlet, Link, NavLink } from "react-router-dom";
 import styles from "./GNB.module.scss";
 
+import cookie from "react-cookies";
+
 import { FaSearch } from "react-icons/fa";
 import { FaBell } from "react-icons/fa";
 
 const NaviBar = () => {
+  const isUserLoggedIn = cookie.load("isLogined") === "true";
+  // const username =
+  //   cookie.load("googleEmail") === "true" ? cookie.load("googleEmail") : "";
+  console.log(`쿠키 ${isUserLoggedIn}`);
+  // console.log(`쿠키 ${username}`);
+
   return (
     <>
-      <nav className="flex items-center justify-center bg-slate-950">
-        <div className="flex w-[80rem] justify-between items-center px-8 py-2">
+      <nav className="flex items-center justify-center bg-[#f5f5f5]">
+        <div className="flex w-[80rem] items-center justify-between px-8 py-2">
           <div className={styles.logo}>
             <Link to="/">DEVKO</Link>
           </div>
@@ -38,7 +46,8 @@ const NaviBar = () => {
               <FaBell />
             </div>
             <div className={styles.profilePicture}>
-              <Link to="login">로그인</Link>
+              {isUserLoggedIn && <Link to="login">로그아웃</Link>}
+              {!isUserLoggedIn && <Link to="login">로그인</Link>}
             </div>
           </div>
         </div>

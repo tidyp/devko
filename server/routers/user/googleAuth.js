@@ -57,7 +57,8 @@ router.get("/callback", async (req, res) => {
       res.cookie("googleId", googleId);
       res.cookie("googleEmail", googleEmail);
 
-      res.redirect("http://localhost:5173/");
+        res.redirect("http://localhost:5173/");
+      });
 
       // 없는 회원, 신규 회원가입 + 추가 정보 입력
     } else {
@@ -66,7 +67,8 @@ router.get("/callback", async (req, res) => {
         [googleId, googleEmail, googleImage]
       );
 
-      res.sendFile(path.join(__dirname, "..", "..", "public", "userInfo.html"));
+      res.redirect("http://localhost:5173/");
+      // res.sendFile(path.join(__dirname, "..", "..", "public", "userInfo.html"));
     }
   } catch (error) {
     console.error("Database query error: ", error);

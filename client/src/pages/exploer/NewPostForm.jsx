@@ -1,14 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createPost } from "../../api/apiDevko";
+import cookie from "react-cookies";
 
 const NewPostForm = () => {
+  const username = cookie.load("googleEmail");
+
   const [post, setPost] = useState({
     category: "",
     title: "",
     content: "",
   });
 
-  const handleSubmit = (e) => {
+  useEffect(() => {}, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.target);
@@ -20,55 +25,59 @@ const NewPostForm = () => {
     console.log("Title:", title);
     console.log("Content:", content);
 
-    createPost({
-      category,
-      title,
-      content
-    });
+    try {
+      const response = await createPost({
+        username,
+        category,
+        title,
+        content,
+      });
+
+      console.log("Response:", response);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
     <form className="p-12" onSubmit={handleSubmit}>
-      <div className="grid w-[60rem] grid-cols-1 gap-12">
-        <div>Buat pertanyaan baru</div>
-        <div>Judul Pertanyaan</div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            카테고리
-          </label>
-          <input
-            className="mt-3 w-full rounded-md border"
-            type="text"
-            name="category"
-            required
-          />
-        </div>
-        <div>
-          <input
-            className="mt-3 w-full rounded-full border bg-blue-200"
-            type="text"
-            placeholder="제목을 입력하세요"
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            내용
-          </label>
-          <textarea className="mt-3 w-full rounded-md border p-12" required />
-        </div>
-
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="mr-12 rounded-md bg-blue-500 px-24 py-4 text-white"
-          >
-            <span>작성</span>
-          </button>
-          <button className="rounded-md bg-blue-500 px-24 py-4 text-white">
-            <span>취소</span>
-          </button>
-        </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          카테고리
+        </label>
+        <input
+          className="mt-3 w-full rounded-md border"
+          type="text"
+          name="category"
+          required
+        />
+      </div>
+      <div>
+        <input
+          className="mt-3 w-full rounded-full border bg-blue-200"
+          type="text"
+          name="title"
+          placeholder="제목을 입력하세요"
+          required
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700">내용</label>
+        <textarea
+          className="mt-3 w-full rounded-md border p-12"
+          name="content"
+          required
+        />
+      </div>
+      
+      {/* Add submit button */}
+      <div className="mt-6">
+        <button
+          type="submit"
+          className="bg-blue-500 text-white py-2 px-4 rounded-full"
+        >
+          게시물 작성
+        </button>
       </div>
     </form>
   );
