@@ -29,7 +29,7 @@ const Banner = () => {
             pagination={{ clickable: true }}
             loop={true}
             autoplay={{
-              delay: 1000,
+              delay: 1,
               disableOnInteraction: true,
             }}
           >
