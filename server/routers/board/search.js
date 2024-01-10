@@ -16,7 +16,20 @@ router.get("/:input", async (req, res) => {
       `%${input}%`,
       `%${input}%`,
     ]);
-    res.send(rows);
+    const itemsPerPage = 10;
+    const page = parseInt(req.params.page) || 1;
+
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+
+    const currPageRows = rows.slice(startIndex, endIndex);
+    const totalPages = Math.ceil(rows.length / itemsPerPage);
+
+    res.json({
+      currPageRows,
+      totalPages,
+      page,
+    });
   } catch (err) {
     console.error("Error fetching search results: " + err.stack);
     res.status(500).json({ error: "Internal Server Error" });

@@ -9,11 +9,25 @@ router.get("/list", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "post.html"));
 });
 
-router.get("/", async (req, res) => {
+router.get("/:page", async (req, res) => {
   try {
     const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id ORDER BY p.createdAt ASC`;
     const [rows, fields] = await db.query(sql);
-    res.send(rows);
+
+    const itemsPerPage = 10;
+    const page = parseInt(req.params.page) || 1;
+
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+
+    const currPageRows = rows.slice(startIndex, endIndex);
+    const totalPages = Math.ceil(rows.length / itemsPerPage);
+
+    res.json({
+      currPageRows,
+      totalPages,
+      page,
+    });
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).send("Internal Server Error");
@@ -52,7 +66,7 @@ router.get("/view/:postid?", (req, res) => {
 router.get("/:id?", async (req, res) => {
   try {
     const postid = req.params.id;
-    const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id WHERE id = ?`;
+    const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id WHERE u.id = ?`;
     const [rows, fields] = await db.query(sql, [postid]);
     res.send(rows);
   } catch (err) {
