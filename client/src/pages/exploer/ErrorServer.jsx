@@ -1,9 +1,14 @@
-import React from "react";
-
 const ErrorServer = () => {
   return (
-    <div className="flex flex-grow-0 justify-center w-[80rem]">
-      <p className="text-3xl text-blue-800" >서버에 연결되어있지 않습니다.</p>
+    <div className="flex w-full justify-center">
+      <p className="flex flex-col justify-center items-center rounded-xl bg-[#f4f9f0] py-20 px-60 text-3xl text-[#125320]">
+        <span>서버에 연결되어있지 않습니다.</span>
+        <img
+          className="w-70"
+          src="https://th.bing.com/th/id/OIG.rFKul5aqYQ.teJasvbNG?pid=ImgGn"
+          alt=""
+        ></img>
+      </p>
     </div>
   );
 };

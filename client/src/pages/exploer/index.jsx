@@ -23,7 +23,7 @@ const index = () => {
           <PopTags />
           <TopWriters />
         </div>
-        <div className="flex w-full items-start">
+        <div className="flex w-full items-start justify-center">
           {posts === "연결실패" ? (
             // connect fail
             <ErrorServer />
