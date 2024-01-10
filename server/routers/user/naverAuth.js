@@ -73,7 +73,8 @@ router.get("/callback", async (req, res) => {
       [naverId, naverEmail]
     );
     if (rows.length > 0) {
-      res.cookie("naver_access", { ...info_result_json, access_token: token });
+      //res.cookie("naver_access", { ...info_result_json, access_token: token });
+      res.cookie("naver_access", naverId);
       res.redirect("http://localhost:5173");
       //   res.status(400).json({ message: '이미 가입된 회원입니다' });
     } else {
@@ -81,13 +82,13 @@ router.get("/callback", async (req, res) => {
         "INSERT INTO users (naverId, naverEmail, profileImage) VALUES (?, ?, ?)",
         [naverId, naverEmail, naverImage]
       );
-      res.redirect("http://localhost:5173");
+      res.redirect("http://localhost:5173/signup");
       //   res.json({ message: '회원가입 완료. 추가 정보를 입력하세요.' });
-    }
+    };
   } catch (error) {
     console.error("Database query error: ", error);
     res.status(500).json({ message: "Internal server error" });
-  }
+  };
 });
 
 module.exports = router;
