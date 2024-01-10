@@ -2,6 +2,8 @@ import styles from "./Login.module.scss";
 import { ReactComponent as GoogleBtn } from "../../assets/web_neutral_rd_ctn.svg";
 import { useEffect } from "react";
 
+import naverImge from "../../assets/btnG_완성형.png";
+
 const LoginPage = () => {
   useEffect(() => {
     const cookies = document.cookie;
@@ -18,13 +20,10 @@ const LoginPage = () => {
         <button className={styles.btn}>
           <GoogleBtn />
         </button>
+      </a>
+      <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=vlUKteyrG18vRROD6kqr&redirect_uri=http://localhost:3000/api/naverAuth/callback&state=RANDOM_STATE">
         <button>
-          <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=vlUKteyrG18vRROD6kqr&redirect_uri=http://localhost:3000/api/naverAuth/callback&state=RANDOM_STATE">
-            <img
-              src="http://static.nid.naver.com/oauth/small_g_in.PNG"
-              alt=""
-            />
-          </a>
+          <img className="h-10" src={naverImge} alt="" />
         </button>
       </a>
     </div>

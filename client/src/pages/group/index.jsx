@@ -3,14 +3,25 @@
 import { readPosts } from "../../api/apiDevko";
 import { useLoaderData } from "react-router-dom";
 
-
 import FilterBox from "../../components/FilterBox";
 import PopTags from "../../components/PopTags";
 import TopWriters from "../../components/TopWriters";
 
 const index = () => {
-  const posts = useLoaderData();
-  console.log(posts);
+  const gl = [
+    "스터디 그룹 모집",
+    "스터디 그룹 모집",
+    "스터디 그룹 모집",
+    "스터디 그룹 모집",
+    "스터디 그룹 모집",
+    "스터디 그룹 모집",
+    "스터디 그룹 모집",
+    "스터디 그룹 모집",
+    "스터디 그룹 모집",
+    "스터디 그룹 모집",
+    "스터디 그룹 모집",
+    "스터디 그룹 모집",
+  ];
 
   return (
     <>
@@ -21,13 +32,14 @@ const index = () => {
             <PopTags />
             <TopWriters />
           </div>
-          <div className="flex w-full items-start">
-            {posts === "연결실패" ? (
-              // connect fail
-              <ErrorServer />
-            ) : (
-              posts && <p>d</p>
-            )}
+          <div className="flex flex-wrap items-start ">
+            {gl.map((el, index) => (
+              <div key={index} className="w-1/3 p-4">
+                <div className="h-60 w-80 overflow-hidden rounded-xl bg-white p-4 text-3xl">
+                  {el}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -36,5 +48,3 @@ const index = () => {
 };
 
 export default index;
-
-

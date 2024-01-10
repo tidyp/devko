@@ -3,9 +3,9 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "./ui/Layout";
 
 import ExploerPage, { loader as postsLoader } from "./pages/exploer";
-import DiscussPage from "./pages/discuss";
+import DiscussPage, { loader as discussesLoader } from "./pages/discuss";
 import EventPage from "./pages/event";
-import QnaPage from "./pages/qna";
+import QnaPage, { loader as qnasLoader } from "./pages/qna";
 import GroupPage from "./pages/group";
 import SignupPage from "./pages/signup";
 
@@ -24,10 +24,10 @@ const router = createBrowserRouter([
       { path: "/", element: <ExploerPage />, loader: postsLoader },
       // { path: "/exploer", element: <ExploerPage /> },
       // DISCUSS
-      { path: "/discuss", element: <DiscussPage /> },
+      { path: "/discuss", element: <DiscussPage />, loader: discussesLoader },
       { path: "/discuss/:id", element: <Postdetail />, loader: postLoader  },
       // Q&A
-      { path: "/qna", element: <QnaPage /> },
+      { path: "/qna", element: <QnaPage /> , loader: qnasLoader},
       { path: "/qna/:id", element: <Postdetail />, loader: postLoader },
       // EVENT
       { path: "/event", element: <EventPage /> },

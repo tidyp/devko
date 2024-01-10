@@ -23,7 +23,7 @@ const NaviBar = () => {
   return (
     <>
       <nav className="flex items-center justify-center bg-[#f5f5f5]">
-        <div className="flex w-[80rem] items-center justify-between px-8 py-2">
+        <div className="flex w-[80rem] items-center justify-between px-8 py-3">
           <div className={styles.logo}>
             <Link to="/">DEVKO</Link>
           </div>

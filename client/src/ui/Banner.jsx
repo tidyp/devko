@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./Banner.module.scss";
 
+import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay, A11y } from "swiper/modules";
 
@@ -17,7 +18,7 @@ const Banner = () => {
         <div className="flex w-[80rem] items-center justify-center text-3xl">
           <Swiper
             // modules={[Navigation, Pagination, Autoplay]}
-            modules={[ Pagination, Autoplay]}
+            modules={[Pagination, Autoplay]}
             style={{
               "--swiper-pagination-color": "#f5f5f5",
               "--swiper-navigation-color": "#f5f5f5",
@@ -35,23 +36,25 @@ const Banner = () => {
             }}
           >
             <SwiperSlide>
-              <img
-                className="h-60 w-[80rem] rounded-3xl bg-blue-500 bg-contain bg-no-repeat"
-                src="https://th.bing.com/th/id/OIG.oTWkS5zPtYgvRcTWhzoR?w=270&h=270&c=6&r=0&o=5&pid=ImgGn"
-                alt=""
-              />
+              <Link to="/group">
+                <img
+                  className="h-60 w-[80rem] rounded-3xl bg-blue-500 bg-contain bg-no-repeat"
+                  src="https://th.bing.com/th/id/OIG.oTWkS5zPtYgvRcTWhzoR?w=270&h=270&c=6&r=0&o=5&pid=ImgGn"
+                  alt=""
+                />
+              </Link>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className={styles.aaa}></div>
+            </SwiperSlide>
+            <SwiperSlide>
+              <div className={styles.bbb}></div>
             </SwiperSlide>
             <SwiperSlide>
               <div className={styles.ccc}></div>
             </SwiperSlide>
             <SwiperSlide>
-              <div className={styles.ccc}></div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className={styles.ccc}></div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className={styles.ccc}></div>
+              <div className={styles.ddd}></div>
             </SwiperSlide>
           </Swiper>
         </div>

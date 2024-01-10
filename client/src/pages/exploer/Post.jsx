@@ -4,6 +4,7 @@ import { formatDate } from "../../utils/utils";
 import { Link } from "react-router-dom";
 
 const Post = ({ post }) => {
+  console.log(post)
   const data = formatDate(post.WriteDate)
   return (
     <>

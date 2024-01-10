@@ -11,7 +11,7 @@ export async function readUser(id) {
 // Reads: 게시글 조회
 export async function readPosts() {
   try {
-    const res = await fetch(`${API_URL}/post`);
+    const res = await fetch(`${API_URL}/post/view`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -57,6 +57,8 @@ export async function createPost(postData) {
   console.log(data);
   return data;
 }
+
+
 
 export async function updatePost() {
   const res = await fetch(`${API_URL}/post/:id`);
