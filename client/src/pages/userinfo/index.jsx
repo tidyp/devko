@@ -5,16 +5,26 @@ import UserTab from "./UserTab";
 import ProfileBox from "../../components/ProfileBox";
 
 const index = () => {
-  const user = useLoaderData();
+  // const user = useLoaderData();
 
   return (
     <>
       <div className="box-border flex justify-center">
         <div className="box-border flex w-[80rem]  gap-4">
           <div className="flex flex-col gap-2">
-            <ProfileBox user={user} />
+            {/* <ProfileBox user={user} /> */}
+            <p>유저정보 페이지</p>
+            <p>유저정보 페이지</p>
+            <p>유저정보 페이지</p>
+            <p>유저정보 페이지</p>
+            <p>유저정보 페이지</p>
+            <p>유저정보 페이지</p>
+            <p>유저정보 페이지</p>
+            <p>유저정보 페이지</p>
+            <p>유저정보 페이지</p>
+            <p>유저정보 페이지</p>
           </div>
-          <UserTab />
+          {/* <UserTab /> */}
         </div>
       </div>
     </>
@@ -23,7 +33,7 @@ const index = () => {
 
 export default index;
 
-export async function loader({ params }) {
-  const user = await readUser(params.id);
-  return user;
-}
+// export async function loader({ params }) {
+//   const user = await readUser(params.id);
+//   return user;
+// }

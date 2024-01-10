@@ -68,7 +68,7 @@
 
       // 게시글 목록 보기
       function fetchPost(postId) {
-        fetch(`/api/post/view/data/${postId}`)
+        fetch(`/api/post/${postId}`)
           .then((response) => response.json())
           .then((data) => {
             const tableBody = document.getElementById("TableBody");
@@ -103,7 +103,7 @@
       function deletePost(postId) {
         const result = window.confirm("삭제하시겠습니까?");
 
-        fetch(`/api/post/delete/${postId}`, {
+        fetch(`/api/post/${postId}`, {
           method: "DELETE",
         })
           .then((response) => response.json())
@@ -172,6 +172,7 @@
               <td>${comment.updatedAt}</td>
               <td><button id="editButton${comment.id}" onclick="editComment(${comment.id})">수정</button></td>
               <td><button id="deleteButton${comment.id}" onclick="deleteComment(${comment.id})">삭제</button></td>
+              <td><button id="subCommentButton${comment.id}" onclick="subComment(${comment.id})">댓글</button></td>
               `;
               commentBody.appendChild(row);
 
@@ -185,7 +186,7 @@
       // 댓글 수정
       function editComment(commentId) {
         const commentRow = document.getElementById(`commentId${commentId}`);
-        const contentCell = commentRow.querySelector("td:nth-child(4)");
+        const contentCell = commentRow.querySelector("td:nth-child(5)");
         const originalContent = contentCell.textContent;
 
         const inputField = document.createElement("input");
@@ -199,7 +200,7 @@
         editButton.onclick = function () {
           const updatedContent = inputField.value;
 
-          fetch(`/api/comment/edit/${commentId}`, {
+          fetch(`/api/comment/${commentId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ content: updatedContent }),
@@ -221,7 +222,7 @@
         const result = window.confirm("댓글을 삭제하시겠습니까?");
 
         if (result) {
-          fetch(`/api/comment/delete/${commentId}`, {
+          fetch(`/api/comment/${commentId}`, {
             method: "DELETE",
           })
             .then((response) => response.json())
@@ -245,19 +246,34 @@
         const newRow = document.createElement("tr");
 
         newRow.innerHTML = `
-          <td><input type="text" id="userId" name="newCommentUserId" required /></td>
+          <td><input type="text" id="newCommentUserId" name="newCommentUserId" required /></td>
           <td>${postId}</td>
           <td></td>
           <td>${commentId}</td>
           <td><input type="text" id="newCommentContent" name="newCommentContent" required /></td>
           <td></td>
           <td></td>
-          <td><button onclick="saveNewComment()">저장</button></td>
+          <td><button onclick="saveNewComment(${commentId})">저장</button></td>
           <td><button onclick="cancelNewComment()">취소</button></td>
           <td></td>
         `;
-
         commentBody.appendChild(newRow);
+      }
+
+      function saveNewComment(commentId) {
+        const userId = document.getElementById("newCommentUserId").value;
+        const content = document.getElementById("newCommentContent").value;
+
+        fetch(`/api/comment/sub/${commentId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ postId, userId, content }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((error) => console.error("Error posting comment:", error));
       }
     </script>
   </body>

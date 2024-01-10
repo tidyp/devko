@@ -5,14 +5,13 @@ const db = require("../../config/db");
 require("dotenv").config();
 
 // 게시글 목록 보기
-router.get("/", (req, res) => {
+router.get("/list", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "post.html"));
 });
 
-router.get("/list", async (req, res) => {
-  const sql = `SELECT * FROM posts`;
-
+router.get("/", async (req, res) => {
   try {
+    const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id ORDER BY p.createdAt ASC`;
     const [rows, fields] = await db.query(sql);
     res.send(rows);
   } catch (err) {
@@ -27,18 +26,16 @@ router.get("/write", (req, res) => {
 });
 
 router.get("/write/data", (req, res) => {
-  const user = req.session.googleEmail;
-  res.send(user);
+  const user = req.cookies.googleEmail;
+  res.json(user);
 });
 
-router.post("/write/data", async (req, res) => {
-  const user = req.session.googleEmail;
-  const title = req.body.title;
-  const content = req.body.content;
-
-  const sql = `INSERT INTO posts (userId, title, content, createdAt, updatedAt) VALUES (?, ?, ?, now(), now());`;
-
+router.post("/", async (req, res) => {
   try {
+    const user = req.cookies.googleEmail;
+    const title = req.body.title;
+    const content = req.body.content;
+    const sql = `INSERT INTO posts (userId, title, content, createdAt, updatedAt) VALUES (?, ?, ?, now(), now());`;
     const [rows, fields] = await db.query(sql, [user, title, content]);
     res.send(rows);
   } catch (err) {
@@ -52,11 +49,10 @@ router.get("/view/:postid?", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "postview.html"));
 });
 
-router.get("/view/data/:postid?", async (req, res) => {
-  const postid = req.params.postid;
-  const sql = `SELECT * FROM posts WHERE id = ?`;
-
+router.get("/:id?", async (req, res) => {
   try {
+    const postid = req.params.id;
+    const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id WHERE id = ?`;
     const [rows, fields] = await db.query(sql, [postid]);
     res.send(rows);
   } catch (err) {
@@ -66,25 +62,25 @@ router.get("/view/data/:postid?", async (req, res) => {
 });
 
 // 게시글 수정
-router.get("/edit/:postId?", (req, res) => {
+router.get("/edit/:id?", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "postedit.html"));
 });
 
-router.get("/edit/data/:postId?", async (req, res) => {
-  const postId = req.params.postId;
-  const sql = `SELECT * FROM posts WHERE id = ?`;
-
+router.get("/edit/data/:id?", async (req, res) => {
   try {
+    const postId = req.params.id;
+    const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id WHERE id = ?`;
     const [rows, fields] = await db.query(sql, [postId]);
-    res.send(rows);
+    res.json(rows);
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).send("Internal Server Error");
   }
 });
 
-router.put("/edit/data/:postId?", async (req, res) => {
-  const postId = req.params.postId;
+router.put("/:id?", async (req, res) => {
+  const user = req.cookies.googleEmail;
+  const postId = req.params.id;
   const title = req.body.title;
   const content = req.body.content;
   const updatedAt = new Date();
@@ -106,11 +102,11 @@ router.put("/edit/data/:postId?", async (req, res) => {
 });
 
 // 게시글 삭제
-router.delete("/delete/:postId?", async (req, res) => {
-  const postId = req.params.postId;
-  const sql = "DELETE FROM posts WHERE id = ?";
-
+router.delete("/:id?", async (req, res) => {
   try {
+    const postId = req.params.id;
+    const sql = "DELETE FROM posts WHERE id = ?";
+
     const [rows, fields] = await db.query(sql, [postId]);
     res.send(rows);
   } catch (err) {

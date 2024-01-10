@@ -8,10 +8,10 @@ export async function readUser(id) {
   return data;
 }
 
-// Read: posts
+// Reads: 게시글 조회
 export async function readPosts() {
   try {
-    const res = await fetch(`${API_URL}/post/list`);
+    const res = await fetch(`${API_URL}/post`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -23,8 +23,24 @@ export async function readPosts() {
   }
 }
 
+// Read: 게시글 조회
+export async function readPost(id) {
+  try {
+    const res = await fetch(`${API_URL}/post/${id}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data. Status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    throw error;
+  }
+}
+
+// Create: 게시글 작성
 export async function createPost(postData) {
-  const res = await fetch(`${API_URL}/post/write/data`, {
+  const res = await fetch(`${API_URL}/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -42,11 +58,6 @@ export async function createPost(postData) {
   return data;
 }
 
-export async function readPost() {
-  const res = await fetch(`${API_URL}/post/:id`);
-  const data = await res.json();
-  return data;
-}
 export async function updatePost() {
   const res = await fetch(`${API_URL}/post/:id`);
   const data = await res.json();

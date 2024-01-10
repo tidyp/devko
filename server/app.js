@@ -24,7 +24,6 @@ app.use(
   })
 );
 
-
 // 메인 페이지
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
@@ -35,8 +34,8 @@ app.use("/api/googleAuth", require("./routers/user/googleAuth"));
 app.use("/api/naverAuth", require("./routers/user/naverAuth"));
 app.use("/api/additionalInfo", require("./routers/user/additionalInfo"));
 
-app.use("/api/post", require("./routers/post/board"));
-app.use("/api/comment", require("./routers/post/comment"));
+app.use("/api/post", require("./routers/board/post"));
+app.use("/api/comment", require("./routers/board/comment"));
 
 // 서버
 app.listen(port, () => {

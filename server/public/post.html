@@ -43,7 +43,7 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        fetch("/api/post/list")
+        fetch("/api/post/")
           .then((response) => response.json())
           .then((data) => {
             const tableBody = document.getElementById("TableBody");
@@ -66,6 +66,14 @@
             console.error("Error fetching data:", error);
           });
       });
+
+      function submitSearch() {
+        const input = document.getElementById("input").value;
+
+        function fetchSearch(input) {
+          fetch(`api/search`);
+        }
+      }
     </script>
   </body>
 </html>
