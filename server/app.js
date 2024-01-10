@@ -36,6 +36,7 @@ app.use("/api/additionalInfo", require("./routers/user/additionalInfo"));
 
 app.use("/api/post", require("./routers/board/post"));
 app.use("/api/comment", require("./routers/board/comment"));
+app.use("/api/search", require("./routers/board/search"));
 
 // 서버
 app.listen(port, () => {

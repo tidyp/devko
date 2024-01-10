@@ -10,9 +10,7 @@
       <div id="searchbar">
         <form id="searchForm" action="/search" method="get">
           <input type="text" id="input" name="input" />
-          <button id="searchButton" type="button" onclick="submitSearch()">
-            Search
-          </button>
+          <button type="button" onclick="submitSearch()">Search</button>
         </form>
       </div>
 
@@ -43,6 +41,13 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        const searchButton = document.querySelector("#searchForm button");
+        searchButton.addEventListener("click", submitSearch);
+
+        fetchPost();
+      });
+
+      function fetchPost() {
         fetch("/api/post/")
           .then((response) => response.json())
           .then((data) => {
@@ -65,14 +70,37 @@
           .catch((error) => {
             console.error("Error fetching data:", error);
           });
-      });
+      }
 
       function submitSearch() {
         const input = document.getElementById("input").value;
+        fetchSearch(input);
+      }
 
-        function fetchSearch(input) {
-          fetch(`api/search`);
-        }
+      function fetchSearch(input) {
+        fetch(`/api/search/${input}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            const tableBody = document.getElementById("TableBody");
+            tableBody.innerHTML = "";
+
+            data.forEach((post) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
+                <td>${post.category}</td>
+                <td>${post.id}</td>
+                <td><a href="/api/post/view/${post.id}">${post.title}</a></td>
+                <td>${post.userId}</td>
+                <td>${post.createdAt}</td>
+                <td>${post.updatedAt}</td>
+            `;
+              tableBody.appendChild(row);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching search data:", error);
+          });
       }
     </script>
   </body>
