@@ -10,10 +10,12 @@ router.get("/", (req, res) => {
 });
 
 router.get("/image", async (req, res) => {
-    const profileImage = `SELECT profileImage FROM users WHERE goodleId = ? OR naverID = ?`;
-  
+    const sql = `SELECT profileImage FROM users WHERE googleId = ? OR naverId = ?`;
+    // const 
+
     try {
-      const [rows, fields] = await db.query(profileImage);
+      const [rows, fields] = await db.query(sql);
+      console.log(rows)
       res.send(rows);
     } catch (err) {
       console.error("Query execution error:", err);
