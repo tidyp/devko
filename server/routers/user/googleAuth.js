@@ -61,7 +61,6 @@ router.get("/callback", async (req, res) => {
       req.session.save(function () {
         // res.cookie('googleId', { googleId, access_token: resp.data.access_token });
         res.cookie("googleId", googleId);
-        res.cookie("googleEmail", googleEmail);
         res.cookie("isLogined", "true");
 
         // res.redirect("http://localhost:5173/");
@@ -75,7 +74,7 @@ router.get("/callback", async (req, res) => {
         [googleId, googleEmail, googleImage]
       );
 
-      res.redirect("http://localhost:5173/");
+      res.redirect("http://localhost:5173/signup");
       // res.sendFile(path.join(__dirname, "..", "..", "public", "userInfo.html"));
     }
   } catch (error) {
