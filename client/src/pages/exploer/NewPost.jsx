@@ -23,7 +23,7 @@ const NewPost = () => {
       </div>
       {isOpen && (
         <Modal onClose={handleClose}>
-          <NewPostForm />
+          <NewPostForm onClose={handleClose}/>
         </Modal>
       )}
     </button>
