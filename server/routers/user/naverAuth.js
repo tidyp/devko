@@ -52,7 +52,7 @@ router.get("/callback", async (req, res) => {
   };
   const result = await request.get(options);
   const token = JSON.parse(result).access_token;
-
+  
   const info_options = {
     url: "https://openapi.naver.com/v1/nid/me",
     headers: { Authorization: "Bearer " + token },

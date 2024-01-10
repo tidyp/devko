@@ -54,9 +54,9 @@ router.get("/callback", async (req, res) => {
 
     // 이미 가입된 회원, 로그인
     if (rows.length > 0) {
-      req.session.googleId = googleId;
-      req.session.googleEmail = googleEmail;
-      req.session.isLogined = true;
+      // req.session.googleId = googleId;
+      // req.session.googleEmail = googleEmail;
+      // req.session.isLogined = true;
 
       req.session.save(function () {
         // res.cookie('googleId', { googleId, access_token: resp.data.access_token });
