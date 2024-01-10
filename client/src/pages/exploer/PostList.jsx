@@ -2,7 +2,7 @@ import Post from "./Post";
 import NewPost from "./NewPost";
 
 const PostList = ({ posts }) => {
-  console.log(posts);
+  const reversedPosts = posts.slice().reverse();
   return (
     <div className="flex w-full flex-col justify-center ">
       <div className="flex flex-col items-center justify-center">
@@ -15,9 +15,9 @@ const PostList = ({ posts }) => {
         {/* <NewPost /> */}
       </div>
       <div className="flex w-full flex-col items-center justify-center">
-        {posts.length === 0 && <p className="text-xl">작성된 글이 없습니다.</p>}
-        {posts.map((post) => (
-          <Post post={post} key={post.Id} />
+        {reversedPosts.length === 0 && <p className="text-xl">작성된 글이 없습니다.</p>}
+        {reversedPosts.map((post) => (
+          <Post post={post} key={post.id} />
         ))}
       </div>
     </div>

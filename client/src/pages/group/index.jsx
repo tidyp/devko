@@ -1,9 +1,40 @@
-import React from 'react'
+// import postsData from "../../data/posts.json";
+
+import { readPosts } from "../../api/apiDevko";
+import { useLoaderData } from "react-router-dom";
+
+
+import FilterBox from "../../components/FilterBox";
+import PopTags from "../../components/PopTags";
+import TopWriters from "../../components/TopWriters";
 
 const index = () => {
-  return (
-    <div>index</div>
-  )
-}
+  const posts = useLoaderData();
+  console.log(posts);
 
-export default index
+  return (
+    <>
+      <div className="box-border flex justify-center">
+        <div className="box-border flex w-[80rem] gap-4">
+          <div className="flex flex-col gap-2">
+            <FilterBox />
+            <PopTags />
+            <TopWriters />
+          </div>
+          <div className="flex w-full items-start">
+            {posts === "연결실패" ? (
+              // connect fail
+              <ErrorServer />
+            ) : (
+              posts && <p>d</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default index;
+
+
