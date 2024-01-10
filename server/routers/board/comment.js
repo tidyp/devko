@@ -8,7 +8,7 @@ require("dotenv").config();
 router.get("/:postId", async (req, res) => {
   try {
     const postId = req.params.postId;
-    const sql = `SELECT * FROM comments WHERE postId = ? ORDER BY postId, id, mainId, createdAt ASC`;
+    const sql = `SELECT * FROM comments c LEFT OUTER JOIN users u ON c.userId = u.id WHERE postId = ? ORDER BY postId, id, mainId, createdAt ASC`;
     const [rows, fields] = await db.query(sql, [postId]);
     res.send(rows);
   } catch (err) {
@@ -58,11 +58,13 @@ router.put("/:id?", async (req, res) => {
   const updatedAt = new Date();
 
   const updateSql = `UPDATE comments SET content = ?, updatedAt = ? WHERE id = ?`;
-  const selectSql = `SELECT * FROM comments WHERE id = ?`;
 
   try {
-    await db.query(updateSql, [content, updatedAt, commentId]);
-    const [rows, fields] = await db.query(selectSql, [commentId]);
+    const [rows, fields] = await db.query(updateSql, [
+      content,
+      updatedAt,
+      commentId,
+    ]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -91,13 +93,12 @@ router.post("/sub/:id?", async (req, res) => {
     const { userId, postId, content } = req.body;
 
     const insertSql = `INSERT INTO comments (userId, postId, mainId, content, createdAt, updatedAt) VALUES (?, ?, ?, ?, NOW(), NOW())`;
-    const selectSql = `SELECT * FROM comments WHERE userId = ? AND postId = ? AND mainId = ? ORDER BY createdAt DESC LIMIT 1`;
 
-    await db.query(insertSql, [userId, postId, commentId, content]);
-    const [rows, fields] = await db.query(selectSql, [
+    const [rows, fields] = await db.query(insertSql, [
       userId,
       postId,
       commentId,
+      content,
     ]);
 
     res.send(rows);

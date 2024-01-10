@@ -11,7 +11,7 @@ router.get("/list", (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const sql = `SELECT * FROM posts`;
+    const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id ORDER BY p.createdAt ASC`;
     const [rows, fields] = await db.query(sql);
     res.send(rows);
   } catch (err) {
@@ -52,7 +52,7 @@ router.get("/view/:postid?", (req, res) => {
 router.get("/:id?", async (req, res) => {
   try {
     const postid = req.params.id;
-    const sql = `SELECT * FROM posts WHERE id = ?`;
+    const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id WHERE id = ?`;
     const [rows, fields] = await db.query(sql, [postid]);
     res.send(rows);
   } catch (err) {
@@ -69,7 +69,7 @@ router.get("/edit/:id?", (req, res) => {
 router.get("/edit/data/:id?", async (req, res) => {
   try {
     const postId = req.params.id;
-    const sql = `SELECT * FROM posts WHERE id = ?`;
+    const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id WHERE id = ?`;
     const [rows, fields] = await db.query(sql, [postId]);
     res.json(rows);
   } catch (err) {

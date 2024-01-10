@@ -46,7 +46,6 @@
         fetch("/api/post/")
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
             const tableBody = document.getElementById("TableBody");
             tableBody.innerHTML = "";
 
@@ -67,6 +66,14 @@
             console.error("Error fetching data:", error);
           });
       });
+
+      function submitSearch() {
+        const input = document.getElementById("input").value;
+
+        function fetchSearch(input) {
+          fetch(`api/search`);
+        }
+      }
     </script>
   </body>
 </html>
