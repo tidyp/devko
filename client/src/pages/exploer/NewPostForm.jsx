@@ -1,17 +1,22 @@
 import { useState, useEffect } from "react";
 import { createPost } from "../../api/apiDevko";
 import cookie from "react-cookies";
+import { useNavigate } from "react-router-dom";
 
-const NewPostForm = () => {
+const NewPostForm = ({ onClose }) => {
+  const navigate = useNavigate()
   const username = cookie.load("googleEmail");
+  const handleClose = () => {
+    onClose();
+  };
 
   const [post, setPost] = useState({
     category: "",
     title: "",
     content: "",
+    userId: username,
   });
 
-  useEffect(() => {}, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,6 +39,8 @@ const NewPostForm = () => {
       });
 
       console.log("Response:", response);
+      handleClose();
+      navigate("/")
     } catch (error) {
       console.error("Error:", error);
     }
@@ -69,14 +76,20 @@ const NewPostForm = () => {
           required
         />
       </div>
-      
-      {/* Add submit button */}
+
       <div className="mt-6">
         <button
           type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded-full"
+          className="rounded-full bg-blue-500 px-4 py-2 text-white"
         >
           게시물 작성
+        </button>
+        <button
+          type="button" // Change to button type
+          className="rounded-full bg-blue-500 px-4 py-2 text-white ml-2"
+          onClick={handleClose}
+        >
+          닫기
         </button>
       </div>
     </form>

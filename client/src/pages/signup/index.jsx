@@ -1,21 +1,112 @@
-import React from "react";
+import { useImperativeHandle, useState } from "react";
+import cookie from "react-cookies";
+import { useNavigate } from "react-router-dom";
 
-const index = () => {
+const Index = () => {
+  const googleId = cookie.load("googleId");
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    workPosition: "",
+    interestArea: "",
+    selfDescription: "",
+    userName: "",
+    notification: "",
+    googleId: googleId,
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/additionalInfo/step3`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        },
+      );
+
+      if (res.ok) {
+        // console.log("Form submitted successfully");
+        navigate("/");
+      } else {
+        console.error("Error submitting form:", res);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center h-dvh">
-      <div>회원가입 추가정보</div>
+    <div className="flex h-dvh flex-col items-center justify-center p-4">
+      <div className="mb-4 text-lg font-bold text-blue-900">
+        추가정보를 입력해주세요
+      </div>
       <div className="w-[40rem]">
-        <div className="flex flex-col  gap-8">
-          <input type="text" placeholder="가나다" />
-          <input type="text" placeholder="123" />
-          <input type="text" placeholder="abc" />
-          <input type="text" placeholder="ccwqqwd" />
+        <div className="flex flex-col gap-8">
+          <input
+            type="text"
+            name="userName"
+            placeholder="닉네임"
+            value={formData.userName}
+            onChange={handleChange}
+            className="rounded-md border p-2"
+          />
+          <input
+            type="text"
+            name="workPosition"
+            placeholder="직무"
+            value={formData.workPosition}
+            onChange={handleChange}
+            className="rounded-md border p-2"
+          />
+          <input
+            type="text"
+            name="interestArea"
+            placeholder="관심분야"
+            value={formData.interestArea}
+            onChange={handleChange}
+            className="rounded-md border p-2"
+          />
+          <input
+            type="text"
+            name="selfDescription"
+            placeholder="내 소개"
+            value={formData.selfDescription}
+            onChange={handleChange}
+            className="rounded-md border p-2"
+          />
+          <input
+            type="text"
+            name="notification"
+            placeholder="알림수신"
+            value={formData.notification}
+            onChange={handleChange}
+            className="rounded-md border p-2"
+          />
         </div>
-        <button>Skip</button>
-        <button>완료</button>
+        <button
+          onClick={handleSubmit}
+          className="mr-2 rounded-md bg-blue-500 p-2 text-white"
+        >
+          Skip
+        </button>
+        <button
+          onClick={handleSubmit}
+          className="rounded-md bg-green-500 p-2 text-white"
+        >
+          완료
+        </button>
       </div>
     </div>
   );
 };
 
-export default index;
+export default Index;

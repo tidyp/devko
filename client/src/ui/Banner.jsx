@@ -16,7 +16,8 @@ const Banner = () => {
       <div className="bg-im">
         <div className="flex w-[80rem] items-center justify-center text-3xl">
           <Swiper
-            modules={[Navigation, Pagination, Autoplay]}
+            // modules={[Navigation, Pagination, Autoplay]}
+            modules={[ Pagination, Autoplay]}
             style={{
               "--swiper-pagination-color": "#f5f5f5",
               "--swiper-navigation-color": "#f5f5f5",
@@ -25,11 +26,11 @@ const Banner = () => {
               "--swiper-navigation-sides-offset": "10px",
             }}
             spaceBetween={10} // 이미지 간격
-            navigation
+            // navigation
             pagination={{ clickable: true }}
             loop={true}
             autoplay={{
-              delay: 1,
+              delay: 5000,
               disableOnInteraction: true,
             }}
           >
