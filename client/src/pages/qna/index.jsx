@@ -16,7 +16,7 @@ const index = () => {
       <div className="box-border flex justify-center">
         <div className="box-border flex w-[80rem] gap-4">
           <div className="flex flex-col gap-2">
-            <FilterBox />
+            {/* <FilterBox /> */}
             <PopTags />
             <TopWriters />
           </div>

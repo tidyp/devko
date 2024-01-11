@@ -7,17 +7,12 @@ import { FaSearch } from "react-icons/fa";
 import { FaBell } from "react-icons/fa";
 
 const NaviBar = () => {
-  const isUserLoggedIn = cookie.load("isLogined") === "true";
-  const username = cookie.load("googleId");
-  //   cookie.load("googleEmail") === "true" ? cookie.load("googleEmail") : "";
-  // console.log(`쿠키 ${isUserLoggedIn}`);
-  // console.log(`쿠키 ${username}`);
+  // const username = cookie.load("googleId");
+  const username = "test";
   const userImage = "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=1";
 
   const clickLogout = () => {
-    alert(
-      "거부됨",
-    );
+    cookie.remove("userId", { path: "/" });
   };
 
   return (
@@ -52,18 +47,18 @@ const NaviBar = () => {
             <div className={styles.searchBar}>
               <FaBell />
             </div>
-            {isUserLoggedIn && (
-              <Link to={`/userinfo/${username}`}>
+            {username && (
+              <Link to={`/userinfo`}>
                 <img className="w-8 rounded-full" src={userImage} alt="" />
               </Link>
             )}
             <div className={styles.profilePicture}>
-              {isUserLoggedIn && (
+              {username && (
                 <Link to="/">
                   <span onClick={clickLogout}>로그아웃</span>
                 </Link>
               )}
-              {!isUserLoggedIn && <Link to="login">로그인</Link>}
+              {!username && <Link to="login">로그인</Link>}
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 const ProfileBox = ({ user }) => {
   return (
-    <div className="flex flex-col gap-3 rounded-3xl bg-white p-4">
+    <div className="flex w-64 flex-col gap-3 rounded-3xl bg-white p-4">
       <header className="flex flex-row items-center justify-center gap-3">
         <div>
           <img className="w-48 rounded-full" src={user.profileImage} alt="" />
