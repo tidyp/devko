@@ -1,7 +1,7 @@
 -- VSCode Mysql 접속: mysql.exe -uroot -p
 
 -- SQL CLI COMMAND
--- mysql -u root -p devko < test.sql`
+-- mysql -u root -p devko < test.sql
 
 CREATE DATABASE IF NOT EXISTS devko;
 -- SHOW DATABASES;

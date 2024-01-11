@@ -10,13 +10,22 @@ router.get("/step2", (req, res) => {
 
 router.post("/step3", async (req, res) => {
   const id = uuidv4();
-  const googleId = req.session.googleId;
+  // const googleId = "102316165737757574111";
+  const googleId = req.body.googleId;
   const userName = req.body.userName;
   const workPosition = req.body.workPosition;
   const interestArea = req.body.interestArea;
   const selfDescription = req.body.selfDescription;
   let notification = req.body.notification || req.body.not_notification;
 
+  console.log(
+    id,
+    googleId,
+    userName,
+    workPosition,
+    interestArea,
+    selfDescription
+  );
   // console.log(notification.value)
   if ((notification = "not_notification")) {
     notification = 0;
@@ -33,7 +42,6 @@ router.post("/step3", async (req, res) => {
         workPosition,
         interestArea,
         selfDescription,
-        ,
         notification,
         googleId,
       ]
