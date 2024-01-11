@@ -32,9 +32,9 @@ const index = () => {
             <PopTags />
             <TopWriters />
           </div>
-          <div className="flex flex-wrap items-start ">
+          <div className="box-border flex flex-wrap items-start">
             {gl.map((el, index) => (
-              <div key={index} className="w-1/3 p-4">
+              <div key={index} className="my-2 w-1/3">
                 <div className="h-60 w-80 overflow-hidden rounded-xl bg-white p-4 text-3xl">
                   {el}
                 </div>

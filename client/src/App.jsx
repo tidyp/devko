@@ -13,8 +13,8 @@ import Postdetail, {loader as postLoader} from "./pages/Postdetail";
 
 import LoginPage from "./pages/login";
 import Myinfo from "./pages/myinfo";
-import UserInfo from "./pages/userinfo";
-// import UserInfo, { loader as userLoader } from "./pages/userinfo";
+// import UserInfo from "./pages/userinfo";
+import UserInfo, { loader as userLoader } from "./pages/userinfo";
 
 const router = createBrowserRouter([
   {
@@ -41,8 +41,8 @@ const router = createBrowserRouter([
 
       // USER: INFO
       { path: "/myinfo", element: <UserInfo /> },
-      { path: "/userinfo/:id", element: <UserInfo />},
-      // { path: "/userinfo/:id", element: <UserInfo />, loader: userLoader },
+      // { path: "/userinfo/:id", element: <UserInfo />},
+      { path: "/userinfo", element: <UserInfo />, loader: userLoader },
     ],
   },
   {
