@@ -46,6 +46,7 @@ router.get("/write/data", (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
+    // const user = req.body.userId;
     const user = req.body.googleEmail;
     const title = req.body.title;
     const content = req.body.content;

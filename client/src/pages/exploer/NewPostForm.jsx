@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const NewPostForm = ({ onClose }) => {
   const navigate = useNavigate()
   const username = cookie.load("userId");
+  console.log(username)
   const handleClose = () => {
     onClose();
   };
