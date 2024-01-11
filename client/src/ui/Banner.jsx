@@ -14,8 +14,8 @@ import "swiper/css/scrollbar";
 const Banner = () => {
   return (
     <div className="flex justify-center p-4">
-      <div className="bg-im">
-        <div className="flex w-[80rem] items-center justify-center text-3xl">
+      <div className="bg-im ">
+        <div className="flex w-[80rem] items-center justify-center text-3xl ">
           <Swiper
             // modules={[Navigation, Pagination, Autoplay]}
             modules={[Pagination, Autoplay]}
@@ -36,12 +36,16 @@ const Banner = () => {
             }}
           >
             <SwiperSlide>
-              <Link to="/group">
-                <img
-                  className="h-60 w-[80rem] rounded-3xl bg-blue-500 bg-contain bg-no-repeat"
-                  src="https://th.bing.com/th/id/OIG.oTWkS5zPtYgvRcTWhzoR?w=270&h=270&c=6&r=0&o=5&pid=ImgGn"
-                  alt=""
-                />
+              <Link to="/qna">
+                <div className="h-60 w-[80rem] rounded-3xl bg-blue-500 bg-[url(https://th.bing.com/th/id/OIG.J5gtliGC4oXXoSVPnlQD?pid=ImgGn)] bg-cover bg-no-repeat">
+                  <p className="flex p-8 text-7xl text-yellow-50">
+                    QnA 궁금한것이 있다면?
+                  </p>
+                  <p className="flex items-end justify-end p-10">
+                    <span className="text-yellow-50">질문하러가기</span>
+                    <span className="text-yellow-50">&gt;&gt;&gt;</span>
+                  </p>
+                </div>
               </Link>
             </SwiperSlide>
             <SwiperSlide>

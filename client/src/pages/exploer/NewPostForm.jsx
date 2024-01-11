@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 const NewPostForm = ({ onClose }) => {
   const navigate = useNavigate()
   const username = cookie.load("userId");
-  console.log(username)
   const handleClose = () => {
     onClose();
   };
@@ -27,9 +26,6 @@ const NewPostForm = ({ onClose }) => {
     const title = formData.get("title");
     const content = formData.get("content");
 
-    console.log("Category:", category);
-    console.log("Title:", title);
-    console.log("Content:", content);
 
     try {
       const response = await createPost({
@@ -37,10 +33,9 @@ const NewPostForm = ({ onClose }) => {
         category,
         title,
         content,
-        googleId: username,
+        userId: username,
       });
 
-      console.log("Response:", response);
       handleClose();
       navigate("/")
     } catch (error) {

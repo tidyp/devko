@@ -9,25 +9,27 @@ import QnaPage, { loader as qnasLoader } from "./pages/qna";
 import GroupPage from "./pages/group";
 import SignupPage from "./pages/signup";
 
-import Postdetail, {loader as postLoader} from "./pages/Postdetail";
+import Postdetail, { loader as postLoader } from "./pages/Postdetail";
 
 import LoginPage from "./pages/login";
 import Myinfo from "./pages/myinfo";
-// import UserInfo from "./pages/userinfo";
+import Error from "./pages/error";
+
 import UserInfo, { loader as userLoader } from "./pages/userinfo";
 
 const router = createBrowserRouter([
   {
     element: <Layout />,
+    errorElement: <Error />,
     children: [
       // 홈페이지, EXPLOER
       { path: "/", element: <ExploerPage />, loader: postsLoader },
       // { path: "/exploer", element: <ExploerPage /> },
       // DISCUSS
       { path: "/discuss", element: <DiscussPage />, loader: discussesLoader },
-      { path: "/discuss/:id", element: <Postdetail />, loader: postLoader  },
+      { path: "/discuss/:id", element: <Postdetail />, loader: postLoader },
       // Q&A
-      { path: "/qna", element: <QnaPage /> , loader: qnasLoader},
+      { path: "/qna", element: <QnaPage />, loader: qnasLoader },
       { path: "/qna/:id", element: <Postdetail />, loader: postLoader },
       // EVENT
       { path: "/event", element: <EventPage /> },
@@ -40,15 +42,14 @@ const router = createBrowserRouter([
       { path: "/login", element: <LoginPage /> },
 
       // USER: INFO
-      { path: "/myinfo", element: <UserInfo /> },
-      // { path: "/userinfo/:id", element: <UserInfo />},
+      { path: "/myinfo", element: <Myinfo /> },
       { path: "/userinfo", element: <UserInfo />, loader: userLoader },
     ],
   },
   {
     path: "/signup",
-    element: <SignupPage/>
-  }
+    element: <SignupPage />,
+  },
 ]);
 
 const App = () => {

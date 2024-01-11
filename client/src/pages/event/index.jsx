@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import FilterBox from "../../components/FilterBox";
 import PopTags from "../../components/PopTags";
 import TopWriters from "../../components/TopWriters";
 import {
@@ -87,7 +86,6 @@ const Index = () => {
   };
 
   useEffect(() => {
-    console.log("Month changed:", today);
   }, [today]);
 
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -97,7 +95,6 @@ const Index = () => {
       <div className="box-border flex justify-center">
         <div className="box-border flex w-[80rem] gap-4">
           <div className="flex flex-col gap-2">
-            <FilterBox />
             <PopTags />
             <TopWriters />
           </div>

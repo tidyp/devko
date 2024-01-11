@@ -34,10 +34,19 @@ const UserTab = () => {
         </div>
       </div>
       <div>
-        {tabs[activeTabIndex] === "Tab 1" && <p>Content for Tab 1</p>}
-        {tabs[activeTabIndex] === "Tab 2" && <p>Content for Tab 2</p>}
-        {tabs[activeTabIndex] === "Tab 3" && <p>Content for Tab 3</p>}
-        {tabs[activeTabIndex] === "Tab 4" && <p>Content for Tab 4</p>}
+        {tabs[activeTabIndex] === "discuss" && (
+          <p className="mt-10 text-2xl">해당 유저는 작성한 글이 없어요.</p>
+        )}
+        {tabs[activeTabIndex] === "q&a" && (
+          <p className="mt-10 text-2xl">해당 유저가 질문한 글이 없어요.</p>
+        )}
+        {tabs[activeTabIndex] === "comment" && (
+          <p className="mt-10 text-2xl">해당 유저는 작성한 댓글이 없어요.</p>
+        )}
+        {tabs[activeTabIndex] === "guitar.etc.." && (
+          // TODO: 유저로그, 업적달성일, 유저통계, 스터디 활동 등.
+          <p className="mt-10 text-2xl">해당 유저는 활동기록이 없어요.</p>
+        )}
       </div>
     </div>
   );
