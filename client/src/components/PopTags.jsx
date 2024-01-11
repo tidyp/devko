@@ -4,24 +4,25 @@ const PopTags = () => {
       <div className=" text-base font-semibold text-black">Popular Tags</div>
       <div className="flex h-auto flex-col items-start justify-start gap-5 self-stretch px-2.5">
         <div className="flex flex-col items-start justify-start gap-2.5">
-          <div className="inline-flex items-center justify-start gap-2">
-            #design
+          {/* DOTO: Tag 컴포넌트 */}
+          <div className="inline-flex items-center justify-start gap-2 text-xl font-semibold">
+            # JavaScript
           </div>
           <div className="inline-flex items-center justify-start gap-2">
             98,323 posted
           </div>
         </div>
         <div className="flex flex-col items-start justify-start gap-2.5">
-          <div className="inline-flex items-center justify-start gap-2">
-            #design
+          <div className="inline-flex items-center justify-start gap-2 text-xl font-semibold">
+            # TypeScript
           </div>
           <div className="inline-flex items-center justify-start gap-2">
             98,323 posted
           </div>
         </div>
         <div className="flex flex-col items-start justify-start gap-2.5">
-          <div className="inline-flex items-center justify-start gap-2">
-            #design
+          <div className="inline-flex items-center justify-start gap-2 text-xl font-semibold">
+            # Design
           </div>
           <div className="inline-flex items-center justify-start gap-2">
             98,323 posted

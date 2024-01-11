@@ -17,7 +17,7 @@ const NewPost = () => {
   };
 
   return (
-    <button className="flex h-12 w-full flex-col items-center justify-center rounded-2xl bg-indigo-200 text-sm text-white hover:bg-indigo-700 hover:text-xl">
+    <button className="flex h-12 w-full flex-col items-center justify-center rounded-2xl  bg-indigo-700 text-xl text-white">
       <div className="flex items-center" onClick={handleOpen}>
         {/* <div>+</div> */}
         <div>게시글 작성</div>

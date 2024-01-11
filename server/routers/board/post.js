@@ -51,8 +51,9 @@ router.post("/", async (req, res) => {
     // const user = req.body.googleEmail;
     const title = req.body.title;
     const content = req.body.content;
-    const sql = `INSERT INTO posts (userId, title, content, createdAt, updatedAt) VALUES (?, ?, ?, now(), now());`;
-    const [rows, fields] = await db.query(sql, [user, title, content]);
+    const category = req.body.category;
+    const sql = `INSERT INTO posts (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
+    const [rows, fields] = await db.query(sql, [user, title, content, category]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
