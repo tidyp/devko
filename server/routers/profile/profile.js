@@ -10,13 +10,14 @@ router.get("/", (req, res) => {
 });
 
 router.get("/image", async (req, res) => {
-    const sql = `SELECT profileImage FROM users WHERE googleId = ? OR naverId = ?`;
-    // const 
+    const sql = `SELECT profileImage FROM users WHERE googleId = ?`;
+    // const googleId = '9c3838b6-078a-429a-8e22-0eda7a1bc320';
+    const googleId = '104378500381898358628';
 
     try {
-      const [rows, fields] = await db.query(sql);
+      const [rows, fields] = await db.query(sql, [googleId]);
       console.log(rows)
-      res.send(rows);
+      res.send(rows[0].profileImage);
     } catch (err) {
       console.error("Query execution error:", err);
       res.status(500).send("Internal Server Error");
