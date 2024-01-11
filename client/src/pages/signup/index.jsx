@@ -84,7 +84,7 @@ const Index = () => {
             className="rounded-md border p-2"
           />
           <input
-            type="text"
+            type="checkbox"
             name="notification"
             placeholder="알림수신"
             value={formData.notification}

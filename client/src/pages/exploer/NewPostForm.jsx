@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const NewPostForm = ({ onClose }) => {
   const navigate = useNavigate()
-  const username = cookie.load("googleEmail");
+  const username = cookie.load("userId");
   const handleClose = () => {
     onClose();
   };
@@ -36,6 +36,7 @@ const NewPostForm = ({ onClose }) => {
         category,
         title,
         content,
+        googleId: username,
       });
 
       console.log("Response:", response);

@@ -3,8 +3,10 @@ const router = express.Router();
 const axios = require("axios");
 const db = require("../../config/db");
 const path = require("path");
+const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
 
+let userId;
 const GOOGLE_LOGIN_REDIRECT_URI =
   "http://localhost:3000/api/googleAuth/callback";
 
@@ -63,18 +65,19 @@ router.get("/callback", async (req, res) => {
     // 이미 가입된 회원, 로그인
     if (rows.length > 0) {
       // req.session.save(function () {
-
       res.redirect("http://localhost:5173/");
+      res.cookie("userId", rows.userId);
       // res.redirect("/");
       // });
 
       // 없는 회원, 신규 회원가입 + 추가 정보 입력
     } else {
+      const userId = uuidv4();
       await db.execute(
-        "INSERT INTO users (googleId, googleEmail, profileImage) VALUES (?, ?, ?)",
-        [googleId, googleEmail, googleImage]
+        "INSERT INTO users (googleId, googleEmail, profileImage, id) VALUES (?, ?, ?, ?)",
+        [googleId, googleEmail, googleImage, userId]
       );
-
+      res.cookie("userId", userId);
       res.redirect("http://localhost:5173/signup");
       // res.sendFile(path.join(__dirname, "..", "..", "public", "userInfo.html"));
     }

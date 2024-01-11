@@ -46,7 +46,7 @@ router.get("/write/data", (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const user = req.cookies.googleEmail;
+    const user = req.body.googleEmail;
     const title = req.body.title;
     const content = req.body.content;
     const sql = `INSERT INTO posts (userId, title, content, createdAt, updatedAt) VALUES (?, ?, ?, now(), now());`;
