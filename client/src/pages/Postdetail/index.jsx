@@ -5,7 +5,6 @@ import { useLoaderData } from "react-router-dom";
 
 const Postdetail = () => {
   const [post] = useLoaderData();
-  console.log(post);
 
   return (
     <div className="flex items-start justify-center">

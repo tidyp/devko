@@ -34,7 +34,6 @@ const Index = () => {
       );
 
       if (res.ok) {
-        // console.log("Form submitted successfully");
         navigate("/");
       } else {
         console.error("Error submitting form:", res);

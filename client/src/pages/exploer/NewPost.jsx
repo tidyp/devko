@@ -1,29 +1,40 @@
 import { useState } from "react";
 import Modal from "../../components/Model";
 import NewPostForm from "./NewPostForm";
+import cookie from "react-cookies";
+import { Link } from "react-router-dom";
 
 const NewPost = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const username = cookie.load("userId");
 
   const handleOpen = () => {
-    console.log("a");
     setIsOpen((prev) => !prev);
   };
 
   const handleClose = () => {
-    console.log("b");
     setIsOpen(false);
   };
 
   return (
-    <button className="flex flex-col h-12 rounded-2xl w-full justify-center items-center text-2xl bg-indigo-200 text-white hover:bg-indigo-700">
+    <button className="flex h-12 w-full flex-col items-center justify-center rounded-2xl bg-indigo-200 text-sm text-white hover:bg-indigo-700 hover:text-xl">
       <div className="flex items-center" onClick={handleOpen}>
         {/* <div>+</div> */}
         <div>게시글 작성</div>
       </div>
-      {isOpen && (
+      {!username && isOpen && (
         <Modal onClose={handleClose}>
-          <NewPostForm onClose={handleClose}/>
+          <p className="py-10">로그인이 필요합니다.</p>
+          <Link to="/login">
+            <button className="rounded-xl bg-indigo-400 p-4">
+              로그인하러가기
+            </button>
+          </Link>
+        </Modal>
+      )}
+      {username && isOpen && (
+        <Modal onClose={handleClose}>
+          <NewPostForm onClose={handleClose} />
         </Modal>
       )}
     </button>

@@ -4,13 +4,12 @@ import { formatDate } from "../../utils/utils";
 import { Link } from "react-router-dom";
 
 const Post = ({ post }) => {
-  console.log(post)
   const data = formatDate(post.WriteDate)
   return (
     <>
       <div className="m-2 flex h-fit w-fit flex-col items-start justify-start gap-5 rounded-[10px] bg-white p-8 w-full">
         <div className="flex items-center justify-center gap-2.5 self-stretch">
-          <Link to={`/userinfo/${post.id}`}>
+          <Link to={`/userinfo`}>
             <img
               className="h-12 rounded-lg"
               src={post.profileImage}
