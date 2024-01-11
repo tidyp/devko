@@ -23,7 +23,8 @@ const index = () => {
 export default index;
 
 export async function loader() {
-  const username = cookie.load("userId");
+  // const username = cookie.load("userId");
+  const username = 1;
   const url = `http://localhost:9000/user/${username}`;
   const res = await fetch(url);
   const data = await res.json();

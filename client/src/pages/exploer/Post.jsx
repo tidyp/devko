@@ -1,5 +1,3 @@
-import styles from "./Post.module.scss";
-
 import { Link } from "react-router-dom";
 import { formatDate } from "../../utils/utils";
 import { useEffect, useRef, useState } from "react";
@@ -12,8 +10,8 @@ import { GoEye, GoComment, GoHeart } from "react-icons/go";
 import Modal from "../../components/Model";
 
 const Post = ({ post }) => {
-  console.log(post)
-  
+  console.log(post);
+
   const data = formatDate(post.createdAt);
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -108,9 +106,9 @@ const Post = ({ post }) => {
 
         <div className="flex items-start justify-between gap-2.5 self-stretch pr-8">
           <div className="flex gap-2">
-            <span className="rounded-lg px-4 bg-red-400">태그1</span>
-            <span className="rounded-lg px-4 bg-indigo-400">태그2</span>
-            <span className="rounded-lg px-4 bg-violet-400">태그3</span>
+            <span className="rounded-lg bg-red-400 px-4">태그1</span>
+            <span className="rounded-lg bg-indigo-400 px-4">태그2</span>
+            <span className="rounded-lg bg-violet-400 px-4">태그3</span>
           </div>
           <div className="flex items-center justify-center gap-4">
             <GoComment />
