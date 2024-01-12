@@ -9,9 +9,48 @@ router.get("/list", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "post.html"));
 });
 
+router.get("/view", async (req, res) => {
+  try {
+    const sql = `
+    SELECT p.userId AS userId
+          , p.id AS id
+          , p.category AS category
+          , p.title AS title
+          , p.content AS content
+          , p.createdAt AS createdAt
+          , p.updatedAt AS updatedAt
+          , u.userName AS userName
+          , u.profileImage AS profileImage
+          , u.grade AS grade
+    FROM posts p
+    LEFT OUTER JOIN users u ON p.userId = u.id
+    ORDER BY p.createdAt ASC
+    `;
+    const [rows, fields] = await db.query(sql);
+    res.json(rows);
+  } catch (err) {
+    console.error("Query execution error:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 router.get("/:page", async (req, res) => {
   try {
-    const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id ORDER BY p.createdAt ASC`;
+    const sql = `
+    SELECT p.userId AS userId
+          , p.id AS id
+          , p.category AS category
+          , p.title AS title
+          , p.content AS content
+          , p.createdAt AS createdAt
+          , p.updatedAt AS updatedAt
+          , u.userName AS userName
+          , u.profileImage AS profileImage
+          , u.grade AS grade
+    FROM posts p
+    LEFT OUTER JOIN users u ON p.userId = u.id
+    ORDER BY p.createdAt ASC
+    `;
     const [rows, fields] = await db.query(sql);
 
     const itemsPerPage = 10;
@@ -47,13 +86,16 @@ router.get("/write/data", (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const user = req.body.userId;
-    console.log(user)
-    // const user = req.body.googleEmail;
     const title = req.body.title;
     const content = req.body.content;
     const category = req.body.category;
     const sql = `INSERT INTO posts (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
-    const [rows, fields] = await db.query(sql, [user, title, content, category]);
+    const [rows, fields] = await db.query(sql, [
+      user,
+      title,
+      content,
+      category,
+    ]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -69,7 +111,22 @@ router.get("/view/:postid?", (req, res) => {
 router.get("/:id?", async (req, res) => {
   try {
     const postid = req.params.id;
-    const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id WHERE u.id = ?`;
+    const sql = `
+    SELECT p.userId AS userId
+          , p.id AS id
+          , p.category AS category
+          , p.title AS title
+          , p.content AS content
+          , p.createdAt AS createdAt
+          , p.updatedAt AS updatedAt
+          , u.userName AS userName
+          , u.profileImage AS profileImage
+          , u.grade AS grade
+    FROM posts p
+    LEFT OUTER JOIN users u ON p.userId = u.id
+    WHERE u.id = ?
+    ORDER BY p.createdAt ASC
+    `;
     const [rows, fields] = await db.query(sql, [postid]);
     res.send(rows);
   } catch (err) {
@@ -86,7 +143,22 @@ router.get("/edit/:id?", (req, res) => {
 router.get("/edit/data/:id?", async (req, res) => {
   try {
     const postId = req.params.id;
-    const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id WHERE id = ?`;
+    const sql = `
+    SELECT p.userId AS userId
+          , p.id AS id
+          , p.category AS category
+          , p.title AS title
+          , p.content AS content
+          , p.createdAt AS createdAt
+          , p.updatedAt AS updatedAt
+          , u.userName AS userName
+          , u.profileImage AS profileImage
+          , u.grade AS grade
+    FROM posts p
+    LEFT OUTER JOIN users u ON p.userId = u.id
+    WHERE u.id = ?
+    ORDER BY p.createdAt ASC
+    `;
     const [rows, fields] = await db.query(sql, [postId]);
     res.json(rows);
   } catch (err) {
