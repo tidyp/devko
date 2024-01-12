@@ -82,7 +82,7 @@ router.get("/callback", async (req, res) => {
     } else {
       userId = uuidv4();
       await db.execute(
-        "INSERT INTO users (id, naverId, naverEmail, profileImage) VALUES (?, ?, ?)",
+        "INSERT INTO users (id, naverId, naverEmail, profileImage) VALUES (?, ?, ?, ?)",
         [userId, naverId, naverEmail, naverImage]
       );
       res.cookie("userId", userId);
