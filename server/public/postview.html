@@ -54,6 +54,9 @@
           <!-- Comments Rows -->
         </tbody>
       </table>
+      <div id="commentPagination">
+        <!-- Pagination Results -->
+      </div>
     </div>
 
     <script>
@@ -71,21 +74,20 @@
         fetch(`/api/post/${postId}`)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
             const tableBody = document.getElementById("TableBody");
             tableBody.innerHTML = "";
 
             data.forEach((post) => {
               const row = document.createElement("tr");
               row.innerHTML = `
-                    <td>${post.category}</td>
-                    <td>${post.id}</td>
-                    <td>${post.title}</td>
-                    <td>${post.content}</td>
-                    <td>${post.userId}</td>
-                    <td>${post.createdAt}</td>
-                    <td>${post.updatedAt}</td>
-                `;
+                          <td>${post.category}</td>
+                          <td>${post.id}</td>
+                          <td>${post.title}</td>
+                          <td>${post.content}</td>
+                          <td>${post.userId}</td>
+                          <td>${post.createdAt}</td>
+                          <td>${post.updatedAt}</td>
+                      `;
 
               tableBody.appendChild(row);
             });
@@ -120,29 +122,33 @@
       function fetchComment(postId) {
         fetch(`/api/comment/${postId}`)
           .then((response) => response.json())
-          .then((comment) => {
+          .then((data) => {
+            console.log(data);
             const commentBody = document.getElementById("commentTableBody");
             commentBody.innerHTML = "";
 
-            for (i = 0; i < comment.length; i++) {
+            data.currPageRows.forEach((comment) => {
               const row = document.createElement("tr");
-              row.id = `commentId${comment[i].id}`;
+              row.id = `commentId${comment.id}`;
               row.innerHTML = `
-                      <td>${comment[i].userId}</td>
-                      <td>${comment[i].postId}</td>
-                      <td>${comment[i].id}</td>
-                      <td>${comment[i].mainId}</td>
-                      <td>${comment[i].content}</td>
-                      <td>${comment[i].createdAt}</td>
-                      <td>${comment[i].updatedAt}</td>
-                      <td><button id="editButton${comment[i].id}" onclick="editComment(${comment[i].id})">수정</button></td>
-                      <td><button id="deleteButton${comment[i].id}" onclick="deleteComment(${comment[i].id})">삭제</button></td>
-                      <td><button id="subCommentButton${comment[i].id}" onclick="subComment(${comment[i].id})">댓글</button></td>
+                        <td>${comment.userId}</td>
+                        <td>${comment.postId}</td>
+                        <td>${comment.id}</td>
+                        <td>${comment.mainId}</td>
+                        <td>${comment.content}</td>
+                        <td>${comment.createdAt}</td>
+                        <td>${comment.updatedAt}</td>
+                        <td><button id="editButton${comment.id}" onclick="editComment(${comment.id})">수정</button></td>
+                        <td><button id="deleteButton${comment.id}" onclick="deleteComment(${comment.id})">삭제</button></td>
+                        <td><button id="subCommentButton${comment.id}" onclick="subComment(${comment.id})">댓글</button></td>
                   `;
               commentBody.appendChild(row);
-            }
+            });
+            renderPaginationLinks(data, "fetchComment");
           })
-          .catch((error) => console.error("Error fetching comments:", error));
+          .catch((error) => {
+            console.error("Error fetching search data:", error);
+          });
       }
 
       // 댓글 작성
@@ -164,17 +170,17 @@
               const row = document.createElement("tr");
               row.id = `commentId${comment.id}`;
               row.innerHTML = `
-              <td>${comment.userId}</td>
-              <td>${comment.postId}</td>
-              <td>${comment.id}</td>
-              <td>${comment.mainId}</td>
-              <td>${comment.content}</td>
-              <td>${comment.createdAt}</td>
-              <td>${comment.updatedAt}</td>
-              <td><button id="editButton${comment.id}" onclick="editComment(${comment.id})">수정</button></td>
-              <td><button id="deleteButton${comment.id}" onclick="deleteComment(${comment.id})">삭제</button></td>
-              <td><button id="subCommentButton${comment.id}" onclick="subComment(${comment.id})">댓글</button></td>
-              `;
+                    <td>${comment.userId}</td>
+                    <td>${comment.postId}</td>
+                    <td>${comment.id}</td>
+                    <td>${comment.mainId}</td>
+                    <td>${comment.content}</td>
+                    <td>${comment.createdAt}</td>
+                    <td>${comment.updatedAt}</td>
+                    <td><button id="editButton${comment.id}" onclick="editComment(${comment.id})">수정</button></td>
+                    <td><button id="deleteButton${comment.id}" onclick="deleteComment(${comment.id})">삭제</button></td>
+                    <td><button id="subCommentButton${comment.id}" onclick="subComment(${comment.id})">댓글</button></td>
+                    `;
               commentBody.appendChild(row);
 
               document.getElementById("userId").value = "";
@@ -247,34 +253,75 @@
         const newRow = document.createElement("tr");
 
         newRow.innerHTML = `
-          <td><input type="text" id="newCommentUserId" name="newCommentUserId" required /></td>
-          <td>${postId}</td>
-          <td></td>
-          <td>${commentId}</td>
-          <td><input type="text" id="newCommentContent" name="newCommentContent" required /></td>
-          <td></td>
-          <td></td>
-          <td><button onclick="saveNewComment(${commentId})">저장</button></td>
-          <td><button onclick="cancelNewComment()">취소</button></td>
-          <td></td>
-        `;
+                <td><input type="text" id="newCommentUserId" name="newCommentUserId" required /></td>
+                <td>${postId}</td>
+                <td></td>
+                <td>${commentId}</td>
+                <td><input type="text" id="newCommentContent" name="newCommentContent" required /></td>
+                <td></td>
+                <td></td>
+                <td><button onclick="saveNewComment(${postId}, ${commentId})">저장</button></td>
+                <td><button onclick="cancelNewComment()">취소</button></td>
+                <td></td>
+              `;
         commentBody.appendChild(newRow);
       }
 
-      function saveNewComment(commentId) {
+      function saveNewComment(postId, commentId) {
         const userId = document.getElementById("newCommentUserId").value;
         const content = document.getElementById("newCommentContent").value;
 
-        fetch(`/api/comment/sub/${commentId}`, {
+        fetch(`/api/comment/${postId}/${commentId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ postId, userId, content }),
+          body: JSON.stringify({ userId, content }),
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
+            fetchComment(postId);
           })
           .catch((error) => console.error("Error posting comment:", error));
+      }
+
+      // 페이징
+      function renderPaginationLinks(data, fetchFunction) {
+        const paginationDiv = document.getElementById("commentPagination");
+        paginationDiv.innerHTML = "";
+
+        const maxButtonsToShow = 10;
+        const startPage = Math.max(
+          1,
+          data.page - Math.floor(maxButtonsToShow / 2)
+        );
+        const endPage = Math.min(
+          data.totalPages,
+          startPage + maxButtonsToShow - 1
+        );
+
+        // 이전
+        if (data.page > 1) {
+          const prevSpan = document.createElement("span");
+          prevSpan.innerHTML = `<a id="searchLink" onclick="${fetchFunction}(${
+            data.page - 1
+          })">Previous</a>`;
+          paginationDiv.appendChild(prevSpan);
+        }
+
+        // 숫자
+        for (let num = startPage; num <= endPage; num++) {
+          const pageSpan = document.createElement("span");
+          pageSpan.innerHTML = `<a id="searchLink" onclick="${fetchFunction}('${num}')">${num}</a>`;
+          paginationDiv.appendChild(pageSpan);
+        }
+
+        // 다음
+        if (data.page < data.totalPages) {
+          const nextSpan = document.createElement("span");
+          nextSpan.innerHTML = `<a id="searchLink" onclick="${fetchFunction}('${
+            data.page + 1
+          }')">Next</a>`;
+          paginationDiv.appendChild(nextSpan);
+        }
       }
     </script>
   </body>

@@ -9,8 +9,21 @@ router.get("/:input", async (req, res) => {
   const input = req.params.input;
 
   try {
-    // const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id WHERE u.userName LIKE ? OR p.title LIKE ? OR p.content LIKE ?`;
-    const sql = `SELECT * FROM posts WHERE userId LIKE ? OR title LIKE ? OR content LIKE ?`;
+    const sql = `
+    SELECT p.id AS id
+        , p.category AS category
+        , p.title AS title
+        , p.content AS content
+        , p.createdAt AS createdAt
+        , p.updatedAt AS updatedAt
+        , u.id AS userId
+        , u.userName AS userName
+        , u.profileImage AS profileImage
+    FROM posts p
+    LEFT OUTER JOIN users u ON p.userId = u.id
+    WHERE u.userName LIKE ? OR p.title LIKE ? OR p.content LIKE ?
+    `;
+
     const [rows, fields] = await db.query(sql, [
       `%${input}%`,
       `%${input}%`,
@@ -31,8 +44,8 @@ router.get("/:input", async (req, res) => {
       page,
     });
   } catch (err) {
-    console.error("Error fetching search results: " + err.stack);
-    res.status(500).json({ error: "Internal Server Error" });
+    console.error("Query execution error:", err);
+    res.status(500).send("Internal Server Error");
   }
 });
 
