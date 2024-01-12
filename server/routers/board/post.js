@@ -4,11 +4,12 @@ const path = require("path");
 const db = require("../../config/db");
 require("dotenv").config();
 
-// 게시글 목록 보기
+// ===== 게시글 목록 보기
 router.get("/list", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "post.html"));
 });
 
+// 게시글 전체 목록
 router.get("/", async (req, res) => {
   try {
     const sql = `
@@ -34,6 +35,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// 각 메뉴별 페이징된 게시물 보기
 router.get("/:category/:page", async (req, res) => {
   try {
     const category = req.params.category;
@@ -75,14 +77,13 @@ router.get("/:category/:page", async (req, res) => {
   }
 });
 
-// 해당 게시글 보기
+// ===== 해당 게시글 보기
 router.get("/view/:postid?", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "postview.html"));
 });
 
 router.get("/:id", async (req, res) => {
   try {
-    const category = req.params.category;
     const postId = req.params.id;
     const sql = `
     SELECT p.userId AS userId
@@ -108,7 +109,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// 게시글 쓰기
+// ===== 게시글 쓰기
 router.get("/write", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "postwrite.html"));
 });
@@ -138,7 +139,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// 게시글 수정
+// ===== 게시글 수정
 router.get("/edit/:id?", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "postedit.html"));
 });
@@ -171,7 +172,6 @@ router.get("/edit/data/:id?", async (req, res) => {
 });
 
 router.put("/:id?", async (req, res) => {
-  const user = req.cookies.googleEmail;
   const postId = req.params.id;
   const title = req.body.title;
   const content = req.body.content;
@@ -193,7 +193,7 @@ router.put("/:id?", async (req, res) => {
   }
 });
 
-// 게시글 삭제
+// ===== 게시글 삭제
 router.delete("/:id?", async (req, res) => {
   try {
     const postId = req.params.id;
