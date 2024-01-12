@@ -16,7 +16,6 @@ router.get("/image", async (req, res) => {
 
     try {
       const [rows, fields] = await db.query(sql, [googleId]);
-      console.log(rows)
       res.send(rows[0].profileImage);
     } catch (err) {
       console.error("Query execution error:", err);
