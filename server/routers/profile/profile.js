@@ -17,9 +17,9 @@ router.get("/:id", async (req, res) => {
            p.userId AS postID,
            p.category AS category,
            p.title AS title,
-           p.content AS content,
+           p.content AS postContent,
            c.userId As commentID,
-           c.content AS content
+           c.content AS commentContent
     FROM users u
     JOIN posts p ON p.userId = u.id
     JOIN comments c ON c.userId = u.id
