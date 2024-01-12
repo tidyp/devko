@@ -1,8 +1,9 @@
-require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const request = require("request-promise");
 const db = require("../../config/db");
+const { v4: uuidv4 } = require("uuid");
+require("dotenv").config();
 
 const client_id = process.env.NAVER_CLIENT_ID;
 const client_secret = process.env.NAVER_CLIENT_SECRET;
@@ -74,14 +75,17 @@ router.get("/callback", async (req, res) => {
     );
     if (rows.length > 0) {
       //res.cookie("naver_access", { ...info_result_json, access_token: token });
-      res.cookie("naver_access", naverId);
+      let userId = rows[0].id;
+      res.cookie("userId", userId);
       res.redirect("http://localhost:5173");
       //   res.status(400).json({ message: '이미 가입된 회원입니다' });
     } else {
+      userId = uuidv4();
       await db.execute(
-        "INSERT INTO users (naverId, naverEmail, profileImage) VALUES (?, ?, ?)",
-        [naverId, naverEmail, naverImage]
+        "INSERT INTO users (id, naverId, naverEmail, profileImage) VALUES (?, ?, ?)",
+        [userId, naverId, naverEmail, naverImage]
       );
+      res.cookie("userId", userId);
       res.redirect("http://localhost:5173/signup");
       //   res.json({ message: '회원가입 완료. 추가 정보를 입력하세요.' });
     };
