@@ -14,7 +14,7 @@
         </form>
       </div>
 
-      <button id="writeButton" onClick="location.href='/api/post/write'">
+      <button id="writeButton" onClick="location.href='/api/post/write/list'">
         새글쓰기
       </button>
 
@@ -51,7 +51,7 @@
 
       // 게시글
       function fetchPost(page) {
-        fetch(`/api/post/${page}`)
+        fetch(`/api/post/discuss/${page}`)
           .then((response) => response.json())
           .then((data) => {
             const tableBody = document.getElementById("TableBody");

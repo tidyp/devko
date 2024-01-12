@@ -53,7 +53,7 @@ router.get("/callback", async (req, res) => {
   };
   const result = await request.get(options);
   const token = JSON.parse(result).access_token;
-  
+
   const info_options = {
     url: "https://openapi.naver.com/v1/nid/me",
     headers: { Authorization: "Bearer " + token },
@@ -62,37 +62,33 @@ router.get("/callback", async (req, res) => {
   const info_result = await request.get(info_options);
   const info_result_json = JSON.parse(info_result).response;
 
-  console.log(info_result_json);
-
   const naverId = info_result_json.id;
   const naverEmail = info_result_json.email;
   const naverImage = info_result_json.profile_image;
 
   try {
     const [rows, fields] = await db.execute(
-      "SELECT * FROM users WHERE naverId = ? OR naverEmail = ?",
+      "SELECT * FROM naverUsers WHERE naverId = ? OR naverEmail = ?",
       [naverId, naverEmail]
     );
     if (rows.length > 0) {
-      //res.cookie("naver_access", { ...info_result_json, access_token: token });
+      // res.cookie("naver_access", { ...info_result_json, access_token: token });
       let userId = rows[0].id;
       res.cookie("userId", userId);
       res.redirect("http://localhost:5173");
-      //   res.status(400).json({ message: '이미 가입된 회원입니다' });
     } else {
       userId = uuidv4();
       await db.execute(
-        "INSERT INTO users (id, naverId, naverEmail, profileImage) VALUES (?, ?, ?, ?)",
+        "INSERT INTO naverUsers (id, naverId, naverEmail, naverImage) VALUES (?, ?, ?, ?)",
         [userId, naverId, naverEmail, naverImage]
       );
       res.cookie("userId", userId);
       res.redirect("http://localhost:5173/signup");
-      //   res.json({ message: '회원가입 완료. 추가 정보를 입력하세요.' });
-    };
+    }
   } catch (error) {
     console.error("Database query error: ", error);
     res.status(500).json({ message: "Internal server error" });
-  };
+  }
 });
 
 module.exports = router;

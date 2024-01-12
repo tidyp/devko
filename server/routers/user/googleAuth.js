@@ -49,7 +49,7 @@ router.get("/callback", async (req, res) => {
 
   try {
     const [rows, fields] = await db.query(
-      "SELECT * FROM users WHERE googleId = ? OR googleEmail = ?",
+      "SELECT * FROM googleUsers WHERE googleId = ? OR googleEmail = ?",
       [googleId, googleEmail]
     );
 
@@ -63,7 +63,7 @@ router.get("/callback", async (req, res) => {
     } else {
       userId = uuidv4();
       await db.execute(
-        "INSERT INTO users (id, googleId, googleEmail, profileImage) VALUES (?, ?, ?, ?)",
+        "INSERT INTO googleUsers (id, googleId, googleEmail, googleImage) VALUES (?, ?, ?, ?)",
         [userId, googleId, googleEmail, googleImage]
       );
       res.cookie("userId", userId);

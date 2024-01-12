@@ -71,6 +71,7 @@
         fetch(`/api/post/${postId}`)
           .then((response) => response.json())
           .then((data) => {
+            console.log(data);
             const tableBody = document.getElementById("TableBody");
             tableBody.innerHTML = "";
 
