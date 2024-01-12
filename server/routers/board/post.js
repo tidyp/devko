@@ -9,7 +9,7 @@ router.get("/list", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "post.html"));
 });
 
-router.get("/view", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const sql = `
     SELECT p.userId AS userId
@@ -34,8 +34,9 @@ router.get("/view", async (req, res) => {
   }
 });
 
-router.get("/:page", async (req, res) => {
+router.get("/:id?", async (req, res) => {
   try {
+    const postid = req.params.id;
     const sql = `
     SELECT p.userId AS userId
           , p.id AS id
@@ -49,29 +50,55 @@ router.get("/:page", async (req, res) => {
           , u.grade AS grade
     FROM posts p
     LEFT OUTER JOIN users u ON p.userId = u.id
+    WHERE p.id = ?
     ORDER BY p.createdAt ASC
     `;
-    const [rows, fields] = await db.query(sql);
-
-    const itemsPerPage = 10;
-    const page = parseInt(req.params.page) || 1;
-
-    const startIndex = (page - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-
-    const currPageRows = rows.slice(startIndex, endIndex);
-    const totalPages = Math.ceil(rows.length / itemsPerPage);
-
-    res.json({
-      currPageRows,
-      totalPages,
-      page,
-    });
+    const [rows, fields] = await db.query(sql, [postid]);
+    res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).send("Internal Server Error");
   }
 });
+
+// router.get("/:page", async (req, res) => {
+//   try {
+//     const sql = `
+//     SELECT p.userId AS userId
+//           , p.id AS id
+//           , p.category AS category
+//           , p.title AS title
+//           , p.content AS content
+//           , p.createdAt AS createdAt
+//           , p.updatedAt AS updatedAt
+//           , u.userName AS userName
+//           , u.profileImage AS profileImage
+//           , u.grade AS grade
+//     FROM posts p
+//     LEFT OUTER JOIN users u ON p.userId = u.id
+//     ORDER BY p.createdAt ASC
+//     `;
+//     const [rows, fields] = await db.query(sql);
+
+//     const itemsPerPage = 10;
+//     const page = parseInt(req.params.page) || 1;
+
+//     const startIndex = (page - 1) * itemsPerPage;
+//     const endIndex = startIndex + itemsPerPage;
+
+//     const currPageRows = rows.slice(startIndex, endIndex);
+//     const totalPages = Math.ceil(rows.length / itemsPerPage);
+
+//     res.json({
+//       currPageRows,
+//       totalPages,
+//       page,
+//     });
+//   } catch (err) {
+//     console.error("Query execution error:", err);
+//     res.status(500).send("Internal Server Error");
+//   }
+// });
 
 // 게시글 쓰기
 router.get("/write", (req, res) => {
@@ -108,32 +135,7 @@ router.get("/view/:postid?", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "postview.html"));
 });
 
-router.get("/:id?", async (req, res) => {
-  try {
-    const postid = req.params.id;
-    const sql = `
-    SELECT p.userId AS userId
-          , p.id AS id
-          , p.category AS category
-          , p.title AS title
-          , p.content AS content
-          , p.createdAt AS createdAt
-          , p.updatedAt AS updatedAt
-          , u.userName AS userName
-          , u.profileImage AS profileImage
-          , u.grade AS grade
-    FROM posts p
-    LEFT OUTER JOIN users u ON p.userId = u.id
-    WHERE u.id = ?
-    ORDER BY p.createdAt ASC
-    `;
-    const [rows, fields] = await db.query(sql, [postid]);
-    res.send(rows);
-  } catch (err) {
-    console.error("Query execution error:", err);
-    res.status(500).send("Internal Server Error");
-  }
-});
+
 
 // 게시글 수정
 router.get("/edit/:id?", (req, res) => {

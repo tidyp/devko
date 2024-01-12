@@ -9,6 +9,7 @@ const Postdetail = () => {
   return (
     <div className="flex items-start justify-center">
       <div className="rounded-md bg-gray-200 p-4">
+        <p>dwdw</p>
         <h1 className="mb-4 text-3xl font-bold">{post.title}</h1>
         <p>유저아이디</p>
         <p className="text-gray-700">{post.userId}</p>
