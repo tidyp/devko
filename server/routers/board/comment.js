@@ -8,7 +8,7 @@ require("dotenv").config();
 router.get("/:postId", async (req, res) => {
   try {
     const postId = req.params.postId;
-    const sql = `SELECT * FROM comments c LEFT OUTER JOIN users u ON c.userId = u.id WHERE postId = ? ORDER BY postId, id, mainId, createdAt ASC`;
+    const sql = `SELECT * FROM comments c LEFT OUTER JOIN users u ON c.userId = u.id WHERE postId = ? ORDER BY c.postId, c.id, c.mainId, c.createdAt ASC`;
     const [rows, fields] = await db.query(sql, [postId]);
     res.send(rows);
   } catch (err) {

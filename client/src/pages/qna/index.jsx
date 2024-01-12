@@ -19,7 +19,7 @@ const index = () => {
           </div>
           <div className="flex w-full flex-col items-start text-center">
             <ul className="flex w-full flex-col items-start">
-              {posts.currPageRows.map((el) => {
+              {posts.map((el) => {
                 return (
                   <>
                     {/* 링크추가 */}

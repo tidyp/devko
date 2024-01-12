@@ -32,9 +32,10 @@ const router = createBrowserRouter([
       { path: "/discuss/:id", element: <Postdetail />, loader: postLoader },
       // Q&A
       { path: "/qna", element: <QnaPage />, loader: qnasLoader },
-      // { path: "/qna/:id", element: <Postdetail />, loader: postLoader },
+      { path: "/qna/:id", element: <Postdetail />, loader: postLoader },
       // EVENT
       { path: "/event", element: <EventPage /> },
+      { path: "/event/:id", element: <Postdetail />, loader: postLoader },
       // EVENT
       { path: "/discuss", element: <EventPage /> },
       // EVENT
