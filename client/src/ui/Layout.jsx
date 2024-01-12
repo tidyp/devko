@@ -2,17 +2,15 @@ import { Outlet } from "react-router-dom";
 import styles from "./Layout.module.scss";
 
 // import Header from "./Header";
-import GNB from "./GNB";
+import NaviBar from "./NaviBar";
 import Banner from "../ui/Banner";
-import Footer from "./Footer";
 
 const Layout = () => {
   return (
     <div className={styles.layout}>
-      <GNB />
+      <NaviBar />
       <Banner />
       <Outlet />
-      <Footer />
     </div>
   );
 };

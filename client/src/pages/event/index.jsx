@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import FilterBox from "../../components/FilterBox";
 import PopTags from "../../components/PopTags";
 import TopWriters from "../../components/TopWriters";
 import {
@@ -8,6 +7,7 @@ import {
 } from "react-icons/fa";
 
 const dummyData = [
+  // 데이터 시작일-종료일 utils로 처리
   {
     year: 2024,
     month: 1,
@@ -28,6 +28,14 @@ const dummyData = [
     year: 2024,
     month: 1,
     day: 16,
+    event: "채용공고 일정",
+    time: "14:00~16:00",
+    color: "bg-purple-400",
+  },
+  {
+    year: 2024,
+    month: 1,
+    day: 17,
     event: "채용공고 일정",
     time: "14:00~16:00",
     color: "bg-purple-400",
@@ -87,7 +95,6 @@ const Index = () => {
   };
 
   useEffect(() => {
-    console.log("Month changed:", today);
   }, [today]);
 
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -97,7 +104,6 @@ const Index = () => {
       <div className="box-border flex justify-center">
         <div className="box-border flex w-[80rem] gap-4">
           <div className="flex flex-col gap-2">
-            <FilterBox />
             <PopTags />
             <TopWriters />
           </div>
@@ -154,7 +160,7 @@ const Index = () => {
                                   {day !== null ? day.day : ""}
                                 </span>
                               </div>
-                              <div className="bottom h-30 flex-grow cursor-pointer py-1">
+                              <div className="flex bottom h-30 flex-grow cursor-pointer py-1">
                                 {day && day.data && (
                                   // TODO: 링크
                                   <div

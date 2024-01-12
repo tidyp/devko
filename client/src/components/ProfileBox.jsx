@@ -1,13 +1,13 @@
 const ProfileBox = ({ user }) => {
   return (
-    <div className="flex flex-col gap-3 rounded-3xl bg-white p-4">
-      <header className="flex flex-row items-center justify-center gap-3">
-        <div>
-          <img className="w-48 rounded-full" src={user.profileImage} alt="" />
+    <div className="flex w-96 flex-col gap-3 rounded-3xl bg-white p-4">
+      <header className="flex flex-row items-center justify-center gap-6">
+        <div className="w-32">
+          <img className="w-32 rounded-full" src={user.profileImage} alt="" />
         </div>
-        <div>
-          <p>{user.userName}</p>
-          <p>{user.workPosition}</p>
+        <div className="w-32">
+          <p>{user.nickName}</p>
+          <p><span>Position</span>{user.workPosition}</p>
           <p>{user.googleEmail}</p>
           <p>{user.naverEmail}</p>
         </div>
@@ -22,7 +22,9 @@ const ProfileBox = ({ user }) => {
       </section>
       <section>
         <p>소개</p>
-        <p>뭐</p>
+        <p>dqwdqwdqwdwqdqwdqwdqwdwqdqwdqwdqwd</p>
+        <p>dqwdqwdqwdwqdqwdqwdqwdwqdqwdqwdqwd</p>
+        <p>dqwdqwdqwdwqdqwdqwdqwdwqdqwdqwdqwd</p>
       </section>
       <footer>
         <p>커뮤니티 활동</p>

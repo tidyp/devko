@@ -3,7 +3,7 @@ import cookie from "react-cookies";
 import { useNavigate } from "react-router-dom";
 
 const Index = () => {
-  const googleId = cookie.load("googleId");
+  const userID = cookie.load("userId");
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -12,7 +12,7 @@ const Index = () => {
     selfDescription: "",
     userName: "",
     notification: "",
-    googleId: googleId,
+    userId: userID,
   });
 
   const handleChange = (e) => {
@@ -34,7 +34,6 @@ const Index = () => {
       );
 
       if (res.ok) {
-        // console.log("Form submitted successfully");
         navigate("/");
       } else {
         console.error("Error submitting form:", res);
@@ -84,7 +83,7 @@ const Index = () => {
             className="rounded-md border p-2"
           />
           <input
-            type="text"
+            type="checkbox"
             name="notification"
             placeholder="알림수신"
             value={formData.notification}

@@ -2,7 +2,7 @@ import Post from "./Post";
 import NewPost from "./NewPost";
 
 const PostList = ({ posts }) => {
-  const reversedPosts = posts.currPageRows.slice().reverse();
+  const reversedPosts = posts.slice().reverse();
   return (
     <div className="flex w-full flex-col justify-center ">
       <div className="flex flex-col items-center justify-center">

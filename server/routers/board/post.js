@@ -4,15 +4,58 @@ const path = require("path");
 const db = require("../../config/db");
 require("dotenv").config();
 
-// 게시글 목록 보기
+// ===== 게시글 목록 보기
 router.get("/list", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "post.html"));
 });
 
-router.get("/:page", async (req, res) => {
+// 게시글 전체 목록
+router.get("/", async (req, res) => {
   try {
-    const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id ORDER BY p.createdAt ASC`;
+    const sql = `
+    SELECT p.userId AS userId
+          , p.id AS id
+          , p.category AS category
+          , p.title AS title
+          , p.content AS content
+          , p.createdAt AS createdAt
+          , p.updatedAt AS updatedAt
+          , u.userName AS userName
+          , u.profileImage AS profileImage
+          , u.grade AS grade
+    FROM posts p
+    LEFT OUTER JOIN users u ON p.userId = u.id
+    ORDER BY p.createdAt ASC
+    `;
     const [rows, fields] = await db.query(sql);
+    res.json(rows);
+  } catch (err) {
+    console.error("Query execution error:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// 각 메뉴별 페이징된 게시물 보기
+router.get("/:category/:page", async (req, res) => {
+  try {
+    const category = req.params.category;
+    const sql = `
+    SELECT p.userId AS userId
+          , p.id AS id
+          , p.category AS category
+          , p.title AS title
+          , p.content AS content
+          , p.createdAt AS createdAt
+          , p.updatedAt AS updatedAt
+          , u.userName AS userName
+          , u.profileImage AS profileImage
+          , u.grade AS grade
+    FROM posts p
+    LEFT OUTER JOIN users u ON p.userId = u.id
+    WHERE p.category = ?
+    ORDER BY p.createdAt ASC
+    `;
+    const [rows, fields] = await db.query(sql, [category]);
 
     const itemsPerPage = 10;
     const page = parseInt(req.params.page) || 1;
@@ -34,7 +77,39 @@ router.get("/:page", async (req, res) => {
   }
 });
 
-// 게시글 쓰기
+// ===== 해당 게시글 보기
+router.get("/view/:postid?", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "..", "public", "postview.html"));
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const sql = `
+    SELECT p.userId AS userId
+          , p.id AS id
+          , p.category AS category
+          , p.title AS title
+          , p.content AS content
+          , p.createdAt AS createdAt
+          , p.updatedAt AS updatedAt
+          , u.userName AS userName
+          , u.profileImage AS profileImage
+          , u.grade AS grade
+    FROM posts p
+    LEFT OUTER JOIN users u ON p.userId = u.id
+    WHERE p.id = ?
+    ORDER BY p.createdAt ASC
+    `;
+    const [rows, fields] = await db.query(sql, [postId]);
+    res.send(rows);
+  } catch (err) {
+    console.error("Query execution error:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// ===== 게시글 쓰기
 router.get("/write", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "postwrite.html"));
 });
@@ -46,11 +121,17 @@ router.get("/write/data", (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const user = req.cookies.googleEmail;
+    const user = req.body.userId;
     const title = req.body.title;
     const content = req.body.content;
-    const sql = `INSERT INTO posts (userId, title, content, createdAt, updatedAt) VALUES (?, ?, ?, now(), now());`;
-    const [rows, fields] = await db.query(sql, [user, title, content]);
+    const category = req.body.category;
+    const sql = `INSERT INTO posts (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
+    const [rows, fields] = await db.query(sql, [
+      user,
+      title,
+      content,
+      category,
+    ]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -58,24 +139,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// 해당 게시글 보기
-router.get("/view/:postid?", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "..", "public", "postview.html"));
-});
-
-router.get("/:id?", async (req, res) => {
-  try {
-    const postid = req.params.id;
-    const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id WHERE u.id = ?`;
-    const [rows, fields] = await db.query(sql, [postid]);
-    res.send(rows);
-  } catch (err) {
-    console.error("Query execution error:", err);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
-// 게시글 수정
+// ===== 게시글 수정
 router.get("/edit/:id?", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "postedit.html"));
 });
@@ -83,7 +147,22 @@ router.get("/edit/:id?", (req, res) => {
 router.get("/edit/data/:id?", async (req, res) => {
   try {
     const postId = req.params.id;
-    const sql = `SELECT * FROM posts p LEFT OUTER JOIN users u ON p.userId = u.id WHERE id = ?`;
+    const sql = `
+    SELECT p.userId AS userId
+          , p.id AS id
+          , p.category AS category
+          , p.title AS title
+          , p.content AS content
+          , p.createdAt AS createdAt
+          , p.updatedAt AS updatedAt
+          , u.userName AS userName
+          , u.profileImage AS profileImage
+          , u.grade AS grade
+    FROM posts p
+    LEFT OUTER JOIN users u ON p.userId = u.id
+    WHERE u.id = ?
+    ORDER BY p.createdAt ASC
+    `;
     const [rows, fields] = await db.query(sql, [postId]);
     res.json(rows);
   } catch (err) {
@@ -93,7 +172,6 @@ router.get("/edit/data/:id?", async (req, res) => {
 });
 
 router.put("/:id?", async (req, res) => {
-  const user = req.cookies.googleEmail;
   const postId = req.params.id;
   const title = req.body.title;
   const content = req.body.content;
@@ -115,7 +193,7 @@ router.put("/:id?", async (req, res) => {
   }
 });
 
-// 게시글 삭제
+// ===== 게시글 삭제
 router.delete("/:id?", async (req, res) => {
   try {
     const postId = req.params.id;

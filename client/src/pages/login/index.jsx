@@ -1,15 +1,10 @@
 import styles from "./Login.module.scss";
 import { ReactComponent as GoogleBtn } from "../../assets/web_neutral_rd_ctn.svg";
-import { useEffect } from "react";
+
 
 import naverImge from "../../assets/btnG_완성형.png";
 
 const LoginPage = () => {
-  useEffect(() => {
-    const cookies = document.cookie;
-    console.log("Cookies:", cookies);
-  }, []);
-
   return (
     <div className={styles.container}>
       <div className={styles.text}>

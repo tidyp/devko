@@ -7,7 +7,6 @@ import PostList from "./PostList";
 import ErrorServer from "./ErrorServer";
 import NewPost from "./NewPost";
 
-import FilterBox from "../../components/FilterBox";
 import PopTags from "../../components/PopTags";
 import TopWriters from "../../components/TopWriters";
 
@@ -19,7 +18,6 @@ const index = () => {
       <div className="box-border flex w-[80rem] gap-4">
         <div className="flex flex-col items-center gap-2">
           <NewPost />
-          <FilterBox />
           <PopTags />
           <TopWriters />
         </div>
