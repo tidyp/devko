@@ -9,6 +9,7 @@ import QnaPage, { loader as qnasLoader } from "./pages/qna";
 import GroupPage from "./pages/group";
 import SignupPage from "./pages/signup";
 
+// import Postdetail from "./pages/Postdetail";
 import Postdetail, { loader as postLoader } from "./pages/Postdetail";
 
 import LoginPage from "./pages/login";
@@ -27,10 +28,11 @@ const router = createBrowserRouter([
       // { path: "/exploer", element: <ExploerPage /> },
       // DISCUSS
       { path: "/discuss", element: <DiscussPage />, loader: discussesLoader },
+      // { path: "/discuss/:id", element: <Postdetail />},
       { path: "/discuss/:id", element: <Postdetail />, loader: postLoader },
       // Q&A
       { path: "/qna", element: <QnaPage />, loader: qnasLoader },
-      { path: "/qna/:id", element: <Postdetail />, loader: postLoader },
+      // { path: "/qna/:id", element: <Postdetail />, loader: postLoader },
       // EVENT
       { path: "/event", element: <EventPage /> },
       // EVENT
