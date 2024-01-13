@@ -59,20 +59,20 @@ SELECT * FROM devko.comments;
 DROP TABLE devko.tags;
 CREATE TABLE IF NOT EXISTS tags (
     postId INT,
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id INT,
     name TEXT
 );
 
 -- LIKES 테이블
-DROP TABLE devko.likes;
+-- DROP TABLE devko.likes;
 CREATE TABLE IF NOT EXISTS likes (
     userId VARCHAR(64),
     postId INT,
-    id INT AUTO_INCREMENT PRIMARY KEY
+    id INT
 );
 
 -- VIEWS 테이블
-DROP TABLE devko.views;
+-- DROP TABLE devko.views;
 CREATE TABLE IF NOT EXISTS views (
     postId INT,
     id INT AUTO_INCREMENT PRIMARY KEY

@@ -18,20 +18,28 @@
         ><br />
 
         <label for="tag">Tags:</label><br />
-        <input type="text" id="tag1" name="tag1" /><br />
-        <input type="text" id="tag2" name="tag2" /><br />
-        <input type="text" id="tag3" name="tag3" /><br />
-        <input type="text" id="tag4" name="tag4" /><br />
-        <input type="text" id="tag5" name="tag5" /><br />
+        <div id="tagBody">
+          <!-- Tags Rows -->
+        </div>
         <button type="button" onclick="editForm()">수정하기</button>
       </form>
     </div>
 
     <script>
-      const url = new URL(window.location.href);
-      const postId = url.pathname.split("/")[4];
-
       document.addEventListener("DOMContentLoaded", () => {
+        const url = new URL(window.location.href);
+        const postId = url.pathname.split("/")[4];
+
+        fetchPost(postId);
+        fetchTag(postId);
+
+        document.getElementById("editButton").addEventListener("click", () => {
+          editForm(postId);
+        });
+      });
+
+      // 게시판
+      function fetchPost(postId) {
         fetch(`/api/post/edit/data/${postId}`)
           .then((response) => response.json())
           .then((data) => {
@@ -40,26 +48,45 @@
             document.getElementById("userId").innerHTML = data[0].userId;
             document.getElementById("title").value = data[0].title;
             document.getElementById("content").value = data[0].content;
-            for (i = 0; i < data.length; i++) {
-              const tagId = `tag${i + 1}`;
-              document.getElementById(tagId).value = data[i].tag;
-            }
           })
           .catch((error) => {
             console.error("Error fetching data:", error);
           });
-      });
+      }
 
-      function editForm() {
+      // 태그
+      function fetchTag(postId) {
+        fetch(`/api/tag/${postId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            const tagBody = document.getElementById("tagBody");
+            tagBody.innerHTML = "";
+
+            data.forEach((tag) => {
+              const div = document.createElement("div");
+              div.innerHTML = `
+              <input type="text" name="tag" id="tag${tag.id}"/>
+              `;
+              tagBody.appendChild(div);
+              document.getElementById(`tag${tag.id}`).value = tag.name;
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching search data:", error);
+          });
+      }
+
+      // 게시판, 태그 수정
+      function editForm(postId) {
         const title = document.getElementById("title").value;
         const content = document.getElementById("content").value;
-        const tags = {
-          tag1: document.getElementById("tag1").value,
-          tag2: document.getElementById("tag2").value,
-          tag3: document.getElementById("tag3").value,
-          tag4: document.getElementById("tag4").value,
-          tag5: document.getElementById("tag5").value,
-        };
+
+        const tags = {};
+        for (let i = 1; i <= 5; i++) {
+          const tagValue = document.getElementById(`tag${i}`).value;
+          tags[`tag${i}`] = tagValue;
+        }
 
         fetch(`/api/post/${postId}`, {
           method: "PUT",

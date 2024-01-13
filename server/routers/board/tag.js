@@ -42,11 +42,11 @@ router.post("/", async (req, res) => {
       tags = [tags.trim()];
     }
 
-    const sql = `INSERT INTO tags (postId, name) VALUES (?, ?);`;
+    const sql = `INSERT INTO tags (postId, id, name) VALUES (?, ?, ?);`;
     const results = [];
 
-    for (const tag of tags) {
-      const [rows, fields] = await db.query(sql, [postId, tag]);
+    for (i = 0; i < tags.length; i++) {
+      const [rows, fields] = await db.query(sql, [postId, i + 1, tags[i]]);
       results.push(rows);
     }
 
@@ -60,24 +60,17 @@ router.post("/", async (req, res) => {
 // 태그 수정
 router.put("/:id", async (req, res) => {
   const postId = req.body.postId;
-  const tags = [
-    req.body.tag1,
-    req.body.tag2,
-    req.body.tag3,
-    req.body.tag4,
-    req.body.tag5,
-  ];
+  const tags = req.body.tags;
+  console.log(req.body);
 
   const sql = `UPDATE tags SET name = ? WHERE postId = ? AND id = ?`;
-  const results = [];
 
   try {
-    for (const tag of tags) {
-      const [rows, fields] = await db.query(sql, [postId, tag]);
-      results.push(rows);
-    }
-
-    res.send(results);
+    await db.query(sql, [tag1, postId, tagId]);
+    await db.query(sql, [tag2, postId, tagId]);
+    await db.query(sql, [tag3, postId, tagId]);
+    await db.query(sql, [tag4, postId, tagId]);
+    await db.query(sql, [tag5, postId, tagId]);
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).send("Internal Server Error");

@@ -70,6 +70,7 @@ router.get("/", async (req, res) => {
           , u.profileImage AS profileImage
           , u.grade AS grade
     FROM posts p
+    LEFT OUTER JOIN likes l ON p.id = l.postId
     LEFT OUTER JOIN users u ON p.userId = u.id
     ORDER BY p.createdAt ASC
     `;
@@ -93,6 +94,7 @@ router.get("/:id", async (req, res) => {
           , p.content AS content
           , p.createdAt AS createdAt
           , p.updatedAt AS updatedAt
+          , t.id AS tagId
           , t.name AS tag
           , u.userName AS userName
           , u.profileImage AS profileImage
