@@ -17,6 +17,7 @@
             <th>Title</th>
             <th>Content</th>
             <th>UserId</th>
+            <th>Tag</th>
             <th>CreatedAt</th>
             <th>UpdatedAt</th>
           </tr>
@@ -74,6 +75,7 @@
         fetch(`/api/post/${postId}`)
           .then((response) => response.json())
           .then((data) => {
+            console.log(data);
             const tableBody = document.getElementById("TableBody");
             tableBody.innerHTML = "";
 
@@ -85,6 +87,7 @@
                           <td>${post.title}</td>
                           <td>${post.content}</td>
                           <td>${post.userId}</td>
+                          <td>${post.tag}</td>
                           <td>${post.createdAt}</td>
                           <td>${post.updatedAt}</td>
                       `;

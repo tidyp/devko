@@ -1,8 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
 const db = require("../../config/db");
-require("dotenv").config();
 
 // 검색 결과 보기
 router.get("/:input", async (req, res) => {

@@ -17,6 +17,12 @@
         <textarea id="content" name="content" rows="10" required></textarea
         ><br />
 
+        <label for="tag">Tags:</label><br />
+        <input type="text" id="tag1" name="tag1" /><br />
+        <input type="text" id="tag2" name="tag2" /><br />
+        <input type="text" id="tag3" name="tag3" /><br />
+        <input type="text" id="tag4" name="tag4" /><br />
+        <input type="text" id="tag5" name="tag5" /><br />
         <button type="button" onclick="editForm()">수정하기</button>
       </form>
     </div>
@@ -34,6 +40,10 @@
             document.getElementById("userId").innerHTML = data[0].userId;
             document.getElementById("title").value = data[0].title;
             document.getElementById("content").value = data[0].content;
+            for (i = 0; i < data.length; i++) {
+              const tagId = `tag${i + 1}`;
+              document.getElementById(tagId).value = data[i].tag;
+            }
           })
           .catch((error) => {
             console.error("Error fetching data:", error);
@@ -43,11 +53,35 @@
       function editForm() {
         const title = document.getElementById("title").value;
         const content = document.getElementById("content").value;
+        const tags = {
+          tag1: document.getElementById("tag1").value,
+          tag2: document.getElementById("tag2").value,
+          tag3: document.getElementById("tag3").value,
+          tag4: document.getElementById("tag4").value,
+          tag5: document.getElementById("tag5").value,
+        };
 
         fetch(`/api/post/${postId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ title, content }),
+          body: JSON.stringify({
+            title,
+            content,
+            tags,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Post updated successfully:", data);
+          })
+          .catch((error) => {
+            console.error("Error updating post:", error);
+          });
+
+        fetch(`/api/tag/${postId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ postId, tags }),
         })
           .then((response) => response.json())
           .then((data) => {

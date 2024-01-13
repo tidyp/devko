@@ -2,9 +2,8 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 const db = require("../../config/db");
-require("dotenv").config();
 
-// 테스트 코드, 삭제 예정
+// 테스트 코드
 router.get("/list", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "..", "public", "post.html"));
 });
@@ -33,10 +32,13 @@ router.get("/edit/data/:id", async (req, res) => {
           , p.content AS content
           , p.createdAt AS createdAt
           , p.updatedAt AS updatedAt
+          , t.id AS tagId
+          , t.name AS tag
           , u.userName AS userName
           , u.profileImage AS profileImage
           , u.grade AS grade
     FROM posts p
+    LEFT OUTER JOIN tags t ON p.id = t.postId 
     LEFT OUTER JOIN users u ON p.userId = u.id
     WHERE p.id = ?
     ORDER BY p.createdAt ASC
@@ -91,10 +93,12 @@ router.get("/:id", async (req, res) => {
           , p.content AS content
           , p.createdAt AS createdAt
           , p.updatedAt AS updatedAt
+          , t.name AS tag
           , u.userName AS userName
           , u.profileImage AS profileImage
           , u.grade AS grade
     FROM posts p
+    LEFT OUTER JOIN tags t ON p.id = t.postId
     LEFT OUTER JOIN users u ON p.userId = u.id
     WHERE p.id = ?
     ORDER BY p.createdAt ASC
@@ -156,8 +160,10 @@ router.post("/", async (req, res) => {
     const title = req.body.title;
     const content = req.body.content;
     const category = req.body.category;
-    const sql = `INSERT INTO posts (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
-    const [rows, fields] = await db.query(sql, [
+
+    const postSql = `INSERT INTO posts (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
+
+    const [rows, fields] = await db.query(postSql, [
       user,
       title,
       content,
@@ -175,17 +181,11 @@ router.put("/:id", async (req, res) => {
   const postId = req.params.id;
   const title = req.body.title;
   const content = req.body.content;
-  const updatedAt = new Date();
 
-  const sql = `UPDATE posts SET title = ?, content = ?, updatedAt = ? WHERE id = ?`;
+  const sql = `UPDATE posts SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?`;
 
   try {
-    const [rows, fields] = await db.query(sql, [
-      title,
-      content,
-      updatedAt,
-      postId,
-    ]);
+    const [rows, fields] = await db.query(sql, [title, content, postId]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
