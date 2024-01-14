@@ -164,6 +164,9 @@ router.post("/", async (req, res) => {
     const category = req.body.category;
 
     const postSql = `INSERT INTO posts (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
+    const setSql = `SET @last_id = LAST_INSERT_ID();`;
+    const likeSql = `INSERT INTO likes (postId) VALUES (@last_id)`;
+    const viewSql = `INSERT INTO views (postId) VALUES (@last_id)`;
 
     const [rows, fields] = await db.query(postSql, [
       user,
@@ -171,6 +174,9 @@ router.post("/", async (req, res) => {
       content,
       category,
     ]);
+    await db.query(setSql);
+    await db.query(likeSql);
+    await db.query(viewSql);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -199,9 +205,14 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const postId = req.params.id;
-    const sql = "DELETE FROM posts WHERE id = ?";
 
-    const [rows, fields] = await db.query(sql, [postId]);
+    const postSql = `DELETE FROM posts WHERE id = ?`;
+    const likeSql = `DELETE FROM likes WHERE id = ?`;
+    const viewSql = `DELETE FROM views WHERE id = ?`;
+
+    const [rows, fields] = await db.query(postSql, [postId]);
+    await db.query(likeSql, [postId]);
+    await db.query(viewSql, [postId]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);

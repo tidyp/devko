@@ -20,6 +20,8 @@
             <th>Tag</th>
             <th>CreatedAt</th>
             <th>UpdatedAt</th>
+            <th>Like</th>
+            <th>View</th>
           </tr>
         </thead>
         <tbody id="TableBody">
@@ -67,7 +69,6 @@
       document.addEventListener("DOMContentLoaded", () => {
         fetchPost(postId);
         fetchComment(postId);
-        submitComment(postId);
       });
 
       // 게시글 목록 보기
@@ -75,7 +76,6 @@
         fetch(`/api/post/${postId}`)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
             const tableBody = document.getElementById("TableBody");
             tableBody.innerHTML = "";
 
@@ -90,13 +90,48 @@
                           <td>${post.tag}</td>
                           <td>${post.createdAt}</td>
                           <td>${post.updatedAt}</td>
+                          <td><button id="likeButton">♥</button></td>
+                          <td id="likeCount">0</td>
                       `;
 
               tableBody.appendChild(row);
+
+              // 좋아요 버튼 한번 클릭하면 추가, 두번 클릭하면 삭제
+              let isLiked = false;
+
+              const likeButton = row.querySelector("#likeButton");
+              likeButton.addEventListener("click", async () => {
+                try {
+                  const response = await fetch(`/api/like/${postId}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ isLiked: !isLiked }),
+                  });
+
+                  if (response.ok) {
+                    isLiked = !isLiked;
+                    likeCounter(postId);
+                  } else {
+                    console.error("Failed to update like status");
+                  }
+                } catch (error) {
+                  console.error("Error:", error);
+                }
+              });
+              likeCounter(postId);
             });
           })
           .catch((error) => {
             console.error("Error fetching data:", error);
+          });
+      }
+
+      // 좋아요 수 보기
+      function likeCounter() {
+        fetch(`/api/like/${postId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("likeCount").innerText = data[0].count;
           });
       }
 
@@ -126,7 +161,6 @@
         fetch(`/api/comment/${postId}`)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
             const commentBody = document.getElementById("commentTableBody");
             commentBody.innerHTML = "";
 

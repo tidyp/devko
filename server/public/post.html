@@ -27,8 +27,6 @@
             <th>UserId</th>
             <th>CreatedAt</th>
             <th>UpdatedAt</th>
-            <th>Like</th>
-            <th>View</th>
           </tr>
         </thead>
         <tbody id="TableBody">
@@ -62,15 +60,14 @@
             data.currPageRows.forEach((post) => {
               const row = document.createElement("tr");
               row.innerHTML = `
-                <td>${post.category}</td>
-                <td>${post.id}</td>
-                <td><a href="/api/post/view/${post.id}">${post.title}</a></td>
-                <td>${post.userId}</td>
-                <td>${post.createdAt}</td>
-                <td>${post.updatedAt}</td>
-                <td>♥</td>
-                <td>0</td>
-            `;
+                      <td>${post.category}</td>
+                      <td>${post.id}</td>
+                      <td><a href="/api/post/view/${post.id}">${post.title}</a></td>
+                      <td>${post.userId}</td>
+                      <td>${post.createdAt}</td>
+                      <td>${post.updatedAt}</td>
+                      
+                  `;
               tableBody.appendChild(row);
             });
             renderPaginationLinks(data, "fetchPost");
@@ -96,13 +93,13 @@
             data.currPageRows.forEach((post) => {
               const row = document.createElement("tr");
               row.innerHTML = `
-                <td>${post.category}</td>
-                <td>${post.id}</td>
-                <td><a href="/api/post/view/${post.id}">${post.title}</a></td>
-                <td>${post.userId}</td>
-                <td>${post.createdAt}</td>
-                <td>${post.updatedAt}</td>
-            `;
+                      <td>${post.category}</td>
+                      <td>${post.id}</td>
+                      <td><a href="/api/post/view/${post.id}">${post.title}</a></td>
+                      <td>${post.userId}</td>
+                      <td>${post.createdAt}</td>
+                      <td>${post.updatedAt}</td>
+                  `;
               tableBody.appendChild(row);
             });
             renderPaginationLinks(data, "fetchSearch");

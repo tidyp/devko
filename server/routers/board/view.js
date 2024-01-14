@@ -16,16 +16,12 @@ router.get("/:postId", async (req, res) => {
   }
 });
 
-// 좋아요 한번 클릭하면 추가, 두번 클릭하면 삭제
+// 좋아요 추가
 router.post("/:postId", async (req, res) => {
   const postId = req.params.postId;
-  const { isLiked } = req.body;
-  const increment = isLiked ? 1 : -1;
-
-  const sql = `UPDATE likes SET count = count + ? WHERE postId = ?`;
-
+  const sql = `UPDATE likes SET count = count + 1 WHERE postId = ?`;
   try {
-    const [rows, fields] = await db.query(sql, [increment, postId]);
+    const [rows, fields] = await db.query(sql, [postId]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
