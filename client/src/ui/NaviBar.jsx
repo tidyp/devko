@@ -9,6 +9,7 @@ import { useState } from "react";
 
 const NaviBar = () => {
   const userImage = "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=1";
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -26,10 +27,21 @@ const NaviBar = () => {
     navigate("/");
   };
 
+  //
   const activeLink = "text-indigo-600";
+  // 검색
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/search/${searchQuery}`);
+  };
+
   return (
     <>
-      <nav className="z-40 flex items-center justify-center bg-[#f5f5f5] py-4">
+      <nav className="z-40 flex items-center justify-center bg-white py-4 sticky">
         <div className="flex w-[80rem] items-center justify-between px-8">
           <div className="text-base font-semibold">
             <Link to="/">DEVKO</Link>
@@ -68,7 +80,14 @@ const NaviBar = () => {
           </div>
           <div className="relative flex  items-center gap-4">
             <FaSearch />
-            <input type="text" placeholder="검색어를 입력하세요." />
+            <form onSubmit={handleSearchSubmit}>
+              <input
+                type="text"
+                placeholder="검색어를 입력하세요."
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
+            </form>
             <FaBell />
             {username && (
               <div className="flex flex-row items-center gap-2 text-3xl">

@@ -1,4 +1,5 @@
 // import postsData from "../../data/posts.json";
+import { Link } from "react-router-dom";
 
 import { readPosts } from "../../api/apiDevko";
 import { useLoaderData } from "react-router-dom";
@@ -22,14 +23,23 @@ const index = () => {
               {posts.map((el) => {
                 return (
                   <>
-                    {/* 링크추가 */}
                     <li key={el.title} className="group mb-4 w-full">
-                      <div className="flex transform items-center justify-between rounded-lg border bg-white p-4 transition-all duration-300 ease-in-out hover:scale-105 group-hover:bg-gray-100 group-hover:shadow-lg">
-                        <h2 className="mb-2 text-xl font-semibold">
-                          {el.title}
-                        </h2>
-                        <p className="text-gray-700">{el.content}</p>
-                      </div>
+                      <Link to={`/${el.category}/${el.id}`}>
+                        <div className="flex transform items-center justify-between rounded-lg border bg-white p-4 transition-all duration-300 ease-in-out hover:scale-105 group-hover:bg-gray-100 group-hover:shadow-lg">
+                          <img
+                            className="w-8 rounded-full"
+                            src={el.profileImage}
+                            alt=""
+                          />
+                          <span className="text-blue-700">{el.userName}</span>
+                          <span className="mb-2 text-xl font-semibold">
+                            {el.title}
+                          </span>
+                          <span className="text-gray-700">{el.content}</span>
+                          <span className="text-gray-700">{el.content}</span>
+                          <span className="text-gray-700">{el.createdAt}</span>
+                        </div>
+                      </Link>
                     </li>
                   </>
                 );

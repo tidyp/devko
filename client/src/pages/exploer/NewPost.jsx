@@ -18,10 +18,6 @@ const NewPost = () => {
 
   return (
     <button className="flex h-12 w-full flex-col items-center justify-center rounded-2xl  bg-indigo-700 text-xl text-white">
-      <div className="flex items-center" onClick={handleOpen}>
-        {/* <div>+</div> */}
-        <div>게시글 작성</div>
-      </div>
       {!username && isOpen && (
         <Modal onClose={handleClose}>
           <p className="py-10">로그인이 필요합니다.</p>
@@ -32,10 +28,15 @@ const NewPost = () => {
           </Link>
         </Modal>
       )}
-      {username && isOpen && (
-        <Modal onClose={handleClose}>
-          <NewPostForm onClose={handleClose} />
-        </Modal>
+      {username && (
+        // <Modal onClose={handleClose}>
+        <Link to="write">
+          <div className="flex items-center" onClick={handleOpen}>
+            {/* <div>+</div> */}
+            <div>게시글 작성</div>
+          </div>
+        </Link>
+        // </Modal>
       )}
     </button>
   );

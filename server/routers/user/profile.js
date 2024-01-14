@@ -25,8 +25,8 @@ router.get("/:id", async (req, res) => {
     JOIN comments c ON c.userId = u.id
     WHERE u.id = ?
     `;
-    // const userId = req.body.userId;
-    const userId = 'ca436c51-f3b7-45fe-9a7e-275269a81e6e';
+    const userId = req.body.userId;
+    // const userId = 'ca436c51-f3b7-45fe-9a7e-275269a81e6e';
 
     const [rows, fields] = await db.query(sql, userId);
     res.json(rows);

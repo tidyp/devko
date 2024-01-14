@@ -8,6 +8,7 @@ export async function readUser(id) {
   return data;
 }
 
+
 // Reads: 게시글 조회
 export async function readPosts() {
   try {
@@ -69,4 +70,37 @@ export async function deletePost() {
   const res = await fetch(`${API_URL}/post/:id`);
   const data = await res.json();
   return data;
+}
+
+
+// Reads: 댓글 조회
+export async function readComments(id) {
+  try {
+    const res = await fetch(`${API_URL}/comment/${id}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data. Status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    throw error;
+  }
+}
+
+
+// 검색결과
+
+export async function searchResult(id) {
+  try {
+    const res = await fetch(`${API_URL}/search/${id}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data. Status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    throw error;
+  }
 }

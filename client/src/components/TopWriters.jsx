@@ -19,7 +19,7 @@ const dummyData = [
 
 const TopWriters = () => {
   return (
-    <div className="box-border flex h-auto w-64 flex-col items-center justify-center gap-3.5 rounded-2xl bg-white p-8">
+    <div className="box-border flex h-auto w-64 flex-col items-center justify-center gap-3.5 rounded-2xl bg-slate-50 p-8">
       <div className="text-base font-semibold text-black">Top Writers</div>
       <div className="flex h-auto flex-col gap-5 self-stretch px-2.5">
         {dummyData.map((el, index) => (

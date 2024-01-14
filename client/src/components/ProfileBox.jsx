@@ -1,6 +1,6 @@
 const ProfileBox = ({ user }) => {
   return (
-    <div className="flex w-96 flex-col gap-3 rounded-3xl bg-white p-4">
+    <div className="flex w-96 flex-col gap-3 rounded-3xl bg-slate-50 p-4">
       <header className="flex flex-row items-center justify-center gap-6">
         <div className="w-32">
           <img className="w-32 rounded-full" src={user.profileImage} alt="" />
@@ -29,19 +29,19 @@ const ProfileBox = ({ user }) => {
       <footer>
         <p>커뮤니티 활동</p>
         <div className="grid grid-cols-2 gap-4">
-          <div className="rounded-lg bg-slate-200 p-4">
+          <div className="rounded-lg bg-slate-50 p-4">
             <p>dwdwd</p>
             <p>0/100</p>
           </div>
-          <div className="rounded-lg bg-slate-200 p-4">
+          <div className="rounded-lg bg-slate-50 p-4">
             <p>dwdwd</p>
             <p>0/100</p>
           </div>
-          <div className="rounded-lg bg-slate-200 p-4">
+          <div className="rounded-lg bg-slate-50 p-4">
             <p>dwdwd</p>
             <p>0/100</p>
           </div>
-          <div className="rounded-lg bg-slate-200 p-4">
+          <div className="rounded-lg bg-slate-50 p-4">
             <p>dwdwd</p>
             <p>0/100</p>
           </div>
