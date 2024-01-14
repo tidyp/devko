@@ -21,7 +21,7 @@
         <div id="tagBody">
           <!-- Tags Rows -->
         </div>
-        <button type="button" onclick="editForm()">수정하기</button>
+        <button type="button" id="editButton">수정하기</button>
       </form>
     </div>
 
@@ -83,10 +83,16 @@
         const content = document.getElementById("content").value;
 
         const tags = {};
-        for (let i = 1; i <= 5; i++) {
-          const tagValue = document.getElementById(`tag${i}`).value;
-          tags[`tag${i}`] = tagValue;
-        }
+        const tagElements = document.querySelectorAll('[id^="tag"]');
+
+        tagElements.forEach((tagElement, index) => {
+          if (index !== 0) {
+            const tagValue = tagElement.value;
+            tags[`tag${index}`] = tagValue;
+          }
+        });
+
+        console.log(tags);
 
         fetch(`/api/post/${postId}`, {
           method: "PUT",
@@ -108,7 +114,7 @@
         fetch(`/api/tag/${postId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ postId, tags }),
+          body: JSON.stringify({ tags }),
         })
           .then((response) => response.json())
           .then((data) => {

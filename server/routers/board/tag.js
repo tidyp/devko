@@ -58,19 +58,18 @@ router.post("/", async (req, res) => {
 });
 
 // 태그 수정
-router.put("/:id", async (req, res) => {
-  const postId = req.body.postId;
+router.put("/:postId", async (req, res) => {
+  const postId = req.params.postId;
   const tags = req.body.tags;
-  console.log(req.body);
 
   const sql = `UPDATE tags SET name = ? WHERE postId = ? AND id = ?`;
 
   try {
-    await db.query(sql, [tag1, postId, tagId]);
-    await db.query(sql, [tag2, postId, tagId]);
-    await db.query(sql, [tag3, postId, tagId]);
-    await db.query(sql, [tag4, postId, tagId]);
-    await db.query(sql, [tag5, postId, tagId]);
+    for (let key in tags) {
+      let tagId = key.slice(3);
+      const [rows, fields] = await db.query(sql, [tags[key], postId, tagId]);
+      res.send(rows);
+    }
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).send("Internal Server Error");
@@ -78,5 +77,19 @@ router.put("/:id", async (req, res) => {
 });
 
 // 태그 삭제
+router.delete("/:postId/:tagId", async (req, res) => {
+  const postId = req.params.postId;
+  const tagId = req.params.tagId;
+
+  const sql = `DELETE FROM tags WHERE postId = ? AND id = ?`;
+
+  try {
+    const [rows, fields] = await db.query(sql, [postId, tagId]);
+    res.send(rows);
+  } catch (err) {
+    console.error("Query execution error:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 module.exports = router;
