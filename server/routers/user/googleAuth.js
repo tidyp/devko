@@ -56,17 +56,23 @@ router.get("/callback", async (req, res) => {
     // 이미 가입된 회원, 로그인
     if (rows.length > 0) {
       let userId = rows[0].id;
-      res.cookie("userId", userId);
+      res.cookie("userId", userId, {
+        httpOnly: true,
+        secure: true,
+      });
       res.redirect("http://localhost:5173/");
 
       // 없는 회원, 신규 회원가입 + 추가 정보 입력
     } else {
       userId = uuidv4();
       await db.execute(
-        "INSERT INTO users_Google (id, googleId, googleEmail, googleImage) VALUES (?, ?, ?, ?)",
-        [userId, googleId, googleEmail, googleImage]
+        "INSERT INTO users_Google (id, googleId, googleEmail, googleImage) VALUES (?, ?, ?, ?); INSERT INTO users (id, profileImage, createdAt, updatedAt, grade) values (1, ?, now(), now(), 5);",
+        [userId, googleId, googleEmail, googleImage, googleImage]
       );
-      res.cookie("userId", userId);
+      res.cookie("userId", userId, {
+        httpOnly: true,
+        secure: true,
+      });
       res.redirect("http://localhost:5173/signup");
     }
   } catch (error) {

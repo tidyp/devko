@@ -65,4 +65,23 @@ router.get("/image", async (req, res) => {
     };
 });
 
+// 이메일 찾기 -- 이전 필요 (/find/info)
+
+router.get("/info", async (req, res) => {
+  const sql = `SELECT ug.googleEmail, un.naverEmail FROM users_google ug
+  JOIN users u on u.id = ug.id
+  JOIN users_naver un on un.id = u.id
+  WHERE ug.googleEmail = ? or un.naverEmail`;
+  const googleEmail = req.body.googleEmail;
+  const naverEmail = req.body.naverEmail;
+
+  try {
+    const [rows, fields] = await db.query(sql, [googleEmail, naverEmail]);
+    res.json(rows);
+  } catch (err) {
+    console.error("Query execution error:", err);
+    res.status(500).send("Internal Server Error");
+  };
+});
+
 module.exports = router;

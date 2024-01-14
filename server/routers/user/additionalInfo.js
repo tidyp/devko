@@ -39,7 +39,10 @@ router.post("/step3", async (req, res) => {
 
     if (rows.length > 0) {
       await db.execute(
-        `UPDATE users SET userName = ?, workPosition = ?, interestArea = ?, selfDescription = ?, grade = 5, createdAt = now(), updatedAt = now(), notification = ? WHERE id = ?`,
+        `UPDATE users u
+        JOIN users_google ug ON u.id = ug.id 
+        JOIN users_naver un ON u.id = un.id 
+        SET userName = ?, workPosition = ?, interestArea = ?, selfDescription = ?, grade = 5, createdAt = now(), updatedAt = now(), notification = ? WHERE id = ?`,
         [
           userName,
           workPosition,
