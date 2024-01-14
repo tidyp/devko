@@ -69,6 +69,7 @@
       document.addEventListener("DOMContentLoaded", () => {
         fetchPost(postId);
         fetchComment(postId);
+        addView(postId);
       });
 
       // 게시글 목록 보기
@@ -82,17 +83,17 @@
             data.forEach((post) => {
               const row = document.createElement("tr");
               row.innerHTML = `
-                          <td>${post.category}</td>
-                          <td>${post.id}</td>
-                          <td>${post.title}</td>
-                          <td>${post.content}</td>
-                          <td>${post.userId}</td>
-                          <td>${post.tag}</td>
-                          <td>${post.createdAt}</td>
-                          <td>${post.updatedAt}</td>
-                          <td><button id="likeButton">♥</button></td>
-                          <td id="likeCount">0</td>
-                      `;
+                                <td>${post.category}</td>
+                                <td>${post.id}</td>
+                                <td>${post.title}</td>
+                                <td>${post.content}</td>
+                                <td>${post.userId}</td>
+                                <td>${post.tag}</td>
+                                <td>${post.createdAt}</td>
+                                <td>${post.updatedAt}</td>
+                                <td><button id="likeButton">♥</button><span id="likeCount">0</span></td>
+                                <td id="viewCount">0</td>
+                            `;
 
               tableBody.appendChild(row);
 
@@ -110,7 +111,7 @@
 
                   if (response.ok) {
                     isLiked = !isLiked;
-                    likeCounter(postId);
+                    fetchLike(postId);
                   } else {
                     console.error("Failed to update like status");
                   }
@@ -118,7 +119,9 @@
                   console.error("Error:", error);
                 }
               });
-              likeCounter(postId);
+
+              fetchLike(postId);
+              fetchView(postId);
             });
           })
           .catch((error) => {
@@ -126,12 +129,40 @@
           });
       }
 
-      // 좋아요 수 보기
-      function likeCounter() {
+      // 좋아요수 보기
+      function fetchLike(postId) {
         fetch(`/api/like/${postId}`)
           .then((response) => response.json())
           .then((data) => {
             document.getElementById("likeCount").innerText = data[0].count;
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+          });
+      }
+
+      // 조회수 추가
+      function addView(postId) {
+        fetch(`/api/view/${postId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ postId }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((error) => {
+            console.error("Error fetching data:", error);
+          });
+      }
+
+      // 조회수 보기
+      function fetchView(postId) {
+        fetch(`/api/view/${postId}`)
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("viewCount").innerText = data[0].count;
           });
       }
 
@@ -168,17 +199,17 @@
               const row = document.createElement("tr");
               row.id = `commentId${comment.id}`;
               row.innerHTML = `
-                        <td>${comment.userId}</td>
-                        <td>${comment.postId}</td>
-                        <td>${comment.id}</td>
-                        <td>${comment.mainId}</td>
-                        <td>${comment.content}</td>
-                        <td>${comment.createdAt}</td>
-                        <td>${comment.updatedAt}</td>
-                        <td><button id="editButton${comment.id}" onclick="editComment(${comment.id})">수정</button></td>
-                        <td><button id="deleteButton${comment.id}" onclick="deleteComment(${comment.id})">삭제</button></td>
-                        <td><button id="subCommentButton${comment.id}" onclick="subComment(${comment.id})">댓글</button></td>
-                  `;
+                              <td>${comment.userId}</td>
+                              <td>${comment.postId}</td>
+                              <td>${comment.id}</td>
+                              <td>${comment.mainId}</td>
+                              <td>${comment.content}</td>
+                              <td>${comment.createdAt}</td>
+                              <td>${comment.updatedAt}</td>
+                              <td><button id="editButton${comment.id}" onclick="editComment(${comment.id})">수정</button></td>
+                              <td><button id="deleteButton${comment.id}" onclick="deleteComment(${comment.id})">삭제</button></td>
+                              <td><button id="subCommentButton${comment.id}" onclick="subComment(${comment.id})">댓글</button></td>
+                        `;
               commentBody.appendChild(row);
             });
             renderPaginationLinks(data, "fetchComment");
@@ -207,17 +238,17 @@
               const row = document.createElement("tr");
               row.id = `commentId${comment.id}`;
               row.innerHTML = `
-                    <td>${comment.userId}</td>
-                    <td>${comment.postId}</td>
-                    <td>${comment.id}</td>
-                    <td>${comment.mainId}</td>
-                    <td>${comment.content}</td>
-                    <td>${comment.createdAt}</td>
-                    <td>${comment.updatedAt}</td>
-                    <td><button id="editButton${comment.id}" onclick="editComment(${comment.id})">수정</button></td>
-                    <td><button id="deleteButton${comment.id}" onclick="deleteComment(${comment.id})">삭제</button></td>
-                    <td><button id="subCommentButton${comment.id}" onclick="subComment(${comment.id})">댓글</button></td>
-                    `;
+                          <td>${comment.userId}</td>
+                          <td>${comment.postId}</td>
+                          <td>${comment.id}</td>
+                          <td>${comment.mainId}</td>
+                          <td>${comment.content}</td>
+                          <td>${comment.createdAt}</td>
+                          <td>${comment.updatedAt}</td>
+                          <td><button id="editButton${comment.id}" onclick="editComment(${comment.id})">수정</button></td>
+                          <td><button id="deleteButton${comment.id}" onclick="deleteComment(${comment.id})">삭제</button></td>
+                          <td><button id="subCommentButton${comment.id}" onclick="subComment(${comment.id})">댓글</button></td>
+                          `;
               commentBody.appendChild(row);
 
               document.getElementById("userId").value = "";
@@ -290,17 +321,17 @@
         const newRow = document.createElement("tr");
 
         newRow.innerHTML = `
-                <td><input type="text" id="newCommentUserId" name="newCommentUserId" required /></td>
-                <td>${postId}</td>
-                <td></td>
-                <td>${commentId}</td>
-                <td><input type="text" id="newCommentContent" name="newCommentContent" required /></td>
-                <td></td>
-                <td></td>
-                <td><button onclick="saveNewComment(${postId}, ${commentId})">저장</button></td>
-                <td><button onclick="cancelNewComment()">취소</button></td>
-                <td></td>
-              `;
+                      <td><input type="text" id="newCommentUserId" name="newCommentUserId" required /></td>
+                      <td>${postId}</td>
+                      <td></td>
+                      <td>${commentId}</td>
+                      <td><input type="text" id="newCommentContent" name="newCommentContent" required /></td>
+                      <td></td>
+                      <td></td>
+                      <td><button onclick="saveNewComment(${postId}, ${commentId})">저장</button></td>
+                      <td><button onclick="cancelNewComment()">취소</button></td>
+                      <td></td>
+                    `;
         commentBody.appendChild(newRow);
       }
 

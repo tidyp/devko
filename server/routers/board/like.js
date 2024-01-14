@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
 
-// 좋아요 보기
+// 게시글 좋아요 보기
 router.get("/:postId", async (req, res) => {
   const postId = req.params.postId;
   const sql = `Select * FROM likes WHERE postId = ?`;
@@ -16,7 +16,7 @@ router.get("/:postId", async (req, res) => {
   }
 });
 
-// 좋아요 한번 클릭하면 추가, 두번 클릭하면 삭제
+// 게시글 좋아요 한번 클릭하면 추가, 두번 클릭하면 삭제
 router.post("/:postId", async (req, res) => {
   const postId = req.params.postId;
   const { isLiked } = req.body;

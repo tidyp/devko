@@ -19,19 +19,6 @@ CREATE TABLE IF NOT EXISTS users (
      notification INT
 );
 
-INSERT INTO users (id, userName) VALUES ('iamjaeeuncho', 'iamjaeeuncho');
-INSERT INTO users (id, userName) VALUES ('6worry', '6worry');
-INSERT INTO users (id, userName) VALUES ('tidypark', 'tidypark');
-INSERT INTO users (id, userName) VALUES ('lovehyun', 'lovehyun');
-INSERT INTO users (id, userName) VALUES ('0unk0', '0unk0');
-INSERT INTO users (id, userName) VALUES ('dukkov', 'dukkov');
-INSERT INTO users (id, userName) VALUES ('can-robot21', 'can-robot21');
-INSERT INTO users (id, userName) VALUES ('ohjmi', 'ohjmi');
-INSERT INTO users (id, userName) VALUES ('WhyBusyy', 'WhyBusyy');
-INSERT INTO users (id, userName) VALUES ('sunnyvrvr', 'sunnyvrvr');
-INSERT INTO users (id, userName) VALUES ('devzelly', 'devzelly');
-INSERT INTO users (id, userName) VALUES ('asylee02', 'asylee02');
-
 SELECT * FROM devko.users;
 
 -- GOOGLE USERS 테이블

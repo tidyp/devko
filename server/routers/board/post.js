@@ -207,8 +207,8 @@ router.delete("/:id", async (req, res) => {
     const postId = req.params.id;
 
     const postSql = `DELETE FROM posts WHERE id = ?`;
-    const likeSql = `DELETE FROM likes WHERE id = ?`;
-    const viewSql = `DELETE FROM views WHERE id = ?`;
+    const likeSql = `DELETE FROM likes WHERE postId = ?`;
+    const viewSql = `DELETE FROM views WHERE postId = ?`;
 
     const [rows, fields] = await db.query(postSql, [postId]);
     await db.query(likeSql, [postId]);
