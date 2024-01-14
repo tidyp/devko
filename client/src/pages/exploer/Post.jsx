@@ -5,11 +5,12 @@ import cookie from "react-cookies";
 import NewPostForm from "../exploer/NewPostForm";
 
 import { VscKebabVertical } from "react-icons/vsc";
-import { GoEye, GoComment, GoHeart } from "react-icons/go";
+import { GoEye, GoComment, GoHeart, GoHeartFill } from "react-icons/go";
 
 import Modal from "../../components/Model";
 
 const Post = ({ post }) => {
+  const [isClickLike, setIsClickLike] = useState(false);
   console.log(post);
 
   const data = formatDate(post.createdAt);
@@ -47,9 +48,27 @@ const Post = ({ post }) => {
     setIsOpenEdit(false);
   };
 
+  // 좋아요 클릭 이벤트
+  const handleLikeClick = async () => {
+    setIsClickLike((prev) => !prev);
+    try {
+      const res = await fetch("http://localhost:3000/api/like/4", {
+        method: "POST",
+      });
+
+      if (res.ok) {
+        console.log("Post liked successfully");
+      } else {
+        console.error("Failed to like post");
+      }
+    } catch (error) {
+      console.error("Error while liking post", error);
+    }
+  };
+
   return (
     <>
-      <div className="m-2 flex h-fit w-full flex-col items-start justify-start gap-5 rounded-[10px] bg-white p-8">
+      <div className="m-2 flex h-fit w-full flex-col items-start justify-start gap-5 rounded-[10px] bg-slate-50 p-8">
         <div className="flex w-full justify-between">
           <div className="flex items-center justify-center gap-2.5 self-stretch">
             <Link to={`/userinfo`}>
@@ -85,6 +104,7 @@ const Post = ({ post }) => {
             {isDropdownOpen && (
               <div className="item translate3d absolute right-0.5 flex flex-col items-center justify-center rounded border bg-white p-2 px-4 shadow-md">
                 <span className="w-8 cursor-pointer" onClick={handleOpen}>
+                  {/* <Link to="">수정</Link> */}
                   수정
                 </span>
                 <span className="w-8 cursor-pointer">삭제</span>
@@ -114,8 +134,16 @@ const Post = ({ post }) => {
             <GoComment />
             <span>0</span>
             <GoEye />
-            <span>0</span>
-            <GoHeart />
+            <span>{post.count}</span>
+            {isClickLike ? (
+              <GoHeartFill
+                className="scale-150 transform text-red-600 hover:scale-150"
+                onClick={handleLikeClick}
+              />
+            ) : (
+              <GoHeart className="hover:scale-150" onClick={handleLikeClick} />
+            )}
+
             <span>0</span>
           </div>
         </div>

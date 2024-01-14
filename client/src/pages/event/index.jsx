@@ -111,7 +111,7 @@ const Index = () => {
           <div className="flex flex-col items-start gap-8">
             {/* 달력 */}
             <div className="mx-auto flex ">
-              <div className="rounded bg-white shadow">
+              <div className="rounded bg-slate-50 shadow">
                 <div className="flex justify-between border-b p-2">
                   <span className="text-lg font-bold">
                     {today.toLocaleString("default", {
