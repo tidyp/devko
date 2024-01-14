@@ -29,6 +29,20 @@ router.get("/:id", async (req, res) => {
     // const userId = 'ca436c51-f3b7-45fe-9a7e-275269a81e6e';
 
     const [rows, fields] = await db.query(sql, userId);
+    console.log(fields)
+    // if (rows.length > 0) {
+    //   await db.execute(
+    //     `UPDATE users SET userName = ?, workPosition = ?, interestArea = ?, selfDescription = ?, grade = 5, createdAt = now(), updatedAt = now(), notification = ? WHERE id = ?`,
+    //     [
+    //       userName,
+    //       workPosition,
+    //       interestArea,
+    //       selfDescription,
+    //       notification,
+    //       userId,
+    //     ]
+    //   );
+    // }
     res.json(rows);
   } catch (err) {
     console.error("Query execution error:", err);

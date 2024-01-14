@@ -22,23 +22,23 @@ CREATE TABLE IF NOT EXISTS users (
 SELECT * FROM devko.users;
 
 -- GOOGLE USERS 테이블
-DROP TABLE devko.usersGoogle;
-CREATE TABLE IF NOT EXISTS usersGoogle (
+DROP TABLE devko.users_Google;
+CREATE TABLE IF NOT EXISTS users_Google (
      id VARCHAR(64),
      googleId VARCHAR(45),
      googleEmail VARCHAR(45),
      googleImage TEXT
 );
 
-SELECT * FROM devko.usersGoogle;
+SELECT * FROM devko.users_Google;
 
 -- NAVER USERS 테이블
-DROP TABLE devko.usersNaver;
-CREATE TABLE IF NOT EXISTS usersNaver (
+DROP TABLE devko.users_Naver;
+CREATE TABLE IF NOT EXISTS users_Naver (
      id VARCHAR(64),
      naverId VARCHAR(45),
      naverEmail VARCHAR(45),
      naverImage TEXT
 );
 
-SELECT * FROM devko.usersNaver;
+SELECT * FROM devko.users_Naver;
