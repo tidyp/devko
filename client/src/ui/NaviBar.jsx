@@ -41,7 +41,7 @@ const NaviBar = () => {
 
   return (
     <>
-      <nav className="z-40 flex items-center justify-center bg-white py-4 sticky">
+      <nav className="z-40 flex items-center justify-center bg-white py-4">
         <div className="flex w-[80rem] items-center justify-between px-8">
           <div className="text-base font-semibold">
             <Link to="/">DEVKO</Link>

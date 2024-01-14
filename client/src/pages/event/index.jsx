@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import PopTags from "../../components/PopTags";
-import TopWriters from "../../components/TopWriters";
+
 import {
   FaRegArrowAltCircleLeft,
   FaRegArrowAltCircleRight,
@@ -94,113 +93,100 @@ const Index = () => {
     setToday(new Date(today.getFullYear(), today.getMonth() + 1, 1));
   };
 
-  useEffect(() => {
-  }, [today]);
+  useEffect(() => {}, [today]);
 
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   return (
     <>
-      <div className="box-border flex justify-center">
-        <div className="box-border flex w-[80rem] gap-4">
-          <div className="flex flex-col gap-2">
-            <PopTags />
-            <TopWriters />
+      <div className="mx-auto flex ">
+        <div className="rounded bg-slate-50 shadow">
+          <div className="flex justify-between border-b p-2">
+            <span className="text-lg font-bold">
+              {today.toLocaleString("default", {
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
+            <div>
+              <button onClick={handlePrevMonth} className="p-1">
+                <FaRegArrowAltCircleLeft />
+              </button>
+              <button onClick={handleNextMonth} className="p-1">
+                <FaRegArrowAltCircleRight />
+              </button>
+            </div>
           </div>
 
-          <div className="flex flex-col items-start gap-8">
-            {/* 달력 */}
-            <div className="mx-auto flex ">
-              <div className="rounded bg-slate-50 shadow">
-                <div className="flex justify-between border-b p-2">
-                  <span className="text-lg font-bold">
-                    {today.toLocaleString("default", {
-                      month: "long",
-                      year: "numeric",
-                    })}
-                  </span>
-                  <div>
-                    <button onClick={handlePrevMonth} className="p-1">
-                      <FaRegArrowAltCircleLeft />
-                    </button>
-                    <button onClick={handleNextMonth} className="p-1">
-                      <FaRegArrowAltCircleRight />
-                    </button>
-                  </div>
-                </div>
+          <table>
+            <thead>
+              <tr>
+                {dayNames.map((el, index) => (
+                  <th
+                    key={index}
+                    className={`w-44 border-r p-2 text-xs ${
+                      index === dayNames.length - 1 ? "border-r-0" : ""
+                    }`}
+                  >
+                    <span>{el}</span>
+                  </th>
+                ))}
+              </tr>
+            </thead>
 
-                <table>
-                  <thead>
-                    <tr>
-                      {dayNames.map((el, index) => (
-                        <th
-                          key={index}
-                          className={`w-44 border-r p-2 text-xs ${
-                            index === dayNames.length - 1 ? "border-r-0" : ""
-                          }`}
-                        >
-                          <span>{el}</span>
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {generateCalendar().map((week, rowIndex) => (
-                      <tr className="h-20 text-center" key={rowIndex}>
-                        {week.map((day, dayIndex) => (
-                          // TODO: 주간 컴포넌트
-                          <td
-                            key={dayIndex}
-                            className="flex-40 cursor-pointer overflow-auto border p-1 transition duration-500 hover:bg-gray-300"
-                          >
-                            <div className="flex-col overflow-hidden">
-                              <div>
-                                <span className="text-gray-500">
-                                  {day !== null ? day.day : ""}
-                                </span>
-                              </div>
-                              <div className="flex bottom h-30 flex-grow cursor-pointer py-1">
-                                {day && day.data && (
-                                  // TODO: 링크
-                                  <div
-                                    className={`mb-1 rounded p-1 text-sm text-white ${
-                                      day.data.event ? day.data.color : ""
-                                    }`}
-                                  >
-                                    <span>{day.data.event}</span>
-                                    <span>{day.data.time}</span>
-                                  </div>
-                                )}
-                              </div>
+            <tbody>
+              {generateCalendar().map((week, rowIndex) => (
+                <tr className="h-20 text-center" key={rowIndex}>
+                  {week.map((day, dayIndex) => (
+                    // TODO: 주간 컴포넌트
+                    <td
+                      key={dayIndex}
+                      className="flex-40 cursor-pointer overflow-auto border p-1 transition duration-500 hover:bg-gray-300"
+                    >
+                      <div className="flex-col overflow-hidden">
+                        <div>
+                          <span className="text-gray-500">
+                            {day !== null ? day.day : ""}
+                          </span>
+                        </div>
+                        <div className="bottom h-30 flex flex-grow cursor-pointer py-1">
+                          {day && day.data && (
+                            // TODO: 링크
+                            <div
+                              className={`mb-1 rounded p-1 text-sm text-white ${
+                                day.data.event ? day.data.color : ""
+                              }`}
+                            >
+                              <span>{day.data.event}</span>
+                              <span>{day.data.time}</span>
                             </div>
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            {/* 게시판 */}
-            <div className="w-full">
-              <h2>게시판</h2>
-              <ul className="flex flex-col gap-2">
-                <li className="rounded-sm bg-purple-400 text-white">
-                  채용공고 일정 1/15-1/17
-                </li>
-                <li className="rounded-sm bg-blue-400 text-white">
-                  교육모집 일정 1/5
-                </li>
-                <li>게시글</li>
-                <li>게시글</li>
-                <li>게시글</li>
-                <li>게시글</li>
-                <li>게시글</li>
-              </ul>
-            </div>
-          </div>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
+      </div>
+      {/* 게시판 */}
+      <div className="w-full">
+        <h2>게시판</h2>
+        <ul className="flex flex-col gap-2">
+          <li className="rounded-sm bg-purple-400 text-white">
+            채용공고 일정 1/15-1/17
+          </li>
+          <li className="rounded-sm bg-blue-400 text-white">
+            교육모집 일정 1/5
+          </li>
+          <li>게시글</li>
+          <li>게시글</li>
+          <li>게시글</li>
+          <li>게시글</li>
+          <li>게시글</li>
+        </ul>
       </div>
     </>
   );

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { formatDate } from "../../utils/utils";
 import { useEffect, useRef, useState } from "react";
 import cookie from "react-cookies";
-import NewPostForm from "../exploer/NewPostForm";
+import NewPost from "../../feature/NewPost";
 
 import { VscKebabVertical } from "react-icons/vsc";
 import { GoEye, GoComment, GoHeart, GoHeartFill } from "react-icons/go";
@@ -113,7 +113,7 @@ const Post = ({ post }) => {
             {/* 수정-삭제 모달 데이터전달 */}
             {isOpenEdit && (
               <Modal onClose={handleClose}>
-                <NewPostForm onClose={handleClose} editpost={post} />
+                <NewPost onClose={handleClose} editpost={post} />
               </Modal>
             )}
           </div>

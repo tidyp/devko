@@ -2,10 +2,11 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import Layout from "./ui/Layout";
 
-import NewPostForm from "./pages/exploer/NewPostForm";
-
+import NewPost from "./feature/NewPost";
 import ExploerPage, { loader as postsLoader } from "./pages/exploer";
-import SearchResult, { loader as searchresultLoader } from "./pages/searchResult";
+import SearchResult, {
+  loader as searchresultLoader,
+} from "./pages/searchResult";
 import DiscussPage, { loader as discussesLoader } from "./pages/discuss";
 import EventPage from "./pages/event";
 import QnaPage, { loader as qnasLoader } from "./pages/qna";
@@ -29,8 +30,12 @@ const router = createBrowserRouter([
       // 홈페이지
       // EXPLOER
       { path: "/", element: <ExploerPage />, loader: postsLoader },
-      { path: "/write", element: <NewPostForm />},
-      { path: "/search/:id", element: <SearchResult />, loader: searchresultLoader },
+      { path: "/write", element: <NewPost /> },
+      {
+        path: "/search/:id",
+        element: <SearchResult />,
+        loader: searchresultLoader,
+      },
       // { path: "/exploer", element: <ExploerPage /> },
       // DISCUSS
       { path: "/discuss", element: <DiscussPage />, loader: discussesLoader },

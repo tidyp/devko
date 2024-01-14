@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Modal from "../../components/Model";
-import NewPostForm from "./NewPostForm";
 import cookie from "react-cookies";
 import { Link } from "react-router-dom";
 
