@@ -89,11 +89,11 @@ router.get("/", async (req, res) => {
 // 해당 게시글 보기
 router.get("/:id", async (req, res) => {
   try {
-    // ↓↓↓↓↓↓ 조회수 로직 추가 ↓↓↓↓↓↓
+    // 조회수 로직 추가
     const viewpostId = req.params.id;
     const viewsql = `UPDATE views SET count = count + 1 WHERE postId = ?`;
     const [row, field] = await db.query(viewsql, [viewpostId]);
-    // ↑↑↑↑↑↑ 조회수 로직 추가 ↑↑↑↑↑↑
+
     const postId = req.params.id;
     const sql = `
     SELECT p.userId AS userId
@@ -105,10 +105,12 @@ router.get("/:id", async (req, res) => {
           , p.updatedAt AS updatedAt
           , t.id AS tagId
           , t.name AS tag
+          , v.count AS view
           , u.userName AS userName
           , u.profileImage AS profileImage
           , u.grade AS grade
     FROM posts p
+    LEFT OUTER JOIN view v ON p.id = v.postId
     LEFT OUTER JOIN tags t ON p.id = t.postId
     LEFT OUTER JOIN users u ON p.userId = u.id
     WHERE p.id = ?

@@ -23,7 +23,7 @@ SELECT * FROM devko.users;
 
 -- GOOGLE USERS 테이블
 DROP TABLE devko.users_Google;
-CREATE TABLE IF NOT EXISTS users_Google (
+CREATE TABLE IF NOT EXISTS usersgoogle (
      id VARCHAR(64),
      googleId VARCHAR(45),
      googleEmail VARCHAR(45),
@@ -34,7 +34,7 @@ SELECT * FROM devko.users_Google;
 
 -- NAVER USERS 테이블
 DROP TABLE devko.users_Naver;
-CREATE TABLE IF NOT EXISTS users_Naver (
+CREATE TABLE IF NOT EXISTS usersnaver (
      id VARCHAR(64),
      naverId VARCHAR(45),
      naverEmail VARCHAR(45),

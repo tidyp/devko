@@ -68,7 +68,7 @@ router.get("/callback", async (req, res) => {
 
   try {
     const [rows, fields] = await db.execute(
-      "SELECT * FROM users_Naver WHERE naverId = ? OR naverEmail = ?",
+      "SELECT * FROM usersnaver WHERE naverId = ? OR naverEmail = ?",
       [naverId, naverEmail]
     );
     if (rows.length > 0) {
@@ -79,7 +79,7 @@ router.get("/callback", async (req, res) => {
     } else {
       userId = uuidv4();
       await db.execute(
-        "INSERT INTO users_Naver (id, naverId, naverEmail, naverImage) VALUES (?, ?, ?, ?)",
+        "INSERT INTO usersnaver (id, naverId, naverEmail, naverImage) VALUES (?, ?, ?, ?)",
         [userId, naverId, naverEmail, naverImage]
       );
       res.cookie("userId", userId);
