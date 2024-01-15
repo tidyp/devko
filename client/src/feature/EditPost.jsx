@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { createPost } from "../api/apiDevko";
+import { readPost } from "../api/apiDevko";
+import { useLoaderData, useParams } from "react-router-dom";
+import { useState } from "react";
+import { updatePost } from "../api/apiDevko";
 import cookie from "react-cookies";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
@@ -11,25 +13,45 @@ const categories = [
   { id: "group", label: "Group" },
 ];
 
-const NewPost = () => {
+const Post = () => {
   const navigate = useNavigate();
   const username = cookie.load("userId");
+  const {params} = useParams()
+
+  // 데이터 load
+  const [post] = useLoaderData().post;
 
   const [selectedCategory, setSelectedCategory] = useState("discuss");
-  const [post, setPost] = useState({
-    title: "",
-    content: "",
-    category: "discuss",
+  const [postData, setPostData] = useState(() => {
+    return post
+      ? { ...post, category: post.category || "discuss" }
+      : { title: "", content: "", category: "discuss" };
   });
 
   const handleCategoryChange = (categoryId) => {
     setSelectedCategory(categoryId);
-    setPost({ ...post, category: categoryId });
+    setPostData((prevPost) => ({ ...prevPost, category: categoryId }));
   };
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
-    setPost((prevPost) => ({ ...prevPost, [name]: value }));
+    setPostData((prevPost) => ({ ...prevPost, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await updatePost({ ...postData, userId: username });
+      console.log("Response:", response);
+      navigate("/");
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  const handleCancel = () => {
+    navigate("/");
   };
 
   const renderCategoryButton = (category) => (
@@ -47,22 +69,6 @@ const NewPost = () => {
     </button>
   );
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await createPost({ ...post, userId: username });
-      console.log("Response:", response);
-      navigate("/");
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  const handleCancel = () => {
-    navigate("/");
-  };
-
   return (
     <div className="flex w-full flex-col items-start">
       <form className="flex w-full flex-col gap-3 px-4" onSubmit={handleSubmit}>
@@ -74,28 +80,28 @@ const NewPost = () => {
             placeholder="제목을 입력하세요"
             className="w-full rounded-lg border bg-blue-100 p-2"
             required
-            value={post.title}
+            value={postData.title}
             onChange={handleChange}
           />
         </div>
-        {post.category === "event" && (
+        {postData.category === "event" && (
           <div className="flex gap-2">
             <input
               type="date"
-              name="title"
-              placeholder="Enter title"
-              className=" w-full rounded-lg border bg-blue-100 p-2"
+              name="startDate"
+              placeholder="시작 날짜"
+              className="w-full rounded-lg border bg-blue-100 p-2"
               required
-              value={post.title}
+              value={postData.startDate}
               onChange={handleChange}
             />
             <input
               type="date"
-              name="title"
-              placeholder="Enter title"
-              className=" w-full rounded-lg border bg-blue-100 p-2"
+              name="endDate"
+              placeholder="종료 날짜"
+              className="w-full rounded-lg border bg-blue-100 p-2"
               required
-              value={post.title}
+              value={postData.endDate}
               onChange={handleChange}
             />
           </div>
@@ -103,10 +109,10 @@ const NewPost = () => {
         <div>
           <textarea
             name="content"
-            className=" h-96 w-full rounded-md border bg-blue-100 p-2"
+            className="h-96 w-full rounded-md border bg-blue-100 p-2"
             placeholder="내용을 입력하세요"
             required
-            value={post.content}
+            value={postData.content}
             onChange={handleChange}
           />
         </div>
@@ -124,4 +130,15 @@ const NewPost = () => {
   );
 };
 
-export default NewPost;
+export default Post;
+export async function loader({ params }) {
+  try {
+    const post = await readPost(params.id);
+    return { post };
+  } catch (error) {
+    // console.error("Error fetching posts:", error);
+
+    // loader-fetch-요청실패
+    return "연결실패";
+  }
+}

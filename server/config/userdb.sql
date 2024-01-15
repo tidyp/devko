@@ -1,11 +1,12 @@
 -- VSCode Mysql 접속: mysql.exe -uroot -p
 -- SQL CLI COMMAND: mysql -u root -p devko < userdb.sql
 
+
 CREATE DATABASE IF NOT EXISTS devko;
 SHOW DATABASES;
 
 -- USERS 테이블
-DROP TABLE devko.users;
+-- DROP TABLE devko.users;
 CREATE TABLE IF NOT EXISTS users (
      id VARCHAR(64),
      userName VARCHAR(45),
@@ -22,7 +23,7 @@ CREATE TABLE IF NOT EXISTS users (
 SELECT * FROM devko.users;
 
 -- GOOGLE USERS 테이블
-DROP TABLE devko.users_Google;
+-- DROP TABLE devko.users_Google;
 CREATE TABLE IF NOT EXISTS users_Google (
      id VARCHAR(64),
      googleId VARCHAR(45),
@@ -33,7 +34,7 @@ CREATE TABLE IF NOT EXISTS users_Google (
 SELECT * FROM devko.users_Google;
 
 -- NAVER USERS 테이블
-DROP TABLE devko.users_Naver;
+-- DROP TABLE devko.users_Naver;
 CREATE TABLE IF NOT EXISTS users_Naver (
      id VARCHAR(64),
      naverId VARCHAR(45),
