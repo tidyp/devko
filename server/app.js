@@ -41,7 +41,6 @@ app.use("/api/post", require("./routers/board/post"));
 app.use("/api/tag", require("./routers/board/tag"));
 app.use("/api/comment", require("./routers/board/comment"));
 app.use("/api/like", require("./routers/board/like"));
-app.use("/api/view", require("./routers/board/view"));
 app.use("/api/search", require("./routers/board/search"));
 
 // 서버

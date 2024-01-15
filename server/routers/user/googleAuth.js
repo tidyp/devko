@@ -63,8 +63,8 @@ router.get("/callback", async (req, res) => {
     } else {
       // userId = uuidv4();
       await db.execute(
-        "INSERT INTO users_Google (id, googleId, googleEmail, googleImage) VALUES (?, ?, ?, ?)",
-        [userId, googleId, googleEmail, googleImage]
+        "INSERT INTO usersgoogle (googleId, googleEmail, googleImage) VALUES (?, ?, ?)",
+        [googleId, googleEmail, googleImage]
       );
       // res.cookie("userId", userId);
       res.redirect("http://localhost:5173/signup");
