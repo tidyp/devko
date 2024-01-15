@@ -105,12 +105,12 @@ router.get("/:id", async (req, res) => {
           , p.updatedAt AS updatedAt
           , t.id AS tagId
           , t.name AS tag
-          , v.count AS view
+          , v.count AS views
           , u.userName AS userName
           , u.profileImage AS profileImage
           , u.grade AS grade
     FROM posts p
-    LEFT OUTER JOIN view v ON p.id = v.postId
+    LEFT OUTER JOIN views v ON p.id = v.postId
     LEFT OUTER JOIN tags t ON p.id = t.postId
     LEFT OUTER JOIN users u ON p.userId = u.id
     WHERE p.id = ?

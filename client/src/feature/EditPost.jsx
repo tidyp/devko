@@ -119,7 +119,7 @@ const Post = () => {
 
         <div className="mt-6">
           <Button color="bg-blue-500" onClick={handleSubmit}>
-            작성하기
+            수정하기
           </Button>
           <Button color="bg-blue-500" onClick={handleCancel}>
             취소하기

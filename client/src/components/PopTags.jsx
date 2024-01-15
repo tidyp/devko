@@ -1,33 +1,34 @@
+import { useEffect, useState } from "react";
+import { getPoptags } from "../api/apiSupabase";
+import PopTag from "./PopTag";
+
+//
+
 const PopTags = () => {
+  const [tags, setTags] = useState([]);
+
+  const fetchData = async () => {
+    try {
+      const res = await getPoptags();
+      setTags(res);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const tagssplice = tags.sort().slice(0, 3);
+
   return (
     <div className="box-border flex h-auto w-64 flex-col items-center justify-center    gap-3.5  rounded-2xl  bg-slate-50 p-8 ">
       <div className=" text-base font-semibold text-black">Popular Tags</div>
       <div className="flex h-auto flex-col items-start justify-start gap-5 self-stretch px-2.5">
-        <div className="flex flex-col items-start justify-start gap-2.5">
-          {/* DOTO: Tag 컴포넌트 */}
-          <div className="inline-flex items-center justify-start gap-2 text-xl font-semibold">
-            # JavaScript
-          </div>
-          <div className="inline-flex items-center justify-start gap-2">
-            98,323 posted
-          </div>
-        </div>
-        <div className="flex flex-col items-start justify-start gap-2.5">
-          <div className="inline-flex items-center justify-start gap-2 text-xl font-semibold">
-            # TypeScript
-          </div>
-          <div className="inline-flex items-center justify-start gap-2">
-            98,323 posted
-          </div>
-        </div>
-        <div className="flex flex-col items-start justify-start gap-2.5">
-          <div className="inline-flex items-center justify-start gap-2 text-xl font-semibold">
-            # Design
-          </div>
-          <div className="inline-flex items-center justify-start gap-2">
-            98,323 posted
-          </div>
-        </div>
+        {tagssplice.map((el) => (
+          <PopTag key={el.id} {...el} />
+        ))}
       </div>
     </div>
   );
