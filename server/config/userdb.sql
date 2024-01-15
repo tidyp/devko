@@ -16,7 +16,9 @@ CREATE TABLE IF NOT EXISTS users (
      createdAt DATETIME,
      updatedAt DATETIME,
      grade INT,
-     notification INT
+     notification INT,
+     googleId INT,
+     naverId INT
 );
 
 SELECT * FROM devko.users;
@@ -24,7 +26,7 @@ SELECT * FROM devko.users;
 -- GOOGLE USERS 테이블
 DROP TABLE IF EXISTS devko.usersgoogle;
 CREATE TABLE IF NOT EXISTS usersgoogle (
-     id VARCHAR(64),
+     id INT AUTO_INCREMENT PRIMARY KEY,
      googleId VARCHAR(45),
      googleEmail VARCHAR(45),
      googleImage TEXT
@@ -35,7 +37,7 @@ SELECT * FROM devko.usersgoogle;
 -- NAVER USERS 테이블
 DROP TABLE IF EXISTS devko.usersnaver;
 CREATE TABLE IF NOT EXISTS usersnaver (
-     id VARCHAR(64),
+     id INT AUTO_INCREMENT PRIMARY KEY,
      naverId VARCHAR(45),
      naverEmail VARCHAR(45),
      naverImage TEXT
