@@ -79,6 +79,7 @@ router.get("/", async (req, res) => {
     ORDER BY p.createdAt ASC
     `;
     const [rows, fields] = await db.query(sql);
+    console.log(rows)
     res.json(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -89,11 +90,11 @@ router.get("/", async (req, res) => {
 // 해당 게시글 보기
 router.get("/:id", async (req, res) => {
   try {
-    // ↓↓↓↓↓↓ 조회수 로직 추가 ↓↓↓↓↓↓
+    // 조회수 로직 추가
     const viewpostId = req.params.id;
     const viewsql = `UPDATE views SET count = count + 1 WHERE postId = ?`;
     const [row, field] = await db.query(viewsql, [viewpostId]);
-    // ↑↑↑↑↑↑ 조회수 로직 추가 ↑↑↑↑↑↑
+
     const postId = req.params.id;
     const sql = `
     SELECT p.userId AS userId
@@ -105,16 +106,19 @@ router.get("/:id", async (req, res) => {
           , p.updatedAt AS updatedAt
           , t.id AS tagId
           , t.name AS tag
+          , v.count AS views
           , u.userName AS userName
           , u.profileImage AS profileImage
           , u.grade AS grade
     FROM posts p
+    LEFT OUTER JOIN views v ON p.id = v.postId
     LEFT OUTER JOIN tags t ON p.id = t.postId
     LEFT OUTER JOIN users u ON p.userId = u.id
     WHERE p.id = ?
     ORDER BY p.createdAt ASC
     `;
     const [rows, fields] = await db.query(sql, [postId]);
+    
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -168,6 +172,7 @@ router.get("/:category/:page", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const user = req.body.userId;
+    console.log(user)
     const title = req.body.title;
     const content = req.body.content;
     const category = req.body.category;

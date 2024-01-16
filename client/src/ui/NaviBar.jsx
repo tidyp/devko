@@ -20,6 +20,7 @@ const NaviBar = () => {
   };
 
   const username = cookie.load("userId");
+  console.log(username)
 
   const clickLogout = () => {
     cookie.remove("userId", { path: "/" });
@@ -41,12 +42,12 @@ const NaviBar = () => {
 
   return (
     <>
-      <nav className="z-40 flex items-center justify-center bg-white py-4 sticky">
+      <nav className="z-40 flex items-center justify-center bg-white py-4">
         <div className="flex w-[80rem] items-center justify-between px-8">
           <div className="text-base font-semibold">
             <Link to="/">DEVKO</Link>
           </div>
-          <div className="flex gap-4 text-base font-semibold  uppercase ">
+          <div className="flex gap-12 text-base font-semibold  uppercase ">
             <NavLink
               to="/"
               className={({ isActive }) => (isActive ? activeLink : "")}
@@ -102,7 +103,7 @@ const NaviBar = () => {
 
             {!username && <Link to="login">로그인</Link>}
             {isDropdownOpen && (
-              <div className="w-30 item translate3d absolute right-0 top-10 flex flex-col rounded border bg-white p-2 px-4 shadow-md">
+              <div className="z-[9999] w-30 item translate3d absolute right-0 top-10 flex flex-col rounded border bg-white p-2 px-4 shadow-md">
                 {username && (
                   <>
                     <span className="cursor-pointer" onClick={clickLogout}>

@@ -45,6 +45,7 @@ router.get("/:postId", async (req, res) => {
 
 // 댓글 작성
 router.post("/:postId/:id", async (req, res) => {
+  console.log('여기')
   try {
     const postId = req.params.postId;
     const commentId = req.params.id;

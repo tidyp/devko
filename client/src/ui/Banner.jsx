@@ -20,8 +20,8 @@ const Banner = () => {
             // modules={[Navigation, Pagination, Autoplay]}
             modules={[Pagination, Autoplay]}
             style={{
-              "--swiper-pagination-color": "#f5f5f5",
-              "--swiper-navigation-color": "#f5f5f5",
+              "--swiper-pagination-color": "#fff",
+              "--swiper-navigation-color": "#fff",
               "--swiper-pagination-bullet-size": "10px",
               "--swiper-navigation-size": "50px",
               "--swiper-navigation-sides-offset": "10px",

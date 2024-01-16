@@ -53,7 +53,10 @@ router.post("/step3", async (req, res) => {
 router.get("/step3", async (req, res) => {
   try {
     const [rows, fields] = await db.execute(
-      "SELECT * FROM users WHERE userName = ?",
+      `SELECT * FROM users u
+       LEFT OUTER JOIN usersgoogle g ON u.googleId = g.id
+       LEFT OUTER JOIN usersnaver n ON u.naverId = n.id
+       WHERE userName = ?`,
       [userName]
     );
 

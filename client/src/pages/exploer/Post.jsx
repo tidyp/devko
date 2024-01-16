@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { formatDate } from "../../utils/utils";
 import { useEffect, useRef, useState } from "react";
 import cookie from "react-cookies";
-import NewPostForm from "../exploer/NewPostForm";
+import NewPost from "../../feature/NewPost";
+import { deletePost } from "../../api/apiDevko";
 
 import { VscKebabVertical } from "react-icons/vsc";
 import { GoEye, GoComment, GoHeart, GoHeartFill } from "react-icons/go";
@@ -11,34 +12,14 @@ import Modal from "../../components/Model";
 
 const Post = ({ post }) => {
   const [isClickLike, setIsClickLike] = useState(false);
-  console.log(post);
+
+  const username = cookie.load("userId");
 
   const data = formatDate(post.createdAt);
 
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
-  const toggleDropdown = () => {
-    console.log("click");
-    setDropdownOpen((prev) => !prev);
-  };
-
   const [isOpenEdit, setIsOpenEdit] = useState(false);
-  const username = cookie.load("userId");
 
   const handleOpen = () => {
     setIsOpenEdit((prev) => !prev);
@@ -52,7 +33,7 @@ const Post = ({ post }) => {
   const handleLikeClick = async () => {
     setIsClickLike((prev) => !prev);
     try {
-      const res = await fetch("http://localhost:3000/api/like/4", {
+      const res = await fetch(`http://localhost:3000/api/like/${post.id}`, {
         method: "POST",
       });
 
@@ -64,6 +45,11 @@ const Post = ({ post }) => {
     } catch (error) {
       console.error("Error while liking post", error);
     }
+  };
+
+  const clickdeletePost = async () => {
+    await deletePost(post.id);
+    await handleClose();
   };
 
   return (
@@ -95,25 +81,24 @@ const Post = ({ post }) => {
           </div>
           <div className="relative " ref={dropdownRef}>
             <VscKebabVertical
-              onClick={toggleDropdown}
+              onClick={handleOpen}
               className="relative cursor-pointer"
             />
-            {/* 수정 */}
-            {/* 삭제 */}
-            {/* TODO: 새페이지로 */}
-            {isDropdownOpen && (
-              <div className="item translate3d absolute right-0.5 flex flex-col items-center justify-center rounded border bg-white p-2 px-4 shadow-md">
-                <span className="w-8 cursor-pointer" onClick={handleOpen}>
-                  {/* <Link to="">수정</Link> */}
-                  수정
-                </span>
-                <span className="w-8 cursor-pointer">삭제</span>
-              </div>
-            )}
             {/* 수정-삭제 모달 데이터전달 */}
             {isOpenEdit && (
               <Modal onClose={handleClose}>
-                <NewPostForm onClose={handleClose} editpost={post} />
+                <span className="bf w-8 cursor-pointer">
+                  <Link to={`/edit/${post.id}`}>수정</Link>
+                </span>
+                <span
+                  className="w-8 cursor-pointer"
+                  onClick={() => clickdeletePost(post.id)}
+                >
+                  삭제
+                </span>
+                <span className="w-8 cursor-pointer">
+                  <Link>신고</Link>
+                </span>
               </Modal>
             )}
           </div>
