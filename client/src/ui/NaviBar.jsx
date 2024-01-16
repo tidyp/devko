@@ -20,7 +20,8 @@ const NaviBar = () => {
   };
 
   const username = cookie.load("userId");
-  console.log(username)
+  const userimage = cookie.load("userImage");
+  console.log(username);
 
   const clickLogout = () => {
     cookie.remove("userId", { path: "/" });
@@ -42,7 +43,7 @@ const NaviBar = () => {
 
   return (
     <>
-      <nav className="z-40 flex items-center justify-center bg-white py-4">
+      <nav className=" flex items-center justify-center bg-white py-4">
         <div className="flex w-[80rem] items-center justify-between px-8">
           <div className="text-base font-semibold">
             <Link to="/">DEVKO</Link>
@@ -92,8 +93,9 @@ const NaviBar = () => {
             <FaBell />
             {username && (
               <div className="flex flex-row items-center gap-2 text-3xl">
-                <Link to={`/userinfo`}>
-                  <img className="w-8 rounded-full" src={userImage} alt="" />
+                {/* <Link to={`/userinfo`}> */}
+                <Link to={`/userinfo/${username}`}>
+                  <img className="w-8 rounded-full" src={userimage} alt="" />
                 </Link>
                 <div onClick={toggleDropdown} className="cursor-pointer">
                   <GoTriangleDown />
@@ -103,13 +105,15 @@ const NaviBar = () => {
 
             {!username && <Link to="login">로그인</Link>}
             {isDropdownOpen && (
-              <div className="z-[9999] w-30 item translate3d absolute right-0 top-10 flex flex-col rounded border bg-white p-2 px-4 shadow-md">
+              <div className=" w-30 item translate3d absolute right-0 top-10 flex flex-col rounded border bg-white p-2 px-4 shadow-md">
                 {username && (
                   <>
-                    <span className="cursor-pointer" onClick={clickLogout}>
+                    <span className=" cursor-pointer" onClick={clickLogout}>
                       로그아웃
                     </span>
-                    <Link to="/myinfo">내 정보</Link>
+                    <Link className="" to="/myinfo">
+                      내 정보
+                    </Link>
                   </>
                 )}
               </div>

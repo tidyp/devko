@@ -15,8 +15,10 @@ router.post("/step3", async (req, res) => {
   const workPosition = req.body.workPosition;
   const interestArea = req.body.interestArea;
   const selfDescription = req.body.selfDescription;
-  const googleId = req.body.userId || 0;
-  const naverId = req.body.userId || 0;
+  // const googleId = req.body.userId || 0;
+  // const naverId = req.body.userId || 0;
+  const googleId = 0;
+  const naverId = 0;
   // let notification = req.body.notification;
 
   profileImage = req.body.userImage
