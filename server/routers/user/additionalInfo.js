@@ -11,11 +11,12 @@ router.get("/step2", (req, res) => {
 router.post("/step3", async (req, res) => {
   const userId = uuidv4();
   const userName = req.body.userName;
+  const profileImage = req.body.profileImage;
   const workPosition = req.body.workPosition;
   const interestArea = req.body.interestArea;
   const selfDescription = req.body.selfDescription;
-  const googleId = req.body.googleId;
-  const naverId = req.body.naverId;
+  const googleId = req.body.googleId || 0;
+  const naverId = req.body.naverId || 0;
   // let notification = req.body.notification;
 
   // if (notification) {
@@ -25,14 +26,15 @@ router.post("/step3", async (req, res) => {
   // }
 
   const INSERT_USER_QUERY = `
-    INSERT INTO users (id, userName, workPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification, googleId, naverId)
-    VALUES (?, ?, ?, ?, ?, NOW(), NOW(), 5, 1, (SELECT id FROM usersgoogle WHERE id = ?), (SELECT id FROM usersnaver WHERE id = ?))
+    INSERT INTO users (id, userName, profileImage, workPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification, googleId, naverId)
+    VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 5, 1, (SELECT id FROM usersgoogle WHERE id = ?), (SELECT id FROM usersnaver WHERE id = ?))
     `;
 
   try {
     const [rows, fields] = await db.execute(INSERT_USER_QUERY, [
       userId,
       userName,
+      profileImage,
       workPosition,
       interestArea,
       selfDescription,

@@ -72,8 +72,7 @@ router.get("/callback", async (req, res) => {
     );
     if (rows.length > 0) {
       // res.cookie("naver_access", { ...info_result_json, access_token: token });
-      let userId = rows[0].naverId;
-      res.cookie("userId", userId, {
+      res.cookie("userId", naverId, {
         httpOnly: true,
         secure: true,
       });
@@ -83,7 +82,7 @@ router.get("/callback", async (req, res) => {
         "INSERT INTO usersnaver (naverId, naverEmail, naverImage) VALUES (?, ?, ?)",
         [naverId, naverEmail, naverImage]
       );
-      res.cookie("userId", userId, {
+      res.cookie("userId", naverId, {
         httpOnly: true,
         secure: true,
       });
