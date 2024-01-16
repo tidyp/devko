@@ -54,7 +54,8 @@ router.get("/callback", async (req, res) => {
 
     // 이미 가입된 회원, 로그인
     if (rows.length > 0) {
-      let userId = rows[0].googleId;
+      let userId = rows[1].googleId;
+      console.log(userId)
       res.cookie("userId", userId, {
         httpOnly: true,
         secure: true,
@@ -67,6 +68,8 @@ router.get("/callback", async (req, res) => {
         "INSERT INTO usersgoogle (googleId, googleEmail, googleImage) VALUES (?, ?, ?);",
         [googleId, googleEmail, googleImage]
       );
+      let userId = rows[1].googleId;
+      console.log(userId)
       res.cookie("userId", userId, {
         httpOnly: true,
         secure: true,
