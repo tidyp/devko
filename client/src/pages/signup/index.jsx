@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const userID = cookie.load("userId");
+  const userImage = cookie.load("userImage");
+  console.log(userImage, userID)
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -13,6 +15,7 @@ const Index = () => {
     userName: "",
     notification: "",
     userId: userID,
+    userImage: userImage,
   });
 
   const handleChange = (e) => {

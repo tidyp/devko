@@ -82,10 +82,18 @@ router.get("/callback", async (req, res) => {
         "INSERT INTO usersnaver (naverId, naverEmail, naverImage) VALUES (?, ?, ?)",
         [naverId, naverEmail, naverImage]
       );
-      res.cookie("userId", naverId, {
-        httpOnly: true,
-        secure: true,
-      });
+      res.cookie("userId", naverId
+      // , {
+      //   httpOnly: true,
+      //   secure: true,
+      // }
+      );
+      res.cookie("userImage", naverImage
+      // , {
+      //   httpOnly: true,
+      //   secure: true,
+      // }
+      );
       res.redirect("http://localhost:5173/signup");
     }
   } catch (error) {

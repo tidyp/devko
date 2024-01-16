@@ -11,25 +11,38 @@ router.get("/step2", (req, res) => {
 router.post("/step3", async (req, res) => {
   const userId = uuidv4();
   const userName = req.body.userName;
-  const profileImage = req.body.googleImage || req.body.naverImage;
+  let profileImage;
   const workPosition = req.body.workPosition;
   const interestArea = req.body.interestArea;
   const selfDescription = req.body.selfDescription;
-  const googleId = req.body.id || 0;
-  const naverId = req.body.id || 0;
+  const googleId = req.body.userId || 0;
+  const naverId = req.body.userId || 0;
   // let notification = req.body.notification;
 
-  // if (notification) {
-  //   notification = 1;
-  // } else {
-  //   notification = 0;
+  profileImage = req.body.userImage
+  // if (req.body.googleImage) {
+  //   profileImage = req.body.googleImage;
+  // } else if (req.body.naverImage) {
+  //   profileImage = req.body.naverImage;
   // }
 
+  console.log(req.body);
+  //   console.log(req.body.naverImage)
+  //   console.log(req.body.googleImage)
   const INSERT_USER_QUERY = `
     INSERT INTO users (id, userName, profileImage, workPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification, googleId, naverId)
     VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 5, 1, (SELECT id FROM usersgoogle WHERE id = ?), (SELECT id FROM usersnaver WHERE id = ?))
     `;
-
+  console.log(
+    userId,
+    userName,
+    profileImage,
+    workPosition,
+    interestArea,
+    selfDescription,
+    googleId,
+    naverId
+  );
   try {
     const [rows, fields] = await db.execute(INSERT_USER_QUERY, [
       userId,
@@ -39,7 +52,7 @@ router.post("/step3", async (req, res) => {
       interestArea,
       selfDescription,
       googleId,
-      naverId
+      naverId,
     ]);
     res.send("업데이트 성공");
   } catch (error) {
