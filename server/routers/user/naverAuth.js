@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const request = require("request-promise");
 const db = require("../../config/db");
-const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
 
 const client_id = process.env.NAVER_CLIENT_ID;
@@ -68,22 +67,21 @@ router.get("/callback", async (req, res) => {
 
   try {
     const [rows, fields] = await db.execute(
-      "SELECT * FROM users_Naver WHERE naverId = ? OR naverEmail = ?",
+      "SELECT * FROM usersnaver WHERE naverId = ? OR naverEmail = ?",
       [naverId, naverEmail]
     );
     if (rows.length > 0) {
       // res.cookie("naver_access", { ...info_result_json, access_token: token });
-      let userId = rows[0].id;
+      let userId = rows[0].naverId;
       res.cookie("userId", userId, {
         httpOnly: true,
         secure: true,
       });
       res.redirect("http://localhost:5173");
     } else {
-      userId = uuidv4();
       await db.execute(
-        "INSERT INTO users_Naver (id, naverId, naverEmail, naverImage) VALUES (?, ?, ?, ?)",
-        [userId, naverId, naverEmail, naverImage]
+        "INSERT INTO usersnaver (naverId, naverEmail, naverImage) VALUES (?, ?, ?)",
+        [naverId, naverEmail, naverImage]
       );
       res.cookie("userId", userId, {
         httpOnly: true,

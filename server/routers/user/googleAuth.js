@@ -3,7 +3,6 @@ const router = express.Router();
 const axios = require("axios");
 const db = require("../../config/db");
 const path = require("path");
-const { v4: uuidv4 } = require("uuid");
 require("dotenv").config();
 
 const GOOGLE_LOGIN_REDIRECT_URI =
@@ -49,25 +48,24 @@ router.get("/callback", async (req, res) => {
 
   try {
     const [rows, fields] = await db.query(
-      "SELECT * FROM users_Google WHERE googleId = ? OR googleEmail = ?",
+      "SELECT * FROM usersgoogle WHERE googleId = ? OR googleEmail = ?",
       [googleId, googleEmail]
     );
 
     // 이미 가입된 회원, 로그인
     if (rows.length > 0) {
-      let userId = rows[0].id;
+      let userId = rows[0].googleId;
       res.cookie("userId", userId, {
         httpOnly: true,
         secure: true,
       });
-      res.redirect("http://localhost:5173/");
+      res.redirect("http://localhost:5173");
 
       // 없는 회원, 신규 회원가입 + 추가 정보 입력
     } else {
-      userId = uuidv4();
       await db.execute(
-        "INSERT INTO users_Google (id, googleId, googleEmail, googleImage) VALUES (?, ?, ?, ?); INSERT INTO users (id, profileImage, createdAt, updatedAt, grade) values (1, ?, now(), now(), 5);",
-        [userId, googleId, googleEmail, googleImage, googleImage]
+        "INSERT INTO usersgoogle (googleId, googleEmail, googleImage) VALUES (?, ?, ?);",
+        [googleId, googleEmail, googleImage]
       );
       res.cookie("userId", userId, {
         httpOnly: true,
