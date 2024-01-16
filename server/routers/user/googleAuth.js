@@ -55,8 +55,8 @@ router.get("/callback", async (req, res) => {
 
     // 이미 가입된 회원, 로그인
     if (rows.length > 0) {
-      // let userId = rows[0].id;
-      // res.cookie("userId", userId);
+      let userId = rows[0].googleId;
+      res.cookie("userId", userId);
       res.redirect("http://localhost:5173/");
 
       // 없는 회원, 신규 회원가입 + 추가 정보 입력

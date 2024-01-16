@@ -10,7 +10,7 @@ import {
 const dummyData = [
   {
     startDate: "2024-01-02 10:00:00",
-    endDate: "2024-01-04 10:00:00",
+    endDate: "2024-01-05 10:00:00",
     event: "1월 교육모집 일정",
     time: "10:00~12:00",
     color: "bg-green-400",

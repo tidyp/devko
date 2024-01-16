@@ -79,6 +79,7 @@ router.get("/", async (req, res) => {
     ORDER BY p.createdAt ASC
     `;
     const [rows, fields] = await db.query(sql);
+    console.log(rows)
     res.json(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -117,6 +118,7 @@ router.get("/:id", async (req, res) => {
     ORDER BY p.createdAt ASC
     `;
     const [rows, fields] = await db.query(sql, [postId]);
+    
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -170,6 +172,7 @@ router.get("/:category/:page", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const user = req.body.userId;
+    console.log(user)
     const title = req.body.title;
     const content = req.body.content;
     const category = req.body.category;

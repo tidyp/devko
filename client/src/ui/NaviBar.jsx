@@ -20,6 +20,7 @@ const NaviBar = () => {
   };
 
   const username = cookie.load("userId");
+  console.log(username)
 
   const clickLogout = () => {
     cookie.remove("userId", { path: "/" });
