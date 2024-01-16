@@ -1,3 +1,5 @@
+// TODO: 중복되는 일정 스택으로 쌓기
+
 import { useState, useEffect } from "react";
 
 import {
@@ -6,43 +8,30 @@ import {
 } from "react-icons/fa";
 
 const dummyData = [
-  // 데이터 시작일-종료일 utils로 처리
   {
-    year: 2024,
-    month: 1,
-    day: 5,
-    event: "교육모집 일정",
+    startDate: "2024-01-02 10:00:00",
+    endDate: "2024-01-04 10:00:00",
+    event: "1월 교육모집 일정",
+    time: "10:00~12:00",
+    color: "bg-green-400",
+  },
+  {
+    startDate: "2024-01-07 10:00:00",
+    endDate: "2024-01-12 10:00:00",
+    event: "1월 교육모집 일정",
+    time: "10:00~12:00",
+    color: "bg-yellow-400",
+  },
+  {
+    startDate: "2024-01-16 10:00:00",
+    endDate: "2024-01-19 10:00:00",
+    event: "1월 교육모집 일정",
     time: "10:00~12:00",
     color: "bg-blue-400",
   },
   {
-    year: 2024,
-    month: 1,
-    day: 15,
-    event: "채용공고 일정",
-    time: "14:00~16:00",
-    color: "bg-purple-400",
-  },
-  {
-    year: 2024,
-    month: 1,
-    day: 16,
-    event: "채용공고 일정",
-    time: "14:00~16:00",
-    color: "bg-purple-400",
-  },
-  {
-    year: 2024,
-    month: 1,
-    day: 17,
-    event: "채용공고 일정",
-    time: "14:00~16:00",
-    color: "bg-purple-400",
-  },
-  {
-    year: 2024,
-    month: 1,
-    day: 17,
+    startDate: "2024-01-22 14:00:00",
+    endDate: "2024-01-28 14:00:00",
     event: "채용공고 일정",
     time: "14:00~16:00",
     color: "bg-purple-400",
@@ -50,8 +39,32 @@ const dummyData = [
 ];
 
 const Index = () => {
-  const [today, setToday] = useState(new Date());
+  function transformData(inputData) {
+    return {
+      year: new Date(inputData.startDate).getFullYear(),
+      month: new Date(inputData.startDate).getMonth() + 1,
+      day: new Date(inputData.startDate).getDate(),
+      event: inputData.event,
+      time: inputData.time,
+      color: inputData.color,
+    };
+  }
 
+  const [today, setToday] = useState(new Date());
+  const [eventData, setEventData] = useState([]);
+
+  useEffect(() => {
+    const events = [];
+    dummyData.forEach((data) => {
+      const startDate = new Date(data.startDate);
+      const endDate = new Date(data.endDate);
+
+      for (let currentDate = startDate; currentDate <= endDate; currentDate.setDate(currentDate.getDate() + 1)) {
+        events.push(transformData({ ...data, startDate: currentDate.toISOString() }));
+      }
+    });
+    setEventData(events);
+  }, []);
   const generateCalendar = () => {
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const lastDayOfMonth = new Date(
@@ -69,7 +82,7 @@ const Index = () => {
         if ((i === 0 && j < startingDayOfWeek) || dayCounter > totalDays) {
           week.push(null);
         } else {
-          const dayData = dummyData.find(
+          const dayData = eventData.find(
             (item) =>
               item.year === today.getFullYear() &&
               item.month === today.getMonth() + 1 &&
@@ -124,7 +137,7 @@ const Index = () => {
                 {dayNames.map((el, index) => (
                   <th
                     key={index}
-                    className={`w-44 border-r p-2 text-xs ${
+                    className={`w-36 border-r p-2 text-xs ${
                       index === dayNames.length - 1 ? "border-r-0" : ""
                     }`}
                   >

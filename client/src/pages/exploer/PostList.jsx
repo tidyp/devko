@@ -19,7 +19,7 @@ const PostList = ({ posts }) => {
           <p className="text-xl">작성된 글이 없습니다.</p>
         )}
         {reversedPosts.map((post) => (
-          <Post post={post} key={post.title} />
+          <Post post={post} key={post.id} />
         ))}
       </div>
     </div>

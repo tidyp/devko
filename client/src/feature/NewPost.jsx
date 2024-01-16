@@ -1,3 +1,5 @@
+// TODO: 날짜 상태관리 수정
+
 import React, { useState } from "react";
 import { createPost } from "../api/apiDevko";
 import cookie from "react-cookies";
@@ -19,6 +21,8 @@ const NewPost = () => {
   const [post, setPost] = useState({
     title: "",
     content: "",
+    startDate: new Date(),
+    endDate: new Date(),
     category: "discuss",
   });
 
@@ -27,9 +31,8 @@ const NewPost = () => {
     setPost({ ...post, category: categoryId });
   };
 
-  const handleChange = ({ target }) => {
-    const { name, value } = target;
-    setPost((prevPost) => ({ ...prevPost, [name]: value }));
+  const handleChange = (key, value) => {
+    setPost((prevPost) => ({ ...prevPost, [key]: value }));
   };
 
   const renderCategoryButton = (category) => (
@@ -75,7 +78,7 @@ const NewPost = () => {
             className="w-full rounded-lg border bg-blue-100 p-2"
             required
             value={post.title}
-            onChange={handleChange}
+            onChange={(e) => handleChange("title", e.target.value)}
           />
         </div>
         {post.category === "event" && (
@@ -86,8 +89,8 @@ const NewPost = () => {
               placeholder="Enter title"
               className=" w-full rounded-lg border bg-blue-100 p-2"
               required
-              value={post.title}
-              onChange={handleChange}
+              value={post.startDate}
+              onChange={(e) => handleChange("startDate", e.target.value)}
             />
             <input
               type="date"
@@ -95,8 +98,8 @@ const NewPost = () => {
               placeholder="Enter title"
               className=" w-full rounded-lg border bg-blue-100 p-2"
               required
-              value={post.title}
-              onChange={handleChange}
+              value={post.endDate}
+              onChange={(e) => handleChange("endDate", e.target.value)}
             />
           </div>
         )}
@@ -107,7 +110,8 @@ const NewPost = () => {
             placeholder="내용을 입력하세요"
             required
             value={post.content}
-            onChange={handleChange}
+            // onChange={handleChange}
+            onChange={(e) => handleChange("content", e.target.value)}
           />
         </div>
 

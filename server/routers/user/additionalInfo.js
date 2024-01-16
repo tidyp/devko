@@ -35,6 +35,10 @@ router.post("/step3", async (req, res) => {
       interestArea,
       selfDescription,
     ]);
+    res.cookie("userId", userId, {
+      httpOnly: true,
+      secure: true,
+    });
     res.send("업데이트 성공");
   } catch (error) {
     console.error("Database query error: ", error);
@@ -55,7 +59,7 @@ router.get("/step3", async (req, res) => {
     if (rows.length > 0) {
       res.status(400).json({ message: "이미 가입된 회원입니다" });
     } else {
-      // await db.execute("INSERT INTO users (userName) VALUES (?)", [userName]);
+      await db.execute("INSERT INTO users (userName) VALUES (?)", [userName]);
       // res.redirect('http://localhost:5173');
       res.json({ message: "등록완료" });
     }

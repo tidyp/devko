@@ -50,14 +50,53 @@ export async function createPost(postData) {
   return data;
 }
 
-export async function updatePost() {
-  const res = await fetch(`${API_URL}/post/:id`);
+// Update: 게시글 수정
+export async function updatePost(params) {
+  console.log(params);
+  console.log(params.title);
+  const res = await fetch(`${API_URL}/post/${params.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id: params.id,
+      title: params.title,
+      content: params.content,
+    }),
+  });
+
+  console.log(res);
+  if (!res.ok) {
+    throw new Error(`Failed to create post. Status: ${res.status}`);
+  }
+
   const data = await res.json();
+  console.log(data);
   return data;
 }
-export async function deletePost() {
-  const res = await fetch(`${API_URL}/post/:id`);
+
+// Delete: 게시글 삭제
+export async function deletePost(id) {
+  const res = await fetch(`${API_URL}/post/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      // id: params.id,
+      // title: params.title,
+      // content: params.content,
+    }),
+  });
+
+  console.log(res);
+  if (!res.ok) {
+    throw new Error(`Failed to create post. Status: ${res.status}`);
+  }
+
   const data = await res.json();
+  console.log(data);
   return data;
 }
 
@@ -100,14 +139,24 @@ export async function readComments(id) {
   }
 }
 
-// Create: 게시글 작성
-export async function createComment({postId, userID}) {
-  const res = await fetch(`${API_URL}/comment/${postId}/${userID}`, {
+// Create: 댓글 작성
+export async function createComment({
+  postId,
+  userId,
+  commentId,
+  commentContent,
+}) {
+  const res = await fetch(`${API_URL}/comment/${postId}/${commentId}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(postId),
+    body: JSON.stringify({
+      postId,
+      userId,
+      commentId,
+      content: commentContent,
+    }),
   });
 
   console.log(res);

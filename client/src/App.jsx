@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "./ui/Layout";
 
 import NewPost from "./feature/NewPost";
+import EditPost, { loader as editPostLoader } from "./feature/EditPost";
 import ExploerPage, { loader as postsLoader } from "./pages/exploer";
 import SearchResult, {
   loader as searchresultLoader,
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
       // EXPLOER
       { path: "/", element: <ExploerPage />, loader: postsLoader },
       { path: "/write", element: <NewPost /> },
+      { path: "/edit/:id", element: <EditPost />, loader: editPostLoader },
       {
         path: "/search/:id",
         element: <SearchResult />,
