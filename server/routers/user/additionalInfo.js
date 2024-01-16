@@ -11,7 +11,7 @@ router.get("/step2", (req, res) => {
 router.post("/step3", async (req, res) => {
   const userId = uuidv4();
   const userName = req.body.userName;
-  const profileImage = req.body.profileImage;
+  const profileImage = req.body.googleImage || req.body.naverImage;
   const workPosition = req.body.workPosition;
   const interestArea = req.body.interestArea;
   const selfDescription = req.body.selfDescription;
@@ -41,10 +41,6 @@ router.post("/step3", async (req, res) => {
       googleId,
       naverId
     ]);
-    res.cookie("userId", userId, {
-      httpOnly: true,
-      secure: true,
-    });
     res.send("업데이트 성공");
   } catch (error) {
     console.error("Database query error: ", error);
@@ -66,10 +62,6 @@ router.get("/step3", async (req, res) => {
       res.status(400).json({ message: "이미 가입된 회원입니다" });
     } else {
       await db.execute("INSERT INTO users (userName) VALUES (?)", [userName]);
-      res.cookie("userId", userId, {
-        httpOnly: true,
-        secure: true,
-      });
       // res.redirect('http://localhost:5173');
       res.json({ message: "등록완료" });
     }
