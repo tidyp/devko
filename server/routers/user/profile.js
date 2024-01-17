@@ -26,10 +26,10 @@ router.get("/:userName", async (req, res) => {
     // JOIN posts p ON p.userId = u.id
     // JOIN comments c ON c.userId = u.id
 
-    const userId = req.body.userId;
+    const userName = req.body.userName;
     // const userId = 'd';
 
-    const [rows, fields] = await db.query(sql, userId);
+    const [rows, fields] = await db.query(sql, userName);
     console.log(rows)
     rows.forEach(row => {
       if (row.grade = 5) {
@@ -46,7 +46,7 @@ router.get("/:userName", async (req, res) => {
         row.grade = 'admin'
       };
     });
-    res.cookie("userName", userId, {
+    res.cookie("userName", userName, {
       secure: true,
     });
     res.json(rows);
