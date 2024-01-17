@@ -51,11 +51,28 @@ router.get("/callback", async (req, res) => {
       "SELECT * FROM usersgoogle WHERE googleId = ? OR googleEmail = ?",
       [googleId, googleEmail]
     );
-    console.log(rows)
 
     // 이미 가입된 회원, 로그인
     if (rows.length > 0) {
-      res.cookie("userId", googleId, {
+      const userSql = `
+      SELECT u.id AS id
+        , u.userName AS userName
+        , u.profileImage AS profileImage
+        , u.grade AS grade
+        , ug.googleId AS googleId
+        , ug.googleEmail AS googleEmail
+        , ug.googleImage AS googleImage
+        , un.naverId AS naverId
+        , un.naverEmail AS naverEmail
+        , un.naverImage AS naverImage
+      FROM users u
+      LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
+      LEFT OUTER JOIN usersnaver un ON u.naverId = un.id
+      WHERE ug.googleId = ?
+      `;
+      const [rows, field] = await db.query(userSql, [googleId]);
+
+      res.cookie("userId", rows[0].id, {
         secure: true,
       });
       res.redirect("http://localhost:5173");
@@ -66,7 +83,7 @@ router.get("/callback", async (req, res) => {
         "INSERT INTO usersgoogle (googleId, googleEmail, googleImage) VALUES (?, ?, ?);",
         [googleId, googleEmail, googleImage]
       );
-      
+
       res.cookie("userId", googleId, {
         secure: true,
       });
