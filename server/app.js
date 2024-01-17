@@ -42,6 +42,7 @@ app.use("/api/tag", require("./routers/board/tag"));
 app.use("/api/comment", require("./routers/board/comment"));
 app.use("/api/like", require("./routers/board/like"));
 app.use("/api/search", require("./routers/board/search"));
+app.use("/api/dailystat", require("./routers/board/dailystat"));
 
 // 서버
 app.listen(port, () => {
