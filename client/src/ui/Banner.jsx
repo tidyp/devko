@@ -13,7 +13,7 @@ import "swiper/css/scrollbar";
 
 const Banner = () => {
   return (
-    <div className="flex justify-center p-4">
+    <div className="flex justify-center p-4 z-10">
       <div className="bg-im ">
         <div className="flex w-[80rem] items-center justify-center text-3xl ">
           <Swiper

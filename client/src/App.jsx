@@ -21,7 +21,8 @@ import LoginPage from "./pages/login";
 import Myinfo from "./pages/myinfo";
 import Error from "./pages/error";
 
-import UserInfo, { loader as userLoader } from "./pages/userinfo";
+import UserInfo from "./pages/userinfo";
+// import UserInfo, { loader as userLoader } from "./pages/userinfo";
 
 const router = createBrowserRouter([
   {
@@ -59,7 +60,8 @@ const router = createBrowserRouter([
 
       // USER: INFO
       { path: "/myinfo", element: <Myinfo /> },
-      { path: "/userinfo", element: <UserInfo />, loader: userLoader },
+      { path: "/userinfo/:id", element: <UserInfo />},
+      // { path: "/userinfo/:id", element: <UserInfo />, loader: userLoader },
     ],
   },
   {

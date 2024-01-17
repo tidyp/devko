@@ -73,7 +73,7 @@ router.get("/", async (req, res) => {
     FROM posts p
     LEFT OUTER JOIN likes l ON p.id = l.postId
     LEFT OUTER JOIN users u ON p.userId = u.id
-
+    LEFT OUTER JOIN usersgoogle ug ON p.userId = ug.googleId
     LEFT OUTER JOIN views v ON p.id = v.postId
 
     ORDER BY p.createdAt ASC
