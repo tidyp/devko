@@ -56,10 +56,6 @@ router.get("/callback", async (req, res) => {
     // 이미 가입된 회원, 로그인
     if (rows.length > 0) {
       res.cookie("userId", googleId, {
-        // httpOnly: true,
-        secure: true,
-      });
-      res.cookie("userImage", googleImage, {
         secure: true,
       });
       res.redirect("http://localhost:5173");
@@ -72,19 +68,11 @@ router.get("/callback", async (req, res) => {
       );
       
       res.cookie("userId", googleId, {
-        // httpOnly: true,
         secure: true,
       });
       res.cookie("userImage", googleImage, {
-        // httpOnly: true,
         secure: true,
       });
-      res.cookie("userImage", googleImage
-      , {
-      //   httpOnly: true,
-        secure: true,
-      }
-      );
       res.redirect("http://localhost:5173/signup");
     }
   } catch (error) {

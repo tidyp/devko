@@ -71,9 +71,7 @@ router.get("/callback", async (req, res) => {
       [naverId, naverEmail]
     );
     if (rows.length > 0) {
-      // res.cookie("naver_access", { ...info_result_json, access_token: token });
       res.cookie("userId", naverId, {
-        httpOnly: true,
         secure: true,
       });
       res.redirect("http://localhost:5173");
@@ -82,18 +80,12 @@ router.get("/callback", async (req, res) => {
         "INSERT INTO usersnaver (naverId, naverEmail, naverImage) VALUES (?, ?, ?)",
         [naverId, naverEmail, naverImage]
       );
-      res.cookie("userId", naverId
-      , {
-      //   httpOnly: true,
+      res.cookie("userId", naverId, {
         secure: true,
-      }
-      );
-      res.cookie("userImage", naverImage
-      , {
-      //   httpOnly: true,
+      });
+      res.cookie("userImage", naverImage, {
         secure: true,
-      }
-      );
+      });
       res.redirect("http://localhost:5173/signup");
     }
   } catch (error) {
