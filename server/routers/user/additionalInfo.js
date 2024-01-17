@@ -53,6 +53,12 @@ router.post("/step3", async (req, res) => {
       googleId,
       naverId,
     ]);
+    res.cookie("userName", userName, {
+      secure: true,
+    });
+    res.cookie("uuid", userId, {
+      secure: true,
+    });
     res.send("업데이트 성공");
   } catch (error) {
     console.error("Database query error: ", error);
