@@ -83,16 +83,16 @@ router.get("/callback", async (req, res) => {
         [naverId, naverEmail, naverImage]
       );
       res.cookie("userId", naverId
-      // , {
+      , {
       //   httpOnly: true,
-      //   secure: true,
-      // }
+        secure: true,
+      }
       );
       res.cookie("userImage", naverImage
-      // , {
+      , {
       //   httpOnly: true,
-      //   secure: true,
-      // }
+        secure: true,
+      }
       );
       res.redirect("http://localhost:5173/signup");
     }
