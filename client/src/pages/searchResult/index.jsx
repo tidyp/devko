@@ -1,22 +1,48 @@
 // import postsData from "../../data/posts.json";
 
 import { searchResult } from "../../api/apiDevko";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, Link } from "react-router-dom";
 
 const index = () => {
   const result = useLoaderData();
-  console.log(result);
+
+  const isData = result.currPageRows.length > 0;
+  const numData = result.currPageRows.length
 
   return (
     <>
-      <div className="flex w-full flex-col items-start text-center">
-        {result.currPageRows.map((post) => (
-          <div key={post.id} className="my-4 rounded-md border p-4">
-            {/* Display post content */}
-            <h2 className="text-xl font-bold">{post.title}</h2>
-            <p className="text-gray-600">{post.content}</p>
-          </div>
-        ))}
+      <ul className="flex w-full flex-col items-center justify-center">
+        {!isData && <p className="p-8 text-3xl">검색 결과가 없습니다</p>}
+        {isData && <p className="p-8 text-3xl">{numData}개의 검색 결과를 찾았습니다.</p>}
+        {isData &&
+          result.currPageRows.map((el) => {
+            return (
+              <>
+                <li key={el.title} className="group mb-4 w-full">
+                  <Link to={`/${el.category}/${el.id}`}>
+                    <div className="flex transform items-center justify-between rounded-lg border bg-white p-4 transition-all duration-300 ease-in-out hover:scale-105 group-hover:bg-gray-100 group-hover:shadow-lg">
+                      <img
+                        className="w-8 rounded-full"
+                        src={el.profileImage}
+                        alt=""
+                      />
+                      <span className="text-blue-700">{el.userName}</span>
+                      <span className="mb-2 text-xl font-semibold">
+                        {el.title}
+                      </span>
+                      <span className="text-gray-700">{el.content}</span>
+                      <span className="text-gray-700">{el.content}</span>
+                      <span className="text-gray-700">{el.createdAt}</span>
+                    </div>
+                  </Link>
+                </li>
+              </>
+            );
+          })}
+      </ul>
+      <div className="flex w-full items-center justify-center">
+        {/* TODO: pagination */}
+        page {result.page}/{result.totalPages}
       </div>
     </>
   );
@@ -24,9 +50,12 @@ const index = () => {
 
 export default index;
 
-export async function loader() {
+export async function loader({ params }) {
+  const { id } = params;
+  console.log(id);
   try {
-    const res = await searchResult();
+    const res = await searchResult(id);
+    console.log(res);
     return res;
   } catch (error) {
     // console.error("Error fetching posts:", error);

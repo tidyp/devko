@@ -66,17 +66,13 @@ export default index;
 //     const res = await fetch(url);
 
 //     if (!res.ok) {
-//       // 만약 응답이 성공적이지 않으면
-//       return "asd"
 //       throw new Error(`HTTP error! Status: ${res.status}`);
 //     }
 
 //     const data = await res.json();
 //     return data;
 //   } catch (error) {
-//     // 에러 발생 시 처리
 //     console.error("Error in loader function:", error);
-//     // 필요에 따라 에러를 다시 throw하거나 기본값이나 다른 에러 처리 로직을 사용할 수 있습니다.
 //     throw error;
 //   }
 // }
