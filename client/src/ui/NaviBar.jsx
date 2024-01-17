@@ -25,6 +25,7 @@ const NaviBar = () => {
 
   const clickLogout = () => {
     cookie.remove("userId", { path: "/" });
+    cookie.remove("userImage", { path: "/" });
     toggleDropdown();
     navigate("/");
   };

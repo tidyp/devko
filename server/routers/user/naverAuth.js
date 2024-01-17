@@ -74,6 +74,9 @@ router.get("/callback", async (req, res) => {
       res.cookie("userId", naverId, {
         secure: true,
       });
+      res.cookie("userImage", naverImage, {
+        secure: true,
+      });
       res.redirect("http://localhost:5173");
     } else {
       await db.execute(
