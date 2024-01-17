@@ -11,17 +11,14 @@ router.get("/step2", (req, res) => {
 router.post("/step3", async (req, res) => {
   const userId = uuidv4();
   const userName = req.body.userName;
-  let profileImage;
+  const profileImage = req.body.userImage;
   const workPosition = req.body.workPosition;
   const interestArea = req.body.interestArea;
   const selfDescription = req.body.selfDescription;
-  // const googleId = req.body.userId || 0;
-  // const naverId = req.body.userId || 0;
-  const googleId = 0;
-  const naverId = 0;
+  const googleId = req.body.userId || 0;
+  const naverId = req.body.userId || 0;
   // let notification = req.body.notification;
 
-  profileImage = req.body.userImage
   // if (req.body.googleImage) {
   //   profileImage = req.body.googleImage;
   // } else if (req.body.naverImage) {
