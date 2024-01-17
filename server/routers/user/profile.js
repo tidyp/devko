@@ -15,7 +15,7 @@ router.get("/:userName", async (req, res) => {
            u.selfDescription AS selfDescription,
            u.grade AS grade
     FROM users u
-    WHERE u.userName = ?
+    WHERE u.id = ?
            `;
           //  p.userId AS postID,
           //  p.category AS category,
@@ -26,7 +26,7 @@ router.get("/:userName", async (req, res) => {
     // JOIN posts p ON p.userId = u.id
     // JOIN comments c ON c.userId = u.id
 
-    const userName = req.body.userName;
+    const userName = req.params.userName;
     // const userId = 'd';
 
     const [rows, fields] = await db.query(sql, userName);
