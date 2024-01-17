@@ -4,7 +4,12 @@ import {
   createComment,
   deletePost,
 } from "../../api/apiDevko";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import {
+  useLoaderData,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { VscKebabVertical } from "react-icons/vsc";
 import Button from "../../components/Button";
 import cookie from "react-cookies";
@@ -14,7 +19,9 @@ import { Link } from "react-router-dom";
 const Postdetail = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const { post, comments } = useLoaderData();
+  const { pathname } = useLocation();
   let [data] = post;
+  const commentsData = comments.currPageRows.slice().reverse()
   console.log(comments);
 
   const navigate = useNavigate();
@@ -41,7 +48,7 @@ const Postdetail = () => {
       });
       setCommentContent("");
       console.log("Response:", response);
-      // navigate("/");
+      navigate(pathname);
     } catch (error) {
       console.error("Error:", error);
     }
@@ -144,7 +151,7 @@ const Postdetail = () => {
           </form>
 
           <div>
-            {comments.currPageRows.map((el) => (
+            {commentsData.map((el) => (
               <div
                 key={el.commentId}
                 className=" mb-4 flex justify-between rounded-md bg-gray-100 p-4"
