@@ -62,7 +62,7 @@ router.post("/step3", async (req, res) => {
     res.cookie("userImage", profileImage, {
       secure: true,
     });
-    res.send("업데이트 성공");
+    res.redirect("http://localhost:5173");
   } catch (error) {
     console.error("Database query error: ", error);
     res.status(500).json({ message: "Internal server error" });
