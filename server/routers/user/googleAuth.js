@@ -61,21 +61,21 @@ router.get("/callback", async (req, res) => {
         , u.grade AS grade
         , ug.googleId AS googleId
         , ug.googleEmail AS googleEmail
-        , ug.googleImage AS googleImage
         , un.naverId AS naverId
         , un.naverEmail AS naverEmail
-        , un.naverImage AS naverImage
       FROM users u
       LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
       LEFT OUTER JOIN usersnaver un ON u.naverId = un.id
       WHERE ug.googleId = ?
       `;
       const [rows, field] = await db.query(userSql, [googleId]);
-
-      res.cookie("userId", rows[0].id, {
+      res.cookie("uuid", rows[0].id, {
         secure: true,
       });
-      res.cookie("userImage", googleImage, {
+      res.cookie("userName", rows[0].userName, {
+        secure: true,
+      });
+      res.cookie("userImage", rows[0].profileImage, {
         secure: true,
       });
       res.redirect("http://localhost:5173");
@@ -87,7 +87,7 @@ router.get("/callback", async (req, res) => {
         [googleId, googleEmail, googleImage]
       );
 
-      res.cookie("userId", googleId, {
+      res.cookie("googleId", googleId, {
         secure: true,
       });
       res.cookie("userImage", googleImage, {

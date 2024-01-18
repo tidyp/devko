@@ -3,9 +3,11 @@ import cookie from "react-cookies";
 import { useNavigate } from "react-router-dom";
 
 const Index = () => {
-  const userID = cookie.load("userId");
+  const googleID = cookie.load("googleId");
+  const naverID = cookie.load("naverId");
   const userImage = cookie.load("userImage");
-  console.log(userID)
+  console.log(googleID)
+  console.log(naverID)
   console.log(userImage)
   const navigate = useNavigate();
 
@@ -15,7 +17,8 @@ const Index = () => {
     selfDescription: "",
     userName: "",
     notification: "",
-    userId: userID,
+    googleId: googleID,
+    naverId: naverID,
     userImage: userImage,
   });
 

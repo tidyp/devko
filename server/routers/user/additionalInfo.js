@@ -15,8 +15,8 @@ router.post("/step3", async (req, res) => {
   const workPosition = req.body.workPosition;
   const interestArea = req.body.interestArea;
   const selfDescription = req.body.selfDescription;
-  const googleId = req.body.userId || 0;
-  const naverId = req.body.userId || 0;
+  const googleId = req.body.googleId || 0;
+  const naverId = req.body.naverId || 0;
   // let notification = req.body.notification;
 
   // if (req.body.googleImage) {
@@ -53,10 +53,13 @@ router.post("/step3", async (req, res) => {
       googleId,
       naverId,
     ]);
+    res.cookie("uuid", userId, {
+      secure: true,
+    });
     res.cookie("userName", userName, {
       secure: true,
     });
-    res.cookie("uuid", userId, {
+    res.cookie("userImage", profileImage, {
       secure: true,
     });
     res.send("업데이트 성공");

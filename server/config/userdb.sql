@@ -28,8 +28,8 @@ SELECT * FROM devko.users;
 -- DROP TABLE devko.usersgoogle;
 CREATE TABLE IF NOT EXISTS usersgoogle (
      id INT AUTO_INCREMENT PRIMARY KEY,
-     googleId VARCHAR(45),
-     googleEmail VARCHAR(45),
+     googleId VARCHAR(128),
+     googleEmail VARCHAR(128),
      googleImage TEXT
 );
 
@@ -39,8 +39,8 @@ SELECT * FROM devko.usersgoogle;
 -- DROP TABLE devko.usersnaver;
 CREATE TABLE IF NOT EXISTS usersnaver (
      id INT AUTO_INCREMENT PRIMARY KEY,
-     naverId VARCHAR(45),
-     naverEmail VARCHAR(45),
+     naverId VARCHAR(128),
+     naverEmail VARCHAR(128),
      naverImage TEXT
 );
 
