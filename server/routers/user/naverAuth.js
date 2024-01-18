@@ -104,7 +104,7 @@ router.get("/callback", async (req, res) => {
       res.cookie("naverId", naverId, {
         secure: true,
       });
-      res.cookie("userImage", naverImage, {
+      res.cookie("naverImage", naverImage, {
         secure: true,
       });
       res.redirect("http://localhost:5173/signup");
