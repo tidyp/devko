@@ -8,7 +8,6 @@ import { FaBell } from "react-icons/fa";
 import { useState } from "react";
 
 const NaviBar = () => {
-  const userImage = "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=1";
   const [searchQuery, setSearchQuery] = useState("");
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -19,12 +18,15 @@ const NaviBar = () => {
     setDropdownOpen((prev) => !prev);
   };
 
-  const username = cookie.load("userId");
-  const userimage = cookie.load("userImage");
-  console.log(username);
+  const useruuid = cookie.load("uuid");
+  const userName = cookie.load("userName")
+  const userImage = cookie.load("userImage");
+  console.log(useruuid, userName, userImage);
+  console.log(userImage)
 
   const clickLogout = () => {
-    cookie.remove("userId", { path: "/" });
+    cookie.remove("uuid", { path: "/" });
+    cookie.remove("userName", { path: "/" });
     cookie.remove("userImage", { path: "/" });
     toggleDropdown();
     navigate("/");
@@ -92,11 +94,11 @@ const NaviBar = () => {
               />
             </form>
             <FaBell />
-            {username && (
+            {useruuid && (
               <div className="flex flex-row items-center gap-2 text-3xl">
                 {/* <Link to={`/userinfo`}> */}
-                <Link to={`/userinfo/${username}`}>
-                  <img className="w-8 rounded-full" src={userimage} alt="" />
+                <Link to={`/userinfo/${useruuid}`}>
+                  <img className="w-8 rounded-full" src={userImage} alt="" />
                 </Link>
                 <div onClick={toggleDropdown} className="cursor-pointer">
                   <GoTriangleDown />
@@ -104,10 +106,10 @@ const NaviBar = () => {
               </div>
             )}
 
-            {!username && <Link to="login">로그인</Link>}
+            {!useruuid && <Link to="login">로그인</Link>}
             {isDropdownOpen && (
               <div className=" w-30 item translate3d absolute right-0 top-10 flex flex-col rounded border bg-white p-2 px-4 shadow-md">
-                {username && (
+                {userName && (
                   <>
                     <span className=" cursor-pointer" onClick={clickLogout}>
                       로그아웃

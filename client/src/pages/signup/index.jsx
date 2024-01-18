@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 const Index = () => {
   const googleID = cookie.load("googleId");
   const naverID = cookie.load("naverId");
-  const userImage = cookie.load("userImage");
+  const googleImage = cookie.load("googleImage");
+  const naverImage = cookie.load("naverImage");
   console.log(googleID)
   console.log(naverID)
-  console.log(userImage)
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -19,7 +19,8 @@ const Index = () => {
     notification: "",
     googleId: googleID,
     naverId: naverID,
-    userImage: userImage,
+    googleImage: googleImage,
+    naverImage: naverImage,
   });
 
   const handleChange = (e) => {

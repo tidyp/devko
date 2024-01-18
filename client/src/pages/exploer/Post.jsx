@@ -13,7 +13,7 @@ import Modal from "../../components/Model";
 const Post = ({ post }) => {
   const [isClickLike, setIsClickLike] = useState(false);
 
-  const username = cookie.load("userId");
+  const useruuid = cookie.load("uuid");
 
   const data = formatDate(post.createdAt);
 
@@ -57,7 +57,7 @@ const Post = ({ post }) => {
       <div className="m-2 flex h-fit w-full flex-col items-start justify-start gap-5 rounded-[10px] bg-slate-50 p-8">
         <div className="flex w-full justify-between">
           <div className="flex items-center justify-center gap-2.5 self-stretch">
-            <Link to={`/userinfo`}>
+            <Link to={`/userinfo/${post.userId}`}>
               <img
                 className="h-12 rounded-lg"
                 src={post.profileImage}

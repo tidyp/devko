@@ -15,7 +15,7 @@ const categories = [
 
 const NewPost = () => {
   const navigate = useNavigate();
-  const username = cookie.load("userId");
+  const username = cookie.load("uuid");
 
   const [selectedCategory, setSelectedCategory] = useState("discuss");
   const [post, setPost] = useState({

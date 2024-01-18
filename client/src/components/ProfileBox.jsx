@@ -1,25 +1,33 @@
-import { useLocation } from "react-router-dom";
-
-const dummydata = [
-  {
-    userName: "dwqs",
-    profileImage: "https://api.dicebear.com/7.x/bottts-neutral/svg?seed=1",
-    workPosition: "dwqs",
-    interestArea: "dwqs",
-    selfDescription: "dwqs",
-    grade: "dwqs",
-    postID: "dwqs",
-    category: "dwqs",
-    title: "dwqs",
-    postContent: "dwqs",
-    commentID: "dwqs",
-    commentContent: "dwqs",
-  },
-];
+import { useState, useEffect } from "react";
+import { useLocation, useParams } from "react-router-dom";
 
 const ProfileBox = () => {
-  console.log(useLocation());
-  const data = dummydata[0];
+  const { id } = useParams();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/profile/${id}`);
+        const data = await response.json();
+        setUserData(data);
+      } catch (error) {
+        console.error("Error fetching user profile data:", error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
+
+  if (!userData) {
+    return (
+      <div className="flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+  const data = userData[0];
+  console.log(data);
 
   return (
     <>
@@ -37,10 +45,11 @@ const ProfileBox = () => {
               />
             </div>
             <div className="w-24">
-              <p>{data.nickName}</p>
+              <p>intersting</p>
+              <p> {data.interestArea}</p>
               <p>
-                <span>Position</span>
-                {data.workPosition}
+                <p>Position </p>
+                <p>{data.workPosition}</p>
               </p>
               <p>{data.googleEmail}</p>
               <p>{data.naverEmail}</p>
@@ -48,7 +57,7 @@ const ProfileBox = () => {
           </header>
           <section className="flex items-center justify-center gap-8">
             <button className="rounded-md bg-indigo-200 px-1 text-indigo-700">
-              커피챗
+              1:1챗
             </button>
             <button className="rounded-lg bg-indigo-200 px-1 text-indigo-700">
               팔로우
@@ -56,27 +65,26 @@ const ProfileBox = () => {
           </section>
           <section>
             <p>소개</p>
-            <p>dqwdqwdqwd</p>
-            <p>dqwdqwdqwd</p>
-            <p>dqwdqwdqwd</p>
+            <p>{data.selfDescription}</p>
           </section>
           <footer>
             <p>커뮤니티 활동</p>
             <div className="grid grid-cols-2 gap-4">
               <div className="rounded-lg bg-slate-50 p-4">
-                <p>dwdwd</p>
+                <p>작성글</p>
+                <p>점수/갯수</p>
                 <p>0/100</p>
               </div>
               <div className="rounded-lg bg-slate-50 p-4">
-                <p>dwdwd</p>
+                <p>점수/갯수</p>
                 <p>0/100</p>
               </div>
               <div className="rounded-lg bg-slate-50 p-4">
-                <p>dwdwd</p>
+                <p>점수/갯수</p>
                 <p>0/100</p>
               </div>
               <div className="rounded-lg bg-slate-50 p-4">
-                <p>dwdwd</p>
+                <p>점수/갯수</p>
                 <p>0/100</p>
               </div>
             </div>
