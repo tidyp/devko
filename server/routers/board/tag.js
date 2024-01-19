@@ -5,16 +5,7 @@ const db = require("../../config/db");
 // 태그 전체 보기
 router.get("/", async (req, res) => {
   try {
-    const sql = `
-    Select t.id AS tagId
-        , t.name AS tagName
-        , p.id AS postId
-        , u.id AS userId
-        , u.userName AS userName
-    FROM tags t
-    LEFT OUTER JOIN posts p ON t.postId = p.id
-    LEFT OUTER JOIN users u ON p.userId = u.id
-    `;
+    const sql = `Select * FROM tags`;
     const [rows, fields] = await db.query(sql);
     res.send(rows);
   } catch (err) {
@@ -27,17 +18,7 @@ router.get("/", async (req, res) => {
 router.get("/:postId", async (req, res) => {
   try {
     const postId = req.params.postId;
-    const sql = `
-    Select t.id AS tagId
-        , t.name AS tagName
-        , p.id AS postId
-        , u.id AS userId
-        , u.userName AS userName
-    FROM tags t
-    LEFT OUTER JOIN posts p ON t.postId = p.id
-    LEFT OUTER JOIN users u ON p.userId = u.id
-    WHERE postId = ?
-    `;
+    const sql = `Select * FROM tags WHERE postId = ?`;
     const [rows, fields] = await db.query(sql, [postId]);
     res.send(rows);
   } catch (err) {

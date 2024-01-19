@@ -16,9 +16,23 @@ router.get("/:postId", async (req, res) => {
         , c.updatedAt AS updatedAt
         , u.id AS userId
         , u.userName AS userName
+        , u.profileImage AS profileImage
         , u.grade AS grade
-    FROM comments c 
-    LEFT OUTER JOIN users u ON c.userId = u.id
+    FROM comments c
+    LEFT OUTER JOIN (
+      SELECT u.id AS id
+        , u.userName AS userName
+        , u.profileImage AS profileImage
+        , u.grade AS grade
+        , ug.googleId AS googleId
+        , ug.googleEmail AS googleEmail
+        , ug.googleImage AS googleImage
+        , un.naverId AS naverId
+        , un.naverEmail AS naverEmail
+        , un.naverImage AS naverImage
+      FROM users u
+      LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
+      LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u ON c.userId = u.id
     WHERE c.postId = ?
     ORDER BY c.postId, c.id, c.mainId, c.createdAt ASC
     `;
@@ -45,14 +59,14 @@ router.get("/:postId", async (req, res) => {
 
 // 댓글 작성
 router.post("/:postId/:id", async (req, res) => {
-  console.log('여기')
+  console.log("여기");
   try {
     const postId = req.params.postId;
     const commentId = req.params.id;
     const mainId = commentId || 0;
     const { userId, content } = req.body;
 
-    console.log(userId, postId, mainId, content)
+    console.log(userId, postId, mainId, content);
     const sql =
       "INSERT INTO comments (userId, postId, mainId, content, createdAt, updatedAt) VALUES (?, ?, ?, ?, NOW(), NOW())";
     const result = await db.query(sql, [userId, postId, mainId, content]);
