@@ -42,6 +42,12 @@ const Index = () => {
       );
 
       if (res.ok) {
+        const jsonData = await res.json();
+      
+        console.log("Response JSON data:", jsonData);
+        cookie.save("uuid", jsonData.uuid)
+        cookie.save("userName", jsonData.userName)
+        cookie.save("userImage", jsonData.userImage)
         navigate("/");
       } else {
         console.error("Error submitting form:", res);

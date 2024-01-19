@@ -98,7 +98,7 @@ const NaviBar = () => {
               <div className="flex flex-row items-center gap-2 text-3xl">
                 {/* <Link to={`/userinfo`}> */}
                 <Link to={`/userinfo/${useruuid}`}>
-                  <img className="w-8 rounded-full" src={userImage} alt="" />
+                  <img className="w-8 rounded-full" src={`${userImage}`} alt="" />
                 </Link>
                 <div onClick={toggleDropdown} className="cursor-pointer">
                   <GoTriangleDown />

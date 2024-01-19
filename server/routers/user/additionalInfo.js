@@ -62,7 +62,9 @@ router.post("/step3", async (req, res) => {
     res.cookie("userImage", profileImage, {
       secure: true,
     });
-    res.redirect("http://localhost:5173");
+    res.json({ uuid: userId, userName: userName, userImage: profileImage });
+
+    // res.redirect("http://localhost:5173");
   } catch (error) {
     console.error("Database query error: ", error);
     res.status(500).json({ message: "Internal server error" });
