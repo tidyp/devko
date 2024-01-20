@@ -59,7 +59,6 @@ router.get("/:postId", async (req, res) => {
 
 // 댓글 작성
 router.post("/:postId/:id", async (req, res) => {
-  console.log("여기");
   try {
     const postId = req.params.postId;
     const commentId = req.params.id;
@@ -67,8 +66,7 @@ router.post("/:postId/:id", async (req, res) => {
     const { userId, content } = req.body;
 
     console.log(userId, postId, mainId, content);
-    const sql =
-      "INSERT INTO comments (userId, postId, mainId, content, createdAt, updatedAt) VALUES (?, ?, ?, ?, NOW(), NOW())";
+    const sql = `INSERT INTO comments (userId, postId, mainId, content, createdAt, updatedAt) VALUES (?, ?, ?, ?, NOW(), NOW())`;
     const result = await db.query(sql, [userId, postId, mainId, content]);
     res.json(result);
   } catch (err) {
@@ -101,7 +99,7 @@ router.put("/:id?", async (req, res) => {
 // 댓글 삭제
 router.delete("/:id?", async (req, res) => {
   const commentId = req.params.id;
-  const sql = "DELETE FROM comments WHERE id = ?";
+  const sql = `DELETE FROM comments WHERE id = ?`;
 
   try {
     const [rows, fields] = await db.query(sql, [commentId]);
