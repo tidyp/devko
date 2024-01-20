@@ -2,7 +2,7 @@
 -- SQL CLI COMMAND: mysql -u root -p devko < postdb.sql
 
 -- POSTS 테이블
-DROP TABLE devko.posts;
+DROP TABLE IF EXISTS devko.posts;
 CREATE TABLE IF NOT EXISTS posts (
      userId VARCHAR(64),
      id INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS posts (
 SELECT * FROM devko.posts;
 
 -- COMMENTS 테이블
-DROP TABLE devko.comments;
+DROP TABLE IF EXISTS devko.comments;
 CREATE TABLE IF NOT EXISTS comments (
      userId VARCHAR(64),
      postId INT,
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS comments (
 SELECT * FROM devko.comments;
 
 -- TAGS 테이블
-DROP TABLE devko.tags;
+DROP TABLE IF EXISTS devko.tags;
 CREATE TABLE IF NOT EXISTS tags (
     postId INT,
     id INT,
@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS tags (
 );
 
 -- LIKES 테이블
-DROP TABLE devko.likes;
+DROP TABLE IF EXISTS devko.likes;
 CREATE TABLE IF NOT EXISTS likes (
     userId VARCHAR(64),
     postId INT,
@@ -72,8 +72,25 @@ CREATE TABLE IF NOT EXISTS likes (
 );
 
 -- VIEWS 테이블
-DROP TABLE devko.views;
+DROP TABLE IF EXISTS devko.views;
 CREATE TABLE IF NOT EXISTS views (
     postId INT,
     count INT DEFAULT 0
+);
+
+-- EVENTS 테이블
+DROP TABLE IF EXISTS devko.events;
+CREATE TABLE IF NOT EXISTS events (
+    userId VARCHAR(64),
+    tagID INT,
+    commentId INT,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category VARCHAR(45),
+    title VARCHAR(45),
+    content TEXT,
+    location VARCHAR,
+    startDate DATETIME,
+    endDate DATETIME,
+    createdAt DATETIME,
+    updatedAt DATETIME
 );
