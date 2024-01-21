@@ -39,7 +39,20 @@ router.get("/edit/data/:id", async (req, res) => {
           , u.grade AS grade
     FROM posts p
     LEFT OUTER JOIN tags t ON p.id = t.postId 
-    LEFT OUTER JOIN users u ON p.userId = u.id
+    LEFT OUTER JOIN (
+      SELECT u.id AS id
+        , u.userName AS userName
+        , u.profileImage AS profileImage
+        , u.grade AS grade
+        , ug.googleId AS googleId
+        , ug.googleEmail AS googleEmail
+        , ug.googleImage AS googleImage
+        , un.naverId AS naverId
+        , un.naverEmail AS naverEmail
+        , un.naverImage AS naverImage
+      FROM users u
+      LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
+      LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u ON p.userId = u.id
     WHERE p.id = ?
     ORDER BY p.createdAt ASC
     `;
@@ -72,9 +85,21 @@ router.get("/", async (req, res) => {
           , v.count AS count
     FROM posts p
     LEFT OUTER JOIN likes l ON p.id = l.postId
-    LEFT OUTER JOIN users u ON p.userId = u.id
-    LEFT OUTER JOIN usersgoogle ug ON p.userId = ug.googleId
     LEFT OUTER JOIN views v ON p.id = v.postId
+    LEFT OUTER JOIN (
+      SELECT u.id AS id
+        , u.userName AS userName
+        , u.profileImage AS profileImage
+        , u.grade AS grade
+        , ug.googleId AS googleId
+        , ug.googleEmail AS googleEmail
+        , ug.googleImage AS googleImage
+        , un.naverId AS naverId
+        , un.naverEmail AS naverEmail
+        , un.naverImage AS naverImage
+      FROM users u
+      LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
+      LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u ON p.userId = u.id
     ORDER BY p.createdAt ASC
     `;
     const [rows, fields] = await db.query(sql);
@@ -155,7 +180,20 @@ router.get("/:category/:page", async (req, res) => {
           , u.profileImage AS profileImage
           , u.grade AS grade
     FROM posts p
-    LEFT OUTER JOIN users u ON p.userId = u.id
+    LEFT OUTER JOIN (
+      SELECT u.id AS id
+        , u.userName AS userName
+        , u.profileImage AS profileImage
+        , u.grade AS grade
+        , ug.googleId AS googleId
+        , ug.googleEmail AS googleEmail
+        , ug.googleImage AS googleImage
+        , un.naverId AS naverId
+        , un.naverEmail AS naverEmail
+        , un.naverImage AS naverImage
+      FROM users u
+      LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
+      LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u ON p.userId = u.id
     WHERE p.category = ?
     ORDER BY p.createdAt ASC
     `;
