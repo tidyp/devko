@@ -79,13 +79,18 @@ router.get("/", async (req, res) => {
           , p.content AS content
           , p.createdAt AS createdAt
           , p.updatedAt AS updatedAt
+          , t.name AS tagName
+          , v.count AS viewCnt
+          , l.count AS likeCnt
+          , c.count AS commentCnt
           , u.userName AS userName
           , u.profileImage AS profileImage
           , u.grade AS grade
-          , v.count AS count
     FROM posts p
-    LEFT OUTER JOIN likes l ON p.id = l.postId
+    LEFT OUTER JOIN tags t ON p.id = t.postId
     LEFT OUTER JOIN views v ON p.id = v.postId
+    LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM likes GROUP BY postId) l ON p.id = l.postId
+    LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM comments GROUP BY postId) c ON p.id = c.postId
     LEFT OUTER JOIN (
       SELECT u.id AS id
         , u.userName AS userName
@@ -103,7 +108,6 @@ router.get("/", async (req, res) => {
     ORDER BY p.createdAt ASC
     `;
     const [rows, fields] = await db.query(sql);
-    console.log(rows);
     res.json(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -121,23 +125,25 @@ router.get("/:id", async (req, res) => {
 
     const postId = req.params.id;
     const sql = `
-    SELECT p.id AS id
+    SELECT p.userId AS userId
+          , p.id AS id
           , p.category AS category
           , p.title AS title
           , p.content AS content
           , p.createdAt AS createdAt
           , p.updatedAt AS updatedAt
-          , t.id AS tagId
-          , t.name AS tag
-          , v.count AS views
-          , u.id AS userId
+          , t.name AS tagName
+          , v.count AS viewCnt
+          , l.count AS likeCnt
+          , c.count AS commentCnt
           , u.userName AS userName
-          , u.googleImage AS googleImage
-          , u.naverImage
+          , u.profileImage AS profileImage
           , u.grade AS grade
     FROM posts p
-    LEFT OUTER JOIN views v ON p.id = v.postId
     LEFT OUTER JOIN tags t ON p.id = t.postId
+    LEFT OUTER JOIN views v ON p.id = v.postId
+    LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM likes GROUP BY postId) l ON p.id = l.postId
+    LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM comments GROUP BY postId) c ON p.id = c.postId
     LEFT OUTER JOIN (
       SELECT u.id AS id
         , u.userName AS userName
@@ -176,10 +182,18 @@ router.get("/:category/:page", async (req, res) => {
           , p.content AS content
           , p.createdAt AS createdAt
           , p.updatedAt AS updatedAt
+          , t.name AS tagName
+          , v.count AS viewCnt
+          , l.count AS likeCnt
+          , c.count AS commentCnt
           , u.userName AS userName
           , u.profileImage AS profileImage
           , u.grade AS grade
     FROM posts p
+    LEFT OUTER JOIN tags t ON p.id = t.postId
+    LEFT OUTER JOIN views v ON p.id = v.postId
+    LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM likes GROUP BY postId) l ON p.id = l.postId
+    LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM comments GROUP BY postId) c ON p.id = c.postId
     LEFT OUTER JOIN (
       SELECT u.id AS id
         , u.userName AS userName
@@ -271,10 +285,14 @@ router.delete("/:id", async (req, res) => {
     const postId = req.params.id;
 
     const postSql = `DELETE FROM posts WHERE id = ?`;
+    const commentSql = `DELETE FROM comments WHERE postId = ?`;
+    const tagSql = `DELETE FROM tags WHERE postId = ?`;
     const likeSql = `DELETE FROM likes WHERE postId = ?`;
     const viewSql = `DELETE FROM views WHERE postId = ?`;
 
     const [rows, fields] = await db.query(postSql, [postId]);
+    await db.query(commentSql, [postId]);
+    await db.query(tagSql, [postId]);
     await db.query(likeSql, [postId]);
     await db.query(viewSql, [postId]);
     res.send(rows);
