@@ -56,35 +56,25 @@ CREATE TABLE IF NOT EXISTS views (
 DROP TABLE IF EXISTS devko.teams;
 CREATE TABLE IF NOT EXISTS teams  (
     userId VARCHAR(64),
-    tagID INT,
-    commentId INT,
+    postId INT,
     id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(45),
-    content TEXT,
     location VARCHAR(45),
-    category VARCHAR(45),
-    peopleNumber INT,
+    section VARCHAR(45),
+    members INT,
     workPosition VARCHAR(45),
     startDate DATETIME,
-    endDate DATETIME,
-    createdAt DATETIME,
-    updatedAt DATETIME
+    endDate DATETIME
 );
 
 -- EVENTS 테이블
-DROP TABLE IF EXISTS devko.events;
-CREATE TABLE IF NOT EXISTS events (
+DROP TABLE IF EXISTS devko.calendars;
+CREATE TABLE IF NOT EXISTS calendars (
     userId VARCHAR(64),
-    tagID INT,
-    commentId INT,
+    postId INT,
     id INT AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(45),    
-    content TEXT,
     location VARCHAR(45),
-    category VARCHAR(45),
+    section VARCHAR(45),
     startDate DATETIME,
-    endDate DATETIME,
-    createdAt DATETIME,
-    updatedAt DATETIME
+    endDate DATETIME
 );
 

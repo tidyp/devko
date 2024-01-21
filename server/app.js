@@ -43,8 +43,10 @@ app.use("/api/comment", require("./routers/board/comment"));
 app.use("/api/like", require("./routers/board/like"));
 app.use("/api/search", require("./routers/board/search"));
 app.use("/api/dailystat", require("./routers/board/dailystat"));
+app.use("/api/team", require("./routers/board/team"));
+app.use("/api/calendar", require("./routers/board/calendar"));
 
-app.use("/api/event", require("./routers/event/post"));
+app.use("/api/news", require("./routers/news/news"));
 
 // 서버
 app.listen(port, () => {
