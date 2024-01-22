@@ -5,21 +5,32 @@ const schedule = require("node-schedule");
 
 // Popular Tags
 router.get("/tag", async (req, res) => {
+  
   try {
+    const sql = `
+    SELECT name AS tagName
+        , COUNT(*) AS tagCNT
+    FROM tags
+    GROUP BY name
+    ORDER BY count(*) DESC
+    `;
+
+    const [rows, fields] = await db.query(sql);
+    res.send(rows);
     // schedule.scheduleJob('59 23 * * *', () => { // 매일 11시 59분에 실행
     // 30초마다 실행
-    schedule.scheduleJob("*/30 * * * * *", async () => {
-      const sql = `
-      SELECT name AS tagName
-          , COUNT(*) AS tagCNT
-      FROM tags
-      GROUP BY name
-      ORDER BY count(*) DESC
-      `;
+    // schedule.scheduleJob("*/30 * * * * *", async () => {
+    //   const sql = `
+    //   SELECT name AS tagName
+    //       , COUNT(*) AS tagCNT
+    //   FROM tags
+    //   GROUP BY name
+    //   ORDER BY count(*) DESC
+    //   `;
 
-      const [rows, fields] = await db.query(sql);
-      res.send(rows);
-    });
+    //   const [rows, fields] = await db.query(sql);
+    //   res.send(rows);
+    // });
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).send("Internal Server Error");

@@ -117,9 +117,9 @@ const Post = ({ post }) => {
           </div>
           <div className="flex items-center justify-center gap-4">
             <GoComment />
-            <span>0</span>
+            <span>{post.commentCnt}</span>
             <GoEye />
-            <span>{post.count}</span>
+            <span>{post.viewCnt}</span>
             {isClickLike ? (
               <GoHeartFill
                 className="scale-150 transform text-red-600 hover:scale-150"
@@ -129,7 +129,7 @@ const Post = ({ post }) => {
               <GoHeart className="hover:scale-150" onClick={handleLikeClick} />
             )}
 
-            <span>0</span>
+            <span>{post.likeCnt}</span>
           </div>
         </div>
       </div>

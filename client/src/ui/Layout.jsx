@@ -11,6 +11,7 @@ import { Link, useLocation } from "react-router-dom";
 const Layout = () => {
   console.log(useLocation())
   const { pathname } = useLocation();
+  console.log(pathname)
   // const displaySidebar = pathname === "/userinfo";
   const displaySidebar = pathname.startsWith("/userinfo");
   return (

@@ -26,7 +26,7 @@ const Postdetail = () => {
 
   const navigate = useNavigate();
 
-  const username = cookie.load("userId");
+  const username = cookie.load("uuid");
   console.log(username);
 
   // 댓
@@ -156,7 +156,8 @@ const Postdetail = () => {
                 key={el.commentId}
                 className=" mb-4 flex justify-between rounded-md bg-gray-100 p-4"
               >
-                <p className="font-semibold text-gray-700">{el.userId}</p>
+                <p className="font-semibold text-gray-700">{el.uuid}</p>
+                <img src={el.profileImage} alt="" />
                 <p className="text-gray-700">{el.content}</p>
                 <p className="font-semibold text-gray-700">{el.createdAt}</p>
               </div>

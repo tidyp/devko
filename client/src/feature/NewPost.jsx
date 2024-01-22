@@ -17,6 +17,7 @@ const NewPost = () => {
   const navigate = useNavigate();
   const username = cookie.load("uuid");
 
+  const [tags, setTags] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("discuss");
   const [post, setPost] = useState({
     title: "",
@@ -25,6 +26,11 @@ const NewPost = () => {
     endDate: new Date(),
     category: "discuss",
   });
+
+
+  const handleAddTag = () => {
+    setTags(prev => prev+1)
+  };
 
   const handleCategoryChange = (categoryId) => {
     setSelectedCategory(categoryId);
@@ -41,8 +47,8 @@ const NewPost = () => {
       type="button"
       className={`rounded-md border px-4 py-2 ${
         selectedCategory === category.id
-          ? "bg-blue-500 text-white"
-          : "bg-gray-200 text-gray-700"
+          ? "bg-gray-200  text-gray-700"
+          : "border-spacing-4 bg-white text-gray-700"
       }`}
       onClick={() => handleCategoryChange(category.id)}
     >
@@ -69,13 +75,15 @@ const NewPost = () => {
   return (
     <div className="flex w-full flex-col items-start">
       <form className="flex w-full flex-col gap-3 px-4" onSubmit={handleSubmit}>
-        <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center justify-start gap-2">
           {categories.map(renderCategoryButton)}
+        </div>
+        <div className="flex items-center justify-between gap-2">
           <input
             type="text"
             name="title"
             placeholder="제목을 입력하세요"
-            className="w-full rounded-lg border bg-blue-100 p-2"
+            className="w-full rounded-lg border bg-gray-200 p-2"
             required
             value={post.title}
             onChange={(e) => handleChange("title", e.target.value)}
@@ -87,7 +95,7 @@ const NewPost = () => {
               type="date"
               name="title"
               placeholder="Enter title"
-              className=" w-full rounded-lg border bg-blue-100 p-2"
+              className=" w-full rounded-lg border bg-gray-200 p-2"
               required
               value={post.startDate}
               onChange={(e) => handleChange("startDate", e.target.value)}
@@ -96,7 +104,7 @@ const NewPost = () => {
               type="date"
               name="title"
               placeholder="Enter title"
-              className=" w-full rounded-lg border bg-blue-100 p-2"
+              className=" w-full rounded-lg border bg-gray-200 p-2"
               required
               value={post.endDate}
               onChange={(e) => handleChange("endDate", e.target.value)}
@@ -106,7 +114,7 @@ const NewPost = () => {
         <div>
           <textarea
             name="content"
-            className=" h-96 w-full rounded-md border bg-blue-100 p-2"
+            className=" h-96 w-full rounded-md border bg-gray-200 p-2"
             placeholder="내용을 입력하세요"
             required
             value={post.content}
@@ -114,6 +122,27 @@ const NewPost = () => {
             onChange={(e) => handleChange("content", e.target.value)}
           />
         </div>
+        {/* {tags.map((el) => (
+          <div className="justify-start" key={el}>
+            <select className="w-auto rounded-lg border bg-gray-200 p-2">
+              <option value="jo">jo</option>
+              <option value="jae">jae</option>
+              <option value="eun">eun</option>
+            </select>
+          </div>
+        ))} */}
+        <div className="flex flex-row"></div>
+        {Array.from({ length: tags }, (_, index) => (
+          <div className="justify-start" key={index}>
+            <select className="rounded-lg border bg-gray-200 p-2">
+              <option value="jo">jo</option>
+              <option value="jae">jae</option>
+              <option value="eun">eun</option>
+            </select>
+          </div>
+        ))}
+
+        <div onClick={handleAddTag}>+</div>
 
         <div className="mt-6">
           <Button color="bg-blue-500" onClick={handleSubmit}>
