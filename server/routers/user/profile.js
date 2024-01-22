@@ -86,18 +86,46 @@ router.get("/image", async (req, res) => {
 
 router.get("/point", async (req, res) => {
   const sql = `
-  SELECT p.count,
-         c.count
-  FROM users u 
-  LEFT JOIN (SELECT userId, COUNT(*) AS count FROM posts GROUP BY userId) p ON u.id = p.userId
-  LEFT JOIN (SELECT userId, COUNT(*) AS count FROM comments GROUP BY userId) c ON u.id = c.userId
-  WHERE u.id = ?`;
+  SELECT p.count AS postCnt,
+         c.count AS commentCnt,
+         t.count AS teamCnt,
+         SUM(p.count, c.count, t.count) AS TotalCnt -- 
+  FROM (
+      SELECT u.id AS id
+        , u.userName AS userName
+        , u.profileImage AS profileImage
+        , u.grade AS grade
+        , ug.googleId AS googleId
+        , ug.googleEmail AS googleEmail
+        , ug.googleImage AS googleImage
+        , un.naverId AS naverId
+        , un.naverEmail AS naverEmail
+        , un.naverImage AS naverImage
+      FROM users u
+      LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
+      LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u
+LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM posts GROUP BY userId) p ON u.id = p.userId
+LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM comments GROUP BY userId) c ON u.id = c.userId
+WHERE u.id =?
+`;
   // const userId = req.body.userId;
   const userId = 'ca436c51-f3b7-45fe-9a7e-275269a81e6e';
 
   try {
     const [rows, fields] = await db.query(sql, [userId]);
-    res.send(rows[0].profileImage);
+    for (let n=0, n<length, n++) {
+      for (let j=0, j<length, j++) {
+        rows.postCnt = 1/3 * n;
+        rows.commentCnt = 1/5 * j;
+
+        if (rows.postCnt > 3000) {
+          rows.postCnt = 1000; 
+        } else if (rows.commentCnt > 5000) {
+          rows.commentCnt = 1000;
+        }
+      }
+    }
+    res.json(rows);
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).send("Internal Server Error");
