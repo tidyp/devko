@@ -36,6 +36,7 @@ app.use("/api/googleAuth", require("./routers/user/googleAuth"));
 app.use("/api/naverAuth", require("./routers/user/naverAuth"));
 app.use("/api/additionalInfo", require("./routers/user/additionalInfo"));
 app.use("/api/profile", require("./routers/user/profile"));
+app.use("/api/find", require("./routers/user/find"));
 
 app.use("/api/post", require("./routers/board/post"));
 app.use("/api/tag", require("./routers/board/tag"));
