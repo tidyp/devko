@@ -31,16 +31,7 @@ router.get("/:postId", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const postId = req.body.postId;
-    let tags = req.body.formData.tag;
-
-    if (tags.includes("#")) {
-      tags = tags
-        .split("#")
-        .map((tags) => tags.trim())
-        .filter(Boolean);
-    } else {
-      tags = [tags.trim()];
-    }
+    let tags = req.body.tags;
 
     const sql = `INSERT INTO tags (postId, id, name) VALUES (?, ?, ?);`;
     const results = [];

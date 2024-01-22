@@ -9,7 +9,7 @@ router.get("/:postId", async (req, res) => {
   try {
     const sql = `
     SELECT c.postId AS postId
-        , c.id AS id
+        , c.id AS commentId
         , c.mainId AS mainId
         , c.content AS content
         , c.createdAt AS createdAt
