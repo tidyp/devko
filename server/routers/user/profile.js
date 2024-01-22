@@ -28,7 +28,7 @@ router.get("/:userId", async (req, res) => {
 
     const userId = req.params.userId;
 
-    const [rows, fields] = await db.query(sql, userId);
+    const [rows, fields] = await db.query(sql, [userId]);
     console.log(rows)
     rows.forEach(row => {
       if (row.grade = 5) {
@@ -70,7 +70,10 @@ router.get("/image", async (req, res) => {
 // 이메일 찾기 -- 이전 필요 (/find/info)
 
 router.get("/find/info", async (req, res) => {
-  const sql = `SELECT un.naverEmail , ug.googleEmail FROM usersnaver un
+  const sql = `
+  SELECT un.naverEmail ,
+         ug.googleEmail
+  FROM usersnaver un
   LEFT JOIN users u ON u.naverId = un.id
   LEFT JOIN usersgoogle ug ON ug.id = u.googleId
   WHERE un.naverEmail = ? OR ug.googleEmail = ?`;
