@@ -5,7 +5,7 @@ const db = require("../../config/db");
 require("dotenv").config();
 
 // 프로필 페이지
-router.get("/:userName", async (req, res) => {
+router.get("/:userId", async (req, res) => {
   try {
     const sql = `
     SELECT u.userName AS userName,
@@ -13,23 +13,22 @@ router.get("/:userName", async (req, res) => {
            u.workPosition AS workPosition,
            u.interestArea AS interestArea,
            u.selfDescription AS selfDescription,
-           u.grade AS grade
+           u.grade AS grade,
+           p.userId AS postID,
+           p.category AS category,
+           p.title AS title,
+           p.content AS postContent,
+           c.userId As commentID,
+           c.content AS commentContent
     FROM users u
+    LEFT JOIN posts p ON p.userId = u.id
+    LEFT JOIN comments c ON c.userId = u.id
     WHERE u.id = ?
-           `;
-          //  p.userId AS postID,
-          //  p.category AS category,
-          //  p.title AS title,
-          //  p.content AS postContent,
-          //  c.userId As commentID,
-          //  c.content AS commentContent
-    // JOIN posts p ON p.userId = u.id
-    // JOIN comments c ON c.userId = u.id
+    `;
 
-    const userName = req.params.userName;
-    // const userId = 'd';
+    const userId = req.params.userId;
 
-    const [rows, fields] = await db.query(sql, userName);
+    const [rows, fields] = await db.query(sql, userId);
     console.log(rows)
     rows.forEach(row => {
       if (row.grade = 5) {
@@ -45,9 +44,6 @@ router.get("/:userName", async (req, res) => {
       } else if (row.grade = 0) {
         row.grade = 'admin'
       };
-    });
-    res.cookie("userName", userName, {
-      secure: true,
     });
     res.json(rows);
   } catch (err) {
@@ -75,8 +71,8 @@ router.get("/image", async (req, res) => {
 
 router.get("/find/info", async (req, res) => {
   const sql = `SELECT un.naverEmail , ug.googleEmail FROM usersnaver un
-  JOIN users u ON u.naverId = un.id
-  LEFT join usersgoogle ug ON ug.id = u.googleId
+  LEFT JOIN users u ON u.naverId = un.id
+  LEFT JOIN usersgoogle ug ON ug.id = u.googleId
   WHERE un.naverEmail = ? OR ug.googleEmail = ?`;
   // const googleEmail = req.body.googleEmail;
   const googleEmail = 'jinyr5654@gmail.com';
