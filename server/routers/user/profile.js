@@ -7,30 +7,39 @@ require("dotenv").config();
 // 프로필 페이지
 router.get("/:userId", async (req, res) => {
   try {
-    const sql = `
+    const usersql = `
     SELECT u.userName AS userName,
            u.profileImage AS profileImage,
            u.workPosition AS workPosition,
            u.interestArea AS interestArea,
            u.selfDescription AS selfDescription,
            u.grade AS grade,
-           p.userId AS postID,
+    FROM users u
+    WHERE u.id = ?
+    `;
+
+    const postsql = `
+    Select p.userId AS postID,
            p.category AS category,
            p.title AS title,
-           p.content AS postContent,
-           c.userId As commentID,
-           c.content AS commentContent
+           p.content AS postContent
     FROM users u
     LEFT JOIN posts p ON p.userId = u.id
+    WHERE u.id = ?
+    `;
+
+    const commentsql = `
+    Select c.userId As commentID,
+           c.content AS commentContent
+    FROM users u
     LEFT JOIN comments c ON c.userId = u.id
     WHERE u.id = ?
     `;
 
     const userId = req.params.userId;
 
-    const [rows, fields] = await db.query(sql, [userId]);
-    console.log(rows)
-    rows.forEach(row => {
+    const [userrows, userfields] = await db.query(usersql, [userId]);
+    userrows.forEach(row => {
       if (row.grade = 5) {
         row.grade = 'junior'
       } else if (row.grade = 4) {
@@ -45,7 +54,9 @@ router.get("/:userId", async (req, res) => {
         row.grade = 'admin'
       };
     });
-    res.json(rows);
+    const [postrows, postfields] = await db.query(postsql, [userId]);
+    const [commentrows, commentfields] = await db.query(commentsql, [userId]);
+    res.json(userrows, postrows, commentrows);
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).send("Internal Server Error");
