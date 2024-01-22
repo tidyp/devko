@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path");
-const db = require("../../config/db");
+const db = require("../../../config/db");
 require("dotenv").config();
 
 // 이메일 찾기
