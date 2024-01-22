@@ -85,11 +85,11 @@ router.get("/image", async (req, res) => {
 // 커뮤니티 포인트 구현
 
 router.get("/point", async (req, res) => {
+  // t.count AS teamCnt,
+  // SUM(p.count, c.count, t.count) AS TotalCnt -- gpt 하기
   const sql = `
   SELECT p.count AS postCnt,
          c.count AS commentCnt,
-         t.count AS teamCnt,
-         SUM(p.count, c.count, t.count) AS TotalCnt -- 
   FROM (
       SELECT u.id AS id
         , u.userName AS userName
@@ -113,18 +113,18 @@ WHERE u.id =?
 
   try {
     const [rows, fields] = await db.query(sql, [userId]);
-    for (let n=0, n<length, n++) {
-      for (let j=0, j<length, j++) {
-        rows.postCnt = 1/3 * n;
-        rows.commentCnt = 1/5 * j;
+    // for (let n=0, n<length, n++) { -- gpt 하기
+    //   for (let j=0, j<length, j++) {
+    //     rows.postCnt = 1/3 * n;
+    //     rows.commentCnt = 1/5 * j;
 
-        if (rows.postCnt > 3000) {
-          rows.postCnt = 1000; 
-        } else if (rows.commentCnt > 5000) {
-          rows.commentCnt = 1000;
-        }
-      }
-    }
+    //     if (rows.postCnt > 3000) {
+    //       rows.postCnt = 1000; 
+    //     } else if (rows.commentCnt > 5000) {
+    //       rows.commentCnt = 1000;
+    //     }
+    //   }
+    // }
     res.json(rows);
   } catch (err) {
     console.error("Query execution error:", err);
