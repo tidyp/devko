@@ -17,7 +17,10 @@ const NewPost = () => {
   const navigate = useNavigate();
   const username = cookie.load("uuid");
 
-  const [tags, setTags] = useState(1);
+  // const [tags, setTags] = useState(1);
+  const [tags, setTags] = useState(["jo"]);
+
+
   const [selectedCategory, setSelectedCategory] = useState("discuss");
   const [post, setPost] = useState({
     title: "",
@@ -37,8 +40,16 @@ const NewPost = () => {
     setPost({ ...post, category: categoryId });
   };
 
-  const handleChange = (key, value) => {
-    setPost((prevPost) => ({ ...prevPost, [key]: value }));
+   const handleChange = (key, value, index) => {
+    if (key === "tags") {
+      // If the key is "tags", update the tags array at the specified index
+      const updatedTags = [...tags];
+      updatedTags[index] = value;
+      setTags(updatedTags);
+    } else {
+      // Otherwise, update the post object
+      setPost((prevPost) => ({ ...prevPost, [key]: value }));
+    }
   };
 
   const renderCategoryButton = (category) => (
@@ -60,7 +71,11 @@ const NewPost = () => {
     e.preventDefault();
 
     try {
-      const response = await createPost({ ...post, userId: username });
+      const response = await createPost({
+        ...post,
+        userId: username,
+        tags: tags.filter((tag) => tag.trim() !== ""), // Remove empty tags
+      });
       console.log("Response:", response);
       navigate("/");
     } catch (error) {
@@ -132,16 +147,19 @@ const NewPost = () => {
           </div>
         ))} */}
         <div className="flex flex-row"></div>
-        {Array.from({ length: tags }, (_, index) => (
+ {Array.from({ length: tags.length }, (_, index) => (
           <div className="justify-start" key={index}>
-            <select className="rounded-lg border bg-gray-200 p-2">
+            <select
+              className="rounded-lg border bg-gray-200 p-2"
+              value={tags[index]}
+              onChange={(e) => handleChange("tags", e.target.value, index)}
+            >
               <option value="jo">jo</option>
               <option value="jae">jae</option>
               <option value="eun">eun</option>
             </select>
           </div>
         ))}
-
         <div onClick={handleAddTag}>+</div>
 
         <div className="mt-6">

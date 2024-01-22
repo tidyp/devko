@@ -235,6 +235,9 @@ router.get("/:category/:page", async (req, res) => {
 
 // 게시글 쓰기
 router.post("/", async (req, res) => {
+  console.log(req.body.tags)
+  result_string = req.body.tags.join('#')
+  console.log(result_string)
   try {
     const user = req.body.userId;
     const title = req.body.title;
