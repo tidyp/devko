@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
 const db = require("../../config/db");
 
 // 게시글 전체 목록 보기
@@ -43,7 +42,9 @@ router.get("/", async (req, res) => {
       LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u ON p.userId = u.id
     ORDER BY p.createdAt ASC
     `;
+
     const [rows, fields] = await db.query(sql);
+
     res.json(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -98,6 +99,7 @@ router.get("/:id", async (req, res) => {
     WHERE p.id = ?
     ORDER BY p.createdAt ASC
     `;
+
     const [rows, fields] = await db.query(sql, [postId]);
 
     res.send(rows);
@@ -209,15 +211,15 @@ router.post("/", async (req, res) => {
 
 // 게시글 수정
 router.put("/:id", async (req, res) => {
-  const postId = req.params.id;
-  const title = req.body.title;
-  const content = req.body.content;
-  const tags = req.body.tags;
-
-  const postSql = `UPDATE posts SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?`;
-  const tagSql = `UPDATE tags SET name = ? WHERE postId = ? AND id = ?`;
-
   try {
+    const postId = req.params.id;
+    const title = req.body.title;
+    const content = req.body.content;
+    const tags = req.body.tags;
+
+    const postSql = `UPDATE posts SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?`;
+    const tagSql = `UPDATE tags SET name = ? WHERE postId = ? AND id = ?`;
+
     const [rows, fields] = await db.query(sql, [title, content, postId]);
     // for (let key in tags) {
     //   const [rows, fields] = await db.query(sql, [tags[key], postId, tagId]);

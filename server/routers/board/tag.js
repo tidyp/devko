@@ -6,7 +6,9 @@ const db = require("../../config/db");
 router.get("/", async (req, res) => {
   try {
     const sql = `Select * FROM tags`;
+
     const [rows, fields] = await db.query(sql);
+
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);

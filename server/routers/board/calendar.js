@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
 const db = require("../../config/db");
 
 // 게시글 전체 목록 보기
@@ -44,7 +43,9 @@ router.get("/", async (req, res) => {
         LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u ON p.userId = u.id
       ORDER BY p.createdAt ASC
       `;
+
     const [rows, fields] = await db.query(sql);
+
     res.json(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -56,9 +57,9 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     // 조회수 로직 추가
-    const viewpostId = req.params.id;
+    const viewId = req.params.id;
     const viewsql = `UPDATE views SET count = count + 1 WHERE postId = ?`;
-    const [row, field] = await db.query(viewsql, [viewpostId]);
+    await db.query(viewsql, [viewId]);
 
     const postId = req.params.id;
     const sql = `
@@ -100,7 +101,9 @@ router.get("/:id", async (req, res) => {
       WHERE p.id = ?
       ORDER BY p.createdAt ASC
       `;
+
     const [rows, fields] = await db.query(sql, [postId]);
+
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -111,7 +114,7 @@ router.get("/:id", async (req, res) => {
 // 게시글 쓰기
 router.post("/", async (req, res) => {
   try {
-    const user = req.body.userId;
+    const userId = req.body.userId;
     const title = req.body.title;
     const content = req.body.content;
     const category = req.body.category;
@@ -127,12 +130,12 @@ router.post("/", async (req, res) => {
     const likeSql = `INSERT INTO likes (postId) VALUES (@last_id)`;
     const viewSql = `INSERT INTO views (postId) VALUES (@last_id)`;
 
-    await db.query(postSql, [user, title, content, category]);
+    await db.query(postSql, [userId, title, content, category]);
     await db.query(setSql);
     await db.query(likeSql);
     await db.query(viewSql);
     const [rows, fields] = await db.query(calendarSql, [
-      user,
+      userId,
       location,
       section,
       startDate,

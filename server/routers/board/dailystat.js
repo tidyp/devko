@@ -5,7 +5,6 @@ const schedule = require("node-schedule");
 
 // Popular Tags
 router.get("/tag", async (req, res) => {
-  
   try {
     const sql = `
     SELECT name AS tagName

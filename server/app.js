@@ -26,11 +26,6 @@ app.use(
   })
 );
 
-// 메인 페이지
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
-
 // 라우터
 app.use("/api/googleAuth", require("./routers/user/googleAuth"));
 app.use("/api/naverAuth", require("./routers/user/naverAuth"));

@@ -4,9 +4,9 @@ const db = require("../../config/db");
 
 // 댓글 목록 보기
 router.get("/:postId", async (req, res) => {
-  const postId = req.params.postId;
-
   try {
+    const postId = req.params.postId;
+
     const sql = `
     SELECT c.postId AS postId
         , c.id AS commentId
@@ -36,7 +36,9 @@ router.get("/:postId", async (req, res) => {
     WHERE c.postId = ?
     ORDER BY c.postId, c.id, c.mainId, c.createdAt ASC
     `;
+
     const [rows, fields] = await db.query(sql, [postId]);
+
     const itemsPerPage = 10;
     const page = parseInt(req.params.page) || 1;
 
@@ -65,9 +67,10 @@ router.post("/:postId/:id", async (req, res) => {
     const mainId = commentId || 0;
     const { userId, content } = req.body;
 
-    console.log(userId, postId, mainId, content);
     const sql = `INSERT INTO comments (userId, postId, mainId, content, createdAt, updatedAt) VALUES (?, ?, ?, ?, NOW(), NOW())`;
+
     const result = await db.query(sql, [userId, postId, mainId, content]);
+
     res.json(result);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -77,18 +80,19 @@ router.post("/:postId/:id", async (req, res) => {
 
 // 댓글 수정
 router.put("/:id?", async (req, res) => {
-  const commentId = req.params.id;
-  const content = req.body.content;
-  const updatedAt = new Date();
-
-  const updateSql = `UPDATE comments SET content = ?, updatedAt = ? WHERE id = ?`;
-
   try {
+    const commentId = req.params.id;
+    const content = req.body.content;
+    const updatedAt = new Date();
+
+    const updateSql = `UPDATE comments SET content = ?, updatedAt = ? WHERE id = ?`;
+
     const [rows, fields] = await db.query(updateSql, [
       content,
       updatedAt,
       commentId,
     ]);
+
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -98,11 +102,12 @@ router.put("/:id?", async (req, res) => {
 
 // 댓글 삭제
 router.delete("/:id?", async (req, res) => {
-  const commentId = req.params.id;
-  const sql = `DELETE FROM comments WHERE id = ?`;
-
   try {
+    const commentId = req.params.id;
+    const sql = `DELETE FROM comments WHERE id = ?`;
+
     const [rows, fields] = await db.query(sql, [commentId]);
+
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);

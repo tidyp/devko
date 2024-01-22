@@ -4,9 +4,8 @@ const db = require("../../config/db");
 
 // 검색 결과 보기
 router.get("/:input", async (req, res) => {
-  const input = req.params.input;
-
   try {
+    const input = req.params.input;
     const sql = `
     SELECT p.id AS id
         , p.category AS category
@@ -27,6 +26,7 @@ router.get("/:input", async (req, res) => {
       `%${input}%`,
       `%${input}%`,
     ]);
+
     const itemsPerPage = 10;
     const page = parseInt(req.params.page) || 1;
 

@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
 const db = require("../../config/db");
 
 // 게시글 전체 목록 보기
