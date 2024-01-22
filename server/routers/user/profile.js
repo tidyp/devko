@@ -60,11 +60,48 @@ router.get("/image", async (req, res) => {
 
     try {
       const [rows, fields] = await db.query(sql, [userId]);
+      rows.forEach(row => {
+        if (row.grade = 5) {
+          row.grade = 'junior'
+        } else if (row.grade = 4) {
+          row.grade = 'middle'
+        } else if (row.grade = 3) {
+          row.grade = 'senior'
+        } else if (row.grade = 2) {
+          row.grade = 'CTO'
+        } else if (row.grade = 1) {
+          row.grade = 'CEO'
+        } else if (row.grade = 0) {
+          row.grade = 'admin'
+        };
+      });
       res.send(rows[0].profileImage);
     } catch (err) {
       console.error("Query execution error:", err);
       res.status(500).send("Internal Server Error");
     };
+});
+
+// 커뮤니티 포인트 구현
+
+router.get("/point", async (req, res) => {
+  const sql = `
+  SELECT p.count,
+         c.count
+  FROM users u 
+  LEFT JOIN (SELECT userId, COUNT(*) AS count FROM posts GROUP BY userId) p ON u.id = p.userId
+  LEFT JOIN (SELECT userId, COUNT(*) AS count FROM comments GROUP BY userId) c ON u.id = c.userId
+  WHERE u.id = ?`;
+  // const userId = req.body.userId;
+  const userId = 'ca436c51-f3b7-45fe-9a7e-275269a81e6e';
+
+  try {
+    const [rows, fields] = await db.query(sql, [userId]);
+    res.send(rows[0].profileImage);
+  } catch (err) {
+    console.error("Query execution error:", err);
+    res.status(500).send("Internal Server Error");
+  };
 });
 
 // 이메일 찾기 -- 이전 필요 (/find/info)
