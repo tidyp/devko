@@ -25,7 +25,6 @@ import Myinfo, { loader as myinfoLoader } from "./pages/myinfo";
 import Error from "./pages/error";
 
 import UserInfo, { loader as userLoader } from "./pages/userinfo";
-import TestPage from "./pages/TestPage";
 
 const router = createBrowserRouter([
   {
@@ -60,13 +59,12 @@ const router = createBrowserRouter([
       // Q&A
       // { path: "/qna", element: <QnaPage />, loader: qnasLoader },
       { path: "/qna/:id", element: <QnaPage />, loader: qnasLoader },
-      { path: "/qna/detail/:id", element: <Postdetail />, loader: postLoader },
+      // { path: "/qna/:id", element: <Postdetail />, loader: postLoader },
       // EVENT
       { path: "/event", element: <EventPage /> },
       { path: "/event/:id", element: <Postdetail />, loader: postLoader },
       // GROUP
       { path: "/group", element: <GroupPage /> },
-      { path: "/group/:id", element: <Postdetail />, loader: postLoader },
       // LOGIN
       { path: "/login", element: <LoginPage /> },
       // USER: INFO
@@ -78,10 +76,6 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignupPage />,
-  },
-  {
-    path: "/test",
-    element: <TestPage />,
   },
 ]);
 
