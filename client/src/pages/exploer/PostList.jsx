@@ -3,8 +3,8 @@ import NewPost from "./NewPost";
 
 const PostList = ({ posts }) => {
   const reversedPosts = posts.slice().reverse();
-
   console.log(reversedPosts)
+
 
   return (
     <div className="flex w-full flex-col justify-center ">

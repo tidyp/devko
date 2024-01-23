@@ -7,8 +7,6 @@ const Index = () => {
   const naverID = cookie.load("naverId");
   const googleImage = cookie.load("googleImage");
   const naverImage = cookie.load("naverImage");
-  console.log(googleID)
-  console.log(naverID)
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -44,7 +42,6 @@ const Index = () => {
       if (res.ok) {
         const jsonData = await res.json();
       
-        console.log("Response JSON data:", jsonData);
         cookie.save("uuid", jsonData.uuid)
         cookie.save("userName", jsonData.userName)
         cookie.save("userImage", jsonData.userImage)
