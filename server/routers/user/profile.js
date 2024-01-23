@@ -32,6 +32,7 @@ router.get("/:userId", async (req, res) => {
     Select c.userId As commentID,
            c.content AS commentContent
     FROM users u
+    LEFT JOIN posts p ON p.userId = u.id
     LEFT JOIN comments c ON c.userId = u.id
     WHERE u.id = ?
     `;
@@ -112,13 +113,13 @@ router.get("/point", async (req, res) => {
         , un.naverId AS naverId
         , un.naverEmail AS naverEmail
         , un.naverImage AS naverImage
-      FROM users u
-      LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
-      LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u
-LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM posts GROUP BY userId) p ON u.id = p.userId
-LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM comments GROUP BY userId) c ON u.id = c.userId
-WHERE u.id =?
-`;
+  FROM users u
+  LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
+  LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u
+  LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM posts GROUP BY userId) p ON u.id = p.userId
+  LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM comments GROUP BY userId) c ON u.id = c.userId
+  WHERE u.id =?
+  `;
   // const userId = req.body.userId;
   const userId = 'ca436c51-f3b7-45fe-9a7e-275269a81e6e';
 
