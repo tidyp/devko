@@ -59,6 +59,12 @@ const NaviBar = () => {
               exploer
             </NavLink>
             <NavLink
+              to="/news"
+              className={({ isActive }) => (isActive ? activeLink : "")}
+            >
+              news
+            </NavLink>
+            <NavLink
               to="/discuss"
               className={({ isActive }) => (isActive ? activeLink : "")}
             >

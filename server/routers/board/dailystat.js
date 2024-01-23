@@ -41,12 +41,14 @@ router.get("/user", async (req, res) => {
   try {
     const sql = `
       SELECT u.id AS userId
-          , COUNT(p.id) AS postCNT
-          , COUNT(c.id) AS commentCNT
+        ,	u.userName AS userName
+        ,	u.profileImage AS profileImage
+        , COUNT(p.id) AS postCNT
+        , COUNT(c.id) AS commentCNT
       FROM users u
       LEFT OUTER JOIN posts p ON u.id = p.userId
       LEFT OUTER JOIN comments c ON u.id = c.userId
-      GROUP BY u.id, c.id
+      GROUP BY u.id, u.userName, u.profileImage, c.id
       ORDER BY COUNT(p.id), COUNT(c.id) DESC
       `;
 

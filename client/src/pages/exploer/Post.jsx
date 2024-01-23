@@ -48,7 +48,7 @@ const Post = ({ post }) => {
   };
 
   const clickdeletePost = async () => {
-    await deletePost(post.id);
+    await deletePost(post.postId);
     await handleClose();
   };
 
@@ -88,11 +88,11 @@ const Post = ({ post }) => {
             {isOpenEdit && (
               <Modal onClose={handleClose}>
                 <span className="bf w-8 cursor-pointer">
-                  <Link to={`/edit/${post.id}`}>수정</Link>
+                  <Link to={`/edit/${post.postId}`}>수정</Link>
                 </span>
                 <span
                   className="w-8 cursor-pointer"
-                  onClick={() => clickdeletePost(post.id)}
+                  onClick={() => clickdeletePost(post.postId)}
                 >
                   삭제
                 </span>
@@ -103,7 +103,7 @@ const Post = ({ post }) => {
             )}
           </div>
         </div>
-        <Link to={`/${post.category}/${post.id}`}>
+        <Link to={`/${post.category}/${post.postId}`}>
           <div className="self-stretch  text-base font-medium text-zinc-500">
             {post.content}
           </div>
@@ -111,13 +111,13 @@ const Post = ({ post }) => {
 
         <div className="flex items-start justify-between gap-2.5 self-stretch pr-8">
           <div className="flex gap-2">
-            <span className="rounded-lg bg-red-400 px-4">태그1</span>
-            <span className="rounded-lg bg-indigo-400 px-4">태그2</span>
-            <span className="rounded-lg bg-violet-400 px-4">태그3</span>
+            <span className="rounded-lg bg-red-400 px-4">{post.tagName}</span>
+            {/* <span className="rounded-lg bg-indigo-400 px-4">태그2</span>
+            <span className="rounded-lg bg-violet-400 px-4">태그3</span> */}
           </div>
           <div className="flex items-center justify-center gap-4">
             <GoComment />
-            <span>{post.commentCnt}</span>
+            <span>{post.commentCnt > 0 ? post.commentCnt : 0}</span>
             <GoEye />
             <span>{post.viewCnt}</span>
             {isClickLike ? (

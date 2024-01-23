@@ -9,6 +9,7 @@ import SearchResult, {
   loader as searchresultLoader,
 } from "./pages/searchResult";
 import DiscussPage, { loader as discussesLoader } from "./pages/discuss";
+import NewPage from "./pages/NewsPage";
 import EventPage from "./pages/event";
 import QnaPage, { loader as qnasLoader } from "./pages/qna";
 import GroupPage from "./pages/group";
@@ -21,8 +22,7 @@ import LoginPage from "./pages/login";
 import Myinfo from "./pages/myinfo";
 import Error from "./pages/error";
 
-import UserInfo from "./pages/userinfo";
-// import UserInfo, { loader as userLoader } from "./pages/userinfo";
+import UserInfo, { loader as userLoader } from "./pages/userinfo";
 
 const router = createBrowserRouter([
   {
@@ -40,9 +40,10 @@ const router = createBrowserRouter([
         loader: searchresultLoader,
       },
       // { path: "/exploer", element: <ExploerPage /> },
+      // NEWS
+      { path: "/news", element: <NewPage />},
       // DISCUSS
       { path: "/discuss", element: <DiscussPage />, loader: discussesLoader },
-      // { path: "/discuss/:id", element: <Postdetail />},
       { path: "/discuss/:id", element: <Postdetail />, loader: postLoader },
       // Q&A
       { path: "/qna", element: <QnaPage />, loader: qnasLoader },
@@ -50,18 +51,14 @@ const router = createBrowserRouter([
       // EVENT
       { path: "/event", element: <EventPage /> },
       { path: "/event/:id", element: <Postdetail />, loader: postLoader },
-      // EVENT
-      { path: "/discuss", element: <EventPage /> },
-      // EVENT
+      // GROUP
       { path: "/group", element: <GroupPage /> },
-
       // LOGIN
       { path: "/login", element: <LoginPage /> },
-
       // USER: INFO
       { path: "/myinfo", element: <Myinfo /> },
-      { path: "/userinfo/:id", element: <UserInfo />},
-      // { path: "/userinfo/:id", element: <UserInfo />, loader: userLoader },
+      // { path: "/userinfo/:id", element: <UserInfo />},
+      { path: "/userinfo/:id", element: <UserInfo />, loader: userLoader },
     ],
   },
   {

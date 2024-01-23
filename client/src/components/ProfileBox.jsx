@@ -10,7 +10,7 @@ const ProfileBox = () => {
       try {
         const response = await fetch(`http://localhost:3000/api/profile/${id}`);
         const data = await response.json();
-        setUserData(data);
+        setUserData(data.userrows);
       } catch (error) {
         console.error("Error fetching user profile data:", error);
       }
@@ -26,6 +26,8 @@ const ProfileBox = () => {
       </div>
     );
   }
+  
+  console.log(userData)
   const data = userData[0];
   console.log(data);
 

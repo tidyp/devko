@@ -13,7 +13,8 @@ const Layout = () => {
   const { pathname } = useLocation();
   console.log(pathname)
   // const displaySidebar = pathname === "/userinfo";
-  const displaySidebar = pathname.startsWith("/userinfo");
+  const conditions = pathname.startsWith("/userinfo")
+  const displaySidebar = conditions;
   return (
     <div className="flex h-lvh  flex-col bg-white">
       <div className="z-50 sticky top-0">

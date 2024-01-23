@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { getPoptags } from "../api/apiSupabase";
+// import { getPoptags } from "../api/apiSupabase";
+import { getPoptags } from "../api/apiSidebar";
 import PopTag from "./PopTag";
 
 //
@@ -27,7 +28,7 @@ const PopTags = () => {
       <div className=" text-base font-semibold text-black">Popular Tags</div>
       <div className="flex h-auto flex-col items-start justify-start gap-5 self-stretch px-2.5">
         {tagssplice.map((el) => (
-          <PopTag key={el.id} {...el} />
+          <PopTag key={el.tagName} {...el} />
         ))}
       </div>
     </div>

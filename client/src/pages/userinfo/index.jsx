@@ -1,8 +1,30 @@
-
 import { useState } from "react";
+import { readUserinfo } from "../../api/apiDevko";
+import { useLoaderData } from "react-router-dom";
 
 const index = () => {
-  // const user = useLoaderData();
+  const userdata = useLoaderData();
+  // console.log(userdata)
+  const { postrows, commentrows } = userdata;
+
+  console.log(postrows);
+
+  const userPost =
+    postrows.length > 0 ? (
+      <>
+        <p>{postrows.length}개의 작성 글이 있습니다.</p>
+        {postrows.map((el) => (
+          <p>
+            <span>{el.title}</span>
+            <span>{el.postContent}</span>
+          </p>
+        ))}
+      </>
+    ) : (
+      <p className="mt-10 text-2xl">해당 유저는 작성한 글이 없어요.</p>
+    );
+
+  console.log(userPost);
   const tabs = ["discuss", "q&a", "comment", "guitar.etc.."];
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
@@ -37,9 +59,7 @@ const index = () => {
           </div>
         </div>
         <div>
-          {tabs[activeTabIndex] === "discuss" && (
-            <p className="mt-10 text-2xl">해당 유저는 작성한 글이 없어요.</p>
-          )}
+          {tabs[activeTabIndex] === "discuss" && userPost}
           {tabs[activeTabIndex] === "q&a" && (
             <p className="mt-10 text-2xl">해당 유저가 질문한 글이 없어요.</p>
           )}
@@ -58,21 +78,12 @@ const index = () => {
 
 export default index;
 
-// export async function loader() {
-//   try {
-//     // const username = cookie.load("userId");
-//     const username = 1;
-//     const url = `http://localhost:3000/api/profile/${username}`;
-//     const res = await fetch(url);
-
-//     if (!res.ok) {
-//       throw new Error(`HTTP error! Status: ${res.status}`);
-//     }
-
-//     const data = await res.json();
-//     return data;
-//   } catch (error) {
-//     console.error("Error in loader function:", error);
-//     throw error;
-//   }
-// }
+export async function loader({ params }) {
+  console.log(params);
+  try {
+    const data = await readUserinfo(params.id);
+    return data;
+  } catch (error) {
+    return "연결실패";
+  }
+}

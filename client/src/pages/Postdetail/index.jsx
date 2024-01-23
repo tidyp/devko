@@ -20,6 +20,7 @@ const Postdetail = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const { post, comments } = useLoaderData();
   const { pathname } = useLocation();
+  console.log(post)
   let [data] = post;
   const commentsData = comments.currPageRows.slice().reverse()
   console.log(comments);
@@ -40,7 +41,7 @@ const Postdetail = () => {
 
     try {
       const response = await createComment({
-        postId: data.id,
+        postId: data.postId,
         commentId: 1,
         // commentId: crypto.randomUUID(),
         userId: username,

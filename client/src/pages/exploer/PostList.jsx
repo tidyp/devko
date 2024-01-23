@@ -3,6 +3,9 @@ import NewPost from "./NewPost";
 
 const PostList = ({ posts }) => {
   const reversedPosts = posts.slice().reverse();
+
+  console.log(reversedPosts)
+
   return (
     <div className="flex w-full flex-col justify-center ">
       <div className="flex flex-col items-center justify-center">
@@ -19,7 +22,7 @@ const PostList = ({ posts }) => {
           <p className="text-xl">작성된 글이 없습니다.</p>
         )}
         {reversedPosts.map((post) => (
-          <Post post={post} key={post.id} />
+          <Post post={post} key={post.postId} />
         ))}
       </div>
     </div>

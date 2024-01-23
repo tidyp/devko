@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { getTopWriters } from "../api/apiSupabase";
+// import { getTopWriters } from "../api/apiSupabase";
+import { getTopWriters } from "../api/apiSidebar";
 
 //
 
@@ -29,14 +30,16 @@ const TopWriters = () => {
           <div key={index} className="flex flex-row items-center">
             <div>
               <img
-                src={el.userImage}
-                alt={el.userImage}
+                src={el.profileImage}
+                alt={el.profileImage}
                 className="h-10 w-10 rounded-full"
               />
+              <span>{el.userName}</span>
             </div>
             <div className="ml-3">
               <p className="font-bold">RANK: {el.userRank}</p>
-              <p className="text-gray-600">{`Score: ${el.userScore.toLocaleString()}`}</p>
+              <p className="text-gray-600">{`Score: ${el.postCNT.toLocaleString()}`}</p>
+              {/* <p className="text-gray-600">{`Score: ${el.userScore.toLocaleString()}`}</p> */}
             </div>
           </div>
         ))}

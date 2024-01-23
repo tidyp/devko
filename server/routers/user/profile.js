@@ -13,7 +13,7 @@ router.get("/:userId", async (req, res) => {
            u.workPosition AS workPosition,
            u.interestArea AS interestArea,
            u.selfDescription AS selfDescription,
-           u.grade AS grade,
+           u.grade AS grade
     FROM users u
     WHERE u.id = ?
     `;
@@ -56,7 +56,7 @@ router.get("/:userId", async (req, res) => {
     });
     const [postrows, postfields] = await db.query(postsql, [userId]);
     const [commentrows, commentfields] = await db.query(commentsql, [userId]);
-    res.json(userrows, postrows, commentrows);
+    res.json({userrows, postrows, commentrows});
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).send("Internal Server Error");
