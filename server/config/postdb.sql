@@ -78,3 +78,10 @@ CREATE TABLE IF NOT EXISTS calendars (
     endDate DATETIME
 );
 
+-- NEWS 테이블
+DROP TABLE IF EXISTS devko.news;
+CREATE TABLE IF NOT EXISTS news (
+    postId INT,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    link VARCHAR(100)
+);

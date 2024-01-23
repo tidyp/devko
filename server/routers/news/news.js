@@ -4,35 +4,81 @@ const router = express.Router();
 const Parser = require("rss-parser");
 const parser = new Parser();
 
-const fs = require("fs");
+const blogs = require("./blog.json");
 const db = require("../../config/db");
 
-// try {
-//   // 블로그 불러오기
-//   const jsonFile = "blog.json";
-//   const blogFile = fs.readFileSync(jsonFile, "utf8");
-//   const blogLists = JSON.parse(blogFile);
-//   console.log(blogLists);
-
-//   for (const [company, feedUrl] of Object.entries(blogLists)) {
-//     // console.log(company, feedUrl);
-//     getRssTitles(feedUrl)
-//       .then((titles) => {
-//         titles.forEach((title) => console.log(title));
-//         titles.forEach((links) => console.log(links));
-//       })
-//       .catch((error) => console.error("Error fetching RSS feed:", error));
+// router.get("/", async (req, res) => {
+//   try {
+//     const sql = `
+//     SELECT p.id AS postId
+//         , p.category AS category
+//         , p.title AS title
+//         , p.content AS content
+//         , p.createdAt AS createdAt
+//         , p.updatedAt AS updatedAt
+//         , n.id AS newsId
+//         , n.link AS newsLink
+//         , t.id AS tagId
+//         , t.name AS tagName
+//         , v.count AS viewCnt
+//         , l.count AS likeCnt
+//     FROM posts p
+//     LEFT OUTER JOIN news n ON p.id = n.postId
+//     LEFT OUTER JOIN tags t ON p.id = t.postId
+//     LEFT OUTER JOIN views v ON p.id = v.postId
+//     LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM likes GROUP BY postId) l ON p.id = l.postId
+//     LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM comments GROUP BY postId) c ON p.id = c.postId
+//     `;
+//   } catch (err) {
+//     console.error("Query execution error:", err);
+//     res.status(500).send("Internal Server Error");
 //   }
-// } catch (err) {
-//   console.error("Error reading JSON file:", err);
-// }
+// });
 
-// async function getRssTitles(url) {
-//   const feed = await parser.parseURL(url);
-//   console.log(feed);
-//   const titles = feed.items.map((item) => item.title);
-//   const links = feed.items.map((item) => item.link);
-//   const pubDates = feed.items.map((item) => item.pubDate);
-// }
+router.get("/", async (req, res) => {
+  try {
+    const blog = "https://www.reddit.com/.rss";
+    const result = [];
+
+    let feed = await parser.parseURL(blog);
+
+    feed.items.forEach((data) => {
+      result.push({
+        title: data.title,
+        link: data.link,
+        pubDate: data.pubDate,
+      });
+    });
+
+    res.send(result);
+    // const user = "devko";
+    // const title = req.body.title;
+    // const content = req.body.content;
+    // const category = req.body.category;
+    // const tags = req.body.tags;
+
+    // const postSql = `INSERT INTO posts (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
+    // const setSql = `SET @postId = LAST_INSERT_ID();`;
+    // const newsSql = `INSERT INTO news (postId) VALUES (@postId)`;
+    // const likeSql = `INSERT INTO likes (postId) VALUES (@postId)`;
+    // const viewSql = `INSERT INTO views (postId) VALUES (@postId)`;
+    // const tagSql = `INSERT INTO tags (postId, id, name) VALUES (@postId, ?, ?);`;
+
+    // await db.query(postSql, [user, title, content, category]);
+    // await db.query(setSql);
+    // await db.query(newsSql);
+    // await db.query(likeSql);
+    // await db.query(viewSql);
+
+    // for (i = 0; i < tags.length; i++) {
+    //   await db.query(tagSql, [i + 1, tags[i]]);
+    // }
+
+    // res.send(rows);
+  } catch (err) {
+    console.error("Query execution error:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 module.exports = router;
