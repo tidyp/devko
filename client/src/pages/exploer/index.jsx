@@ -8,7 +8,6 @@ import ErrorServer from "./ErrorServer";
 
 const index = () => {
   const posts = useLoaderData();
-  console.log(posts)
 
   return (
     <div className="flex w-full items-start justify-center">

@@ -1,6 +1,35 @@
 const API_URL = "http://localhost:3000/api";
 
 // Reads: 게시글 조회
+export async function readDiscussPosts(id) {
+  try {
+    const res = await fetch(`${API_URL}/post/discuss/${id}`);
+    console.log(id)
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data. Status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    throw error;
+  }
+}
+// Reads: 게시글 조회
+export async function readQnaPosts(id) {
+  try {
+    const res = await fetch(`${API_URL}/post/qna/${id}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data. Status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    throw error;
+  }
+}
+// Reads: 게시글 조회
 export async function readPosts() {
   try {
     const res = await fetch(`${API_URL}/post`);
@@ -40,20 +69,35 @@ export async function createPost(postData) {
     body: JSON.stringify(postData),
   });
 
-  console.log(res);
+  
   if (!res.ok) {
     throw new Error(`Failed to create post. Status: ${res.status}`);
   }
 
   const data = await res.json();
-  console.log(data);
+  return data;
+}
+// Create: 그룹 게시글 작성
+export async function createGroupPost(postData) {
+  const res = await fetch(`${API_URL}/team`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(postData),
+  });
+
+  
+  if (!res.ok) {
+    throw new Error(`Failed to create post. Status: ${res.status}`);
+  }
+
+  const data = await res.json();
   return data;
 }
 
 // Update: 게시글 수정
 export async function updatePost(params) {
-  console.log(params);
-  console.log(params.title);
   const res = await fetch(`${API_URL}/post/${params.id}`, {
     method: "PUT",
     headers: {
@@ -66,13 +110,11 @@ export async function updatePost(params) {
     }),
   });
 
-  console.log(res);
   if (!res.ok) {
     throw new Error(`Failed to create post. Status: ${res.status}`);
   }
 
   const data = await res.json();
-  console.log(data);
   return data;
 }
 
@@ -90,13 +132,11 @@ export async function deletePost(id) {
     }),
   });
 
-  console.log(res);
   if (!res.ok) {
     throw new Error(`Failed to create post. Status: ${res.status}`);
   }
 
   const data = await res.json();
-  console.log(data);
   return data;
 }
 
@@ -112,12 +152,10 @@ export async function readUser(id) {
 export async function searchResult(id) {
   try {
     const res = await fetch(`${API_URL}/search/${id}`);
-    console.log(res)
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
     const data = await res.json();
-    console.log(data)
     return data;
   } catch (error) {
     console.error(`Error: ${error.message}`);
@@ -161,13 +199,11 @@ export async function createComment({
     }),
   });
 
-  console.log(res);
   if (!res.ok) {
     throw new Error(`Failed to create post. Status: ${res.status}`);
   }
 
   const data = await res.json();
-  console.log(data);
   return data;
 }
 

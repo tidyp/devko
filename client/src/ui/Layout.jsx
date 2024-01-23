@@ -9,9 +9,7 @@ import ProfileBox from "../components/ProfileBox";
 import { Link, useLocation } from "react-router-dom";
 
 const Layout = () => {
-  console.log(useLocation())
   const { pathname } = useLocation();
-  console.log(pathname)
   // const displaySidebar = pathname === "/userinfo";
   const conditions = pathname.startsWith("/userinfo")
   const displaySidebar = conditions;

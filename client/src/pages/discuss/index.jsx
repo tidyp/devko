@@ -1,7 +1,5 @@
-import { Link } from "react-router-dom";
-
-import { readPosts } from "../../api/apiDevko";
-import { useLoaderData } from "react-router-dom";
+import { readDiscussPosts } from "../../api/apiDevko";
+import { useLoaderData, Link, Navigate, useNavigate } from "react-router-dom";
 
 import { formatDate } from "../../utils/utils";
 
@@ -9,9 +7,14 @@ import { GoEye, GoComment, GoHeart, GoHeartFill } from "react-icons/go";
 import { useState } from "react";
 
 const index = () => {
+  const navigate = useNavigate();
+
   const posts = useLoaderData();
+  const postsList = posts.currPageRows;
+  const curPage = posts.page;
+  const totalPage = posts.totalPages;
   const [isClickLike, setIsClickLike] = useState(false);
-  console.log(posts);
+
 
   // 좋아요 클릭 이벤트
   const handleLikeClick = async () => {
@@ -22,7 +25,6 @@ const index = () => {
       });
 
       if (res.ok) {
-        console.log("Post liked successfully");
       } else {
         console.error("Failed to like post");
       }
@@ -31,10 +33,15 @@ const index = () => {
     }
   };
 
+  // 페이지이동
+  const handlePageChange = (item) => {
+    navigate(`/discuss/${item}`);
+  };
+
   return (
     <>
       <ul className="flex w-full flex-col items-start">
-        {posts.map((el) => {
+        {postsList.map((el) => {
           return (
             <>
               <li key={el.title} className="group mb-4 w-full">
@@ -52,12 +59,9 @@ const index = () => {
                       {el.title}
                     </span>
 
-
-
-
                     <div className="flex items-center justify-center gap-4">
                       <GoComment />
-                      <span>{el.commentCnt}</span>
+                      <span>{el.commentCnt > 0 ? el.commentCnt : 0}</span>
                       <GoEye />
                       <span>{el.viewCnt}</span>
                       {isClickLike ? (
@@ -75,13 +79,9 @@ const index = () => {
                       <span>{el.likeCnt}</span>
                     </div>
 
-
                     <span className="text-gray-700">
                       {formatDate(el.createdAt)}
                     </span>
-
-
-
                   </div>
                 </Link>
               </li>
@@ -89,9 +89,32 @@ const index = () => {
           );
         })}
       </ul>
-      <div className="flex w-full items-center justify-center">
-        {/* TODO: pagination */}
-        page {posts.page}/{posts.totalPages}
+      <div className="flex w-full items-center justify-center gap-8 pb-8">
+        <button
+          onClick={() => handlePageChange(curPage - 1)}
+          disabled={curPage === 1}
+          className={`rounded-md px-4 py-2 ${
+            curPage === 1
+              ? "cursor-not-allowed bg-gray-300 text-gray-500"
+              : "focus:shadow-outline-blue bg-blue-500 text-white hover:bg-blue-600 focus:outline-none active:bg-blue-800"
+          }`}
+        >
+          Previous
+        </button>
+        <span className="text-lg">
+          Page {curPage}/{totalPage}
+        </span>
+        <button
+          onClick={() => handlePageChange(curPage + 1)}
+          disabled={curPage === totalPage}
+          className={`rounded-md px-4 py-2 ${
+            curPage === totalPage
+              ? "cursor-not-allowed bg-gray-300 text-gray-500"
+              : "focus:shadow-outline-blue bg-blue-500 text-white hover:bg-blue-600 focus:outline-none active:bg-blue-800"
+          }`}
+        >
+          Next
+        </button>
       </div>
     </>
   );
@@ -99,14 +122,11 @@ const index = () => {
 
 export default index;
 
-export async function loader() {
+export async function loader({ params }) {
   try {
-    const board = await readPosts();
+    const board = await readDiscussPosts(params.id);
     return board;
   } catch (error) {
-    // console.error("Error fetching posts:", error);
-
-    // loader-fetch-요청실패
     return "연결실패";
   }
 }

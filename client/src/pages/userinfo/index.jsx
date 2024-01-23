@@ -4,10 +4,8 @@ import { useLoaderData } from "react-router-dom";
 
 const index = () => {
   const userdata = useLoaderData();
-  // console.log(userdata)
   const { postrows, commentrows } = userdata;
 
-  console.log(postrows);
 
   const userPost =
     postrows.length > 0 ? (
@@ -24,7 +22,6 @@ const index = () => {
       <p className="mt-10 text-2xl">해당 유저는 작성한 글이 없어요.</p>
     );
 
-  console.log(userPost);
   const tabs = ["discuss", "q&a", "comment", "guitar.etc.."];
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
@@ -79,7 +76,6 @@ const index = () => {
 export default index;
 
 export async function loader({ params }) {
-  console.log(params);
   try {
     const data = await readUserinfo(params.id);
     return data;
