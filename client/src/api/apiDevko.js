@@ -98,14 +98,13 @@ export async function createGroupPost(postData) {
 
 // Update: 게시글 수정
 export async function updatePost(params) {
-  console.log(params)
-  const res = await fetch(`${API_URL}/post/${params.postId}`, {
+  const res = await fetch(`${API_URL}/post/${params.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      id: params.postId,
+      id: params.id,
       title: params.title,
       content: params.content,
     }),
