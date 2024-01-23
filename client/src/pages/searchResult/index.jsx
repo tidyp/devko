@@ -52,10 +52,8 @@ export default index;
 
 export async function loader({ params }) {
   const { id } = params;
-  console.log(id);
   try {
     const res = await searchResult(id);
-    console.log(res);
     return res;
   } catch (error) {
     // console.error("Error fetching posts:", error);

@@ -11,6 +11,7 @@ import { GoEye, GoComment, GoHeart, GoHeartFill } from "react-icons/go";
 import Modal from "../../components/Model";
 
 const Post = ({ post }) => {
+  console.log(post)
   const [isClickLike, setIsClickLike] = useState(false);
 
   const useruuid = cookie.load("uuid");
@@ -33,12 +34,18 @@ const Post = ({ post }) => {
   const handleLikeClick = async () => {
     setIsClickLike((prev) => !prev);
     try {
-      const res = await fetch(`http://localhost:3000/api/like/${post.id}`, {
+      const res = await fetch(`http://localhost:3000/api/like/${post.postId}`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          userId: useruuid,
+          isLiked: isClickLike
+         }), 
       });
 
       if (res.ok) {
-        console.log("Post liked successfully");
       } else {
         console.error("Failed to like post");
       }
@@ -103,7 +110,7 @@ const Post = ({ post }) => {
             )}
           </div>
         </div>
-        <Link to={`/${post.category}/${post.postId}`}>
+        <Link to={`/${post.category}/detail/${post.postId}`}>
           <div className="self-stretch  text-base font-medium text-zinc-500">
             {post.content}
           </div>

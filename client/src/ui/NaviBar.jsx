@@ -14,15 +14,12 @@ const NaviBar = () => {
   const navigate = useNavigate();
 
   const toggleDropdown = () => {
-    console.log("click");
     setDropdownOpen((prev) => !prev);
   };
 
   const useruuid = cookie.load("uuid");
   const userName = cookie.load("userName")
   const userImage = cookie.load("userImage");
-  console.log(useruuid, userName, userImage);
-  console.log(userImage)
 
   const clickLogout = () => {
     cookie.remove("uuid", { path: "/" });
@@ -65,13 +62,13 @@ const NaviBar = () => {
               news
             </NavLink>
             <NavLink
-              to="/discuss"
+              to="/discuss/1"
               className={({ isActive }) => (isActive ? activeLink : "")}
             >
               discuss
             </NavLink>
             <NavLink
-              to="/qna"
+              to="/qna/1"
               className={({ isActive }) => (isActive ? activeLink : "")}
             >
               Q&amp;A

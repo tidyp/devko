@@ -1,7 +1,7 @@
 // TODO: 날짜 상태관리 수정
 
 import React, { useState } from "react";
-import { createPost } from "../api/apiDevko";
+import { createPost, createGroupPost } from "../api/apiDevko";
 import cookie from "react-cookies";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
@@ -17,9 +17,8 @@ const NewPost = () => {
   const navigate = useNavigate();
   const username = cookie.load("uuid");
 
-  // const [tags, setTags] = useState(1);
-  const [tags, setTags] = useState(["jo"]);
-
+  const [tags, setTags] = useState([]);
+  console.log(tags);
 
   const [selectedCategory, setSelectedCategory] = useState("discuss");
   const [post, setPost] = useState({
@@ -30,9 +29,8 @@ const NewPost = () => {
     category: "discuss",
   });
 
-
   const handleAddTag = () => {
-    setTags(prev => prev+1)
+    setTags((prev) => [...prev, ""]);
   };
 
   const handleCategoryChange = (categoryId) => {
@@ -40,14 +38,12 @@ const NewPost = () => {
     setPost({ ...post, category: categoryId });
   };
 
-   const handleChange = (key, value, index) => {
+  const handleChange = (key, value, index) => {
     if (key === "tags") {
-      // If the key is "tags", update the tags array at the specified index
       const updatedTags = [...tags];
       updatedTags[index] = value;
       setTags(updatedTags);
     } else {
-      // Otherwise, update the post object
       setPost((prevPost) => ({ ...prevPost, [key]: value }));
     }
   };
@@ -71,12 +67,22 @@ const NewPost = () => {
     e.preventDefault();
 
     try {
-      const response = await createPost({
+      // if (selectedCategory === "group") {
+      //   const res = await createGroupPost({
+      //     ...post,
+      //     userId: username,
+      //     tags: tags.filter((tag) => tag.trim() !== ""),
+      //   });
+      //   navigate("/");
+      // }
+      const res = await createPost({
         ...post,
         userId: username,
-        tags: tags.filter((tag) => tag.trim() !== ""), // Remove empty tags
+        tags: tags.filter((tag) => tag.trim() !== ""),
       });
-      console.log("Response:", response);
+      // if(res){
+      //   navigate("/");
+      // }
       navigate("/");
     } catch (error) {
       console.error("Error:", error);
@@ -137,30 +143,23 @@ const NewPost = () => {
             onChange={(e) => handleChange("content", e.target.value)}
           />
         </div>
-        {/* {tags.map((el) => (
-          <div className="justify-start" key={el}>
-            <select className="w-auto rounded-lg border bg-gray-200 p-2">
-              <option value="jo">jo</option>
-              <option value="jae">jae</option>
-              <option value="eun">eun</option>
-            </select>
-          </div>
-        ))} */}
-        <div className="flex flex-row"></div>
- {Array.from({ length: tags.length }, (_, index) => (
-          <div className="justify-start" key={index}>
-            <select
-              className="rounded-lg border bg-gray-200 p-2"
-              value={tags[index]}
-              onChange={(e) => handleChange("tags", e.target.value, index)}
-            >
-              <option value="jo">jo</option>
-              <option value="jae">jae</option>
-              <option value="eun">eun</option>
-            </select>
-          </div>
-        ))}
-        <div onClick={handleAddTag}>+</div>
+        <div className="flex gap-2">
+          <div className="bg-blue-400 p-2 rounded-xl"  onClick={handleAddTag}>+</div>
+          {tags.map((tag, index) => (
+            <div className="justify-start" key={index}>
+              <select
+                className="rounded-lg border bg-gray-200 p-2"
+                value={tag}
+                onChange={(e) => handleChange("tags", e.target.value, index)}
+              >
+                <option value="">태그를 선택해주세요</option>
+                <option value="jo">jo</option>
+                <option value="jae">jae</option>
+                <option value="eun">eun</option>
+              </select>
+            </div>
+          ))}
+        </div>
 
         <div className="mt-6">
           <Button color="bg-blue-500" onClick={handleSubmit}>

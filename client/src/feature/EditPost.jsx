@@ -43,7 +43,6 @@ const Post = () => {
 
     try {
       const response = await updatePost({ ...postData, userId: username });
-      console.log("Response:", response);
       navigate("/");
     } catch (error) {
       console.error("Error:", error);

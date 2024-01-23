@@ -27,9 +27,7 @@ const ProfileBox = () => {
     );
   }
   
-  console.log(userData)
   const data = userData[0];
-  console.log(data);
 
   return (
     <>
