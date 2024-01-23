@@ -15,11 +15,12 @@ const categories = [
 
 const Post = () => {
   const navigate = useNavigate();
-  const username = cookie.load("userId");
+  const username = cookie.load("uuid");
   const {params} = useParams()
 
   // 데이터 load
   const [post] = useLoaderData().post;
+  console.log(post)
 
   const [selectedCategory, setSelectedCategory] = useState("discuss");
   const [postData, setPostData] = useState(() => {
@@ -42,7 +43,8 @@ const Post = () => {
     e.preventDefault();
 
     try {
-      const response = await updatePost({ ...postData, userId: username });
+      // const response = await updatePost({ ...postData, userId: username });
+      const response = await updatePost({ ...postData});
       navigate("/");
     } catch (error) {
       console.error("Error:", error);
