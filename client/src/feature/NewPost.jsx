@@ -1,7 +1,5 @@
-// TODO: 날짜 상태관리 수정
-
-import React, { useState } from "react";
-import { createPost } from "../api/apiDevko";
+import { useState, useReducer } from "react";
+import { createPost, createGroupPost } from "../api/apiDevko";
 import cookie from "react-cookies";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
@@ -13,70 +11,129 @@ const categories = [
   { id: "group", label: "Group" },
 ];
 
+// const initialState = {
+//   selectedCategory: "discuss",
+//   post: {
+//     title: "",
+//     content: "",
+//     tags: [],
+//   },
+//   event: {
+//     startDate: new Date(),
+//     endDate: new Date(),
+//   },
+//   group: {
+//     startDate: new Date(),
+//     endDate: new Date(),
+//     location: "",
+//     section: "",
+//     members: 1,
+//     workPosition: "",
+//   },
+// };
+
+const initialState = {
+  selectedCategory: "discuss",
+  post: {
+    title: "",
+    content: "",
+    tags: [],
+    startDate: new Date(),
+    endDate: new Date(),
+    location: "",
+    section: "",
+    members: 1,
+    workPosition: "",
+  },
+};
+
+// const reducer = (state, action) => {
+//   switch (action.type) {
+//     case "SET_CATEGORY":
+//       return { ...state, selectedCategory: action.payload };
+//     case "SET_DATES":
+//       return { ...state, dates: action.payload };
+//     case "SET_TAGS":
+//       return { ...state, tags: action.payload };
+//     case "SET_POST":
+//       return { ...state, post: action.payload };
+//     default:
+//       return state;
+//   }
+// };
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "SET_FIELD":
+      return {
+        ...state,
+        post: { ...state.post, [action.payload.key]: action.payload.value },
+      };
+    case "SET_CATEGORY":
+      return { ...state, selectedCategory: action.payload };
+    default:
+      return state;
+  }
+};
+
 const NewPost = () => {
   const navigate = useNavigate();
   const username = cookie.load("uuid");
+  const [state, dispatch] = useReducer(reducer, initialState);
+  console.log(state);
+  console.log(state.post.tags);
 
-  // const [tags, setTags] = useState(1);
-  const [tags, setTags] = useState(["jo"]);
-
-
-  const [selectedCategory, setSelectedCategory] = useState("discuss");
-  const [post, setPost] = useState({
-    title: "",
-    content: "",
-    startDate: new Date(),
-    endDate: new Date(),
-    category: "discuss",
-  });
-
-
-  const handleAddTag = () => {
-    setTags(prev => prev+1)
-  };
-
+  // 카테고리
   const handleCategoryChange = (categoryId) => {
-    setSelectedCategory(categoryId);
-    setPost({ ...post, category: categoryId });
+    dispatch({ type: "SET_CATEGORY", payload: categoryId });
   };
 
-   const handleChange = (key, value, index) => {
-    if (key === "tags") {
-      // If the key is "tags", update the tags array at the specified index
-      const updatedTags = [...tags];
-      updatedTags[index] = value;
-      setTags(updatedTags);
-    } else {
-      // Otherwise, update the post object
-      setPost((prevPost) => ({ ...prevPost, [key]: value }));
+  const handleDateChange = (key, value) => {
+    dispatch({ type: "SET_FIELD", payload: { key, value } });
+    if (key === "startDate" && state.selectedCategory === "event") {
+      dispatch({ type: "SET_FIELD", payload: { key: "endDate", value } });
     }
   };
 
-  const renderCategoryButton = (category) => (
-    <button
-      key={category.id}
-      type="button"
-      className={`rounded-md border px-4 py-2 ${
-        selectedCategory === category.id
-          ? "bg-gray-200  text-gray-700"
-          : "border-spacing-4 bg-white text-gray-700"
-      }`}
-      onClick={() => handleCategoryChange(category.id)}
-    >
-      {category.label}
-    </button>
-  );
+  // 태그 추가 수정
+  const handleTagChange = (value, index) => {
+    const updatedTags = [...state.post.tags, value];
+    // updatedTags[index] = ;
+    dispatch({
+      type: "SET_FIELD",
+      payload: { key: "tags", value: updatedTags },
+    });
+  };
+
+  const handleChange = (key, value, index) => {
+    if (key === "tags") {
+      handleTagChange(value, index);
+    } else if (key === "startDate" || key === "endDate") {
+      handleDateChange(key, value);
+    } else {
+      dispatch({ type: "SET_FIELD", payload: { key, value } });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await createPost({
-        ...post,
+      const postData = {
+        ...state.post,
         userId: username,
-        tags: tags.filter((tag) => tag.trim() !== ""), // Remove empty tags
-      });
-      console.log("Response:", response);
+        tags: state.post.tags.filter((tag) => tag.trim() !== ""),
+      };
+
+      if (
+        state.selectedCategory === "event" ||
+        state.selectedCategory === "group"
+      ) {
+        await createGroupPost(postData);
+      } else {
+        await createPost(postData);
+      }
+
       navigate("/");
     } catch (error) {
       console.error("Error:", error);
@@ -91,7 +148,22 @@ const NewPost = () => {
     <div className="flex w-full flex-col items-start">
       <form className="flex w-full flex-col gap-3 px-4" onSubmit={handleSubmit}>
         <div className="flex items-center justify-start gap-2">
-          {categories.map(renderCategoryButton)}
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              type="button"
+              className={`rounded-md border px-4 py-2 ${
+                state.selectedCategory === category.id
+                  ? "bg-gray-200  text-gray-700"
+                  : "border-spacing-4 bg-white text-gray-700"
+              }`}
+              onClick={() => {
+                handleCategoryChange(category.id);
+              }}
+            >
+              {category.label}
+            </button>
+          ))}
         </div>
         <div className="flex items-center justify-between gap-2">
           <input
@@ -100,11 +172,36 @@ const NewPost = () => {
             placeholder="제목을 입력하세요"
             className="w-full rounded-lg border bg-gray-200 p-2"
             required
-            value={post.title}
+            value={state.post.title}
             onChange={(e) => handleChange("title", e.target.value)}
           />
         </div>
-        {post.category === "event" && (
+        {state.selectedCategory === "group" && (
+          <div className="flex gap-2">
+            <input
+              type="text"
+              name="location"
+              placeholder="Enter location"
+              className=" w-full rounded-lg border bg-gray-200 p-2"
+              required
+            />
+            <input
+              type="text"
+              name="member"
+              placeholder="Enter member"
+              className=" w-full rounded-lg border bg-gray-200 p-2"
+              required
+            />
+            <input
+              type="text"
+              name="workpostion"
+              placeholder="Enter workpostion"
+              className=" w-full rounded-lg border bg-gray-200 p-2"
+              required
+            />
+          </div>
+        )}
+        {["event", "group"].includes(state.selectedCategory) && (
           <div className="flex gap-2">
             <input
               type="date"
@@ -112,7 +209,7 @@ const NewPost = () => {
               placeholder="Enter title"
               className=" w-full rounded-lg border bg-gray-200 p-2"
               required
-              value={post.startDate}
+              value={state.post.startDate}
               onChange={(e) => handleChange("startDate", e.target.value)}
             />
             <input
@@ -121,7 +218,7 @@ const NewPost = () => {
               placeholder="Enter title"
               className=" w-full rounded-lg border bg-gray-200 p-2"
               required
-              value={post.endDate}
+              value={state.post.endDate}
               onChange={(e) => handleChange("endDate", e.target.value)}
             />
           </div>
@@ -132,35 +229,29 @@ const NewPost = () => {
             className=" h-96 w-full rounded-md border bg-gray-200 p-2"
             placeholder="내용을 입력하세요"
             required
-            value={post.content}
-            // onChange={handleChange}
+            value={state.post.content}
             onChange={(e) => handleChange("content", e.target.value)}
           />
         </div>
-        {/* {tags.map((el) => (
-          <div className="justify-start" key={el}>
-            <select className="w-auto rounded-lg border bg-gray-200 p-2">
-              <option value="jo">jo</option>
-              <option value="jae">jae</option>
-              <option value="eun">eun</option>
-            </select>
+        <div className="flex justify-between gap-4 p-2 bg-gray-200">
+          <div className="flex">
+            {state.post.tags.map((el) => (
+              <span className="p-2">{el}</span>
+            ))}
           </div>
-        ))} */}
-        <div className="flex flex-row"></div>
- {Array.from({ length: tags.length }, (_, index) => (
-          <div className="justify-start" key={index}>
-            <select
-              className="rounded-lg border bg-gray-200 p-2"
-              value={tags[index]}
-              onChange={(e) => handleChange("tags", e.target.value, index)}
-            >
-              <option value="jo">jo</option>
-              <option value="jae">jae</option>
-              <option value="eun">eun</option>
-            </select>
-          </div>
-        ))}
-        <div onClick={handleAddTag}>+</div>
+          <select
+            className="rounded-lg border bg-gray-200 p-2"
+            onChange={(e) => handleChange("tags", e.target.value)}
+          >
+            <option value="">태그를 선택해주세요</option>
+            <option value="javascript">javascript</option>
+            <option value="node">node</option>
+            <option value="react">react</option>
+            <option value="next">next</option>
+            <option value="express">express</option>
+            <option value="nest">nest</option>
+          </select>
+        </div>
 
         <div className="mt-6">
           <Button color="bg-blue-500" onClick={handleSubmit}>

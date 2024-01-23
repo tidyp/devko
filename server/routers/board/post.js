@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
 
-// 게시글 전체 목록 보기
+// Exploer 메뉴 - 게시글 전체 목록 보기
 router.get("/", async (req, res) => {
   try {
     const sql = `
@@ -40,7 +40,7 @@ router.get("/", async (req, res) => {
       FROM users u
       LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
       LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u ON p.userId = u.id
-    ORDER BY p.createdAt ASC
+    ORDER BY p.createdAt DESC
     `;
 
     const [rows, fields] = await db.query(sql);
@@ -97,7 +97,7 @@ router.get("/:id", async (req, res) => {
       LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
       LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u ON p.userId = u.id
     WHERE p.id = ?
-    ORDER BY p.createdAt ASC
+    ORDER BY p.createdAt DESC
     `;
 
     const [rows, fields] = await db.query(sql, [postId]);
@@ -149,7 +149,7 @@ router.get("/:category/:page", async (req, res) => {
       LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
       LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u ON p.userId = u.id
     WHERE p.category = ?
-    ORDER BY p.createdAt ASC
+    ORDER BY p.createdAt DESC
     `;
     const [rows, fields] = await db.query(sql, [category]);
 
@@ -183,10 +183,10 @@ router.post("/", async (req, res) => {
     const tags = req.body.tags;
 
     const postSql = `INSERT INTO posts (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
-    const setSql = `SET @last_id = LAST_INSERT_ID();`;
-    const likeSql = `INSERT INTO likes (postId) VALUES (@last_id)`;
-    const viewSql = `INSERT INTO views (postId) VALUES (@last_id)`;
-    const tagSql = `INSERT INTO tags (postId, id, name) VALUES (@last_id, ?, ?);`;
+    const setSql = `SET @postId = LAST_INSERT_ID();`;
+    const likeSql = `INSERT INTO likes (postId) VALUES (@postId)`;
+    const viewSql = `INSERT INTO views (postId) VALUES (@postId)`;
+    const tagSql = `INSERT INTO tags (postId, id, name) VALUES (@postId, ?, ?);`;
 
     const [rows, fields] = await db.query(postSql, [
       user,

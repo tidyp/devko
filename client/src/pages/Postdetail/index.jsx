@@ -8,7 +8,6 @@ import {
   useLoaderData,
   useLocation,
   useNavigate,
-  useParams,
 } from "react-router-dom";
 import { VscKebabVertical } from "react-icons/vsc";
 import Button from "../../components/Button";
@@ -20,15 +19,13 @@ const Postdetail = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const { post, comments } = useLoaderData();
   const { pathname } = useLocation();
-  console.log(post)
   let [data] = post;
-  const commentsData = comments.currPageRows.slice().reverse()
-  console.log(comments);
+  console.log(data);
+  const commentsData = comments.currPageRows.slice().reverse();
 
   const navigate = useNavigate();
 
   const username = cookie.load("uuid");
-  console.log(username);
 
   // 댓
   const [commentContent, setCommentContent] = useState("");
@@ -40,19 +37,15 @@ const Postdetail = () => {
     e.preventDefault();
 
     try {
-      const response = await createComment({
+      const res = await createComment({
         postId: data.postId,
-        commentId: 1,
-        // commentId: crypto.randomUUID(),
+        commentId: Math.round(Math.random()*100000),
         userId: username,
         commentContent: commentContent,
       });
       setCommentContent("");
-      console.log("Response:", response);
       navigate(pathname);
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    } catch (error) {}
   };
 
   const dropdownRef = useRef(null);
@@ -72,20 +65,18 @@ const Postdetail = () => {
   }, []);
 
   const toggleDropdown = () => {
-    // console.log("click");
     setDropdownOpen((prev) => !prev);
   };
 
   const clickdeletePost = async () => {
     try {
-      await deletePost(data.id);
+      await deletePost(data.postId);
       navigate("/");
     } catch (error) {
       console.error("Error deleting post:", error);
     }
   };
 
-  console.log(comments);
   return (
     <>
       <div className="flex w-full flex-col ">
@@ -93,9 +84,11 @@ const Postdetail = () => {
           <p className="text-gray-700">카테고리: {data.category}</p>
           <header className="flex items-center justify-between text-xl">
             <div className="flex items-center gap-4">
-              <div className="h-16 w-16 rounded-full bg-gray-300">
-                {/* 이미지 */}
-              </div>
+              <img
+                className="className=h-16 w-16 rounded-full bg-gray-300"
+                src={data.profileImage}
+                alt=""
+              />
               <div>
                 <p className="text-lg font-semibold">id</p>
                 <p className="text-gray-700">{data.userId}</p>
@@ -109,11 +102,11 @@ const Postdetail = () => {
               {isDropdownOpen && (
                 <div className="item translate3d absolute right-2 flex flex-col items-center justify-center rounded border bg-white p-2 px-4 shadow-md">
                   <span className="w-12 cursor-pointer">
-                    <Link to={`/edit/${data.id}`}>수정</Link>
+                    <Link to={`/edit/${data.postId}`}>수정</Link>
                   </span>
                   <span
                     className="w-12 cursor-pointer"
-                    onClick={() => clickdeletePost(data.id)}
+                    onClick={() => clickdeletePost(data.postId)}
                   >
                     삭제
                   </span>
@@ -127,6 +120,7 @@ const Postdetail = () => {
             <p className="text-gray-700">본문: {data.content}</p>
             <p className="text-gray-700">{data.createdAt}</p>
             <p className="text-gray-700">{data.updatedAt}</p>
+            <p className="text-gray-700">{`#${data.tagName}`}</p>
           </div>
         </div>
       </div>
@@ -157,8 +151,11 @@ const Postdetail = () => {
                 key={el.commentId}
                 className=" mb-4 flex justify-between rounded-md bg-gray-100 p-4"
               >
-                <p className="font-semibold text-gray-700">{el.uuid}</p>
-                <img src={el.profileImage} alt="" />
+                <img
+                  className="className=h-8 w-8 rounded-full bg-gray-300"
+                  src={data.profileImage}
+                  alt=""
+                />
                 <p className="text-gray-700">{el.content}</p>
                 <p className="font-semibold text-gray-700">{el.createdAt}</p>
               </div>
