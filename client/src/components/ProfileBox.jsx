@@ -4,13 +4,21 @@ import { useLocation, useParams } from "react-router-dom";
 const ProfileBox = () => {
   const { id } = useParams();
   const [userData, setUserData] = useState(null);
+  const [userPoint, setUserPoint] = useState(null);
+  console.log(userData);
+  console.log(userData);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/api/profile/${id}`);
-        const data = await response.json();
-        setUserData(data.userrows);
+        const res1 = await fetch(`http://localhost:3000/api/profile/${id}`);
+        const res2 = await fetch(
+          `http://localhost:3000/api/profile/${id}/point`,
+        );
+        const data1 = await res1.json();
+        const data2 = await res2.json();
+        setUserData(data1.userrows);
+        setUserPoint(data2);
       } catch (error) {
         console.error("Error fetching user profile data:", error);
       }
@@ -26,12 +34,12 @@ const ProfileBox = () => {
       </div>
     );
   }
-  
+
   const data = userData[0];
 
   return (
     <>
-      <div className="box-border flex h-auto w-64 flex-col items-center justify-center gap-3.5 rounded-2xl bg-slate-50 p-8">
+      <div className="box-border flex h-auto w-64 flex-col items-center justify-center gap-2 rounded-2xl bg-slate-50 p-4">
         <div className="text-base font-semibold text-black">
           {data.userName}
         </div>
@@ -45,47 +53,48 @@ const ProfileBox = () => {
               />
             </div>
             <div className="w-24">
-              <p>intersting</p>
+              <p className="font-semibold">intersting</p>
               <p> {data.interestArea}</p>
               <p>
-                <p>Position </p>
+                <p className="font-semibold">Position </p>
                 <p>{data.workPosition}</p>
               </p>
               <p>{data.googleEmail}</p>
               <p>{data.naverEmail}</p>
             </div>
           </header>
-          <section className="flex items-center justify-center gap-8">
-            <button className="rounded-md bg-indigo-200 px-1 text-indigo-700">
+          <section className="flex items-center justify-center gap-2">
+            <button className="w-full rounded-md bg-indigo-200 px-1 text-indigo-700">
               1:1챗
             </button>
-            <button className="rounded-lg bg-indigo-200 px-1 text-indigo-700">
+            <button className="w-full rounded-lg bg-indigo-200 px-1 text-indigo-700">
               팔로우
             </button>
           </section>
           <section>
-            <p>소개</p>
+            <p className="font-semibold">소개</p>
             <p>{data.selfDescription}</p>
           </section>
           <footer>
-            <p>커뮤니티 활동</p>
+            <p className="font-semibold">커뮤니티 활동</p>
             <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-lg bg-slate-50 p-4">
-                <p>작성글</p>
-                <p>점수/갯수</p>
-                <p>0/100</p>
+              <div className="rounded-lg bg-slate-50 py-4">
+                <p>postPoint</p>
+                <p className="text-3xl font-semibold">{userPoint.postPoint}</p>
               </div>
-              <div className="rounded-lg bg-slate-50 p-4">
-                <p>점수/갯수</p>
-                <p>0/100</p>
+              <div className="rounded-lg bg-slate-50 py-4">
+                <p>commentPoint</p>
+                <p className="text-3xl font-semibold">
+                  {userPoint.commentPoint}
+                </p>
               </div>
-              <div className="rounded-lg bg-slate-50 p-4">
-                <p>점수/갯수</p>
-                <p>0/100</p>
+              <div className="rounded-lg bg-slate-50 py-4">
+                <p>teamPoint</p>
+                <p className="text-3xl font-semibold">{userPoint.teamPoint}</p>
               </div>
-              <div className="rounded-lg bg-slate-50 p-4">
-                <p>점수/갯수</p>
-                <p>0/100</p>
+              <div className="rounded-lg bg-slate-50 py-4">
+                <p>totalPoint</p>
+                <p className="text-3xl font-semibold">{userPoint.totalPoint}</p>
               </div>
             </div>
           </footer>

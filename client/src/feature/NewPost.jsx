@@ -1,8 +1,10 @@
-import { useState, useReducer } from "react";
-import { createPost, createGroupPost } from "../api/apiDevko";
+import { useState } from "react";
+import axios from "axios";
 import cookie from "react-cookies";
-import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
+
+import { formatDateDash } from "../utils/utils";
 
 const categories = [
   { id: "discuss", label: "Discuss" },
@@ -11,107 +13,44 @@ const categories = [
   { id: "group", label: "Group" },
 ];
 
-// const initialState = {
-//   selectedCategory: "discuss",
-//   post: {
-//     title: "",
-//     content: "",
-//     tags: [],
-//   },
-//   event: {
-//     startDate: new Date(),
-//     endDate: new Date(),
-//   },
-//   group: {
-//     startDate: new Date(),
-//     endDate: new Date(),
-//     location: "",
-//     section: "",
-//     members: 1,
-//     workPosition: "",
-//   },
-// };
+const NewPostForm = () => {
+  const username = cookie.load("uuid");
+  const navigate = useNavigate();
+  const [newTag, setNewTag] = useState("");
 
-const initialState = {
-  selectedCategory: "discuss",
-  post: {
+  // submit form
+  const [formData, setFormData] = useState({
+    userId: username,
     title: "",
     content: "",
+    category: "discuss",
     tags: [],
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: formatDateDash(new Date()),
+    endDate: "",
     location: "",
     section: "",
-    members: 1,
+    link: "",
+    members: "",
     workPosition: "",
-  },
-};
+  });
+  console.log(formData);
+  console.log(formData.tags);
 
-// const reducer = (state, action) => {
-//   switch (action.type) {
-//     case "SET_CATEGORY":
-//       return { ...state, selectedCategory: action.payload };
-//     case "SET_DATES":
-//       return { ...state, dates: action.payload };
-//     case "SET_TAGS":
-//       return { ...state, tags: action.payload };
-//     case "SET_POST":
-//       return { ...state, post: action.payload };
-//     default:
-//       return state;
-//   }
-// };
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "SET_FIELD":
-      return {
-        ...state,
-        post: { ...state.post, [action.payload.key]: action.payload.value },
-      };
-    case "SET_CATEGORY":
-      return { ...state, selectedCategory: action.payload };
-    default:
-      return state;
-  }
-};
-
-const NewPost = () => {
-  const navigate = useNavigate();
-  const username = cookie.load("uuid");
-  const [state, dispatch] = useReducer(reducer, initialState);
-  console.log(state);
-  console.log(state.post.tags);
-
-  // 카테고리
-  const handleCategoryChange = (categoryId) => {
-    dispatch({ type: "SET_CATEGORY", payload: categoryId });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
 
-  const handleDateChange = (key, value) => {
-    dispatch({ type: "SET_FIELD", payload: { key, value } });
-    if (key === "startDate" && state.selectedCategory === "event") {
-      dispatch({ type: "SET_FIELD", payload: { key: "endDate", value } });
-    }
-  };
-
-  // 태그 추가 수정
-  const handleTagChange = (value, index) => {
-    const updatedTags = [...state.post.tags, value];
-    // updatedTags[index] = ;
-    dispatch({
-      type: "SET_FIELD",
-      payload: { key: "tags", value: updatedTags },
-    });
-  };
-
-  const handleChange = (key, value, index) => {
-    if (key === "tags") {
-      handleTagChange(value, index);
-    } else if (key === "startDate" || key === "endDate") {
-      handleDateChange(key, value);
-    } else {
-      dispatch({ type: "SET_FIELD", payload: { key, value } });
+  const handleAddTag = () => {
+    if (newTag.trim() !== "") {
+      setFormData((prevData) => ({
+        ...prevData,
+        tags: [...prevData.tags, newTag],
+      }));
+      setNewTag("");
     }
   };
 
@@ -119,24 +58,30 @@ const NewPost = () => {
     e.preventDefault();
 
     try {
-      const postData = {
-        ...state.post,
-        userId: username,
-        tags: state.post.tags.filter((tag) => tag.trim() !== ""),
-      };
-
-      if (
-        state.selectedCategory === "event" ||
-        state.selectedCategory === "group"
-      ) {
-        await createGroupPost(postData);
+      if (formData.category === "event") {
+        const res = await axios.post(
+          "http://localhost:3000/api/calendar",
+          formData,
+        );
+        console.log("Post created successfully:", res.data);
+        navigate("/");
+      } else if (formData.category === "group") {
+        const res = await axios.post(
+          "http://localhost:3000/api/team",
+          formData,
+        );
+        console.log("Post created successfully:", res.data);
+        navigate("/");
       } else {
-        await createPost(postData);
+        const res = await axios.post(
+          "http://localhost:3000/api/post",
+          formData,
+        );
+        console.log("Post created successfully:", res.data);
+        navigate("/");
       }
-
-      navigate("/");
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error creating post:", error);
     }
   };
 
@@ -145,7 +90,8 @@ const NewPost = () => {
   };
 
   return (
-    <div className="flex w-full flex-col items-start">
+    <div className="flex w-full flex-col items-center">
+      {/* <h2>Create a New Post</h2> */}
       <form className="flex w-full flex-col gap-3 px-4" onSubmit={handleSubmit}>
         <div className="flex items-center justify-start gap-2">
           {categories.map((category) => (
@@ -153,18 +99,22 @@ const NewPost = () => {
               key={category.id}
               type="button"
               className={`rounded-md border px-4 py-2 ${
-                state.selectedCategory === category.id
+                formData.category === category.id
                   ? "bg-gray-200  text-gray-700"
                   : "border-spacing-4 bg-white text-gray-700"
               }`}
               onClick={() => {
-                handleCategoryChange(category.id);
+                handleChange({
+                  target: { name: "category", value: category.id },
+                });
               }}
             >
               {category.label}
             </button>
           ))}
         </div>
+
+        {/* title */}
         <div className="flex items-center justify-between gap-2">
           <input
             type="text"
@@ -172,76 +122,136 @@ const NewPost = () => {
             placeholder="제목을 입력하세요"
             className="w-full rounded-lg border bg-gray-200 p-2"
             required
-            value={state.post.title}
-            onChange={(e) => handleChange("title", e.target.value)}
+            value={formData.title}
+            onChange={handleChange}
           />
         </div>
-        {state.selectedCategory === "group" && (
-          <div className="flex gap-2">
+
+        {(formData.category === "event" || formData.category === "group") && (
+          <>
+            <div className="flex w-full items-center justify-between gap-2">
+              <div className="flex  w-full items-center justify-between">
+                <input
+                  type="date"
+                  name="startDate"
+                  className="w-full rounded-lg border bg-gray-200 p-2"
+                  required
+                  value={formData.startDate}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex  w-full items-center justify-between">
+                <input
+                  type="date"
+                  name="endDate"
+                  className="w-full rounded-lg border bg-gray-200 p-2"
+                  required
+                  value={formData.endDate}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+            <div className="flex  w-full items-center justify-between">
+              <input
+                type="text"
+                name="location"
+                placeholder="장소을 입력하세요"
+                className="w-full rounded-lg border bg-gray-200 p-2"
+                required
+                value={formData.location}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="flex  w-full items-center justify-between">
+              <input
+                type="text"
+                name="section"
+                placeholder="이벤트 구분"
+                className="w-full rounded-lg border bg-gray-200 p-2"
+                required
+                value={formData.section}
+                onChange={handleChange}
+              />
+            </div>
+          </>
+        )}
+
+        {formData.category === "event" && (
+          <div className="flex  w-full items-center justify-between">
             <input
               type="text"
-              name="location"
-              placeholder="Enter location"
-              className=" w-full rounded-lg border bg-gray-200 p-2"
+              name="link"
+              placeholder="링크을 입력하세요"
+              className="w-full rounded-lg border bg-gray-200 p-2"
               required
-            />
-            <input
-              type="text"
-              name="member"
-              placeholder="Enter member"
-              className=" w-full rounded-lg border bg-gray-200 p-2"
-              required
-            />
-            <input
-              type="text"
-              name="workpostion"
-              placeholder="Enter workpostion"
-              className=" w-full rounded-lg border bg-gray-200 p-2"
-              required
+              value={formData.link}
+              onChange={handleChange}
             />
           </div>
         )}
-        {["event", "group"].includes(state.selectedCategory) && (
-          <div className="flex gap-2">
-            <input
-              type="date"
-              name="title"
-              placeholder="Enter title"
-              className=" w-full rounded-lg border bg-gray-200 p-2"
+
+        {formData.category === "group" && (
+          <>
+            <div className="flex  w-full items-center justify-between">
+              <input
+                type="text"
+                name="members"
+                placeholder="팀원수을 입력하세요"
+                className="w-full rounded-lg border bg-gray-200 p-2"
+                required
+                value={formData.members}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="flex  w-full items-center justify-between">
+              <input
+                type="text"
+                name="workPosition"
+                placeholder="포지션을 입력하세요"
+                className="w-full rounded-lg border bg-gray-200 p-2"
+                required
+                value={formData.workPosition}
+                onChange={handleChange}
+              />
+            </div>
+          </>
+        )}
+
+        {formData.category !== "event" && (
+          <div className="flex items-center justify-between gap-2">
+            <textarea
+              name="content"
+              placeholder="내용을 입력하세요"
+              className="h-96 w-full rounded-md border bg-gray-200 p-2"
               required
-              value={state.post.startDate}
-              onChange={(e) => handleChange("startDate", e.target.value)}
-            />
-            <input
-              type="date"
-              name="title"
-              placeholder="Enter title"
-              className=" w-full rounded-lg border bg-gray-200 p-2"
-              required
-              value={state.post.endDate}
-              onChange={(e) => handleChange("endDate", e.target.value)}
+              value={formData.content}
+              onChange={handleChange}
             />
           </div>
         )}
-        <div>
-          <textarea
-            name="content"
-            className=" h-96 w-full rounded-md border bg-gray-200 p-2"
-            placeholder="내용을 입력하세요"
-            required
-            value={state.post.content}
-            onChange={(e) => handleChange("content", e.target.value)}
-          />
-        </div>
-        <div className="flex justify-between gap-4 p-2 bg-gray-200">
+
+        <div className="flex justify-between gap-4 bg-gray-200 p-2">
           <div className="flex">
-            {state.post.tags.map((el) => (
-              <span className="p-2">{el}</span>
-            ))}
+            {formData.tags.length > 0 &&
+              formData.tags.map((tag, index) => (
+                <>
+                  <div
+                    className="flex w-auto items-center justify-center gap-4 bg-gray-200 px-4"
+                    name="tags"
+                    key={`tag-${index}`}
+                    value={tag}
+                  >
+                    {tag}
+                    {/* <span>X</span> */}
+                  </div>
+                </>
+              ))}
           </div>
           <select
             className="rounded-lg border bg-gray-200 p-2"
-            onChange={(e) => handleChange("tags", e.target.value)}
+            onChange={(e) => setNewTag(e.target.value)}
+            onClick={handleAddTag}
+            value={newTag}
           >
             <option value="">태그를 선택해주세요</option>
             <option value="javascript">javascript</option>
@@ -266,4 +276,4 @@ const NewPost = () => {
   );
 };
 
-export default NewPost;
+export default NewPostForm;

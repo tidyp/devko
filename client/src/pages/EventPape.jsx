@@ -1,70 +1,50 @@
-// TODO: 중복되는 일정 스택으로 쌓기
-
 import { useState, useEffect } from "react";
+import { readEventPosts } from "../api/apiDevko";
+import { useLoaderData } from "react-router-dom";
 
 import {
   FaRegArrowAltCircleLeft,
   FaRegArrowAltCircleRight,
 } from "react-icons/fa";
 
-const dummyData = [
-  {
-    startDate: "2024-01-02 10:00:00",
-    endDate: "2024-01-05 10:00:00",
-    event: "1월 교육모집 일정",
-    time: "10:00~12:00",
-    color: "bg-green-400",
-  },
-  {
-    startDate: "2024-01-07 10:00:00",
-    endDate: "2024-01-12 10:00:00",
-    event: "1월 교육모집 일정",
-    time: "10:00~12:00",
-    color: "bg-yellow-400",
-  },
-  {
-    startDate: "2024-01-16 10:00:00",
-    endDate: "2024-01-19 10:00:00",
-    event: "1월 교육모집 일정",
-    time: "10:00~12:00",
-    color: "bg-blue-400",
-  },
-  {
-    startDate: "2024-01-22 14:00:00",
-    endDate: "2024-01-28 14:00:00",
-    event: "채용공고 일정",
-    time: "14:00~16:00",
-    color: "bg-purple-400",
-  },
-];
+const EventPape = () => {
+  const data = useLoaderData();
+  const filterData = data.filter((item) => item.category === "event");
+  // console.log(filterData);
 
-const Index = () => {
-  function transformData(inputData) {
+  function transformData(data) {
     return {
-      year: new Date(inputData.startDate).getFullYear(),
-      month: new Date(inputData.startDate).getMonth() + 1,
-      day: new Date(inputData.startDate).getDate(),
-      event: inputData.event,
-      time: inputData.time,
-      color: inputData.color,
+      year: new Date(data.startDate).getFullYear(),
+      month: new Date(data.startDate).getMonth() + 1,
+      day: new Date(data.startDate).getDate(),
+      title: data.title,
     };
   }
 
   const [today, setToday] = useState(new Date());
   const [eventData, setEventData] = useState([]);
+  console.log(eventData);
 
   useEffect(() => {
     const events = [];
-    dummyData.forEach((data) => {
+    filterData.forEach((data) => {
       const startDate = new Date(data.startDate);
+      console.log(startDate);
       const endDate = new Date(data.endDate);
 
-      for (let currentDate = startDate; currentDate <= endDate; currentDate.setDate(currentDate.getDate() + 1)) {
-        events.push(transformData({ ...data, startDate: currentDate.toISOString() }));
+      for (
+        let currentDate = startDate;
+        currentDate <= endDate;
+        currentDate.setDate(currentDate.getDate() + 1)
+      ) {
+        events.push(
+          transformData({ ...data, startDate: currentDate.toISOString() }),
+        );
       }
     });
     setEventData(events);
   }, []);
+
   const generateCalendar = () => {
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const lastDayOfMonth = new Date(
@@ -112,8 +92,9 @@ const Index = () => {
 
   return (
     <>
-      <div className="mx-auto flex ">
-        <div className="rounded bg-slate-50 shadow">
+      <div></div>
+      <div className="flex w-full">
+        <div className="w-full rounded bg-slate-50 shadow">
           <div className="flex justify-between border-b p-2">
             <span className="text-lg font-bold">
               {today.toLocaleString("default", {
@@ -121,6 +102,7 @@ const Index = () => {
                 year: "numeric",
               })}
             </span>
+
             <div>
               <button onClick={handlePrevMonth} className="p-1">
                 <FaRegArrowAltCircleLeft />
@@ -134,11 +116,11 @@ const Index = () => {
           <table>
             <thead>
               <tr>
-                {dayNames.map((el, index) => (
+                {dayNames.map((el, EventPape) => (
                   <th
-                    key={index}
-                    className={`w-36 border-r p-2 text-xs ${
-                      index === dayNames.length - 1 ? "border-r-0" : ""
+                    key={EventPape}
+                    className={`w-auto border-r p-2 text-xs ${
+                      EventPape === dayNames.length - 1 ? "border-r-0" : ""
                     }`}
                   >
                     <span>{el}</span>
@@ -148,30 +130,27 @@ const Index = () => {
             </thead>
 
             <tbody>
-              {generateCalendar().map((week, rowIndex) => (
-                <tr className="h-20 text-center" key={rowIndex}>
-                  {week.map((day, dayIndex) => (
+              {generateCalendar().map((week, rowEventPape) => (
+                <tr className="h-20 text-center" key={rowEventPape}>
+                  {week.map((day, dayEventPape) => (
                     // TODO: 주간 컴포넌트
                     <td
-                      key={dayIndex}
+                      key={dayEventPape}
                       className="flex-40 cursor-pointer overflow-auto border p-1 transition duration-500 hover:bg-gray-300"
                     >
                       <div className="flex-col overflow-hidden">
                         <div>
-                          <span className="text-gray-500">
+                          <span className="text-gray-500 ">
                             {day !== null ? day.day : ""}
                           </span>
                         </div>
-                        <div className="bottom h-30 flex flex-grow cursor-pointer py-1">
+                        <div className="bottom h-30 flex w-44 flex-grow cursor-pointer py-1 ">
                           {day && day.data && (
                             // TODO: 링크
                             <div
-                              className={`mb-1 rounded p-1 text-sm text-white ${
-                                day.data.event ? day.data.color : ""
-                              }`}
+                              className={`mb-1 w-full rounded bg-purple-400 p-1 text-sm text-white`}
                             >
-                              <span>{day.data.event}</span>
-                              <span>{day.data.time}</span>
+                              <span>{day.data.title}</span>
                             </div>
                           )}
                         </div>
@@ -188,21 +167,29 @@ const Index = () => {
       <div className="w-full">
         <h2>게시판</h2>
         <ul className="flex flex-col gap-2">
-          <li className="rounded-sm bg-purple-400 text-white">
-            채용공고 일정 1/15-1/17
-          </li>
-          <li className="rounded-sm bg-blue-400 text-white">
-            교육모집 일정 1/5
-          </li>
-          <li>게시글</li>
-          <li>게시글</li>
-          <li>게시글</li>
-          <li>게시글</li>
-          <li>게시글</li>
+          {console.log(filterData)}
+          {filterData.map((el) => (
+            <li className="rounded-sm bg-blue-400 text-white">
+              <span>{el.title}</span>
+              <span>{el.section}</span>
+              <span>{el.location}</span>
+            </li>
+          ))}
         </ul>
       </div>
     </>
   );
 };
 
-export default Index;
+export default EventPape;
+
+export async function loader() {
+  try {
+    const board = await readEventPosts();
+    return board;
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    // loader-fetch-요청실패
+    return "연결실패";
+  }
+}

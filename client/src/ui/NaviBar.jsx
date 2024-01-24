@@ -56,12 +56,6 @@ const NaviBar = () => {
               exploer
             </NavLink>
             <NavLink
-              to="/news"
-              className={({ isActive }) => (isActive ? activeLink : "")}
-            >
-              news
-            </NavLink>
-            <NavLink
               to="/discuss/1"
               className={({ isActive }) => (isActive ? activeLink : "")}
             >
@@ -72,6 +66,12 @@ const NaviBar = () => {
               className={({ isActive }) => (isActive ? activeLink : "")}
             >
               Q&amp;A
+            </NavLink>
+            <NavLink
+              to="/news"
+              className={({ isActive }) => (isActive ? activeLink : "")}
+            >
+              news
             </NavLink>
             <NavLink
               to="event"

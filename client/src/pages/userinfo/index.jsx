@@ -6,7 +6,8 @@ const index = () => {
   const userdata = useLoaderData();
   const { postrows, commentrows } = userdata;
 
-
+console.log(postrows)
+console.log(postrows.length)
   const userPost =
     postrows.length > 0 ? (
       <>
