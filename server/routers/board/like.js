@@ -21,12 +21,13 @@ router.get("/:postId", async (req, res) => {
 router.post("/:postId", async (req, res) => {
   try {
     const postId = req.params.postId;
+    const userId = req.body.userId;
     const { isLiked } = req.body;
     const increment = isLiked ? 1 : -1;
+    
+    const sql = `UPDATE likes SET count = count + ?, userId = ? WHERE postId = ?`;
 
-    const sql = `UPDATE likes SET count = count + ? WHERE postId = ?`;
-
-    const [rows, fields] = await db.query(sql, [increment, postId]);
+    const [rows, fields] = await db.query(sql, [increment, userId, postId]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);

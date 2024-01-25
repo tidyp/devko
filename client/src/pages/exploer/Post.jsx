@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import cookie from "react-cookies";
 import NewPost from "../../feature/NewPost";
 import { deletePost } from "../../api/apiDevko";
+import Tags from "../../components/Tags";
 
 import { VscKebabVertical } from "react-icons/vsc";
 import { GoEye, GoComment, GoHeart, GoHeartFill } from "react-icons/go";
@@ -11,13 +12,55 @@ import { GoEye, GoComment, GoHeart, GoHeartFill } from "react-icons/go";
 import Modal from "../../components/Model";
 
 const Post = ({ post }) => {
-  const navigate = useNavigate()
-  console.log(post)
+  const navigate = useNavigate();
   const [isClickLike, setIsClickLike] = useState(false);
 
   const useruuid = cookie.load("uuid");
 
   const data = formatDate(post.createdAt);
+
+  function getRandomColor() {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+  const tagss =
+    typeof post.tagName === "string"
+      ? post.tagName.split(",").map((el, index) => {
+          if (el.trim() === "javascript") {
+            return (
+              <span className="rounded-lg bg-[#F7DF1E] px-4 py-1" key={index}>
+                #{el.trim()}
+              </span>
+            );
+          } else if (el.trim() === "mysql") {
+            return (
+              <span
+                className="rounded-lg bg-[#4479A1] px-4 py-1 text-white"
+                key={index}
+              >
+                #{el.trim()}
+              </span>
+            );
+          } else {
+            return (
+              <span
+                className="rounded-lg px-4"
+                key={index}
+                style={{ backgroundColor: getRandomColor() }}
+              >
+                #{el.trim()}
+              </span>
+            );
+          }
+        })
+      : "";
+
+  console.log(tagss);
 
   const dropdownRef = useRef(null);
 
@@ -31,19 +74,17 @@ const Post = ({ post }) => {
     setIsOpenEdit(false);
   };
 
-  // 좋아요 클릭 이벤트
-  const handleLikeClick = async () => {
-    setIsClickLike((prev) => !prev);
+  const fetchData = async (id, isLike) => {
     try {
       const res = await fetch(`http://localhost:3000/api/like/${post.postId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ 
-          userId: useruuid,
-          isLiked: isClickLike
-         }), 
+        body: JSON.stringify({
+          userId: id,
+          isLiked: isLike,
+        }),
       });
 
       if (res.ok) {
@@ -53,17 +94,26 @@ const Post = ({ post }) => {
     } catch (error) {
       console.error("Error while liking post", error);
     }
+
+    navigate("/");
+  };
+
+  // 좋아요 클릭 이벤트
+  const handleLikeClick = async () => {
+    // 좋아요 상태 변경
+    await setIsClickLike((prev) => !prev);
+    await fetchData(useruuid, isClickLike);
   };
 
   const clickdeletePost = async () => {
     await deletePost(post.postId);
     await handleClose();
-    navigate('/')
+    navigate("/");
   };
 
   return (
     <>
-      <div className="m-2 flex h-fit w-full flex-col items-start justify-start gap-5 rounded-[10px] bg-slate-50 p-8">
+      <div className="m-2 flex h-fit w-[62rem] flex-col items-start justify-start gap-5 rounded-[10px] bg-slate-50 p-8">
         <div className="flex w-full justify-between">
           <div className="flex items-center justify-center gap-2.5 self-stretch">
             <Link to={`/userinfo/${post.userId}`}>
@@ -120,7 +170,8 @@ const Post = ({ post }) => {
 
         <div className="flex items-start justify-between gap-2.5 self-stretch pr-8">
           <div className="flex gap-2">
-            <span className="rounded-lg bg-red-400 px-4">{post.tagName}</span>
+            {tagss}
+
             {/* <span className="rounded-lg bg-indigo-400 px-4">태그2</span>
             <span className="rounded-lg bg-violet-400 px-4">태그3</span> */}
           </div>
@@ -129,7 +180,9 @@ const Post = ({ post }) => {
             <span>{post.commentCnt > 0 ? post.commentCnt : 0}</span>
             <GoEye />
             <span>{post.viewCnt}</span>
-            {isClickLike ? (
+            {/* {console.log(post.likeUser)}
+            {console.log(useruuid)} */}
+            {post.likeUser === useruuid ? (
               <GoHeartFill
                 className="scale-150 transform text-red-600 hover:scale-150"
                 onClick={handleLikeClick}

@@ -1,6 +1,3 @@
-import styles from "./Login.module.scss";
-import { ReactComponent as GoogleBtn } from "../../assets/web_neutral_rd_ctn.svg";
-
 import { ReactComponent as Naver } from "../../assets/naver.svg";
 import { ReactComponent as Google } from "../../assets/google.svg";
 

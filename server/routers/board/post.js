@@ -14,18 +14,20 @@ router.get("/", async (req, res) => {
           , p.content AS content
           , p.createdAt AS createdAt
           , p.updatedAt AS updatedAt
-          , t.id AS tagId
+          
           , t.name AS tagName
+
           , v.count AS viewCnt
+          , l.userId AS likeUser
           , l.count AS likeCnt
           , c.count AS commentCnt
           , u.userName AS userName
           , u.profileImage AS profileImage
           , u.grade AS grade
     FROM posts p
-    LEFT OUTER JOIN tags t ON p.id = t.postId
+    LEFT OUTER JOIN (SELECT postId, GROUP_CONCAT(name) AS name FROM tags GROUP BY postId) t ON p.id = t.postId
     LEFT OUTER JOIN views v ON p.id = v.postId
-    LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM likes GROUP BY postId) l ON p.id = l.postId
+    LEFT OUTER JOIN (SELECT postId, userId, COUNT(*) AS count FROM likes GROUP BY postId, userId) l ON p.id = l.postId
     LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM comments GROUP BY postId) c ON p.id = c.postId
     LEFT OUTER JOIN (
       SELECT u.id AS id
@@ -125,6 +127,7 @@ router.get("/:category/:page", async (req, res) => {
           , t.id AS tagId
           , t.name AS tagName
           , v.count AS viewCnt
+          , p.userId AS likeUser
           , l.count AS likeCnt
           , c.count AS commentCnt
           , u.userName AS userName
@@ -199,8 +202,12 @@ router.post("/", async (req, res) => {
     await db.query(likeSql);
     await db.query(viewSql);
 
-    for (i = 0; i < tags.length; i++) {
-      await db.query(tagSql, [i + 1, tags[i]]);
+    const result = tags.split("#").filter(function (item) {
+      return item.length > 0;
+    });
+
+    for (i = 0; i < result.length; i++) {
+      await db.query(tagSql, [i + 1, result[i]]);
     }
 
     res.send(rows);

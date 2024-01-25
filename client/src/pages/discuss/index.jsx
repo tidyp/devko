@@ -3,6 +3,8 @@ import { useLoaderData, Link, Navigate, useNavigate } from "react-router-dom";
 
 import { formatDate } from "../../utils/utils";
 
+import cookie from "react-cookies";
+
 import { GoEye, GoComment, GoHeart, GoHeartFill } from "react-icons/go";
 import { useState } from "react";
 
@@ -10,11 +12,14 @@ const index = () => {
   const navigate = useNavigate();
 
   const posts = useLoaderData();
+  console.log(posts);
   const postsList = posts.currPageRows;
   const curPage = posts.page;
   const totalPage = posts.totalPages;
-  const [isClickLike, setIsClickLike] = useState(false);
 
+  const useruuid = cookie.load("uuid");
+
+  const [isClickLike, setIsClickLike] = useState(false);
 
   // 좋아요 클릭 이벤트
   const handleLikeClick = async () => {
@@ -64,7 +69,8 @@ const index = () => {
                       <span>{el.commentCnt > 0 ? el.commentCnt : 0}</span>
                       <GoEye />
                       <span>{el.viewCnt}</span>
-                      {isClickLike ? (
+
+                      {el.likeUser === useruuid ? (
                         <GoHeartFill
                           className="scale-150 transform text-red-600 hover:scale-150"
                           onClick={handleLikeClick}
