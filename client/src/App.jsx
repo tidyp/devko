@@ -12,8 +12,9 @@ import SearchResult, {
 import DiscussPage, { loader as discussesLoader } from "./pages/discuss";
 import QnaPage, { loader as qnasLoader } from "./pages/qna";
 
-import NewPage from "./pages/NewsPage";
-import EventPage from "./pages/event";
+import NewPage, { loader as newsLoader } from "./pages/NewsPage";
+import EventPage, { loader as eventLoader } from "./pages/EventPape";
+
 import GroupPage from "./pages/group";
 import SignupPage from "./pages/signup";
 
@@ -25,7 +26,7 @@ import Myinfo, { loader as myinfoLoader } from "./pages/myinfo";
 import Error from "./pages/error";
 
 import UserInfo, { loader as userLoader } from "./pages/userinfo";
-// import TestPage from "./pages/TestPage";
+import TestPage from "./pages/TestPage";
 
 const router = createBrowserRouter([
   {
@@ -44,7 +45,12 @@ const router = createBrowserRouter([
       },
       // { path: "/exploer", element: <ExploerPage /> },
       // NEWS
-      { path: "/news", element: <NewPage /> },
+      { path: "/news", element: <NewPage />, loader: newsLoader },
+      {
+        path: "/news/detail/:id",
+        element: <Postdetail />,
+        loader: postLoader,
+      },
       // DISCUSS
       // { path: "/discuss", element: <DiscussPage />, loader: discussesLoader },
       {
@@ -62,11 +68,19 @@ const router = createBrowserRouter([
       { path: "/qna/:id", element: <QnaPage />, loader: qnasLoader },
       { path: "/qna/detail/:id", element: <Postdetail />, loader: postLoader },
       // EVENT
-      { path: "/event", element: <EventPage /> },
-      { path: "/event/:id", element: <Postdetail />, loader: postLoader },
+      { path: "/event", element: <EventPage />, loader: eventLoader },
+      {
+        path: "/event/detail/:id",
+        element: <Postdetail />,
+        loader: postLoader,
+      },
       // GROUP
       { path: "/group", element: <GroupPage /> },
-      { path: "/group/:id", element: <Postdetail />, loader: postLoader },
+      {
+        path: "/group/detail/:id",
+        element: <Postdetail />,
+        loader: postLoader,
+      },
       // LOGIN
       { path: "/login", element: <LoginPage /> },
       // USER: INFO
@@ -78,6 +92,10 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignupPage />,
+  },
+  {
+    path: "/test",
+    element: <TestPage />,
   },
 ]);
 

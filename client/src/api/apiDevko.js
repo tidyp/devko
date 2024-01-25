@@ -235,3 +235,19 @@ export async function readUserinfo(id) {
     throw error;
   }
 }
+
+// READ: Event
+// -----------------------------------------------------------------
+export async function readEventPosts() {
+  try {
+    const res = await fetch(`${API_URL}/calendar`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data. Status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    throw error;
+  }
+}

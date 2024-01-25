@@ -8,6 +8,7 @@ import {
   useLoaderData,
   useLocation,
   useNavigate,
+  useNavigation
 } from "react-router-dom";
 import { VscKebabVertical } from "react-icons/vsc";
 import Button from "../../components/Button";
@@ -24,6 +25,7 @@ const Postdetail = () => {
   const commentsData = comments.currPageRows.slice().reverse();
 
   const navigate = useNavigate();
+  const navigation = useNavigation();
 
   const username = cookie.load("uuid");
 
@@ -71,7 +73,8 @@ const Postdetail = () => {
   const clickdeletePost = async () => {
     try {
       await deletePost(data.postId);
-      navigate("/");
+      window.location.reload();
+      // navigate("/");
     } catch (error) {
       console.error("Error deleting post:", error);
     }

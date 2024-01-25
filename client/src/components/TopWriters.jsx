@@ -37,7 +37,7 @@ const TopWriters = () => {
               <span>{el.userName}</span>
             </div>
             <div className="ml-3">
-              <p className="font-bold">RANK: {el.userRank}</p>
+              <p className="font-bold">RANK: {index+1}</p>
               <p className="text-gray-600">{`Score: ${el.postCNT.toLocaleString()}`}</p>
               {/* <p className="text-gray-600">{`Score: ${el.userScore.toLocaleString()}`}</p> */}
             </div>

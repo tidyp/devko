@@ -120,8 +120,8 @@ router.get("/:userId/point", async (req, res) => {
   LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM comments GROUP BY userId) c ON u.id = c.userId
   WHERE u.id =?
   `;
-  // const userId = req.body.userId;
-  const userId = 'd77faaa9-b197-4d8f-b897-eae3a4cd9b71';
+  const userId = req.params.userId;
+  // const userId = 'd77faaa9-b197-4d8f-b897-eae3a4cd9b71';
 
   try {
     const [rows, fields] = await db.query(sql, [userId]);
