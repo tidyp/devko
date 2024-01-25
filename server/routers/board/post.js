@@ -221,7 +221,7 @@ router.put("/:id", async (req, res) => {
     const postSql = `UPDATE posts SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?`;
     const tagSql = `UPDATE tags SET name = ? WHERE postId = ? AND id = ?`;
 
-    const [rows, fields] = await db.query(sql, [title, content, postId]);
+    const [rows, fields] = await db.query(postSql, [title, content, postId]);
     // for (let key in tags) {
     //   const [rows, fields] = await db.query(sql, [tags[key], postId, tagId]);
     // }

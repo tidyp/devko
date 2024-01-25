@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { readUserinfo } from "../../api/apiDevko";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useParams } from "react-router-dom";
+import cookie from "react-cookies";
 
 const index = () => {
   const userdata = useLoaderData();
   const { postrows, commentrows } = userdata;
 
-console.log(postrows)
-console.log(postrows.length)
+  // 사용자체크
+  const checkUser = cookie.load("uuid");
+  const user = useParams();
+
+  console.log(postrows);
+  console.log(postrows.length);
   const userPost =
     postrows.length > 0 ? (
       <>
@@ -24,6 +29,10 @@ console.log(postrows.length)
     );
 
   const tabs = ["discuss", "q&a", "comment", "guitar.etc.."];
+  if (checkUser === checkUser) {
+    tabs.push("myinfo");
+  }
+
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   const handleTabClick = (index) => {
@@ -67,6 +76,9 @@ console.log(postrows.length)
           {tabs[activeTabIndex] === "guitar.etc.." && (
             // TODO: 유저로그, 업적달성일, 유저통계, 스터디 활동 등.
             <p className="mt-10 text-2xl">해당 유저는 활동기록이 없어요.</p>
+          )}
+          {tabs[activeTabIndex] === "myinfo" && (
+            <p className="mt-10 text-2xl">회원정보수정</p>
           )}
         </div>
       </div>

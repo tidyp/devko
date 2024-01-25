@@ -4,8 +4,8 @@ import { readUserinfo } from "../../api/apiDevko";
 import cookie from "react-cookies";
 
 const index = () => {
-
   const data = useLoaderData();
+  console.log(data)
 
   const [userInfo, setUserInfo] = useState({
     username: data.userrows[0].userName,
@@ -29,7 +29,7 @@ const index = () => {
   };
 
   return (
-    <div>
+    <div className="flex items-center justify-center">
       <h2>Edit User Profile</h2>
       <form onSubmit={handleEditSubmit}>
         <label>

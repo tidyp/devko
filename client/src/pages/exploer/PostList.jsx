@@ -1,5 +1,4 @@
 import Post from "./Post";
-import NewPost from "./NewPost";
 
 const PostList = ({ posts }) => {
   const reversedPosts = posts.slice()

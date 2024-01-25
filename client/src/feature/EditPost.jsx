@@ -79,7 +79,7 @@ const Post = () => {
             type="text"
             name="title"
             placeholder="제목을 입력하세요"
-            className="w-full rounded-lg border bg-blue-100 p-2"
+            className="w-full rounded-lg border bg-gary-100 p-2"
             required
             value={postData.title}
             onChange={handleChange}
@@ -91,7 +91,7 @@ const Post = () => {
               type="date"
               name="startDate"
               placeholder="시작 날짜"
-              className="w-full rounded-lg border bg-blue-100 p-2"
+              className="w-full rounded-lg border bg-gary-100 p-2"
               required
               value={postData.startDate}
               onChange={handleChange}
@@ -100,7 +100,7 @@ const Post = () => {
               type="date"
               name="endDate"
               placeholder="종료 날짜"
-              className="w-full rounded-lg border bg-blue-100 p-2"
+              className="w-full rounded-lg border bg-gary-100 p-2"
               required
               value={postData.endDate}
               onChange={handleChange}
@@ -110,7 +110,7 @@ const Post = () => {
         <div>
           <textarea
             name="content"
-            className="h-96 w-full rounded-md border bg-blue-100 p-2"
+            className="h-96 w-full rounded-md border bg-gary-100 p-2"
             placeholder="내용을 입력하세요"
             required
             value={postData.content}

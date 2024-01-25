@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { formatDate } from "../../utils/utils";
 import { useEffect, useRef, useState } from "react";
 import cookie from "react-cookies";
@@ -11,6 +11,7 @@ import { GoEye, GoComment, GoHeart, GoHeartFill } from "react-icons/go";
 import Modal from "../../components/Model";
 
 const Post = ({ post }) => {
+  const navigate = useNavigate()
   console.log(post)
   const [isClickLike, setIsClickLike] = useState(false);
 
@@ -57,6 +58,7 @@ const Post = ({ post }) => {
   const clickdeletePost = async () => {
     await deletePost(post.postId);
     await handleClose();
+    navigate('/')
   };
 
   return (

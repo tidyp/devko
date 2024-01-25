@@ -17,6 +17,7 @@ const NewPostForm = () => {
   const username = cookie.load("uuid");
   const navigate = useNavigate();
   const [newTag, setNewTag] = useState("");
+  const [isEmpty, setIsEmpty] = useState(true);
 
   // submit form
   const [formData, setFormData] = useState({
@@ -58,6 +59,17 @@ const NewPostForm = () => {
     e.preventDefault();
 
     try {
+      // 공백 예외처리
+      if (
+        !formData ||
+        !formData.category ||
+        !formData.title ||
+        !formData.content
+      ) {
+        setIsEmpty(false);
+        return;
+      }
+
       if (formData.category === "event") {
         const res = await axios.post(
           "http://localhost:3000/api/calendar",
@@ -92,6 +104,7 @@ const NewPostForm = () => {
   return (
     <div className="flex w-full flex-col items-center">
       {/* <h2>Create a New Post</h2> */}
+      {!isEmpty && <p className="text-rose-600 text-lg">모든 항목을 작성해주세요.</p>}
       <form className="flex w-full flex-col gap-3 px-4" onSubmit={handleSubmit}>
         <div className="flex items-center justify-start gap-2">
           {categories.map((category) => (

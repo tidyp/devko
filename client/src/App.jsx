@@ -12,7 +12,7 @@ import SearchResult, {
 import DiscussPage, { loader as discussesLoader } from "./pages/discuss";
 import QnaPage, { loader as qnasLoader } from "./pages/qna";
 
-import NewPage from "./pages/NewsPage";
+import NewPage, { loader as newsLoader } from "./pages/NewsPage";
 import EventPage, { loader as eventLoader } from "./pages/EventPape";
 
 import GroupPage from "./pages/group";
@@ -45,7 +45,12 @@ const router = createBrowserRouter([
       },
       // { path: "/exploer", element: <ExploerPage /> },
       // NEWS
-      { path: "/news", element: <NewPage /> },
+      { path: "/news", element: <NewPage />, loader: newsLoader },
+      {
+        path: "/news/detail/:id",
+        element: <Postdetail />,
+        loader: postLoader,
+      },
       // DISCUSS
       // { path: "/discuss", element: <DiscussPage />, loader: discussesLoader },
       {
