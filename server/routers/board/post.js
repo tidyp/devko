@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const xss = require("xss");
 
 // Exploer 메뉴 - 게시글 전체 목록 보기
 router.get("/", async (req, res) => {
@@ -176,11 +177,11 @@ router.get("/:category/:page", async (req, res) => {
 // 게시글 쓰기
 router.post("/", async (req, res) => {
   try {
-    const user = req.body.userId;
-    const title = req.body.title;
-    const content = req.body.content;
+    const userId = req.body.userId;
+    const title = xss(req.body.title);
+    const content = xss(req.body.content);
     const category = req.body.category;
-    const tags = req.body.tags;
+    const tags = xss(req.body.tags);
 
     const postSql = `INSERT INTO posts (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
     const setSql = `SET @postId = LAST_INSERT_ID();`;
@@ -189,7 +190,7 @@ router.post("/", async (req, res) => {
     const tagSql = `INSERT INTO tags (postId, id, name) VALUES (@postId, ?, ?);`;
 
     const [rows, fields] = await db.query(postSql, [
-      user,
+      userId,
       title,
       content,
       category,

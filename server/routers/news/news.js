@@ -17,7 +17,6 @@ const db = require("../../config/db");
 //         , p.createdAt AS createdAt
 //         , p.updatedAt AS updatedAt
 //         , n.id AS newsId
-//         , n.link AS newsLink
 //         , t.id AS tagId
 //         , t.name AS tagName
 //         , v.count AS viewCnt
@@ -38,9 +37,8 @@ const db = require("../../config/db");
 router.get("/", async (req, res) => {
   try {
     const blog = "https://www.reddit.com/.rss";
-    const result = [];
-
     let feed = await parser.parseURL(blog);
+    let result = [];
 
     feed.items.forEach((data) => {
       result.push({
@@ -50,31 +48,44 @@ router.get("/", async (req, res) => {
       });
     });
 
-    res.send(result);
-    // const user = "devko";
-    // const title = req.body.title;
-    // const content = req.body.content;
-    // const category = req.body.category;
-    // const tags = req.body.tags;
+    for (const data of result) {
+      const userId = "devko";
+      const title = data.title;
+      const content = data.link;
+      const category = "news";
+      const pubDate = new Date(data.pubDate);
+      // const tags = req.body.tags;
 
-    // const postSql = `INSERT INTO posts (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
-    // const setSql = `SET @postId = LAST_INSERT_ID();`;
-    // const newsSql = `INSERT INTO news (postId) VALUES (@postId)`;
-    // const likeSql = `INSERT INTO likes (postId) VALUES (@postId)`;
-    // const viewSql = `INSERT INTO views (postId) VALUES (@postId)`;
-    // const tagSql = `INSERT INTO tags (postId, id, name) VALUES (@postId, ?, ?);`;
+      try {
+        const postSql = `INSERT INTO posts (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?);`;
+        const setSql = `SET @postId = LAST_INSERT_ID();`;
+        const newsSql = `INSERT INTO news (postId) VALUES (@postId)`;
+        const likeSql = `INSERT INTO likes (postId) VALUES (@postId)`;
+        const viewSql = `INSERT INTO views (postId) VALUES (@postId)`;
+        // const tagSql = `INSERT INTO tags (postId, id, name) VALUES (@postId, ?, ?);`;
 
-    // await db.query(postSql, [user, title, content, category]);
-    // await db.query(setSql);
-    // await db.query(newsSql);
-    // await db.query(likeSql);
-    // await db.query(viewSql);
+        await db.query(postSql, [
+          userId,
+          title,
+          content,
+          category,
+          pubDate,
+          pubDate,
+        ]);
+        await db.query(setSql);
+        await db.query(newsSql);
+        await db.query(likeSql);
+        await db.query(viewSql);
 
-    // for (i = 0; i < tags.length; i++) {
-    //   await db.query(tagSql, [i + 1, tags[i]]);
-    // }
+        // for (i = 0; i < tags.length; i++) {
+        //   await db.query(tagSql, [i + 1, tags[i]]);
+        // }
+      } catch (error) {
+        throw error;
+      }
+    }
 
-    // res.send(rows);
+    res.send("완료");
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).send("Internal Server Error");

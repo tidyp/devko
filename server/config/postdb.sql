@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS posts (
      userId VARCHAR(64),
      id INT AUTO_INCREMENT PRIMARY KEY,
      category VARCHAR(45),
-     title VARCHAR(45),
+     title TEXT,
      content TEXT,
      createdAt DATETIME,
      updatedAt DATETIME
@@ -82,6 +82,5 @@ CREATE TABLE IF NOT EXISTS calendars (
 DROP TABLE IF EXISTS devko.news;
 CREATE TABLE IF NOT EXISTS news (
     postId INT,
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    link VARCHAR(100)
+    id INT AUTO_INCREMENT PRIMARY KEY
 );
