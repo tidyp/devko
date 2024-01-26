@@ -34,22 +34,27 @@ router.post("/", upload.single("profileImage"), (req, res) => {
   );
 });
 
-router.get("/", (req, res) => {
-  db.query("SELECT * FROM users", (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
+router.get("/:id", async (req, res) => {
+  const sql = `
+  SELECT * FROM users
+  `;
+  try {
+    const [row, fields] = await db.query(sql);
+    
+    res.json({ users: row });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Internal Server Error" });
+    
 
-    res.status(200).json({ users: results });
-  });
+  };
 });
 
 router.put("/:id", upload.single("profileImage"), (req, res) => {
   const userId = req.params.id;
   const { username, email } = req.body;
   const profileImage = req.file ? req.file.filename : null;
-
+  console.log(profileImage)
   if (profileImage) {
     db.query(
       "UPDATE users SET username = ?, email = ?, profileImage = ? WHERE id = ?",
