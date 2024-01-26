@@ -5,8 +5,6 @@ const ProfileBox = () => {
   const { id } = useParams();
   const [userData, setUserData] = useState(null);
   const [userPoint, setUserPoint] = useState(null);
-  console.log(userData);
-  console.log(userData);
 
   useEffect(() => {
     const fetchData = async () => {

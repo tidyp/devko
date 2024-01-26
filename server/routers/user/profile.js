@@ -66,32 +66,18 @@ router.get("/:userId", async (req, res) => {
 
 // 프로필 이미지 수정 구현
 router.get("/image", async (req, res) => {
-    const sql = `SELECT profileImage FROM users u WHERE u.id = ?`;
+  const filePath = req.file.path; // 파일 데이터를 Path로 가져옴
+  const sql = 'UPDATE users u SET profileImage = ? WHERE u.id = ?';
     // const userId = req.body.userId;
-    const userId = 'ca436c51-f3b7-45fe-9a7e-275269a81e6e';
+  const userId = 'd77faaa9-b197-4d8f-b897-eae3a4cd9b71';
 
-    try {
-      const [rows, fields] = await db.query(sql, [userId]);
-      rows.forEach(row => {
-        if (row.grade = 5) {
-          row.grade = 'junior'
-        } else if (row.grade = 4) {
-          row.grade = 'middle'
-        } else if (row.grade = 3) {
-          row.grade = 'senior'
-        } else if (row.grade = 2) {
-          row.grade = 'CTO'
-        } else if (row.grade = 1) {
-          row.grade = 'CEO'
-        } else if (row.grade = 0) {
-          row.grade = 'admin'
-        };
-      });
-      res.send(rows[0].profileImage);
-    } catch (err) {
-      console.error("Query execution error:", err);
-      res.status(500).send("Internal Server Error");
-    };
+  try {
+    const [rows, fields] = await db.query(sql, [filePath, userId]);
+    res.redirect("http://localhost:5173/userinfo/d77faaa9-b197-4d8f-b897-eae3a4cd9b71");
+  } catch (err) {
+    console.error("Query execution error:", err);
+    res.status(500).send("Internal Server Error");
+  };
 });
 
 // 커뮤니티 포인트 구현

@@ -21,7 +21,6 @@ const Postdetail = () => {
   const { post, comments } = useLoaderData();
   const { pathname } = useLocation();
   let [data] = post;
-  console.log(data);
   const commentsData = comments.currPageRows.slice().reverse();
 
   const navigate = useNavigate();

@@ -44,6 +44,9 @@ app.use("/api/calendar", require("./routers/board/calendar"));
 
 app.use("/api/news", require("./routers/news/news"));
 
+
+app.use("/api/user", require("./routers/user/user"));
+
 // 서버
 app.listen(port, () => {
   console.log(`server is running at ${port}`);

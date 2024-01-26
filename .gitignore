@@ -3,6 +3,6 @@ node_modules
 client_secret.json
 token.json
 *.env
-asd.js
 test.html
 test.js
+asd.js

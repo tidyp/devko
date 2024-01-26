@@ -1,15 +1,12 @@
-import styles from "./Login.module.scss";
-import { ReactComponent as GoogleBtn } from "../../assets/web_neutral_rd_ctn.svg";
-
 import { ReactComponent as Naver } from "../../assets/naver.svg";
 import { ReactComponent as Google } from "../../assets/google.svg";
 
 const LoginPage = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-16">
-      <div className={styles.text}>
-        <p className={styles.title}>Create your account</p>
-        <p className={styles.sub}>Lets get started</p>
+      <div className="">
+        <p className="">Create your account</p>
+        <p className="">Lets get started</p>
       </div>
       <a href="https://accounts.google.com/o/oauth2/v2/auth?client_id=274353463964-kdkm3np5jbg5ts4l7vdksqj92m4or87q.apps.googleusercontent.com&redirect_uri=http://localhost:3000/api/googleAuth/callback&response_type=code&scope=email profile">
         <div className="h-8 w-36">

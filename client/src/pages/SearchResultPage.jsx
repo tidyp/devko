@@ -1,19 +1,21 @@
 // import postsData from "../../data/posts.json";
 
-import { searchResult } from "../../api/apiDevko";
+import { searchResult } from "../api/apiDevko";
 import { useLoaderData, Link } from "react-router-dom";
 
-const index = () => {
+const searchResultPage = () => {
   const result = useLoaderData();
 
   const isData = result.currPageRows.length > 0;
-  const numData = result.currPageRows.length
+  const numData = result.currPageRows.length;
 
   return (
     <>
       <ul className="flex w-full flex-col items-center justify-center">
         {!isData && <p className="p-8 text-3xl">검색 결과가 없습니다</p>}
-        {isData && <p className="p-8 text-3xl">{numData}개의 검색 결과를 찾았습니다.</p>}
+        {isData && (
+          <p className="p-8 text-3xl">{numData}개의 검색 결과를 찾았습니다.</p>
+        )}
         {isData &&
           result.currPageRows.map((el) => {
             return (
@@ -48,7 +50,7 @@ const index = () => {
   );
 };
 
-export default index;
+export default searchResultPage;
 
 export async function loader({ params }) {
   const { id } = params;

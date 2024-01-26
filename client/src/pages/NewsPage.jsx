@@ -6,7 +6,6 @@ import { GoEye, GoComment, GoHeart, GoHeartFill } from "react-icons/go";
 const NewsPage = () => {
   const data = useLoaderData();
   const filterData = data.filter((item) => item.category === "news");
-  console.log(filterData);
 
   return (
     <div className="flex px-24">

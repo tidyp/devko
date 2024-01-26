@@ -25,7 +25,7 @@ const NewPostForm = () => {
     title: "",
     content: "",
     category: "discuss",
-    tags: [],
+    tags: "",
     startDate: formatDateDash(new Date()),
     endDate: "",
     location: "",
@@ -34,8 +34,6 @@ const NewPostForm = () => {
     members: "",
     workPosition: "",
   });
-  console.log(formData);
-  console.log(formData.tags);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,21 +73,18 @@ const NewPostForm = () => {
           "http://localhost:3000/api/calendar",
           formData,
         );
-        console.log("Post created successfully:", res.data);
         navigate("/");
       } else if (formData.category === "group") {
         const res = await axios.post(
           "http://localhost:3000/api/team",
           formData,
         );
-        console.log("Post created successfully:", res.data);
         navigate("/");
       } else {
         const res = await axios.post(
           "http://localhost:3000/api/post",
           formData,
         );
-        console.log("Post created successfully:", res.data);
         navigate("/");
       }
     } catch (error) {
@@ -230,7 +225,7 @@ const NewPostForm = () => {
           </>
         )}
 
-        {formData.category !== "event" && (
+        {/* {formData.category !== "event" && ( */}
           <div className="flex items-center justify-between gap-2">
             <textarea
               name="content"
@@ -241,9 +236,22 @@ const NewPostForm = () => {
               onChange={handleChange}
             />
           </div>
+        {/* )} */}
+
+        {formData.category !== "event" && (
+          <div className="flex items-center justify-between gap-2">
+            <input
+              name="tags"
+              placeholder="태그을 입력하세요(#으로 구분 최대 10개)"
+              className="w-full rounded-md border bg-gray-200 p-2"
+              required
+              value={formData.tags}
+              onChange={handleChange}
+            />
+          </div>
         )}
 
-        <div className="flex justify-between gap-4 bg-gray-200 p-2">
+        {/* <div className="flex justify-between gap-4 bg-gray-200 p-2">
           <div className="flex">
             {formData.tags.length > 0 &&
               formData.tags.map((tag, index) => (
@@ -255,7 +263,6 @@ const NewPostForm = () => {
                     value={tag}
                   >
                     {tag}
-                    {/* <span>X</span> */}
                   </div>
                 </>
               ))}
@@ -274,7 +281,7 @@ const NewPostForm = () => {
             <option value="express">express</option>
             <option value="nest">nest</option>
           </select>
-        </div>
+        </div> */}
 
         <div className="mt-6">
           <Button color="bg-blue-500" onClick={handleSubmit}>

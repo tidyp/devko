@@ -36,7 +36,7 @@ const Banner = () => {
             }}
           >
             <SwiperSlide>
-              <Link to="/qna">
+              <Link to="/qna/1">
                 <div className="h-60 w-[80rem] rounded-3xl bg-blue-500 bg-[url(https://th.bing.com/th/id/OIG.J5gtliGC4oXXoSVPnlQD?pid=ImgGn)] bg-cover bg-no-repeat">
                   <p className="flex p-8 text-7xl text-yellow-50">
                     QnA 궁금한것이 있다면?

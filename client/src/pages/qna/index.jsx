@@ -10,7 +10,6 @@ const index = () => {
   const navigate = useNavigate();
 
   const posts = useLoaderData();
-  console.log(posts)
   const postsList = posts.currPageRows;
   const curPage = posts.page;
   const totalPage = posts.totalPages;

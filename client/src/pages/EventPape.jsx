@@ -10,7 +10,6 @@ import {
 const EventPape = () => {
   const data = useLoaderData();
   const filterData = data.filter((item) => item.category === "event");
-  // console.log(filterData);
 
   function transformData(data) {
     return {
@@ -23,13 +22,11 @@ const EventPape = () => {
 
   const [today, setToday] = useState(new Date());
   const [eventData, setEventData] = useState([]);
-  console.log(eventData);
 
   useEffect(() => {
     const events = [];
     filterData.forEach((data) => {
       const startDate = new Date(data.startDate);
-      console.log(startDate);
       const endDate = new Date(data.endDate);
 
       for (
@@ -167,7 +164,6 @@ const EventPape = () => {
       <div className="w-full">
         <h2>게시판</h2>
         <ul className="flex flex-col gap-2">
-          {console.log(filterData)}
           {filterData.map((el) => (
             <li className="rounded-sm bg-blue-400 text-white">
               <span>{el.title}</span>
