@@ -20,7 +20,6 @@ const Post = () => {
 
   // 데이터 load
   const [post] = useLoaderData().post;
-  console.log(post)
 
   const [selectedCategory, setSelectedCategory] = useState("discuss");
   const [postData, setPostData] = useState(() => {

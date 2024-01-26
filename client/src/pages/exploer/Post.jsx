@@ -1,15 +1,13 @@
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { formatDate } from "../../utils/utils";
-import { useEffect, useRef, useState } from "react";
 import cookie from "react-cookies";
-import NewPost from "../../feature/NewPost";
-import { deletePost } from "../../api/apiDevko";
-import Tags from "../../components/Tags";
 
-import { VscKebabVertical } from "react-icons/vsc";
+import { TbTrash, TbEdit } from "react-icons/tb";
+import { PiSiren } from "react-icons/pi";
 import { GoEye, GoComment, GoHeart, GoHeartFill } from "react-icons/go";
 
-import Modal from "../../components/Model";
+import { deletePost } from "../../api/apiDevko";
+import { formatDate } from "../../utils/utils";
 
 const Post = ({ post }) => {
   const navigate = useNavigate();
@@ -49,7 +47,7 @@ const Post = ({ post }) => {
           } else {
             return (
               <span
-                className="rounded-lg px-4"
+                className="rounded-lg px-4 py-1"
                 key={index}
                 style={{ backgroundColor: getRandomColor() }}
               >
@@ -59,20 +57,6 @@ const Post = ({ post }) => {
           }
         })
       : "";
-
-  console.log(tagss);
-
-  const dropdownRef = useRef(null);
-
-  const [isOpenEdit, setIsOpenEdit] = useState(false);
-
-  const handleOpen = () => {
-    setIsOpenEdit((prev) => !prev);
-  };
-
-  const handleClose = () => {
-    setIsOpenEdit(false);
-  };
 
   const fetchData = async (id, isLike) => {
     try {
@@ -107,7 +91,6 @@ const Post = ({ post }) => {
 
   const clickdeletePost = async () => {
     await deletePost(post.postId);
-    await handleClose();
     navigate("/");
   };
 
@@ -138,28 +121,34 @@ const Post = ({ post }) => {
               </div>
             </div>
           </div>
-          <div className="relative " ref={dropdownRef}>
-            <VscKebabVertical
-              onClick={handleOpen}
-              className="relative cursor-pointer"
-            />
-            {/* 수정-삭제 모달 데이터전달 */}
-            {isOpenEdit && (
-              <Modal onClose={handleClose}>
-                <span className="bf w-8 cursor-pointer">
-                  <Link to={`/edit/${post.postId}`}>수정</Link>
+          <div className="flex gap-1 px-4">
+            {post.userId === useruuid && (
+              <>
+                <span className="bf flex w-8 cursor-pointer flex-col">
+                  <Link to={`/edit/${post.postId}`}>
+                    <TbEdit />
+                  </Link>
                 </span>
                 <span
                   className="w-8 cursor-pointer"
                   onClick={() => clickdeletePost(post.postId)}
                 >
-                  삭제
+                  <TbTrash />
                 </span>
-                <span className="w-8 cursor-pointer">
-                  <Link>신고</Link>
-                </span>
-              </Modal>
+              </>
             )}
+
+            <span className="w-8 cursor-pointer">
+              <Link>
+                <PiSiren />
+              </Link>
+            </span>
+            {/* <VscKebabVertical
+              onClick={handleOpen}
+              className="relative cursor-pointer"
+            /> */}
+            {/* 수정-삭제 모달 데이터전달 */}
+            {/* {isOpenEdit && <Modal onClose={handleClose}></Modal>} */}
           </div>
         </div>
         <Link to={`/${post.category}/detail/${post.postId}`}>
@@ -169,19 +158,12 @@ const Post = ({ post }) => {
         </Link>
 
         <div className="flex items-start justify-between gap-2.5 self-stretch pr-8">
-          <div className="flex gap-2">
-            {tagss}
-
-            {/* <span className="rounded-lg bg-indigo-400 px-4">태그2</span>
-            <span className="rounded-lg bg-violet-400 px-4">태그3</span> */}
-          </div>
+          <div className="flex gap-2">{tagss}</div>
           <div className="flex items-center justify-center gap-4">
             <GoComment />
             <span>{post.commentCnt > 0 ? post.commentCnt : 0}</span>
             <GoEye />
             <span>{post.viewCnt}</span>
-            {/* {console.log(post.likeUser)}
-            {console.log(useruuid)} */}
             {post.likeUser === useruuid ? (
               <GoHeartFill
                 className="scale-150 transform text-red-600 hover:scale-150"

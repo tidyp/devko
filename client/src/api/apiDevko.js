@@ -4,7 +4,6 @@ const API_URL = "http://localhost:3000/api";
 export async function readDiscussPosts(id) {
   try {
     const res = await fetch(`${API_URL}/post/discuss/${id}`);
-    console.log(id)
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -98,7 +97,6 @@ export async function createGroupPost(postData) {
 
 // Update: 게시글 수정
 export async function updatePost(params) {
-  console.log(params)
   const res = await fetch(`${API_URL}/post/${params.postId}`, {
     method: "PUT",
     headers: {

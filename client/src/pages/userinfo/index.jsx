@@ -2,6 +2,7 @@ import { useState } from "react";
 import { readUserinfo } from "../../api/apiDevko";
 import { useLoaderData, useParams } from "react-router-dom";
 import cookie from "react-cookies";
+import Myinfo from './Myinfo'
 
 const index = () => {
   const userdata = useLoaderData();
@@ -11,8 +12,6 @@ const index = () => {
   const checkUser = cookie.load("uuid");
   const user = useParams();
 
-  console.log(postrows);
-  console.log(postrows.length);
   const userPost =
     postrows.length > 0 ? (
       <>
@@ -78,8 +77,8 @@ const index = () => {
             <p className="mt-10 text-2xl">해당 유저는 활동기록이 없어요.</p>
           )}
           {tabs[activeTabIndex] === "myinfo" && (
-            <p className="mt-10 text-2xl">회원정보수정</p>
-          )}
+            <Myinfo/>
+            )}
         </div>
       </div>
     </>

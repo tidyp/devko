@@ -5,9 +5,9 @@ import Layout from "./ui/Layout";
 import NewPost from "./feature/NewPost";
 import EditPost, { loader as editPostLoader } from "./feature/EditPost";
 import ExploerPage, { loader as postsLoader } from "./pages/exploer";
-import SearchResult, {
+import SearchResultPage, {
   loader as searchresultLoader,
-} from "./pages/searchResult";
+} from "./pages/searchResultPage";
 
 import DiscussPage, { loader as discussesLoader } from "./pages/discuss";
 import QnaPage, { loader as qnasLoader } from "./pages/qna";
@@ -22,7 +22,7 @@ import SignupPage from "./pages/signup";
 import Postdetail, { loader as postLoader } from "./pages/Postdetail";
 
 import LoginPage from "./pages/login";
-import Myinfo, { loader as myinfoLoader } from "./pages/myinfo";
+// import Myinfo, { loader as myinfoLoader } from "./pages/myinfo";
 import Error from "./pages/error";
 
 import UserInfo, { loader as userLoader } from "./pages/userinfo";
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
       { path: "/edit/:id", element: <EditPost />, loader: editPostLoader },
       {
         path: "/search/:id",
-        element: <SearchResult />,
+        element: <SearchResultPage />,
         loader: searchresultLoader,
       },
       // { path: "/exploer", element: <ExploerPage /> },
@@ -86,7 +86,7 @@ const router = createBrowserRouter([
       // USER: INFO
       { path: "/userinfo/:id", element: <UserInfo />, loader: userLoader },
       // MY: INFO
-      { path: "/myinfo", element: <Myinfo />, loader: myinfoLoader },
+      // { path: "/myinfo", element: <Myinfo />, loader: myinfoLoader },
     ],
   },
   {

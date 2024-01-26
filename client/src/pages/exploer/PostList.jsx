@@ -2,7 +2,6 @@ import Post from "./Post";
 
 const PostList = ({ posts }) => {
   const reversedPosts = posts.slice()
-  console.log(reversedPosts)
 
 
   return (

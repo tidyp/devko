@@ -34,8 +34,6 @@ const NewPostForm = () => {
     members: "",
     workPosition: "",
   });
-  console.log(formData);
-  console.log(formData.tags);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,21 +73,18 @@ const NewPostForm = () => {
           "http://localhost:3000/api/calendar",
           formData,
         );
-        console.log("Post created successfully:", res.data);
         navigate("/");
       } else if (formData.category === "group") {
         const res = await axios.post(
           "http://localhost:3000/api/team",
           formData,
         );
-        console.log("Post created successfully:", res.data);
         navigate("/");
       } else {
         const res = await axios.post(
           "http://localhost:3000/api/post",
           formData,
         );
-        console.log("Post created successfully:", res.data);
         navigate("/");
       }
     } catch (error) {
@@ -230,7 +225,7 @@ const NewPostForm = () => {
           </>
         )}
 
-        {formData.category !== "event" && (
+        {/* {formData.category !== "event" && ( */}
           <div className="flex items-center justify-between gap-2">
             <textarea
               name="content"
@@ -241,7 +236,7 @@ const NewPostForm = () => {
               onChange={handleChange}
             />
           </div>
-        )}
+        {/* )} */}
 
         {formData.category !== "event" && (
           <div className="flex items-center justify-between gap-2">
