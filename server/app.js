@@ -38,12 +38,11 @@ app.use("/api/tag", require("./routers/board/tag"));
 app.use("/api/comment", require("./routers/board/comment"));
 app.use("/api/like", require("./routers/board/like"));
 app.use("/api/search", require("./routers/board/search"));
-app.use("/api/dailystat", require("./routers/board/dailystat"));
+app.use("/api/daily", require("./routers/board/daily"));
 app.use("/api/team", require("./routers/board/team"));
 app.use("/api/calendar", require("./routers/board/calendar"));
 
 app.use("/api/news", require("./routers/news/news"));
-
 
 app.use("/api/user", require("./routers/user/user"));
 
