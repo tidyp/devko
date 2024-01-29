@@ -53,7 +53,6 @@ const MyinfoPage = () => {
       formData.append("file", imageFile);
       formData.append("username", userInfo.username);
       // formData.append("email", userInfo.email);
-    
 
       await updateUserinfo({
         id: useruuid,
@@ -91,52 +90,52 @@ const MyinfoPage = () => {
         onChange={handleInputChangeImage}
       />
 
-      <form className="flex flex-col gap-8" onSubmit={handleEditSubmit}>
-        <div className="flex w-[30rem] items-center justify-between text-xl font-semibold uppercase">
+      <form className="mt-8 flex flex-col gap-8" onSubmit={handleEditSubmit}>
+        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
           <label>username:</label>
           <input
-            className="border-b-2 border-gray-700"
+            className="border-b-[1px] border-[#e5e5e5]"
             type="text"
             name="username"
             value={userInfo.username}
             onChange={handleInputChange}
           />
         </div>
-        <div className="flex w-[30rem] items-center justify-between text-xl font-semibold uppercase">
+        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
           <label>email:</label>
           <input
-            className="border-b-2 border-gray-700"
+            className="border-b-[1px] border-[#e5e5e5]"
             type="email"
             name="email"
             value={userInfo.email}
             onChange={handleInputChange}
           />
         </div>
-        <div className="flex w-[30rem] items-center justify-between text-xl font-semibold uppercase">
+        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
           <label>selfDescription:</label>
           <input
-            className="border-b-2 border-gray-700"
+            className="border-b-[1px] border-[#e5e5e5]"
             type="text"
             name="selfDescription"
             value={userInfo.selfDescription}
             onChange={handleInputChange}
           />
         </div>
-        <div className="flex w-[30rem] items-center justify-between text-xl font-semibold uppercase">
+        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
           {console.log(userInfo)}
           <label>workPosition:</label>
           <input
-            className="border-b-2 border-gray-700"
+            className="border-b-[1px] border-[#e5e5e5]"
             type="text"
             name="workPosition"
             value={userInfo.workPosition}
             onChange={handleInputChange}
           />
         </div>
-        <div className="flex w-[30rem] items-center justify-between text-xl font-semibold uppercase">
+        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
           <label>interestArea:</label>
           <input
-            className="border-b-2 border-gray-700"
+            className="border-b-[1px] border-[#e5e5e5]"
             type="text"
             name="interestArea"
             value={userInfo.interestArea}
@@ -144,13 +143,20 @@ const MyinfoPage = () => {
           />
         </div>
 
-        <button
-          className="rounded-full border bg-blue-600 px-2 py-2 text-white"
-          type="submit"
-        >
-          회원정보 수정
-        </button>
-        <button type="submit">회원탈퇴</button>
+        <div className="flex flex-col">
+          <button
+            className="mt-8 rounded-full border bg-black px-2 py-2 text-white "
+            type="submit"
+          >
+            회원정보 수정
+          </button>
+          <button
+            className="mt-8 rounded-full border bg-white px-2 py-2 text-black "
+            type="submit"
+          >
+            회원탈퇴
+          </button>
+        </div>
       </form>
     </div>
   );

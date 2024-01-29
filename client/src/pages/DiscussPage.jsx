@@ -51,7 +51,7 @@ const DiscussPage = () => {
           <div className="flex flex-col gap-4">
             {isLogin ? (
               <Link to="/write">
-                <button className="flex h-12 w-full flex-col items-center justify-center rounded-2xl  bg-indigo-700 text-xl text-white">
+                <button className="flex h-12 w-full flex-col items-center justify-center rounded-full  bg-black text-xl text-white">
                   <div className="flex items-center">
                     <div>게시글 작성</div>
                   </div>
@@ -59,7 +59,7 @@ const DiscussPage = () => {
               </Link>
             ) : (
               <button
-                className="flex h-12 w-full flex-col items-center justify-center rounded-2xl  bg-indigo-700 text-xl text-white"
+                className="flex h-12 w-full flex-col items-center justify-center rounded-full  bg-black text-xl text-white"
                 onClick={handleOpen}
               >
                 <div className="flex items-center">
@@ -74,7 +74,7 @@ const DiscussPage = () => {
             <ModalOld onClose={handleClose}>
               <p className="py-10">로그인이 필요합니다.</p>
               <Link to="/login" onClick={handleOpen}>
-                <button className="rounded-xl bg-indigo-700 p-4 text-white">
+                <button className="rounded-xl bg-black p-4 text-white">
                   로그인하러가기
                 </button>
               </Link>
