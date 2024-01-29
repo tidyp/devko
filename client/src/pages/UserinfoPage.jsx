@@ -21,7 +21,7 @@ const UserinfoPage = () => {
         <>
           <p className="bor">{post.length}개의 작성 글이 있습니다.</p>
           {post.map((el) => (
-            <p class="mb-4 flex w-full items-center justify-start border-b-2 border-stone-500 p-2">
+            <p class="mb-4 flex w-full items-center justify-start border-b-2 border-black p-2">
               <div class="w-24 font-bold uppercase text-blue-500">
                 {el.category}
               </div>
@@ -55,7 +55,7 @@ const UserinfoPage = () => {
                 <div
                   className={`w-full cursor-pointer p-4 text-center uppercase  ${
                     index === activeTabIndex
-                      ? "border-b-4 border-indigo-500 text-indigo-700"
+                      ? "border-b-4 border-black text-black font-semibold"
                       : ""
                   }`}
                   key={index}

@@ -118,7 +118,7 @@ const NaviBar = () => {
               </div>
             )}
 
-            {!useruuid && <Link to="login">로그인</Link>}
+            {!useruuid && <Link className="text-sm" to="login">로그인/회원가입</Link>}
             {isDropdownOpen && (
               <div className=" w-30 item translate3d absolute right-0 top-10 flex flex-col rounded border bg-white p-2 px-4 shadow-md">
                 {userName && (
