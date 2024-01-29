@@ -1,4 +1,5 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 import Layout from "./ui/Layout";
 
@@ -9,29 +10,33 @@ import SearchResultPage, {
   loader as searchresultLoader,
 } from "./pages/searchResultPage";
 
-import DiscussPage, { loader as discussesLoader } from "./pages/discuss";
-import QnaPage, { loader as qnasLoader } from "./pages/qna";
+import DiscussPage, { loader as discussesLoader } from "./pages/DiscussPage";
+import QnaPage, { loader as qnasLoader } from "./pages/QnaPage";
 
 import NewPage, { loader as newsLoader } from "./pages/NewsPage";
 import EventPage, { loader as eventLoader } from "./pages/EventPape";
+// import Newevent  from "./feature/Newevent";
 
 import GroupPage from "./pages/group";
-import SignupPage from "./pages/signup";
+import SignupPage from "./pages/SignupPage";
 
 // import Postdetail from "./pages/Postdetail";
-import Postdetail, { loader as postLoader } from "./pages/Postdetail";
+import PostdetailPage, { loader as postLoader } from "./pages/PostdetailPage";
+import GroupdetailPage, {
+  loader as groupLoader,
+} from "./pages/GroupdetailPage";
 
 import LoginPage from "./pages/login";
-// import Myinfo, { loader as myinfoLoader } from "./pages/myinfo";
-import Error from "./pages/error";
+import MyinfoPage, { loader as myinfoLoader } from "./pages/MyinfoPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
-import UserInfo, { loader as userLoader } from "./pages/userinfo";
+import UserinfoPage, { loader as userLoader } from "./pages/UserinfoPage";
 import TestPage from "./pages/TestPage";
 
 const router = createBrowserRouter([
   {
     element: <Layout />,
-    errorElement: <Error />,
+    errorElement: <NotFoundPage />,
     children: [
       // 홈페이지
       // EXPLOER
@@ -48,7 +53,7 @@ const router = createBrowserRouter([
       { path: "/news", element: <NewPage />, loader: newsLoader },
       {
         path: "/news/detail/:id",
-        element: <Postdetail />,
+        element: <PostdetailPage />,
         loader: postLoader,
       },
       // DISCUSS
@@ -60,38 +65,44 @@ const router = createBrowserRouter([
       },
       {
         path: "/discuss/detail/:id",
-        element: <Postdetail />,
+        element: <PostdetailPage />,
         loader: postLoader,
       },
       // Q&A
       // { path: "/qna", element: <QnaPage />, loader: qnasLoader },
       { path: "/qna/:id", element: <QnaPage />, loader: qnasLoader },
-      { path: "/qna/detail/:id", element: <Postdetail />, loader: postLoader },
+      {
+        path: "/qna/detail/:id",
+        element: <PostdetailPage />,
+        loader: postLoader,
+      },
       // EVENT
-      { path: "/event", element: <EventPage />, loader: eventLoader },
+      {
+        path: "/event",
+        element: <EventPage />,
+        loader: eventLoader,
+        // children: [{ path: "/event/write", element: <Newevent /> }],
+      },
       {
         path: "/event/detail/:id",
-        element: <Postdetail />,
+        element: <PostdetailPage />,
         loader: postLoader,
       },
       // GROUP
       { path: "/group", element: <GroupPage /> },
       {
         path: "/group/detail/:id",
-        element: <Postdetail />,
-        loader: postLoader,
+        element: <GroupdetailPage />,
+        loader: groupLoader,
       },
       // LOGIN
       { path: "/login", element: <LoginPage /> },
+      { path: "/signup", element: <SignupPage /> },
       // USER: INFO
-      { path: "/userinfo/:id", element: <UserInfo />, loader: userLoader },
+      { path: "/userinfo/:id", element: <UserinfoPage />, loader: userLoader },
       // MY: INFO
-      // { path: "/myinfo", element: <Myinfo />, loader: myinfoLoader },
+      { path: "/myinfo", element: <MyinfoPage />, loader: myinfoLoader },
     ],
-  },
-  {
-    path: "/signup",
-    element: <SignupPage />,
   },
   {
     path: "/test",
@@ -99,8 +110,15 @@ const router = createBrowserRouter([
   },
 ]);
 
+// ReactQuery Setup
+const queryClient = new QueryClient();
+
 const App = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />;
+    </QueryClientProvider>
+  );
 };
 
 export default App;

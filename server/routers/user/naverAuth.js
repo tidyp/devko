@@ -86,15 +86,9 @@ router.get("/callback", async (req, res) => {
       WHERE un.naverId = ?
       `;
       const [rows, field] = await db.query(userSql, [naverId]);
-      res.cookie("uuid", rows[0].id, {
-        secure: true,
-      });
-      res.cookie("userName", rows[0].userName, {
-        secure: true,
-      });
-      res.cookie("userImage", rows[0].profileImage, {
-        secure: true,
-      });
+      res.cookie("uuid", rows[0].id, {secure: true});
+      res.cookie("userName", rows[0].userName, {secure: true});
+      res.cookie("userImage", rows[0].profileImage, {secure: true});
       res.redirect("http://localhost:5173");
     } else {
       await db.execute(

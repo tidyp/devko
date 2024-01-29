@@ -36,8 +36,9 @@ const db = require("../../config/db");
 
 router.get("/", async (req, res) => {
   try {
-    const blog = "https://www.reddit.com/.rss";
+    const blog = "https://helloworld.kurly.com/feed.xml";
     let feed = await parser.parseURL(blog);
+
     let result = [];
 
     feed.items.forEach((data) => {

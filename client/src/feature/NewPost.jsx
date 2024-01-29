@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import cookie from "react-cookies";
 import Button from "../components/Button";
+import Modal from "../components/Modal";
 import { useNavigate } from "react-router-dom";
 
 import { formatDateDash } from "../utils/utils";
@@ -97,135 +98,141 @@ const NewPostForm = () => {
   };
 
   return (
-    <div className="flex w-full flex-col items-center">
-      {/* <h2>Create a New Post</h2> */}
-      {!isEmpty && <p className="text-rose-600 text-lg">모든 항목을 작성해주세요.</p>}
-      <form className="flex w-full flex-col gap-3 px-4" onSubmit={handleSubmit}>
-        <div className="flex items-center justify-start gap-2">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              type="button"
-              className={`rounded-md border px-4 py-2 ${
-                formData.category === category.id
-                  ? "bg-gray-200  text-gray-700"
-                  : "border-spacing-4 bg-white text-gray-700"
-              }`}
-              onClick={() => {
-                handleChange({
-                  target: { name: "category", value: category.id },
-                });
-              }}
-            >
-              {category.label}
-            </button>
-          ))}
-        </div>
-
-        {/* title */}
-        <div className="flex items-center justify-between gap-2">
-          <input
-            type="text"
-            name="title"
-            placeholder="제목을 입력하세요"
-            className="w-full rounded-lg border bg-gray-200 p-2"
-            required
-            value={formData.title}
-            onChange={handleChange}
-          />
-        </div>
-
-        {(formData.category === "event" || formData.category === "group") && (
-          <>
-            <div className="flex w-full items-center justify-between gap-2">
-              <div className="flex  w-full items-center justify-between">
-                <input
-                  type="date"
-                  name="startDate"
-                  className="w-full rounded-lg border bg-gray-200 p-2"
-                  required
-                  value={formData.startDate}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="flex  w-full items-center justify-between">
-                <input
-                  type="date"
-                  name="endDate"
-                  className="w-full rounded-lg border bg-gray-200 p-2"
-                  required
-                  value={formData.endDate}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div className="flex  w-full items-center justify-between">
-              <input
-                type="text"
-                name="location"
-                placeholder="장소을 입력하세요"
-                className="w-full rounded-lg border bg-gray-200 p-2"
-                required
-                value={formData.location}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="flex  w-full items-center justify-between">
-              <input
-                type="text"
-                name="section"
-                placeholder="이벤트 구분"
-                className="w-full rounded-lg border bg-gray-200 p-2"
-                required
-                value={formData.section}
-                onChange={handleChange}
-              />
-            </div>
-          </>
+    <Modal>
+      <div className="flex w-full flex-col items-center p-8 rounded-md">
+        {/* <h2>Create a New Post</h2> */}
+        {!isEmpty && (
+          <p className="text-lg text-rose-600">모든 항목을 작성해주세요.</p>
         )}
+        <form
+          className="flex w-full flex-col gap-3 px-4"
+          onSubmit={handleSubmit}
+        >
+          <div className="flex items-center justify-start gap-2">
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                type="button"
+                className={`rounded-md border px-4 py-2 ${
+                  formData.category === category.id
+                    ? "bg-gray-200  text-gray-700"
+                    : "border-spacing-4 bg-white text-gray-700"
+                }`}
+                onClick={() => {
+                  handleChange({
+                    target: { name: "category", value: category.id },
+                  });
+                }}
+              >
+                {category.label}
+              </button>
+            ))}
+          </div>
 
-        {formData.category === "event" && (
-          <div className="flex  w-full items-center justify-between">
+          {/* title */}
+          <div className="flex items-center justify-between gap-2">
             <input
               type="text"
-              name="link"
-              placeholder="링크을 입력하세요"
+              name="title"
+              placeholder="제목을 입력하세요"
               className="w-full rounded-lg border bg-gray-200 p-2"
               required
-              value={formData.link}
+              value={formData.title}
               onChange={handleChange}
             />
           </div>
-        )}
 
-        {formData.category === "group" && (
-          <>
+          {(formData.category === "event" || formData.category === "group") && (
+            <>
+              <div className="flex w-full items-center justify-between gap-2">
+                <div className="flex  w-full items-center justify-between">
+                  <input
+                    type="date"
+                    name="startDate"
+                    className="w-full rounded-lg border bg-gray-200 p-2"
+                    required
+                    value={formData.startDate}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="flex  w-full items-center justify-between">
+                  <input
+                    type="date"
+                    name="endDate"
+                    className="w-full rounded-lg border bg-gray-200 p-2"
+                    required
+                    value={formData.endDate}
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="flex  w-full items-center justify-between">
+                <input
+                  type="text"
+                  name="location"
+                  placeholder="장소을 입력하세요"
+                  className="w-full rounded-lg border bg-gray-200 p-2"
+                  required
+                  value={formData.location}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex  w-full items-center justify-between">
+                <input
+                  type="text"
+                  name="section"
+                  placeholder="이벤트 구분"
+                  className="w-full rounded-lg border bg-gray-200 p-2"
+                  required
+                  value={formData.section}
+                  onChange={handleChange}
+                />
+              </div>
+            </>
+          )}
+
+          {formData.category === "event" && (
             <div className="flex  w-full items-center justify-between">
               <input
                 type="text"
-                name="members"
-                placeholder="팀원수을 입력하세요"
+                name="link"
+                placeholder="링크을 입력하세요"
                 className="w-full rounded-lg border bg-gray-200 p-2"
                 required
-                value={formData.members}
+                value={formData.link}
                 onChange={handleChange}
               />
             </div>
-            <div className="flex  w-full items-center justify-between">
-              <input
-                type="text"
-                name="workPosition"
-                placeholder="포지션을 입력하세요"
-                className="w-full rounded-lg border bg-gray-200 p-2"
-                required
-                value={formData.workPosition}
-                onChange={handleChange}
-              />
-            </div>
-          </>
-        )}
+          )}
 
-        {/* {formData.category !== "event" && ( */}
+          {formData.category === "group" && (
+            <>
+              <div className="flex  w-full items-center justify-between">
+                <input
+                  type="text"
+                  name="members"
+                  placeholder="팀원수을 입력하세요"
+                  className="w-full rounded-lg border bg-gray-200 p-2"
+                  required
+                  value={formData.members}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="flex  w-full items-center justify-between">
+                <input
+                  type="text"
+                  name="workPosition"
+                  placeholder="포지션을 입력하세요"
+                  className="w-full rounded-lg border bg-gray-200 p-2"
+                  required
+                  value={formData.workPosition}
+                  onChange={handleChange}
+                />
+              </div>
+            </>
+          )}
+
+          {/* {formData.category !== "event" && ( */}
           <div className="flex items-center justify-between gap-2">
             <textarea
               name="content"
@@ -236,22 +243,22 @@ const NewPostForm = () => {
               onChange={handleChange}
             />
           </div>
-        {/* )} */}
+          {/* )} */}
 
-        {formData.category !== "event" && (
-          <div className="flex items-center justify-between gap-2">
-            <input
-              name="tags"
-              placeholder="태그을 입력하세요(#으로 구분 최대 10개)"
-              className="w-full rounded-md border bg-gray-200 p-2"
-              required
-              value={formData.tags}
-              onChange={handleChange}
-            />
-          </div>
-        )}
+          {formData.category !== "event" && (
+            <div className="flex items-center justify-between gap-2">
+              <input
+                name="tags"
+                placeholder="태그을 입력하세요(#으로 구분 최대 10개)"
+                className="w-full rounded-md border bg-gray-200 p-2"
+                required
+                value={formData.tags}
+                onChange={handleChange}
+              />
+            </div>
+          )}
 
-        {/* <div className="flex justify-between gap-4 bg-gray-200 p-2">
+          {/* <div className="flex justify-between gap-4 bg-gray-200 p-2">
           <div className="flex">
             {formData.tags.length > 0 &&
               formData.tags.map((tag, index) => (
@@ -283,16 +290,17 @@ const NewPostForm = () => {
           </select>
         </div> */}
 
-        <div className="mt-6">
-          <Button color="bg-blue-500" onClick={handleSubmit}>
-            작성하기
-          </Button>
-          <Button color="bg-blue-500" onClick={handleCancel}>
-            취소하기
-          </Button>
-        </div>
-      </form>
-    </div>
+          <div className="mt-6">
+            <Button color="bg-blue-500" onClick={handleSubmit}>
+              작성하기
+            </Button>
+            <Button color="bg-blue-500" onClick={handleCancel}>
+              취소하기
+            </Button>
+          </div>
+        </form>
+      </div>
+    </Modal>
   );
 };
 

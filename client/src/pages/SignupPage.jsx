@@ -2,7 +2,7 @@ import { useImperativeHandle, useState } from "react";
 import cookie from "react-cookies";
 import { useNavigate } from "react-router-dom";
 
-const Index = () => {
+const SignupPage = () => {
   const googleID = cookie.load("googleId");
   const naverID = cookie.load("naverId");
   const googleImage = cookie.load("googleImage");
@@ -119,4 +119,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default SignupPage;

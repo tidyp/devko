@@ -1,13 +1,13 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const path = require("path");
-const multer = require("multer");
-const db = require("../../config/db");
-require("dotenv").config();
+const path = require('path');
+const multer = require('multer');
+const db = require('../../config/db');
+require('dotenv').config();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "uploads"));
+    cb(null, path.join(__dirname, 'uploads'));
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -16,85 +16,86 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post("/", upload.single("profileImage"), (req, res) => {
+router.post('/', upload.single('profileImage'), (req, res) => {
   const { username, email } = req.body;
   const profileImage = req.file ? req.file.filename : null;
 
   db.query(
-    "INSERT INTO users (username, email, profileImage) VALUES (?, ?, ?)",
+    'INSERT INTO users (username, email, profileImage) VALUES (?, ?, ?)',
     [username, email, profileImage],
     (err, results) => {
       if (err) {
         console.error(err);
-        return res.status(500).json({ error: "Internal Server Error" });
+        return res.status(500).json({ error: 'Internal Server Error' });
       }
 
-      res.status(201).json({ message: "User created successfully", userId: results.insertId });
+      res
+        .status(201)
+        .json({
+          message: 'User created successfully',
+          userId: results.insertId,
+        });
     }
   );
 });
 
-router.get("/:id", async (req, res) => {
+router.get('/:id', async (req, res) => {
   const sql = `
   SELECT * FROM users
   `;
   try {
     const [row, fields] = await db.query(sql);
-    
+
     res.json({ users: row });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Internal Server Error" });
-    
-
-  };
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
-router.put("/:id", upload.single("profileImage"), (req, res) => {
+router.put('/:id', upload.single('profileImage'), (req, res) => {
   const userId = req.params.id;
-  const { username, email } = req.body;
+  const { username } = req.body;
   const profileImage = req.file ? req.file.filename : null;
-  console.log(profileImage)
   if (profileImage) {
     db.query(
-      "UPDATE users SET username = ?, email = ?, profileImage = ? WHERE id = ?",
-      [username, email, profileImage, userId],
+      'UPDATE users SET userName = ?, profileImage = ? WHERE id = ?',
+      [username, profileImage, userId],
       (err) => {
         if (err) {
           console.error(err);
-          return res.status(500).json({ error: "Internal Server Error" });
+          return res.status(500).json({ error: 'Internal Server Error' });
         }
 
-        res.status(200).json({ message: "User updated successfully" });
+        res.status(200).json({ message: 'User updated successfully' });
       }
     );
   } else {
     db.query(
-      "UPDATE users SET username = ?, email = ? WHERE id = ?",
-      [username, email, userId],
+      'UPDATE users SET userName = ? WHERE id = ?',
+      [username, userId],
       (err) => {
         if (err) {
           console.error(err);
-          return res.status(500).json({ error: "Internal Server Error" });
+          return res.status(500).json({ error: 'Internal Server Error' });
         }
 
-        res.status(200).json({ message: "User updated successfully" });
+        res.status(200).json({ message: 'User updated successfully' });
       }
     );
   }
 });
 
-
-router.delete("/:id", (req, res) => {
+router.delete('/:id', (req, res) => {
   const userId = req.params.id;
 
-  db.query("DELETE FROM users WHERE id = ?", [userId], (err) => {
+  db.query('DELETE FROM users WHERE id = ?', [userId], (err) => {
     if (err) {
       console.error(err);
-      return res.status(500).json({ error: "Internal Server Error" });
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
 
-    res.status(200).json({ message: "User deleted successfully" });
+    res.status(200).json({ message: 'User deleted successfully' });
   });
 });
 

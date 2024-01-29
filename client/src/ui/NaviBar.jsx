@@ -4,7 +4,8 @@ import cookie from "react-cookies";
 
 import { GoTriangleDown } from "react-icons/go";
 import { FaSearch } from "react-icons/fa";
-import { FaBell } from "react-icons/fa";
+import { VscBell, VscBellDot } from "react-icons/vsc";
+
 import { useState } from "react";
 
 const NaviBar = () => {
@@ -18,7 +19,7 @@ const NaviBar = () => {
   };
 
   const useruuid = cookie.load("uuid");
-  const userName = cookie.load("userName")
+  const userName = cookie.load("userName");
   const userImage = cookie.load("userImage");
 
   const clickLogout = () => {
@@ -43,12 +44,15 @@ const NaviBar = () => {
 
   return (
     <>
-      <nav className=" flex items-center justify-center bg-white py-4">
+      <nav className=" flex items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4">
         <div className="flex w-[80rem] items-center justify-between px-8">
-          <div className="text-base font-semibold">
-            <Link to="/">DEVKO</Link>
+          {/* <div className="flex w-full items-center justify-between px-8"> */}
+          <div className="text-base">
+            <Link to="/">
+              <img className="w-24" src="/images/logo2.png" alt="logo" />
+            </Link>
           </div>
-          <div className="flex gap-12 text-base font-semibold  uppercase ">
+          <div className="flex gap-12 text-base  uppercase ">
             <NavLink
               to="/"
               className={({ isActive }) => (isActive ? activeLink : "")}
@@ -96,12 +100,17 @@ const NaviBar = () => {
                 onChange={handleSearchChange}
               />
             </form>
-            <FaBell />
+            <VscBell className="text-xl"/>
+            <VscBellDot className="text-xl text-blue-70 animate-bounce"/>
             {useruuid && (
               <div className="flex flex-row items-center gap-2 text-3xl">
                 {/* <Link to={`/userinfo`}> */}
                 <Link to={`/userinfo/${useruuid}`}>
-                  <img className="w-8 rounded-full" src={`${userImage}`} alt="" />
+                  <img
+                    className="w-8 rounded-full"
+                    src={`${userImage}`}
+                    alt=""
+                  />
                 </Link>
                 <div onClick={toggleDropdown} className="cursor-pointer">
                   <GoTriangleDown />
@@ -117,7 +126,7 @@ const NaviBar = () => {
                     <span className=" cursor-pointer" onClick={clickLogout}>
                       로그아웃
                     </span>
-                    <Link className="" to="/myinfo">
+                    <Link className="" to={`/myinfo`}>
                       내 정보
                     </Link>
                   </>

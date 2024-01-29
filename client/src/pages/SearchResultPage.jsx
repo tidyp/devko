@@ -1,20 +1,25 @@
 // import postsData from "../../data/posts.json";
 
 import { searchResult } from "../api/apiDevko";
-import { useLoaderData, Link } from "react-router-dom";
+import { useLoaderData, Link, useParams } from "react-router-dom";
 
 const searchResultPage = () => {
   const result = useLoaderData();
+  const query = useParams();
+  console.log(query);
 
   const isData = result.currPageRows.length > 0;
   const numData = result.currPageRows.length;
 
   return (
-    <>
-      <ul className="flex w-full flex-col items-center justify-center">
+    <div className="mt-8 flex flex-col items-center justify-center gap-2">
+      <ul className="w-[80rem] items-start justify-start text-start">
         {!isData && <p className="p-8 text-3xl">검색 결과가 없습니다</p>}
         {isData && (
-          <p className="p-8 text-3xl">{numData}개의 검색 결과를 찾았습니다.</p>
+          <p className="p-8 text-3xl flex justify-between">
+            <span>#{query.id}</span>
+            <span>{numData}개의 검색 결과를 찾았습니다.</span>
+          </p>
         )}
         {isData &&
           result.currPageRows.map((el) => {
@@ -46,7 +51,7 @@ const searchResultPage = () => {
         {/* TODO: pagination */}
         page {result.page}/{result.totalPages}
       </div>
-    </>
+    </div>
   );
 };
 
