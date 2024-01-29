@@ -7,6 +7,7 @@ const searchResultPage = () => {
   const result = useLoaderData();
   const query = useParams();
   console.log(query);
+  console.log(result);
 
   const isData = result.currPageRows.length > 0;
   const numData = result.currPageRows.length;
@@ -14,9 +15,9 @@ const searchResultPage = () => {
   return (
     <div className="mt-8 flex flex-col items-center justify-center gap-2">
       <ul className="w-[80rem] items-start justify-start text-start">
-        {!isData && <p className="p-8 text-3xl">검색 결과가 없습니다</p>}
+        {!isData && <p className="p-8 text-xl">검색 결과가 없습니다</p>}
         {isData && (
-          <p className="p-8 text-3xl flex justify-between">
+          <p className="flex justify-between p-8 text-xl">
             <span>#{query.id}</span>
             <span>{numData}개의 검색 결과를 찾았습니다.</span>
           </p>
@@ -33,11 +34,12 @@ const searchResultPage = () => {
                         src={el.profileImage}
                         alt=""
                       />
-                      <span className="text-blue-700">{el.userName}</span>
+                      <span className="text-blue-700">{el.category}</span>
+                      <span className="text-blue-700">{el.userName || "Dekvo"}</span>
+
                       <span className="mb-2 text-xl font-semibold">
                         {el.title}
                       </span>
-                      <span className="text-gray-700">{el.content}</span>
                       <span className="text-gray-700">{el.content}</span>
                       <span className="text-gray-700">{el.createdAt}</span>
                     </div>
@@ -63,8 +65,7 @@ export async function loader({ params }) {
     const res = await searchResult(id);
     return res;
   } catch (error) {
-    // console.error("Error fetching posts:", error);
-
+    console.error("Error fetching posts:", error);
     // loader-fetch-요청실패
     return "연결실패";
   }

@@ -18,7 +18,7 @@ const Banner2 = () => {
     <>
       {/* <div>dwdw</div> */}
       <Particles
-        className="h-72 w-full"
+        className="h-96 w-full border-b border-b-[#d3d3d3] my-12"
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
@@ -77,7 +77,7 @@ const Banner2 = () => {
                 enable: true,
                 area: 200,
               },
-              value: 50,
+              value: 10,
             },
             opacity: {
               value: 0.5,

@@ -31,7 +31,7 @@ const NaviBar = () => {
   };
 
   //
-  const activeLink = "text-indigo-600";
+  const activeLink = "text-black font-bold";
   // 검색
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -49,10 +49,10 @@ const NaviBar = () => {
           {/* <div className="flex w-full items-center justify-between px-8"> */}
           <div className="text-base">
             <Link to="/">
-              <img className="w-24" src="/images/logo2.png" alt="logo" />
+              <img className="w-32" src="/images/logo2.png" alt="logo" />
             </Link>
           </div>
-          <div className="flex gap-12 text-base  uppercase ">
+          <div className="flex gap-12 text-base uppercase">
             <NavLink
               to="/"
               className={({ isActive }) => (isActive ? activeLink : "")}
