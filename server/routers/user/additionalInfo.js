@@ -53,15 +53,9 @@ router.post("/step3", async (req, res) => {
       googleId,
       naverId,
     ]);
-    res.cookie("uuid", userId, {
-      secure: true,
-    });
-    res.cookie("userName", userName, {
-      secure: true,
-    });
-    res.cookie("userImage", profileImage, {
-      secure: true,
-    });
+    res.cookie("uuid", userId, {secure: true});
+    res.cookie("userName", userName, {secure: true});
+    res.cookie("userImage", profileImage, {secure: true});
     res.json({ uuid: userId, userName: userName, userImage: profileImage });
 
     // res.redirect("http://localhost:5173");
