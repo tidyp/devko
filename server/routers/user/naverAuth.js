@@ -65,7 +65,10 @@ router.get("/callback", async (req, res) => {
   const naverImage = info_result_json.profile_image;
 
   try {
-    const [rows, fields] = await db.query("SELECT * FROM usersnaver WHERE naverId = ? OR naverEmail = ?", [naverId, naverEmail]);
+    const [rows, fields] = await db.query(
+      "SELECT * FROM usersnaver WHERE naverId = ? OR naverEmail = ?", [naverId, naverEmail]
+    );
+    
     if (rows[0]) {
       const userSql = `
         SELECT u.id AS id
