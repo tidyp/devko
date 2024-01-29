@@ -94,21 +94,36 @@ const Post = ({ post }) => {
     navigate("/");
   };
 
+  console.log(post.profileImage)
+  console.log(post.profileImage)
+  console.log(post.profileImage)
+  console.log(post.profileImage)
   return (
     <>
-      <div className="m-2 flex h-fit w-[62rem] flex-col items-start justify-start gap-5 rounded-[10px] bg-slate-50 p-8">
+      <div className="m-2 flex h-fit w-[64rem] flex-col items-start justify-start gap-5 rounded-[10px] bg-slate-50 p-8">
         <div className="flex w-full justify-between">
           <div className="flex items-center justify-center gap-2.5 self-stretch">
-            <Link to={`/userinfo/${post.userId}`}>
+            <Link className="w-12 h-12" to={`/userinfo/${post.userId}`}>
+              {/* <img
+                className="h-12 w-12 rounded-lg"
+                src={`${"post.profileImage"}`}
+                alt={post.profileImage}
+              /> */}
               <img
-                className="h-12 rounded-lg"
-                src={post.profileImage || `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${Math.floor(Math.random() * 16)}`}
+                className="w-full h-full rounded-lg"
+                src={
+                  post.profileImage
+                    ? `${post.profileImage}`
+                    : `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${Math.floor(
+                        Math.random() * 16,
+                      )}`
+                }
                 alt={post.profileImage}
               />
             </Link>
 
-            <div className="flex h-14 shrink grow basis-0 flex-col items-start justify-center">
-              <div className="text-2xl font-semibold text-black">
+            <div className="flex h-14  basis-0 flex-col items-start justify-center">
+              <div className="w-[50rem] truncate text-2xl font-semibold text-black">
                 {post.title}
               </div>
               <div className="flex items-center justify-end gap-2.5">
@@ -121,6 +136,7 @@ const Post = ({ post }) => {
               </div>
             </div>
           </div>
+
           <div className="flex gap-1 px-4">
             {post.userId === useruuid && (
               <>
@@ -152,7 +168,7 @@ const Post = ({ post }) => {
           </div>
         </div>
         <Link to={`/${post.category}/detail/${post.postId}`}>
-          <div className="self-stretch  text-base font-medium text-zinc-500">
+          <div className="w-[50rem] self-stretch  text-clip text-base font-medium text-zinc-500">
             {post.content}
           </div>
         </Link>

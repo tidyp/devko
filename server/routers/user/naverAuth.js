@@ -28,8 +28,7 @@ router.get("/login", function (req, res) {
 });
 
 router.get("/callback", async (req, res) => {
-  const code = req.query.code;
-  const state = req.query.state;
+  const { code, state } = req.query;
 
   api_url =
     "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=" +
@@ -47,15 +46,15 @@ router.get("/callback", async (req, res) => {
     url: api_url,
     headers: {
       "X-Naver-Client-Id": client_id,
-      "X-Naver-Client-Secret": client_secret,
-    },
+      "X-Naver-Client-Secret": client_secret
+    }
   };
   const result = await request.get(options);
   const token = JSON.parse(result).access_token;
 
   const info_options = {
     url: "https://openapi.naver.com/v1/nid/me",
-    headers: { Authorization: "Bearer " + token },
+    headers: { Authorization: "Bearer " + token }
   };
 
   const info_result = await request.get(info_options);
@@ -66,24 +65,24 @@ router.get("/callback", async (req, res) => {
   const naverImage = info_result_json.profile_image;
 
   try {
-    const [rows, fields] = await db.execute(
-      "SELECT * FROM usersnaver WHERE naverId = ? OR naverEmail = ?",
-      [naverId, naverEmail]
+    const [rows, fields] = await db.query(
+      "SELECT * FROM usersnaver WHERE naverId = ? OR naverEmail = ?", [naverId, naverEmail]
     );
-    if (rows.length > 0) {
+    
+    if (rows[0]) {
       const userSql = `
-      SELECT u.id AS id
-        , u.userName AS userName
-        , u.profileImage AS profileImage
-        , u.grade AS grade
-        , ug.googleId AS googleId
-        , ug.googleEmail AS googleEmail
-        , un.naverId AS naverId
-        , un.naverEmail AS naverEmail
-      FROM users u
-      LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
-      LEFT OUTER JOIN usersnaver un ON u.naverId = un.id
-      WHERE un.naverId = ?
+        SELECT u.id AS id
+          , u.userName AS userName
+          , u.profileImage AS profileImage
+          , u.grade AS grade
+          , ug.googleId AS googleId
+          , ug.googleEmail AS googleEmail
+          , un.naverId AS naverId
+          , un.naverEmail AS naverEmail
+        FROM users u
+        LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
+        LEFT OUTER JOIN usersnaver un ON u.naverId = un.id
+        WHERE un.naverId = ?
       `;
       const [rows, field] = await db.query(userSql, [naverId]);
       res.cookie("uuid", rows[0].id, {secure: true});
@@ -95,12 +94,8 @@ router.get("/callback", async (req, res) => {
         "INSERT INTO usersnaver (naverId, naverEmail, naverImage) VALUES (?, ?, ?)",
         [naverId, naverEmail, naverImage]
       );
-      res.cookie("naverId", naverId, {
-        secure: true,
-      });
-      res.cookie("naverImage", naverImage, {
-        secure: true,
-      });
+      res.cookie("naverId", naverId, {secure: true});
+      res.cookie("naverImage", naverImage, {secure: true});
       res.redirect("http://localhost:5173/signup");
     }
   } catch (error) {

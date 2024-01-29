@@ -96,18 +96,16 @@ const EventPape = () => {
         <div className="flex w-[82rem] flex-col items-start justify-center gap-4">
           <div className="flex w-full justify-between">
             <ul className="flex gap-2">
-              <li>필터링1</li>
+              <li>전체</li>
               <li>필터링1</li>
               <li>필터링1</li>
               <li>필터링1</li>
             </ul>
-            <button>
-              <Link to="write">글 작성</Link>
-            </button>
-            <Button color="bg-indigo-700">글 작성</Button>
+            
+            <Button color="bg-black">글 작성</Button>
           </div>
-          <div className="w-full rounded bg-slate-50 shadow">
-            <div className="flex justify-between border-b p-2">
+          <div className="w-full rounded bg-white mt-2 ">
+            <div className="flex justify-between border-b p-2 mt-2">
               <span className="text-lg font-bold">
                 {today.toLocaleString("default", {
                   month: "long",

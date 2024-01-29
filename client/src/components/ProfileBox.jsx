@@ -63,10 +63,10 @@ const ProfileBox = () => {
             </div>
           </header>
           <section className="flex items-center justify-center gap-2">
-            <button className="w-full rounded-md bg-indigo-200 px-1 text-indigo-700">
+            <button className="w-full rounded-md bg-black px-1 py-1 text-white tracking-widest">
               1:1챗
             </button>
-            <button className="w-full rounded-lg bg-indigo-200 px-1 text-indigo-700">
+            <button className="w-full rounded-lg bg-black px-1 py-1 text-white tracking-widest">
               팔로우
             </button>
           </section>

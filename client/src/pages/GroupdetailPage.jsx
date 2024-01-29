@@ -124,7 +124,7 @@ const PostdetailPage = () => {
                 </div>
               </header>
               <div className="mt-4 flex flex-col gap-8">
-                <h1 className="mb-4 text-3xl font-bold">제목: {data.title}</h1>
+                <h1 className="mb-4 text-xl font-bold">제목: {data.title}</h1>
 
                 <p className="text-gray-700">본문: {data.content}</p>
                 <p className="text-gray-700">{data.createdAt}</p>
