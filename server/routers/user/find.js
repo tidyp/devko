@@ -8,12 +8,13 @@ require("dotenv").config();
 
 router.get("/info", async (req, res) => {
     const sql = `
-    SELECT un.naverEmail ,
-           ug.googleEmail
-    FROM usersnaver un
-    LEFT JOIN users u ON u.naverId = un.id
-    LEFT JOIN usersgoogle ug ON ug.id = u.googleId
-    WHERE un.naverEmail = ? OR ug.googleEmail = ?`;
+      SELECT un.naverEmail ,
+             ug.googleEmail
+      FROM usersnaver un
+      LEFT JOIN users u ON u.naverId = un.id
+      LEFT JOIN usersgoogle ug ON ug.id = u.googleId
+      WHERE un.naverEmail = ? OR ug.googleEmail = ?
+    `;
 
     const googleEmail = req.body.googleEmail;
     const naverEmail = req.body.naverEmail;

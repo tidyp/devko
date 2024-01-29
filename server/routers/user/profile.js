@@ -8,52 +8,51 @@ require("dotenv").config();
 router.get("/:userId", async (req, res) => {
   try {
     const usersql = `
-    SELECT u.userName AS userName,
-           u.profileImage AS profileImage,
-           u.workPosition AS workPosition,
-           u.interestArea AS interestArea,
-           u.selfDescription AS selfDescription,
-           u.grade AS grade
-    FROM users u
-    WHERE u.id = ?
+      SELECT u.userName AS userName,
+             u.profileImage AS profileImage,
+             u.workPosition AS workPosition,
+             u.interestArea AS interestArea,
+             u.selfDescription AS selfDescription,
+             u.grade AS grade
+      FROM users u
+      WHERE u.id = ?
     `;
 
     const postsql = `
-    Select p.userId AS postID,
-           p.category AS category,
-           p.title AS title,
-           p.content AS postContent
-    FROM users u
-    LEFT JOIN posts p ON p.userId = u.id
-    WHERE u.id = ?
+      Select p.userId AS postID,
+             p.category AS category,
+             p.title AS title,
+             p.content AS postContent
+      FROM users u
+      LEFT JOIN posts p ON p.userId = u.id
+      WHERE u.id = ?
     `;
 
     const commentsql = `
-    Select c.userId As commentID,
-           c.content AS commentContent
-    FROM users u
-    LEFT JOIN posts p ON p.userId = u.id
-    LEFT JOIN comments c ON c.userId = u.id
-    WHERE u.id = ?
+      Select c.userId As commentID,
+             c.content AS commentContent
+      FROM users u
+      LEFT JOIN posts p ON p.userId = u.id
+      LEFT JOIN comments c ON c.userId = u.id
+      WHERE u.id = ?
     `;
 
     const userId = req.params.userId;
 
     const [userrows, userfields] = await db.query(usersql, [userId]);
+    const gradeLevels = {
+      5: 'junior',
+      4: 'middle',
+      3: 'senior',
+      2: 'CTO',
+      1: 'CEO',
+      0: 'admin'
+    };
     userrows.forEach(row => {
-      if (row.grade = 5) {
-        row.grade = 'junior'
-      } else if (row.grade = 4) {
-        row.grade = 'middle'
-      } else if (row.grade = 3) {
-        row.grade = 'senior'
-      } else if (row.grade = 2) {
-        row.grade = 'CTO'
-      } else if (row.grade = 1) {
-        row.grade = 'CEO'
-      } else if (row.grade = 0) {
-        row.grade = 'admin'
+      if(row.grade in gradeLevels) {
+        row.grade = gradeLevels[row.grade];
       };
+      console.log(row.grade);
     });
     const [postrows, postfields] = await db.query(postsql, [userId]);
     const [commentrows, commentfields] = await db.query(commentsql, [userId]);
@@ -61,7 +60,7 @@ router.get("/:userId", async (req, res) => {
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).send("Internal Server Error");
-  }
+  };
 });
 
 // 프로필 이미지 수정 구현
@@ -84,27 +83,27 @@ router.get("/image", async (req, res) => {
 
 router.get("/:userId/point", async (req, res) => {
   const sql = `
-  SELECT p.count AS postCnt,
-        c.count AS commentCnt,
-        pt.count AS teamCnt
-  FROM (
-      SELECT u.id AS id
-        , u.userName AS userName
-        , u.profileImage AS profileImage
-        , u.grade AS grade
-        , ug.googleId AS googleId
-        , ug.googleEmail AS googleEmail
-        , ug.googleImage AS googleImage
-        , un.naverId AS naverId
-        , un.naverEmail AS naverEmail
-        , un.naverImage AS naverImage
-      FROM users u
-      LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
-      LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u
-  LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM posts GROUP BY userId) p ON u.id = p.userId
-  LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM posts WHERE posts.category = 'group' GROUP BY userId) pt ON u.id = pt.userId
-  LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM comments GROUP BY userId) c ON u.id = c.userId
-  WHERE u.id =?
+    SELECT p.count AS postCnt,
+          c.count AS commentCnt,
+          pt.count AS teamCnt
+    FROM (
+        SELECT u.id AS id
+          , u.userName AS userName
+          , u.profileImage AS profileImage
+          , u.grade AS grade
+          , ug.googleId AS googleId
+          , ug.googleEmail AS googleEmail
+          , ug.googleImage AS googleImage
+          , un.naverId AS naverId
+          , un.naverEmail AS naverEmail
+          , un.naverImage AS naverImage
+        FROM users u
+        LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
+        LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u
+    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM posts  GROUP BY userId) p ON u.id = p.userId
+    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM posts  WHERE posts.category = 'group' GROUP BY userId) pt ON u.id = pt. userId
+    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM comments   GROUP BY userId) c ON u.id = c.userId
+    WHERE u.id =?
   `;
   const userId = req.params.userId;
   // const userId = 'd77faaa9-b197-4d8f-b897-eae3a4cd9b71';
