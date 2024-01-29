@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
-import { readUserinfo } from "../../api/apiDevko"; // Assuming there is an `updateUserinfo` function
-import { updateUserinfo } from "../../api/apiUser"; // Assuming there is an `updateUserinfo` function
+import { readUserinfo, updateUserinfo } from "../api/apiUser";
 import cookie from "react-cookies";
-import Button from "../../components/Button";
+import Button from "../components/Button";
 
-const MyInfo = () => {
+const MyinfoPage = () => {
   const data = useLoaderData();
   console.log(data);
   const [userInfo, setUserInfo] = useState({
-    profileImage: data.userrows[0].profileImage,
-    username: data.userrows[0].userName,
-    selfDescription: data.userrows[0].selfDescription,
-    interestArea: data.userrows[0].interestArea,
-    workPosition: data.userrows[0].workPosition,
+    profileImage: data.users[0].profileImage,
+    username: data.users[0].userName,
+    selfDescription: data.users[0].selfDescription,
+    interestArea: data.users[0].interestArea,
+    workPosition: data.users[0].workPosition,
   });
   const [imageFile, setImageFile] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -50,12 +49,17 @@ const MyInfo = () => {
 
     try {
       const formData = new FormData();
+      formData.append("id", useruuid);
       formData.append("file", imageFile);
       formData.append("username", userInfo.username);
-      formData.append("email", userInfo.email);
-      formData.append("password", userInfo.password);
+      // formData.append("email", userInfo.email);
+    
 
-      await updateUserinfo(useruuid, formData);
+      await updateUserinfo({
+        id: useruuid,
+        username: userInfo.username,
+        profileImage: imageFile,
+      });
     } catch (error) {
       console.error("Failed to update user profile", error);
     }
@@ -152,4 +156,13 @@ const MyInfo = () => {
   );
 };
 
-export default MyInfo;
+export default MyinfoPage;
+
+export async function loader({ params }) {
+  try {
+    const data = await readUserinfo(params.id);
+    return data;
+  } catch (error) {
+    return "연결실패";
+  }
+}

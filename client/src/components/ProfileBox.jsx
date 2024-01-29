@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
+import LoadingSpinner from "./LoadingSpinner";
 
 const ProfileBox = () => {
   const { id } = useParams();
@@ -37,7 +38,7 @@ const ProfileBox = () => {
 
   return (
     <>
-      <div className="box-border flex h-auto w-64 flex-col items-center justify-center gap-2 rounded-2xl bg-slate-50 p-4">
+      <div className="box-border flex h-auto w-[30rem] flex-col items-center justify-center gap-2 rounded-2xl bg-slate-50 p-4">
         <div className="text-base font-semibold text-black">
           {data.userName}
         </div>
@@ -50,7 +51,7 @@ const ProfileBox = () => {
                 alt=""
               />
             </div>
-            <div className="w-24">
+            <div className="w-full">
               <p className="font-semibold">intersting</p>
               <p> {data.interestArea}</p>
               <p>
@@ -78,21 +79,21 @@ const ProfileBox = () => {
             <div className="grid grid-cols-2 gap-4">
               <div className="rounded-lg bg-slate-50 py-4">
                 <p>postPoint</p>
-                <p className="text-3xl font-semibold">{userPoint.postPoint}</p>
+                <p className="text-xl font-semibold">{userPoint.postPoint}</p>
               </div>
               <div className="rounded-lg bg-slate-50 py-4">
                 <p>commentPoint</p>
-                <p className="text-3xl font-semibold">
+                <p className="text-xl font-semibold">
                   {userPoint.commentPoint}
                 </p>
               </div>
               <div className="rounded-lg bg-slate-50 py-4">
                 <p>teamPoint</p>
-                <p className="text-3xl font-semibold">{userPoint.teamPoint}</p>
+                <p className="text-xl font-semibold">{userPoint.teamPoint}</p>
               </div>
               <div className="rounded-lg bg-slate-50 py-4">
                 <p>totalPoint</p>
-                <p className="text-3xl font-semibold">{userPoint.totalPoint}</p>
+                <p className="text-xl font-semibold">{userPoint.totalPoint}</p>
               </div>
             </div>
           </footer>

@@ -5,7 +5,8 @@ export async function getPoptags() {
   try {
     const res = await fetch(`${API_URL}/dailystat/tag`);
     if (!res.ok) {
-      throw new Error(`Failed to fetch data. Status: ${res.status}`);
+      const error = new Error(`Failed to fetch data. Status: ${res.status}`);
+      throw error;
     }
     const data = await res.json();
     return data;

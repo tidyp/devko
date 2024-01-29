@@ -3,7 +3,7 @@ import {
   readComments,
   createComment,
   deletePost,
-} from "../../api/apiDevko";
+} from "../api/apiDevko";
 import {
   useLoaderData,
   useLocation,
@@ -11,12 +11,12 @@ import {
   useNavigation
 } from "react-router-dom";
 import { VscKebabVertical } from "react-icons/vsc";
-import Button from "../../components/Button";
+import Button from "../components/Button";
 import cookie from "react-cookies";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-const Postdetail = () => {
+const PostdetailPage = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const { post, comments } = useLoaderData();
   const { pathname } = useLocation();
@@ -81,6 +81,8 @@ const Postdetail = () => {
 
   return (
     <>
+    <div className="flex flex-col items-center justify-center gap-2 pt-8">
+      <div className="flex w-[80rem] items-start justify-center gap-4">
       <div className="flex w-full flex-col ">
         <div className="flex flex-col gap-8 rounded-md bg-slate-50 p-12 text-start">
           <p className="text-gray-700">카테고리: {data.category}</p>
@@ -88,7 +90,7 @@ const Postdetail = () => {
             <div className="flex items-center gap-4">
               <img
                 className="className=h-16 w-16 rounded-full bg-gray-300"
-                src={data.profileImage}
+                src={data.profileImage || `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${Math.floor(Math.random() * 16)}`}
                 alt=""
               />
               <div>
@@ -117,7 +119,7 @@ const Postdetail = () => {
             </div>
           </header>
           <div className="mt-4 flex flex-col gap-8">
-            <h1 className="mb-4 text-3xl font-bold">제목: {data.title}</h1>
+            <h1 className="mb-4 text-2xl font-bold">제목: {data.title}</h1>
 
             <p className="text-gray-700">본문: {data.content}</p>
             <p className="text-gray-700">{data.createdAt}</p>
@@ -165,11 +167,13 @@ const Postdetail = () => {
           </div>
         </div>
       </div>
+      </div>
+      </div>
     </>
   );
 };
 
-export default Postdetail;
+export default PostdetailPage;
 
 export async function loader({ params }) {
   try {

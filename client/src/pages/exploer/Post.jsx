@@ -102,7 +102,7 @@ const Post = ({ post }) => {
             <Link to={`/userinfo/${post.userId}`}>
               <img
                 className="h-12 rounded-lg"
-                src={post.profileImage}
+                src={post.profileImage || `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${Math.floor(Math.random() * 16)}`}
                 alt={post.profileImage}
               />
             </Link>
@@ -113,7 +113,7 @@ const Post = ({ post }) => {
               </div>
               <div className="flex items-center justify-end gap-2.5">
                 <div className="text-sm font-semibold text-blue-700">
-                  {post.userName}
+                  {post.userName || `DevKo`}
                 </div>
                 <div className="text-sm font-semibold text-zinc-500">
                   {data}
