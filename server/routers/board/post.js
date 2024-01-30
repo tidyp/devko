@@ -71,14 +71,32 @@ router.post("/", async (req, res) => {
     const userId = req.body.userId;
     const title = xss(req.body.title);
     const content = xss(req.body.content);
-    const category = req.body.category;
     const tags = xss(req.body.tags);
+    let category = req.body.category;
 
-    const postSql = `INSERT INTO posts (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
-    const setSql = `SET @postId = LAST_INSERT_ID();`;
-    const likeSql = `INSERT INTO likes (postId) VALUES (@postId)`;
-    const viewSql = `INSERT INTO views (postId) VALUES (@postId)`;
-    const tagSql = `INSERT INTO tags (postId, id, name) VALUES (@postId, ?, ?);`;
+    switch (category) {
+      case "discuss":
+        category = "discuss";
+        break;
+      case "qna":
+        category = "questions";
+        break;
+      case "group":
+        category = "teams";
+        break;
+      case "event":
+        category = "calendars";
+        break;
+      case "articles":
+        category = "articles";
+        break;
+    }
+
+    const postSql = `INSERT INTO ${category} (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
+    // const setSql = `SET @postId = LAST_INSERT_ID();`;
+    // const likeSql = `INSERT INTO likes (postId) VALUES (@postId)`;
+    // const viewSql = `INSERT INTO views (postId) VALUES (@postId)`;
+    // const tagSql = `INSERT INTO tags (postId, id, name) VALUES (@postId, ?, ?);`;
 
     const [rows, fields] = await db.query(postSql, [
       userId,
@@ -86,17 +104,17 @@ router.post("/", async (req, res) => {
       content,
       category,
     ]);
-    await db.query(setSql);
-    await db.query(likeSql);
-    await db.query(viewSql);
+    // await db.query(setSql);
+    // await db.query(likeSql);
+    // await db.query(viewSql);
 
-    const result = tags.split("#").filter(function (item) {
-      return item.length > 0;
-    });
+    // const result = tags.split("#").filter(function (item) {
+    //   return item.length > 0;
+    // });
 
-    for (i = 0; i < result.length; i++) {
-      await db.query(tagSql, [i + 1, result[i]]);
-    }
+    // for (i = 0; i < result.length; i++) {
+    //   await db.query(tagSql, [i + 1, result[i]]);
+    // }
 
     res.send(rows);
   } catch (err) {
@@ -133,16 +151,9 @@ router.delete("/:id", async (req, res) => {
     const postId = req.params.id;
 
     const postSql = `DELETE FROM posts WHERE id = ?`;
-    const commentSql = `DELETE FROM comments WHERE postId = ?`;
-    const tagSql = `DELETE FROM tags WHERE postId = ?`;
-    const likeSql = `DELETE FROM likes WHERE postId = ?`;
-    const viewSql = `DELETE FROM views WHERE postId = ?`;
 
     const [rows, fields] = await db.query(postSql, [postId]);
-    await db.query(commentSql, [postId]);
-    await db.query(tagSql, [postId]);
-    await db.query(likeSql, [postId]);
-    await db.query(viewSql, [postId]);
+
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);

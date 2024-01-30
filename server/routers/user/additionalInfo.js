@@ -19,33 +19,28 @@ router.post("/step3", async (req, res) => {
   const naverId = req.body.naverId || 0;
   // let notification = req.body.notification;
 
-  // if (req.body.googleImage) {
-  //   profileImage = req.body.googleImage;
-  // } else if (req.body.naverImage) {
-  //   profileImage = req.body.naverImage;
-  // }
+  const sql = `
+      INSERT INTO users (
+      id, 
+      userName, 
+      profileImage, 
+      interestPosition, 
+      interestArea, 
+      selfDescription, 
+      createdAt, 
+      updatedAt, 
+      grade, 
+      notification, 
+      googleId, 
+      naverId
+    )
+    VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 5, 1,
+          (SELECT id FROM usersgoogle WHERE googleId = ?),
+          (SELECT id FROM usersnaver WHERE naverId = ?))
+  `;
 
-  console.log(req.body);
-  //   console.log(req.body.naverImage)
-  //   console.log(req.body.googleImage)
-  
-  // INSERT INTO users (id, userName, profileImage, interestPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification, googleId, naverId)
-  // VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 5, 1, (SELECT id FROM usersgoogle WHERE googleId = ?), (SELECT id FROM usersnaver WHERE naverId = ?))
-  const INSERT_USER_QUERY = `
-    UPDATE users SET id = ?, userName = ?, profileImage = ?, workPosition = ?, interestArea = ?, selfDescription = ?, createdAt = NOW(), updatedAt = NOW(), grade = 5, notification = 1, googleId = (SELECT id FROM usersgoogle WHERE googleId = ?), naverId = (SELECT id FROM usersnaver WHERE naverId = ?))
-    `;
-  console.log(
-    userId,
-    userName,
-    profileImage,
-    workPosition,
-    interestArea,
-    selfDescription,
-    googleId,
-    naverId
-  );
   try {
-    const [rows, fields] = await db.execute(INSERT_USER_QUERY, [
+    const [rows, fields] = await db.execute(sql, [
       userId,
       userName,
       profileImage,
