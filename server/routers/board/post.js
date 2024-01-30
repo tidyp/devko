@@ -16,9 +16,9 @@ router.get("/", async (req, res) => {
 });
 
 // 해당 게시글 보기
-router.get("/:postId", async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
-    const postId = req.params.postId;
+    const postId = req.params.id;
 
     const viewSql = `UPDATE views SET count = count + 1 WHERE postId = ?`;
     const postSql = `SELECT * FROM postsView WHERE id = ? ORDER BY createdAt DESC`;
@@ -106,9 +106,9 @@ router.post("/", async (req, res) => {
 });
 
 // 게시글 수정
-router.put("/:postId", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
-    const postId = req.params.postId;
+    const postId = req.params.id;
     const title = req.body.title;
     const content = req.body.content;
     const tags = req.body.tags;
@@ -128,7 +128,7 @@ router.put("/:postId", async (req, res) => {
 });
 
 // 게시글 삭제
-router.delete("/:postId", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const postId = req.params.id;
 
