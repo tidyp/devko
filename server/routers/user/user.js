@@ -7,7 +7,7 @@ require('dotenv').config();
 
 // 파일 업로드를 위한 하수 정의
 const upload = multer({
-  dest: '../src/profileimage/',
+  dest: '../../src/profileimage/',
   limits: { fileSize: 10 * 512 * 512 }, // 10mb 제한
   fileFilter: (req, file, cb) => {
       if (!file.mimetype.startsWith('image/')) {
@@ -17,6 +17,7 @@ const upload = multer({
   }
 });
 
+// - 최초 회원가입시 정보 post 여기다 하기 (예정)
 router.post('/', upload.single('profileImage'), (req, res) => {
   const { username, email } = req.body;
   const profileImage = req.file ? req.file.filename : null;
