@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Group from "./Group";
 import Button from "../../components/Button";
 
@@ -94,27 +94,34 @@ const index = () => {
   ];
 
   return (
-    <div className="mt-16 flex w-full flex-col items-center justify-center gap-2 ">
-      <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold">
-        <h2>GROUP</h2>
-      </div>
-      <div className="flex w-[80rem] items-center justify-between px-4 my-">
-        <ul className="flex items-start gap-2 text-left text-xl font-semibold">
-          <li>전체</li>
-          <li>프로젝트</li>
-          <li>자격증</li>
-          <li>코딩테스트</li>
-        </ul>
-        <Button color="bg-black">글 작성</Button>
-      </div>
-      <div className="flex w-[80rem] flex-col items-center justify-center gap-4">
-        <div className="box-border grid w-full grid-cols-4  flex-wrap items-start">
-          {gl.map((el, index) => (
-            <Group key={index} {...el} />
-          ))}
+    <>
+      <Outlet />
+      <div className="mt-16 flex w-full flex-col items-center justify-center gap-2 ">
+        <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold">
+          <h2>GROUP</h2>
+        </div>
+        <div className="my- flex w-[80rem] items-center justify-between px-4">
+          <ul className="flex items-start gap-2 text-left text-xl">
+            <li>전체</li>
+            <li>프로젝트</li>
+            <li>자격증</li>
+            <li>코딩테스트</li>
+          </ul>
+          <Link to="write">
+            <Button color="bg-black" px="8">
+              글 작성
+            </Button>
+          </Link>
+        </div>
+        <div className="flex w-[80rem] flex-col items-center justify-center gap-4">
+          <div className="box-border grid w-full grid-cols-4  flex-wrap items-start">
+            {gl.map((el, index) => (
+              <Group key={index} {...el} />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

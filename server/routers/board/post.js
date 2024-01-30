@@ -16,22 +16,22 @@ router.get("/", async (req, res) => {
 });
 
 // 해당 게시글 보기
-router.get("/:category/:id", async (req, res) => {
-  try {
-    const postId = req.params.id;
+// router.get("/:category/:id", async (req, res) => {
+//   try {
+//     const postId = req.params.id;
 
-    const viewSql = `UPDATE views SET count = count + 1 WHERE postId = ?`;
-    const postSql = `SELECT * FROM postsView WHERE id = ? ORDER BY createdAt DESC`;
+//     const viewSql = `UPDATE views SET count = count + 1 WHERE postId = ?`;
+//     const postSql = `SELECT * FROM postsView WHERE id = ? ORDER BY createdAt DESC`;
 
-    await db.query(viewSql, [postId]);
-    const [rows, fields] = await db.query(postSql, [postId]);
+//     await db.query(viewSql, [postId]);
+//     const [rows, fields] = await db.query(postSql, [postId]);
 
-    res.send(rows);
-  } catch (err) {
-    console.error("Query execution error:", err);
-    res.status(500).send("Internal Server Error");
-  }
-});
+//     res.send(rows);
+//   } catch (err) {
+//     console.error("Query execution error:", err);
+//     res.status(500).send("Internal Server Error");
+//   }
+// });
 
 // 각 메뉴별 페이징된 게시물 보기
 router.get("/:category/:page", async (req, res) => {

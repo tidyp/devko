@@ -27,6 +27,10 @@ const AddinfoPage = () => {
   };
 
   const handleSubmit = async () => {
+    cookie.remove("googleImage", { path: "/" });
+    cookie.remove("googleId", { path: "/" });
+    cookie.remove("naverImage", { path: "/" });
+    cookie.remove("naverID", { path: "/" });
     try {
       const res = await fetch(
         `http://localhost:3000/api/additionalInfo/step3`,
@@ -99,10 +103,12 @@ const AddinfoPage = () => {
         )}
       </div>
       <input
+        className="hidden"
         type="file"
         name="profileImage"
         onChange={handleInputChangeImage}
       />
+
       <form className="mt-8 flex flex-col gap-8">
         <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
           <label>username:</label>

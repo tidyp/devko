@@ -3,7 +3,7 @@ import axios from "axios";
 import cookie from "react-cookies";
 import Button from "../components/Button";
 import Modal from "../components/Modal";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { formatDateDash } from "../utils/utils";
 
@@ -14,7 +14,11 @@ const categories = [
   { id: "group", label: "Group" },
 ];
 
+
 const NewPostForm = () => {
+  const loca = useLocation()
+  console.log(loca)
+  const tab = loca.pathname.split('/')[1] ? loca.pathname.split('/')[1] : 'discuss'
   const username = cookie.load("uuid");
   const navigate = useNavigate();
   const [newTag, setNewTag] = useState("");
@@ -25,7 +29,7 @@ const NewPostForm = () => {
     userId: username,
     title: "",
     content: "",
-    category: "discuss",
+    category: tab,
     tags: "",
     startDate: formatDateDash(new Date()),
     endDate: "",
@@ -69,24 +73,18 @@ const NewPostForm = () => {
         return;
       }
 
-      if (formData.category === "event") {
-        const res = await axios.post(
-          "http://localhost:3000/api/calendar",
-          formData,
-        );
-        navigate("/");
-      } else if (formData.category === "group") {
+      if (formData.category === "group") {
         const res = await axios.post(
           "http://localhost:3000/api/team",
           formData,
         );
-        navigate("/");
+        navigate("../");
       } else {
         const res = await axios.post(
           "http://localhost:3000/api/post",
           formData,
         );
-        navigate("/");
+        navigate("../");
       }
     } catch (error) {
       console.error("Error creating post:", error);
@@ -94,12 +92,12 @@ const NewPostForm = () => {
   };
 
   const handleCancel = () => {
-    navigate("/");
+    navigate("../");
   };
 
   return (
     <Modal>
-      <div className="flex w-full flex-col items-center p-8 rounded-md">
+      <div className="flex w-[50rem] flex-col items-center p-8">
         {/* <h2>Create a New Post</h2> */}
         {!isEmpty && (
           <p className="text-lg text-rose-600">모든 항목을 작성해주세요.</p>
@@ -290,12 +288,12 @@ const NewPostForm = () => {
           </select>
         </div> */}
 
-          <div className="mt-6">
-            <Button color="bg-blue-500" onClick={handleSubmit}>
-              작성하기
-            </Button>
-            <Button color="bg-blue-500" onClick={handleCancel}>
+          <div className="mt-6 flex justify-end gap-4">
+            <Button color="bg-black" px="4" onClick={handleCancel}>
               취소하기
+            </Button>
+            <Button color="bg-black" px="4" onClick={handleSubmit}>
+              작성하기
             </Button>
           </div>
         </form>

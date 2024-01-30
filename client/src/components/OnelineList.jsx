@@ -41,7 +41,7 @@ const OnelineList = (post) => {
             <GoComment />
             <span>{post.commentCnt > 0 ? post.commentCnt : 0}</span>
             <GoEye />
-            <span>{post.viewCnt}</span>
+            {post.viewCnt ? <span>{post.viewCnt}</span> : 0}
 
             {post.likeUser === useruuid ? (
               <GoHeartFill

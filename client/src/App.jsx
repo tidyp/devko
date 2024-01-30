@@ -13,7 +13,7 @@ import SearchResultPage, {
 import DiscussPage, { loader as discussesLoader } from "./pages/DiscussPage";
 import QnaPage, { loader as qnasLoader } from "./pages/QnaPage";
 
-import NewPage, { loader as newsLoader } from "./pages/NewsPage";
+import ArticlePage, { loader as articleLoader } from "./pages/ArticlePage";
 import EventPage, { loader as eventLoader } from "./pages/EventPape";
 // import Newevent  from "./feature/Newevent";
 
@@ -39,10 +39,14 @@ const router = createBrowserRouter([
     element: <Layout />,
     errorElement: <NotFoundPage />,
     children: [
-      // 홈페이지
-      // EXPLORE
-      { path: "/", element: <ExplorePage />, loader: postsLoader },
-      { path: "/write", element: <NewPost /> },
+      // 홈페이지, EXPLORE ------------------------------------------
+      {
+        path: "/",
+        element: <ExplorePage />,
+        loader: postsLoader,
+        children: [{ path: "write", element: <NewPost /> }],
+      },
+
       { path: "/edit/:id", element: <EditPost />, loader: editPostLoader },
       {
         path: "/search/:id",
@@ -50,39 +54,52 @@ const router = createBrowserRouter([
         loader: searchresultLoader,
       },
       // { path: "/explore", element: <ExplorePage /> },
-      // NEWS
-      { path: "/news", element: <NewPage />, loader: newsLoader },
+
+      // DISCUSS ------------------------------------------
       {
-        path: "/news/detail/:id",
-        element: <PostdetailPage />,
-        loader: postLoader,
-      },
-      // DISCUSS
-      // { path: "/discuss", element: <DiscussPage />, loader: discussesLoader },
-      {
-        path: "/discuss/:id",
+        path: "/discuss/:id/",
         element: <DiscussPage />,
         loader: discussesLoader,
+        children: [{ path: "write", element: <NewPost /> }],
       },
       {
         path: "/discuss/detail/:id",
         element: <PostdetailPage />,
         loader: postLoader,
       },
+
       // Q&A
-      // { path: "/qna", element: <QnaPage />, loader: qnasLoader },
-      { path: "/qna/:id", element: <QnaPage />, loader: qnasLoader },
+      {
+        path: "/qna/:id",
+        element: <QnaPage />,
+        loader: qnasLoader,
+        children: [{ path: "write", element: <NewPost /> }],
+      },
       {
         path: "/qna/detail/:id",
         element: <PostdetailPage />,
         loader: postLoader,
       },
+
+      // Article ------------------------------------------
+      {
+        path: "/article",
+        element: <ArticlePage />,
+        loader: articleLoader,
+        children: [{ path: "write", element: <NewPost /> }],
+      },
+      {
+        path: "/Article/detail/:id",
+        element: <PostdetailPage />,
+        loader: postLoader,
+      },
+
       // EVENT
       {
         path: "/event",
         element: <EventPage />,
         loader: eventLoader,
-        // children: [{ path: "/event/write", element: <Newevent /> }],
+        children: [{ path: "write", element: <NewPost /> }],
       },
       {
         path: "/event/detail/:id",
@@ -90,7 +107,11 @@ const router = createBrowserRouter([
         loader: postLoader,
       },
       // GROUP
-      { path: "/group", element: <GroupPage /> },
+      {
+        path: "/group",
+        element: <GroupPage />,
+        children: [{ path: "write", element: <NewPost /> }],
+      },
       {
         path: "/group/detail/:id",
         element: <GroupdetailPage />,
@@ -103,6 +124,7 @@ const router = createBrowserRouter([
       { path: "/userinfo/:id", element: <UserinfoPage />, loader: userLoader },
       // MY: INFO
       { path: "/myinfo", element: <MyinfoPage />, loader: myinfoLoader },
+      { path: "/myinfo/:id", element: <MyinfoPage />, loader: myinfoLoader },
     ],
   },
   {

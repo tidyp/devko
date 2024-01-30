@@ -1,7 +1,7 @@
 // import postsData from "../../data/posts.json";
 
 import { readPosts } from "../../api/apiDevko";
-import { useLoaderData } from "react-router-dom";
+import { Outlet, useLoaderData } from "react-router-dom";
 import Banner from "../../components/Banner";
 import MainBackGround from "../../components/MainBackGround";
 import ModalOld from "../../components/ModalOld";
@@ -29,7 +29,8 @@ const index = () => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-2">
-      <MainBackGround></MainBackGround>
+      <Outlet/>
+      <MainBackGround />
       {/* Sidebar */}
       <div className="flex w-[80rem] items-start justify-center gap-4">
         <div className="flex gap-2">
@@ -50,15 +51,14 @@ const index = () => {
         </div>
         {/* Posts */}
         <div className="flex w-full items-start justify-center">
-          {posts && posts.length > 0 && <PostList posts={posts} />}
+          {console.log(posts)}
+          {!(posts === "연결실패") && posts.length > 0 && (
+            <PostList posts={posts} />
+          )}
           {posts.length <= 0 && posts && (
             <AlertsBox>작성된 글이 없습니다.</AlertsBox>
           )}
-          {posts.length > 0 && posts === "연결실패" && (
-            <AlertsBox>서버에 연결되어있지 않습니다.</AlertsBox>
-          )}
-
-          {posts.length > 0 && posts === "연결실패" && (
+          {posts === "연결실패" && posts.length > 0 && (
             <AlertsBox>서버에 연결되어있지 않습니다.</AlertsBox>
           )}
 
