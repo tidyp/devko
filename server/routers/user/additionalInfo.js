@@ -28,9 +28,11 @@ router.post("/step3", async (req, res) => {
   console.log(req.body);
   //   console.log(req.body.naverImage)
   //   console.log(req.body.googleImage)
+  
+  // INSERT INTO users (id, userName, profileImage, interestPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification, googleId, naverId)
+  // VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 5, 1, (SELECT id FROM usersgoogle WHERE googleId = ?), (SELECT id FROM usersnaver WHERE naverId = ?))
   const INSERT_USER_QUERY = `
-    INSERT INTO users (id, userName, profileImage, interestPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification, googleId, naverId)
-    VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 5, 1, (SELECT id FROM usersgoogle WHERE googleId = ?), (SELECT id FROM usersnaver WHERE naverId = ?))
+    UPDATE users SET id = ?, userName = ?, profileImage = ?, workPosition = ?, interestArea = ?, selfDescription = ?, createdAt = NOW(), updatedAt = NOW(), grade = 5, notification = 1, googleId = (SELECT id FROM usersgoogle WHERE googleId = ?), naverId = (SELECT id FROM usersnaver WHERE naverId = ?))
     `;
   console.log(
     userId,
@@ -53,9 +55,9 @@ router.post("/step3", async (req, res) => {
       googleId,
       naverId,
     ]);
-    res.cookie("uuid", userId, {secure: true});
-    res.cookie("userName", userName, {secure: true});
-    res.cookie("userImage", profileImage, {secure: true});
+    res.cookie("uuid", userId, { secure: true });
+    res.cookie("userName", userName, { secure: true });
+    res.cookie("userImage", profileImage, { secure: true });
     res.json({ uuid: userId, userName: userName, userImage: profileImage });
 
     // res.redirect("http://localhost:5173");

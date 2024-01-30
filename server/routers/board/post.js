@@ -6,45 +6,7 @@ const xss = require("xss");
 // Explore 메뉴 - 게시글 전체 목록 보기
 router.get("/", async (req, res) => {
   try {
-    const sql = `
-        SELECT p.userId AS userId
-          , p.id AS postId
-          , p.category AS category
-          , p.title AS title
-          , p.content AS content
-          , p.createdAt AS createdAt
-          , p.updatedAt AS updatedAt
-          
-          , t.name AS tagName
-
-          , v.count AS viewCnt
-          , l.userId AS likeUser
-          , l.count AS likeCnt
-          , c.count AS commentCnt
-          , u.userName AS userName
-          , u.profileImage AS profileImage
-          , u.grade AS grade
-    FROM posts p
-    LEFT OUTER JOIN (SELECT postId, GROUP_CONCAT(name) AS name FROM tags GROUP BY postId) t ON p.id = t.postId
-    LEFT OUTER JOIN views v ON p.id = v.postId
-    LEFT OUTER JOIN (SELECT postId, userId, COUNT(*) AS count FROM likes GROUP BY postId, userId) l ON p.id = l.postId
-    LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM comments GROUP BY postId) c ON p.id = c.postId
-    LEFT OUTER JOIN (
-      SELECT u.id AS id
-        , u.userName AS userName
-        , u.profileImage AS profileImage
-        , u.grade AS grade
-        , ug.googleId AS googleId
-        , ug.googleEmail AS googleEmail
-        , ug.googleImage AS googleImage
-        , un.naverId AS naverId
-        , un.naverEmail AS naverEmail
-        , un.naverImage AS naverImage
-      FROM users u
-      LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
-      LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u ON p.userId = u.id
-    ORDER BY p.createdAt DESC
-    `;
+    const sql = `SELECT * FROM postsView ORDER BY createdAt DESC`;
 
     const [rows, fields] = await db.query(sql);
 
@@ -64,44 +26,7 @@ router.get("/:id", async (req, res) => {
     const [row, field] = await db.query(viewsql, [viewpostId]);
 
     const postId = req.params.id;
-    const sql = `
-    SELECT p.userId AS userId
-          , p.id AS postId
-          , p.category AS category
-          , p.title AS title
-          , p.content AS content
-          , p.createdAt AS createdAt
-          , p.updatedAt AS updatedAt
-          , t.id AS tagId
-          , t.name AS tagName
-          , v.count AS viewCnt
-          , l.count AS likeCnt
-          , c.count AS commentCnt
-          , u.userName AS userName
-          , u.profileImage AS profileImage
-          , u.grade AS grade
-    FROM posts p
-    LEFT OUTER JOIN tags t ON p.id = t.postId
-    LEFT OUTER JOIN views v ON p.id = v.postId
-    LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM likes GROUP BY postId) l ON p.id = l.postId
-    LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM comments GROUP BY postId) c ON p.id = c.postId
-    LEFT OUTER JOIN (
-      SELECT u.id AS id
-        , u.userName AS userName
-        , u.profileImage AS profileImage
-        , u.grade AS grade
-        , ug.googleId AS googleId
-        , ug.googleEmail AS googleEmail
-        , ug.googleImage AS googleImage
-        , un.naverId AS naverId
-        , un.naverEmail AS naverEmail
-        , un.naverImage AS naverImage
-      FROM users u
-      LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
-      LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u ON p.userId = u.id
-    WHERE p.id = ?
-    ORDER BY p.createdAt DESC
-    `;
+    const sql = `SELECT * FROM postsView WHERE id = ? ORDER BY createdAt DESC`;
 
     const [rows, fields] = await db.query(sql, [postId]);
 
@@ -116,45 +41,8 @@ router.get("/:id", async (req, res) => {
 router.get("/:category/:page", async (req, res) => {
   try {
     const category = req.params.category;
-    const sql = `
-        SELECT p.userId AS userId
-          , p.id AS postId
-          , p.category AS category
-          , p.title AS title
-          , p.content AS content
-          , p.createdAt AS createdAt
-          , p.updatedAt AS updatedAt
-          , t.id AS tagId
-          , t.name AS tagName
-          , v.count AS viewCnt
-          , p.userId AS likeUser
-          , l.count AS likeCnt
-          , c.count AS commentCnt
-          , u.userName AS userName
-          , u.profileImage AS profileImage
-          , u.grade AS grade
-    FROM posts p
-    LEFT OUTER JOIN tags t ON p.id = t.postId
-    LEFT OUTER JOIN views v ON p.id = v.postId
-    LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM likes GROUP BY postId) l ON p.id = l.postId
-    LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM comments GROUP BY postId) c ON p.id = c.postId
-    LEFT OUTER JOIN (
-      SELECT u.id AS id
-        , u.userName AS userName
-        , u.profileImage AS profileImage
-        , u.grade AS grade
-        , ug.googleId AS googleId
-        , ug.googleEmail AS googleEmail
-        , ug.googleImage AS googleImage
-        , un.naverId AS naverId
-        , un.naverEmail AS naverEmail
-        , un.naverImage AS naverImage
-      FROM users u
-      LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
-      LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u ON p.userId = u.id
-    WHERE p.category = ?
-    ORDER BY p.createdAt DESC
-    `;
+    const sql = `SELECT * FROM postsView WHERE category = ? ORDER BY createdAt DESC`;
+
     const [rows, fields] = await db.query(sql, [category]);
 
     const itemsPerPage = 10;
