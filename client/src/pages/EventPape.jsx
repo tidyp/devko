@@ -92,20 +92,21 @@ const EventPape = () => {
   return (
     <>
       <Outlet />
-      <div className="mt-8 flex flex-col items-center justify-center gap-2">
+      <div className="mt-16 flex w-full flex-col items-center justify-center gap-2 ">
+        <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold">
+          <h2>GROUP</h2>
+        </div>
+        <div className="my- flex w-[80rem] items-center justify-between px-4">
+          <ul className="flex items-start gap-2 text-left text-xl font-semibold">
+            <li>전체</li>
+            <li>채용공고</li>
+            <li>직업교육</li>
+          </ul>
+          <Button color="bg-black">글 작성</Button>
+        </div>
         <div className="flex w-[82rem] flex-col items-start justify-center gap-4">
-          <div className="flex w-full justify-between">
-            <ul className="flex gap-2">
-              <li>전체</li>
-              <li>필터링1</li>
-              <li>필터링1</li>
-              <li>필터링1</li>
-            </ul>
-            
-            <Button color="bg-black">글 작성</Button>
-          </div>
-          <div className="w-full rounded bg-white mt-2 ">
-            <div className="flex justify-between border-b p-2 mt-2">
+          <div className="mt-2 w-full rounded bg-white ">
+            <div className="mt-2 flex justify-between border-b p-2">
               <span className="text-lg font-bold">
                 {today.toLocaleString("default", {
                   month: "long",

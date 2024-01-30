@@ -1,9 +1,27 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import Particles from "react-particles";
+import { Outlet } from "react-router-dom";
+import Banner from "../components/Banner";
 //import { loadFull } from "tsparticles";
 import { loadSlim } from "tsparticles-slim";
+import { Link } from "react-router-dom";
+import cookie from "react-cookies";
 
-const Banner2 = () => {
+const MainBackGround = ({ children }) => {
+  const [mainText, setMainText] = useState();
+
+  const isLogin = cookie.load("uuid");
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOpen = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
   const particlesInit = useCallback(async (engine) => {
     console.log(engine);
 
@@ -15,10 +33,35 @@ const Banner2 = () => {
   }, []);
 
   return (
-    <>
-      {/* <div>dwdw</div> */}
+    <div className="relative w-full">
+      <div className="absolute mt-24 flex w-full flex-col items-center justify-center gap-8 rounded-3xl">
+        {/* <span className="m-auto flex text-7xl text-black">Devko</span> */}
+        <div className="flex flex-col gap-4 text-sm tracking-widest	">
+          <span>혁신적인 아이디어와 열정을 공유하는 개발자들의 공간,</span>
+          <span>"함께 성장하며 협업하는 개발자 커뮤니티입니다."</span>
+        </div>
+
+        {isLogin ? (
+          <Link to="/write">
+            <button className="rounded-full bg-black px-12 py-2 text-sm text-white shadow-lg">
+              <div className="flex items-center">
+                <div>Add Post</div>
+              </div>
+            </button>
+          </Link>
+        ) : (
+          <button
+            className="rounded-full bg-black px-12 py-2 text-sm text-white shadow-lg"
+            onClick={handleOpen}
+          >
+            <div className="flex items-center">
+              <div>Add Post</div>
+            </div>
+          </button>
+        )}
+      </div>
       <Particles
-        className="h-96 w-full border-b border-b-[#d3d3d3] my-12"
+        className="my-12 h-72  border-b border-b-[#d3d3d3]"
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
@@ -92,9 +135,9 @@ const Banner2 = () => {
           detectRetina: true,
           fullScreen: false,
         }}
-      />
-    </>
+      ></Particles>
+    </div>
   );
 };
 
-export default Banner2;
+export default MainBackGround;

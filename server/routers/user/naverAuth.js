@@ -96,7 +96,7 @@ router.get("/callback", async (req, res) => {
       );
       res.cookie("naverId", naverId, {secure: true});
       res.cookie("naverImage", naverImage, {secure: true});
-      res.redirect("http://localhost:5173/signup");
+      res.redirect("http://localhost:5173/addinfo");
     }
   } catch (error) {
     console.error("Database query error: ", error);

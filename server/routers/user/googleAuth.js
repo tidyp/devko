@@ -84,7 +84,7 @@ router.get("/callback", async (req, res) => {
 
       res.cookie("googleId", googleId, { secure: true });
       res.cookie("googleImage", googleImage, { secure: true });
-      res.redirect("http://localhost:5173/signup");
+      res.redirect("http://localhost:5173/addinfo");
     }
   } catch (error) {
     console.error("Database query error: ", error);

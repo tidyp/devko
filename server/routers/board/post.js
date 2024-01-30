@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require("../../config/db");
 const xss = require("xss");
 
-// Exploer 메뉴 - 게시글 전체 목록 보기
+// Explore 메뉴 - 게시글 전체 목록 보기
 router.get("/", async (req, res) => {
   try {
     const sql = `SELECT * FROM postsView ORDER BY createdAt DESC`;

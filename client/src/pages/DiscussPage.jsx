@@ -47,43 +47,10 @@ const DiscussPage = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-2 pt-8">
       <div className="flex w-[80rem] items-start justify-center gap-4">
-        <div className="flex gap-2">
-          <div className="flex flex-col gap-4">
-            {isLogin ? (
-              <Link to="/write">
-                <button className="flex h-12 w-full flex-col items-center justify-center rounded-full  bg-black text-xl text-white">
-                  <div className="flex items-center">
-                    <div>게시글 작성</div>
-                  </div>
-                </button>
-              </Link>
-            ) : (
-              <button
-                className="flex h-12 w-full flex-col items-center justify-center rounded-full  bg-black text-xl text-white"
-                onClick={handleOpen}
-              >
-                <div className="flex items-center">
-                  <div>게시글 작성</div>
-                </div>
-              </button>
-            )}
-            <PopTags />
-            <TopWriters />
-          </div>
-          {!isLogin && isOpen && (
-            <ModalOld onClose={handleClose}>
-              <p className="py-10">로그인이 필요합니다.</p>
-              <Link to="/login" onClick={handleOpen}>
-                <button className="rounded-xl bg-black p-4 text-white">
-                  로그인하러가기
-                </button>
-              </Link>
-            </ModalOld>
-          )}
-        </div>
+
         {/* Posts */}
         <div className="flex w-full items-start justify-center">
-          {posts.length >= 0 && <AlertsBox>작성된 글이 없습니다.</AlertsBox>}
+          {posts.length >= 0 && <AlertsBox>작성된 글이 없 습니다.</AlertsBox>}
           {posts.length < 0 && posts === "연결실패" ? (
             // connect fail
             <AlertsBox>서버에 연결되어있지 않습니다.</AlertsBox>
