@@ -94,10 +94,6 @@ const Post = ({ post }) => {
     navigate("/");
   };
 
-  console.log(post.profileImage);
-  console.log(post.profileImage);
-  console.log(post.profileImage);
-  console.log(post.profileImage);
   return (
     <div className="m-2 flex h-fit w-[64rem] flex-col items-start justify-start gap-5 rounded-[10px] bg-slate-50">
       <div className="flex w-full justify-between">

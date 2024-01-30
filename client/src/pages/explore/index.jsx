@@ -15,10 +15,7 @@ import { Link, useLocation } from "react-router-dom";
 
 const index = () => {
   const posts = useLoaderData();
-  console.log(posts);
   const isLogin = cookie.load("uuid");
-
-  const { pathname } = useLocation();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -33,13 +30,10 @@ const index = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-2">
       <Banner2>
-        <div className="fixed flex w-[80rem] items-center justify-center rounded-3xl">
+        <div className="fixed z-50 flex w-[80rem] items-center justify-center rounded-3xl">
           <span className="m-auto flex text-7xl text-black">Devko</span>
         </div>
       </Banner2>
-      <div className="fixed flex w-[80rem] items-center justify-center rounded-3xl">
-        <span className="m-auto flex text-7xl text-black">Devko</span>
-      </div>
       {/* Sidebar */}
       <div className="flex w-[80rem] items-start justify-center gap-4">
         <div className="flex gap-2">

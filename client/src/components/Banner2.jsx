@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 //import { loadFull } from "tsparticles";
 import { loadSlim } from "tsparticles-slim";
 
-const Banner2 = ({children}) => {
+const Banner2 = ({ children }) => {
   const particlesInit = useCallback(async (engine) => {
     console.log(engine);
 
@@ -16,11 +16,12 @@ const Banner2 = ({children}) => {
   }, []);
 
   return (
-    <>
-      {/* <div>dwdw</div> */}
-      {children}
+    <div className="w-full">
+      <div className="fixed z-40 flex w-[80rem] items-center justify-center rounded-3xl">
+        <span className="m-auto flex text-7xl text-black">Devko</span>
+      </div>
       <Particles
-        className="h-96 w-full border-b border-b-[#d3d3d3] my-12"
+        className="my-12 h-96 z-30  border-b border-b-[#d3d3d3]"
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}
@@ -94,8 +95,8 @@ const Banner2 = ({children}) => {
           detectRetina: true,
           fullScreen: false,
         }}
-      />
-    </>
+      ></Particles>
+    </div>
   );
 };
 
