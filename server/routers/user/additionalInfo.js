@@ -12,7 +12,7 @@ router.post("/step3", async (req, res) => {
   const userId = uuidv4();
   const userName = req.body.userName;
   const profileImage = req.body.googleImage || req.body.naverImage;
-  const workPosition = req.body.workPosition;
+  const interestPosition = req.body.workPosition;
   const interestArea = req.body.interestArea;
   const selfDescription = req.body.selfDescription;
   const googleId = req.body.googleId || 0;
@@ -20,23 +20,8 @@ router.post("/step3", async (req, res) => {
   // let notification = req.body.notification;
 
   const sql = `
-      INSERT INTO users (
-      id, 
-      userName, 
-      profileImage, 
-      interestPosition, 
-      interestArea, 
-      selfDescription, 
-      createdAt, 
-      updatedAt, 
-      grade, 
-      notification, 
-      googleId, 
-      naverId
-    )
-    VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 5, 1,
-          (SELECT id FROM usersgoogle WHERE googleId = ?),
-          (SELECT id FROM usersnaver WHERE naverId = ?))
+    INSERT INTO users (id, userName, profileImage, interestPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification, googleId, naverId)
+    VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 5, 1, (SELECT id FROM usersgoogle WHERE googleId = ?), (SELECT id FROM usersnaver WHERE naverId = ?))
   `;
 
   try {
@@ -44,7 +29,7 @@ router.post("/step3", async (req, res) => {
       userId,
       userName,
       profileImage,
-      workPosition,
+      interestPosition,
       interestArea,
       selfDescription,
       googleId,

@@ -1,7 +1,7 @@
 -- VSCode Mysql 접속: mysql.exe -uroot -p
 -- SQL CLI COMMAND: mysql -u root -p devko < userdb.sql
 
--- DROP DATABASE IF EXISTS devko;
+DROP DATABASE IF EXISTS devko;
 CREATE DATABASE IF NOT EXISTS devko;
 USE devko;
 
@@ -27,9 +27,7 @@ CREATE TABLE IF NOT EXISTS users (
      grade INT,
      notification INT,
      googleId INT,
-     naverId INT,
-     INDEX idx_googleId (googleId),
-     INDEX idx_naverId (naverId)
+     naverId INT
 );
 
 SELECT * FROM devko.users;
@@ -40,20 +38,16 @@ CREATE TABLE IF NOT EXISTS usersgoogle (
      id INT AUTO_INCREMENT PRIMARY KEY,
      googleId VARCHAR(128) UNIQUE,
      googleEmail VARCHAR(128),
-     googleImage TEXT,
-     FOREIGN KEY(id) REFERENCES users(googleId) ON DELETE CASCADE
+     googleImage TEXT
 );
 
 SELECT * FROM devko.usersgoogle;
 
--- NAVER USERS 테이블
-DROP TABLE IF EXISTS devko.usersnaver;
 CREATE TABLE IF NOT EXISTS usersnaver (
      id INT AUTO_INCREMENT PRIMARY KEY,
      naverId VARCHAR(128) UNIQUE,
      naverEmail VARCHAR(128),
-     naverImage TEXT,
-     FOREIGN KEY(id) REFERENCES users(naverId) ON DELETE CASCADE
+     naverImage TEXT
 );
 
 SELECT * FROM devko.usersnaver;
@@ -62,8 +56,7 @@ SELECT * FROM devko.usersnaver;
 DROP TABLE IF EXISTS devko.followers;
 CREATE TABLE IF NOT EXISTS followers (
     id VARCHAR(64) PRIMARY KEY,
-    userId VARCHAR(64),
-    FOREIGN KEY(id) REFERENCES users(id) ON DELETE CASCADE
+    userId VARCHAR(64)
 );
 
 SELECT * FROM devko.followers;

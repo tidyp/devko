@@ -46,15 +46,15 @@ router.get("/callback", async (req, res) => {
     url: api_url,
     headers: {
       "X-Naver-Client-Id": client_id,
-      "X-Naver-Client-Secret": client_secret
-    }
+      "X-Naver-Client-Secret": client_secret,
+    },
   };
   const result = await request.get(options);
   const token = JSON.parse(result).access_token;
 
   const info_options = {
     url: "https://openapi.naver.com/v1/nid/me",
-    headers: { Authorization: "Bearer " + token }
+    headers: { Authorization: "Bearer " + token },
   };
 
   const info_result = await request.get(info_options);
@@ -66,25 +66,26 @@ router.get("/callback", async (req, res) => {
 
   try {
     const [rows, fields] = await db.query(
-      "SELECT * FROM usersnaver WHERE naverId = ? OR naverEmail = ?", [naverId, naverEmail]
+      "SELECT * FROM usersnaver WHERE naverId = ? OR naverEmail = ?",
+      [naverId, naverEmail]
     );
-    
+
     if (rows[0]) {
       const userSql = `
         SELECT * FROM usersView uv WHERE uv.naverId = ?
       `;
       const [rows, field] = await db.query(userSql, [naverId]);
-      res.cookie("uuid", rows[0].id, {secure: true});
-      res.cookie("userName", rows[0].userName, {secure: true});
-      res.cookie("userImage", rows[0].profileImage, {secure: true});
+      res.cookie("uuid", rows[0].id, { secure: true });
+      res.cookie("userName", rows[0].userName, { secure: true });
+      res.cookie("userImage", rows[0].profileImage, { secure: true });
       res.redirect("http://localhost:5173");
     } else {
       await db.execute(
         "INSERT INTO usersnaver (naverId, naverEmail, naverImage) VALUES (?, ?, ?)",
         [naverId, naverEmail, naverImage]
       );
-      res.cookie("naverId", naverId, {secure: true});
-      res.cookie("naverImage", naverImage, {secure: true});
+      res.cookie("naverId", naverId, { secure: true });
+      res.cookie("naverImage", naverImage, { secure: true });
       res.redirect("http://localhost:5173/addinfo");
     }
   } catch (error) {

@@ -92,11 +92,12 @@ router.post("/", async (req, res) => {
         break;
     }
 
+    br;
     const postSql = `INSERT INTO ${category} (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
-    // const setSql = `SET @postId = LAST_INSERT_ID();`;
-    // const likeSql = `INSERT INTO likes (postId) VALUES (@postId)`;
-    // const viewSql = `INSERT INTO views (postId) VALUES (@postId)`;
-    // const tagSql = `INSERT INTO tags (postId, id, name) VALUES (@postId, ?, ?);`;
+    const setSql = `SET @postId = LAST_INSERT_ID();`;
+    const likeSql = `INSERT INTO likes (postId) VALUES (@postId)`;
+    const viewSql = `INSERT INTO views (postId) VALUES (@postId)`;
+    const tagSql = `INSERT INTO tags (postId, id, name) VALUES (@postId, ?, ?);`;
 
     const [rows, fields] = await db.query(postSql, [
       userId,

@@ -46,7 +46,6 @@ router.get("/callback", async (req, res) => {
   const googleEmail = resp2.data.email;
   const googleImage = resp2.data.picture;
 
-  console.log(googleId, googleEmail, googleImage);
   try {
     const [rows, fields] = await db.query(
       "SELECT * FROM usersgoogle WHERE googleId = ? OR googleEmail = ?",
@@ -67,7 +66,7 @@ router.get("/callback", async (req, res) => {
       // 없는 회원, 신규 회원가입 + 추가 정보 입력
     } else {
       await db.execute(
-        "UPDATE usersgoogle SET googleId = ?, googleEmail = ?, googleImage = ?;",
+        "INSERT INTO usersgoogle (googleId, googleEmail, googleImage) VALUES (?, ?, ?);",
         [googleId, googleEmail, googleImage]
       );
 
