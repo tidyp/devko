@@ -249,7 +249,7 @@ const NewPostForm = () => {
             <div className="flex items-center justify-between gap-2">
               <input
                 name="tags"
-                placeholder="태그을 입력하세요(#으로 구분 최대 10개)"
+                placeholder="태그을 입력하세요(#으로 구분 최대 5개)"
                 className="w-full rounded-md border bg-gray-200 p-2"
                 required
                 value={formData.tags}

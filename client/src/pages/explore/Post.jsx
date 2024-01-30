@@ -95,8 +95,10 @@ const Post = ({ post }) => {
   };
 
   return (
-    <div className="m-2 flex h-fit w-[64rem] flex-col items-start justify-start gap-5 rounded-[10px] bg-slate-50">
-      <div className="flex w-full justify-between">
+    <div className="m-2 flex h-fit w-full items-start justify-start gap-5 rounded-[10px] bg-slate-50 box-border p-12">
+
+      {/* 프로필, 글 */}
+      <div className="flex w-full flex-col justify-between gap-8">
         <div className="flex items-center justify-center gap-2.5 self-stretch">
           <Link className="h-12 w-12" to={`/userinfo/${post.userId}`}>
             {/* <img
@@ -128,45 +130,34 @@ const Post = ({ post }) => {
               <div className="text-sm font-semibold text-zinc-500">{data}</div>
             </div>
           </div>
-          <div className="flex gap-1">
-            {post.userId === useruuid && (
-              <>
-                <span className="bf flex w-8 cursor-pointer flex-col">
-                  <Link to={`/edit/${post.postId}`}>
-                    <TbEdit />
-                  </Link>
-                </span>
-                <span
-                  className="w-8 cursor-pointer"
-                  onClick={() => clickdeletePost(post.postId)}
-                >
-                  <TbTrash />
-                </span>
-              </>
-            )}
+        </div>
 
-            <span className="w-8 cursor-pointer">
-              <Link>
-                <PiSiren />
-              </Link>
-            </span>
-            {/* <VscKebabVertical
-              onClick={handleOpen}
-              className="relative cursor-pointer"
-            /> */}
-            {/* 수정-삭제 모달 데이터전달 */}
-            {/* {isOpenEdit && <Modal onClose={handleClose}></Modal>} */}
+        <Link to={`/${post.category}/detail/${post.postId}`}>
+          <div className="w-[50rem] self-stretch text-clip text-base font-medium text-zinc-500">
+            {post.content}
           </div>
-        </div>
-      </div>
-      <Link to={`/${post.category}/detail/${post.postId}`}>
-        <div className="w-[50rem] self-stretch text-clip text-base font-medium text-zinc-500">
-          {post.content}
-        </div>
-      </Link>
-
-      <div className="flex items-start justify-between gap-2.5 self-stretch pr-16">
+        </Link>
         <div className="flex gap-2">{tagss}</div>
+      </div>
+
+      {/* 수정,삭제,신고 // 댓글,뷰,좋아요 */}
+      <div className="flex flex-col items-end justify-between gap-2.5 self-stretch">
+        <div className="flex gap-4">
+          {post.userId === useruuid && (
+            <>
+              <Link to={`/edit/${post.postId}`}>
+                <TbEdit />
+              </Link>
+
+              <TbTrash onClick={() => clickdeletePost(post.postId)} />
+            </>
+          )}
+
+          <Link>
+            <PiSiren />
+          </Link>
+        </div>
+
         <div className="flex items-center justify-center gap-4">
           <GoComment />
           <span>{post.commentCnt > 0 ? post.commentCnt : 0}</span>
@@ -180,7 +171,6 @@ const Post = ({ post }) => {
           ) : (
             <GoHeart className="hover:scale-150" onClick={handleLikeClick} />
           )}
-
           <span>{post.likeCnt}</span>
         </div>
       </div>

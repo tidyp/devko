@@ -44,12 +44,13 @@ const NaviBar = () => {
 
   return (
     <>
-      <nav className=" flex items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4">
+      <nav className=" flex z-50 items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4">
         <div className="flex w-[80rem] items-center justify-between px-8">
           {/* <div className="flex w-full items-center justify-between px-8"> */}
           <div className="text-base">
             <Link to="/">
-              <img className="w-32" src="/images/logo2.png" alt="logo" />
+              <span className="font-semibold px-4">DEVKO</span>
+              {/* <img className="w-6" src="/images/logo2.png" alt="logo" /> */}
             </Link>
           </div>
           <div className="flex gap-12 text-base uppercase">

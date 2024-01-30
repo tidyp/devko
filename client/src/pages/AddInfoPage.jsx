@@ -70,20 +70,30 @@ const AddinfoPage = () => {
   };
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center p-4 gap-8">
+    <div className="flex h-screen flex-col items-center justify-center gap-8 p-4">
       <h1 className="text-2xl">내 정보</h1>
       <div className="w-20">
-        {!googleImage && (
+        {!googleImage && !naverImage && (
           <img
-            className="rounded-full"
-            src={userInfo.profileImage}
+            className="1 rounded-full"
+            // src={userInfo.profileImage}
+            src={`https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${Math.floor(
+              Math.random() * 16,
+            )}`}
             alt="Preview"
           />
         )}
         {googleImage && (
-          <img
-            className="rounded-full"
+          <imgx
+            className="2 rounded-full"
             src={googleImage || userInfo.profileImage}
+            alt="Preview"
+          />
+        )}
+        {naverImage && (
+          <img
+            className="4 rounded-full"
+            src={naverImage || userInfo.profileImage}
             alt="Preview"
           />
         )}
@@ -146,7 +156,7 @@ const AddinfoPage = () => {
         </div>
         <div
           onClick={handleSubmit}
-          className="flex justify-center items-center rounded-full  bg-black p-2 text-white"
+          className="flex items-center justify-center rounded-full  bg-black p-2 text-white"
         >
           완료
         </div>
