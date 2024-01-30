@@ -14,25 +14,12 @@ router.get("/:postId", async (req, res) => {
         , c.content AS content
         , c.createdAt AS createdAt
         , c.updatedAt AS updatedAt
-        , u.id AS userId
-        , u.userName AS userName
-        , u.profileImage AS profileImage
-        , u.grade AS grade
+        , uv.id AS userId
+        , uv.userName AS userName
+        , uv.profileImage AS profileImage
+        , uv.grade AS grade
     FROM comments c
-    LEFT OUTER JOIN (
-      SELECT u.id AS id
-        , u.userName AS userName
-        , u.profileImage AS profileImage
-        , u.grade AS grade
-        , ug.googleId AS googleId
-        , ug.googleEmail AS googleEmail
-        , ug.googleImage AS googleImage
-        , un.naverId AS naverId
-        , un.naverEmail AS naverEmail
-        , un.naverImage AS naverImage
-      FROM users u
-      LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
-      LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u ON c.userId = u.id
+    LEFT OUTER JOIN usersView uv ON c.userId = uv.id
     WHERE c.postId = ?
     ORDER BY c.postId, c.id, c.mainId, c.createdAt ASC
     `;
@@ -79,7 +66,7 @@ router.post("/:postId/:id", async (req, res) => {
 });
 
 // 댓글 수정
-router.put("/:id?", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const commentId = req.params.id;
     const content = req.body.content;
@@ -101,7 +88,7 @@ router.put("/:id?", async (req, res) => {
 });
 
 // 댓글 삭제
-router.delete("/:id?", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const commentId = req.params.id;
     const sql = `DELETE FROM comments WHERE id = ?`;
