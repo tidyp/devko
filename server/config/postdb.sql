@@ -14,8 +14,7 @@ CREATE TABLE IF NOT EXISTS comments (
     updatedAt DATETIME,
     category VARCHAR(45),
     postId INT,
-    userId VARCHAR(64),
-    INDEX idx_comments(postId, category)
+    userId VARCHAR(64)
 );
 
 -- TAGS 테이블
@@ -24,8 +23,7 @@ CREATE TABLE IF NOT EXISTS tags (
     id INT,
     name VARCHAR(100),
     category VARCHAR(45),
-    postId INT,
-    INDEX idx_tags(postId, category)
+    postId INT
 );
 
 -- LIKES 테이블
@@ -34,8 +32,7 @@ CREATE TABLE IF NOT EXISTS likes (
     count INT DEFAULT 0,
     category VARCHAR(45),
     postId INT,
-    userId VARCHAR(64),
-    INDEX idx_likes(postId, category)
+    userId VARCHAR(64)
 );
 
 -- VIEWS 테이블
@@ -43,8 +40,7 @@ DROP TABLE IF EXISTS devko.views;
 CREATE TABLE IF NOT EXISTS views (
     count INT DEFAULT 0,
     category VARCHAR(45),
-    postId INT,
-    INDEX idx_views(postId, category)
+    postId INT
 );
 
 -- DISCUSS 테이블
@@ -56,11 +52,7 @@ CREATE TABLE IF NOT EXISTS discuss (
     content TEXT,
     createdAt DATETIME,
     updatedAt DATETIME,
-    userId VARCHAR(64),
-    FOREIGN KEY fk_discuss_comments(id, category) REFERENCES comments(postId, category) ON DELETE CASCADE,
-    FOREIGN KEY fk_discuss_tags(id, category) REFERENCES tags(postId, category) ON DELETE CASCADE,
-    FOREIGN KEY fk_discuss_views(id, category) REFERENCES views(postId, category) ON DELETE CASCADE,
-    FOREIGN KEY fk_discuss_likes(id, category) REFERENCES likes(postId, category) ON DELETE CASCADE
+    userId VARCHAR(64)
 );
 
 -- Q&A 테이블
@@ -72,11 +64,7 @@ CREATE TABLE IF NOT EXISTS questions (
     content TEXT,
     createdAt DATETIME,
     updatedAt DATETIME,
-    userId VARCHAR(64),
-    FOREIGN KEY fk_questions_comments(id, category) REFERENCES comments(postId, category) ON DELETE CASCADE,
-    FOREIGN KEY fk_questions_tags(id, category) REFERENCES tags(postId, category) ON DELETE CASCADE,
-    FOREIGN KEY fk_questions_views(id, category) REFERENCES views(postId, category) ON DELETE CASCADE,
-    FOREIGN KEY fk_questions_likes(id, category) REFERENCES likes(postId, category) ON DELETE CASCADE
+    userId VARCHAR(64)
 );
 
 -- GROUP 테이블
@@ -94,11 +82,7 @@ CREATE TABLE IF NOT EXISTS teams  (
     location VARCHAR(45),
     createdAt DATETIME,
     updatedAt DATETIME,
-    userId VARCHAR(64),
-    FOREIGN KEY fk_teams_comments(id, category) REFERENCES comments(postId, category) ON DELETE CASCADE,
-    FOREIGN KEY fk_teams_tags(id, category) REFERENCES tags(postId, category) ON DELETE CASCADE,
-    FOREIGN KEY fk_teams_views(id, category) REFERENCES views(postId, category) ON DELETE CASCADE,
-    FOREIGN KEY fk_teams_likes(id, category) REFERENCES likes(postId, category) ON DELETE CASCADE
+    userId VARCHAR(64)
 );
 
 -- EVENT 테이블
@@ -114,11 +98,7 @@ CREATE TABLE IF NOT EXISTS calendars (
     location VARCHAR(45),
     createdAt DATETIME,
     updatedAt DATETIME,
-    userId VARCHAR(64),
-    FOREIGN KEY fk_calendars_comments(id, category) REFERENCES comments(postId, category) ON DELETE CASCADE,
-    FOREIGN KEY fk_calendars_tags(id, category) REFERENCES tags(postId, category) ON DELETE CASCADE,
-    FOREIGN KEY fk_calendars_views(id, category) REFERENCES views(postId, category) ON DELETE CASCADE,
-    FOREIGN KEY fk_calendars_likes(id, category) REFERENCES likes(postId, category) ON DELETE CASCADE
+    userId VARCHAR(64)
 );
 
 -- ARTICLE 테이블
@@ -131,9 +111,5 @@ CREATE TABLE IF NOT EXISTS articles (
     link VARCHAR(100),
     createdAt DATETIME,
     updatedAt DATETIME,
-    userId VARCHAR(64),
-    FOREIGN KEY fk_articles_comments(id, category) REFERENCES comments(postId, category) ON DELETE CASCADE,
-    FOREIGN KEY fk_articles_tags(id, category) REFERENCES tags(postId, category) ON DELETE CASCADE,
-    FOREIGN KEY fk_articles_views(id, category) REFERENCES views(postId, category) ON DELETE CASCADE,
-    FOREIGN KEY fk_articles_likes(id, category) REFERENCES likes(postId, category) ON DELETE CASCADE
+    userId VARCHAR(64)
 );

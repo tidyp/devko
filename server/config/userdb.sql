@@ -5,14 +5,6 @@ DROP DATABASE IF EXISTS devko;
 CREATE DATABASE IF NOT EXISTS devko;
 USE devko;
 
--- FK 사용 가능 여부
--- SET FOREIGN_KEY_CHECKS = 1;
-
--- FK 제약 삭제
--- ALTER TABLE devko.usersgoogle DROP FOREIGN KEY usersgoogle_ibfk_1; 
--- ALTER TABLE devko.usersnaver DROP FOREIGN KEY usersnaver_ibfk_1;
--- ALTER TABLE devko.followers DROP FOREIGN KEY followers_ibfk_1;
-
 -- USERS 테이블
 DROP TABLE IF EXISTS devko.users;
 CREATE TABLE IF NOT EXISTS users (

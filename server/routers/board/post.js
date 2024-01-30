@@ -7,9 +7,7 @@ const xss = require("xss");
 router.get("/", async (req, res) => {
   try {
     const sql = `SELECT * FROM postsView ORDER BY createdAt DESC`;
-
     const [rows, fields] = await db.query(sql);
-
     res.json(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -18,17 +16,15 @@ router.get("/", async (req, res) => {
 });
 
 // 해당 게시글 보기
-router.get("/:id", async (req, res) => {
+router.get("/:postId", async (req, res) => {
   try {
-    // 조회수 로직 추가
-    const viewpostId = req.params.id;
-    const viewsql = `UPDATE views SET count = count + 1 WHERE postId = ?`;
-    const [row, field] = await db.query(viewsql, [viewpostId]);
+    const postId = req.params.postId;
 
-    const postId = req.params.id;
-    const sql = `SELECT * FROM postsView WHERE id = ? ORDER BY createdAt DESC`;
+    const viewSql = `UPDATE views SET count = count + 1 WHERE postId = ?`;
+    const postSql = `SELECT * FROM postsView WHERE id = ? ORDER BY createdAt DESC`;
 
-    const [rows, fields] = await db.query(sql, [postId]);
+    await db.query(viewSql, [postId]);
+    const [rows, fields] = await db.query(postSql, [postId]);
 
     res.send(rows);
   } catch (err) {
@@ -40,7 +36,8 @@ router.get("/:id", async (req, res) => {
 // 각 메뉴별 페이징된 게시물 보기
 router.get("/:category/:page", async (req, res) => {
   try {
-    const category = req.params.category;
+    const category = categoryFinder(req.params.category);
+    console.log(category);
     const sql = `SELECT * FROM postsView WHERE category = ? ORDER BY createdAt DESC`;
 
     const [rows, fields] = await db.query(sql, [category]);
@@ -72,42 +69,25 @@ router.post("/", async (req, res) => {
     const title = xss(req.body.title);
     const content = xss(req.body.content);
     const tags = xss(req.body.tags);
-    let category = req.body.category;
+    let category = categoryFinder(req.body.category);
 
-    switch (category) {
-      case "discuss":
-        category = "discuss";
-        break;
-      case "qna":
-        category = "questions";
-        break;
-      case "group":
-        category = "teams";
-        break;
-      case "event":
-        category = "calendars";
-        break;
-      case "articles":
-        category = "articles";
-        break;
-    }
-
-    br;
     const postSql = `INSERT INTO ${category} (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
     const setSql = `SET @postId = LAST_INSERT_ID();`;
     const likeSql = `INSERT INTO likes (postId) VALUES (@postId)`;
     const viewSql = `INSERT INTO views (postId) VALUES (@postId)`;
     const tagSql = `INSERT INTO tags (postId, id, name) VALUES (@postId, ?, ?);`;
 
+    await db.query(`START TRANSACTION;`);
     const [rows, fields] = await db.query(postSql, [
       userId,
       title,
       content,
       category,
     ]);
-    // await db.query(setSql);
-    // await db.query(likeSql);
-    // await db.query(viewSql);
+    await db.query(setSql);
+    await db.query(likeSql);
+    await db.query(viewSql);
+    await db.query(`COMMIT;`);
 
     // const result = tags.split("#").filter(function (item) {
     //   return item.length > 0;
@@ -119,15 +99,16 @@ router.post("/", async (req, res) => {
 
     res.send(rows);
   } catch (err) {
+    await db.query(`ROLLBACK;`);
     console.error("Query execution error:", err);
     res.status(500).send("Internal Server Error");
   }
 });
 
 // 게시글 수정
-router.put("/:id", async (req, res) => {
+router.put("/:postId", async (req, res) => {
   try {
-    const postId = req.params.id;
+    const postId = req.params.postId;
     const title = req.body.title;
     const content = req.body.content;
     const tags = req.body.tags;
@@ -147,7 +128,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // 게시글 삭제
-router.delete("/:id", async (req, res) => {
+router.delete("/:postId", async (req, res) => {
   try {
     const postId = req.params.id;
 
@@ -161,5 +142,22 @@ router.delete("/:id", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+function categoryFinder(category) {
+  switch (category) {
+    case "discuss":
+      return "discuss";
+    case "qna":
+      return "questions";
+    case "group":
+      return "teams";
+    case "event":
+      return "calendars";
+    case "articles":
+      return "articles";
+    default:
+      return category;
+  }
+}
 
 module.exports = router;
