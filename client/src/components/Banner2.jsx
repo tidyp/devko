@@ -1,9 +1,10 @@
 import { useCallback } from "react";
 import Particles from "react-particles";
+import { Outlet } from "react-router-dom";
 //import { loadFull } from "tsparticles";
 import { loadSlim } from "tsparticles-slim";
 
-const Banner2 = () => {
+const Banner2 = ({children}) => {
   const particlesInit = useCallback(async (engine) => {
     console.log(engine);
 
@@ -17,6 +18,7 @@ const Banner2 = () => {
   return (
     <>
       {/* <div>dwdw</div> */}
+      {children}
       <Particles
         className="h-96 w-full border-b border-b-[#d3d3d3] my-12"
         id="tsparticles"

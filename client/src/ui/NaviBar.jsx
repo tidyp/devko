@@ -57,7 +57,7 @@ const NaviBar = () => {
               to="/"
               className={({ isActive }) => (isActive ? activeLink : "")}
             >
-              exploer
+              explore
             </NavLink>
             <NavLink
               to="/discuss/1"

@@ -94,9 +94,19 @@ router.get("/callback", async (req, res) => {
         "INSERT INTO usersnaver (naverId, naverEmail, naverImage) VALUES (?, ?, ?)",
         [naverId, naverEmail, naverImage]
       );
+<<<<<<< Updated upstream
       res.cookie("naverId", naverId, {secure: true});
       res.cookie("naverImage", naverImage, {secure: true});
       res.redirect("http://localhost:5173/signup");
+=======
+      res.cookie("naverId", naverId, {
+        secure: true,
+      });
+      res.cookie("naverImage", naverImage, {
+        secure: true,
+      });
+      res.redirect("http://localhost:5173/addinfo");
+>>>>>>> Stashed changes
     }
   } catch (error) {
     console.error("Database query error: ", error);

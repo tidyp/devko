@@ -5,7 +5,7 @@ import Layout from "./ui/Layout";
 
 import NewPost from "./feature/NewPost";
 import EditPost, { loader as editPostLoader } from "./feature/EditPost";
-import ExploerPage, { loader as postsLoader } from "./pages/exploer";
+import ExplorePage, { loader as postsLoader } from "./pages/explore";
 import SearchResultPage, {
   loader as searchresultLoader,
 } from "./pages/searchResultPage";
@@ -18,7 +18,7 @@ import EventPage, { loader as eventLoader } from "./pages/EventPape";
 // import Newevent  from "./feature/Newevent";
 
 import GroupPage from "./pages/group";
-import SignupPage from "./pages/SignupPage";
+// import SignupPage from "./pages/addinfo";
 
 // import Postdetail from "./pages/Postdetail";
 import PostdetailPage, { loader as postLoader } from "./pages/PostdetailPage";
@@ -26,10 +26,11 @@ import GroupdetailPage, {
   loader as groupLoader,
 } from "./pages/GroupdetailPage";
 
-import LoginPage from "./pages/login";
+import LoginPage from "./pages/LoginPage";
 import MyinfoPage, { loader as myinfoLoader } from "./pages/MyinfoPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
+import AddinfoPage from "./pages/AddinfoPage";
 import UserinfoPage, { loader as userLoader } from "./pages/UserinfoPage";
 import TestPage from "./pages/TestPage";
 
@@ -39,8 +40,8 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       // 홈페이지
-      // EXPLOER
-      { path: "/", element: <ExploerPage />, loader: postsLoader },
+      // EXPLORE
+      { path: "/", element: <ExplorePage />, loader: postsLoader },
       { path: "/write", element: <NewPost /> },
       { path: "/edit/:id", element: <EditPost />, loader: editPostLoader },
       {
@@ -48,7 +49,7 @@ const router = createBrowserRouter([
         element: <SearchResultPage />,
         loader: searchresultLoader,
       },
-      // { path: "/exploer", element: <ExploerPage /> },
+      // { path: "/explore", element: <ExplorePage /> },
       // NEWS
       { path: "/news", element: <NewPage />, loader: newsLoader },
       {
@@ -97,7 +98,7 @@ const router = createBrowserRouter([
       },
       // LOGIN
       { path: "/login", element: <LoginPage /> },
-      { path: "/signup", element: <SignupPage /> },
+      { path: "/addinfo", element: <AddinfoPage /> },
       // USER: INFO
       { path: "/userinfo/:id", element: <UserinfoPage />, loader: userLoader },
       // MY: INFO

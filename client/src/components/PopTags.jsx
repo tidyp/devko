@@ -25,7 +25,7 @@ const PopTags = () => {
   const tagssplice = tags.sort().slice(0, 3);
 
   return (
-    <div className="box-border flex h-auto w-64 flex-col items-center justify-center    gap-3.5  rounded-2xl  bg-slate-50 p-8 ">
+    <div className="box-border flex h-auto w-64 flex-col items-center justify-center    gap-3.5  rounded-2xl  bg-slate-50 p-8">
       <div className=" text-base font-semibold text-black">Popular Tags</div>
       <LoadingSpinner />
       <div className="flex h-auto flex-col items-start justify-start gap-5 self-stretch px-2.5">

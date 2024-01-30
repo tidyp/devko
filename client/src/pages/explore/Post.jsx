@@ -94,50 +94,45 @@ const Post = ({ post }) => {
     navigate("/");
   };
 
-  console.log(post.profileImage)
-  console.log(post.profileImage)
-  console.log(post.profileImage)
-  console.log(post.profileImage)
+  console.log(post.profileImage);
+  console.log(post.profileImage);
+  console.log(post.profileImage);
+  console.log(post.profileImage);
   return (
-    <>
-      <div className="m-2 flex h-fit w-[64rem] flex-col items-start justify-start gap-5 rounded-[10px] bg-slate-50 p-8">
-        <div className="flex w-full justify-between">
-          <div className="flex items-center justify-center gap-2.5 self-stretch">
-            <Link className="w-12 h-12" to={`/userinfo/${post.userId}`}>
-              {/* <img
+    <div className="m-2 flex h-fit w-[64rem] flex-col items-start justify-start gap-5 rounded-[10px] bg-slate-50">
+      <div className="flex w-full justify-between">
+        <div className="flex items-center justify-center gap-2.5 self-stretch">
+          <Link className="h-12 w-12" to={`/userinfo/${post.userId}`}>
+            {/* <img
                 className="h-12 w-12 rounded-lg"
                 src={`${"post.profileImage"}`}
                 alt={post.profileImage}
               /> */}
-              <img
-                className="w-full h-full rounded-lg"
-                src={
-                  post.profileImage
-                    ? `${post.profileImage}`
-                    : `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${Math.floor(
-                        Math.random() * 16,
-                      )}`
-                }
-                alt={post.profileImage}
-              />
-            </Link>
+            <img
+              className="h-full w-full rounded-lg"
+              src={
+                post.profileImage
+                  ? `${post.profileImage}`
+                  : `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${Math.floor(
+                      Math.random() * 16,
+                    )}`
+              }
+              alt={post.profileImage}
+            />
+          </Link>
 
-            <div className="flex h-14  basis-0 flex-col items-start justify-center">
-              <div className="w-[50rem] truncate text-2xl font-semibold text-black">
-                {post.title}
+          <div className="flex h-14  basis-0 flex-col items-start justify-center">
+            <div className="w-[50rem] truncate text-2xl font-semibold text-black">
+              {post.title}
+            </div>
+            <div className="flex items-center justify-end gap-2.5">
+              <div className="text-sm font-semibold text-blue-700">
+                {post.userName || `DevKo`}
               </div>
-              <div className="flex items-center justify-end gap-2.5">
-                <div className="text-sm font-semibold text-blue-700">
-                  {post.userName || `DevKo`}
-                </div>
-                <div className="text-sm font-semibold text-zinc-500">
-                  {data}
-                </div>
-              </div>
+              <div className="text-sm font-semibold text-zinc-500">{data}</div>
             </div>
           </div>
-
-          <div className="flex gap-1 px-4">
+          <div className="flex gap-1">
             {post.userId === useruuid && (
               <>
                 <span className="bf flex w-8 cursor-pointer flex-col">
@@ -167,33 +162,33 @@ const Post = ({ post }) => {
             {/* {isOpenEdit && <Modal onClose={handleClose}></Modal>} */}
           </div>
         </div>
-        <Link to={`/${post.category}/detail/${post.postId}`}>
-          <div className="w-[50rem] self-stretch  text-clip text-base font-medium text-zinc-500">
-            {post.content}
-          </div>
-        </Link>
+      </div>
+      <Link to={`/${post.category}/detail/${post.postId}`}>
+        <div className="w-[50rem] self-stretch text-clip text-base font-medium text-zinc-500">
+          {post.content}
+        </div>
+      </Link>
 
-        <div className="flex items-start justify-between gap-2.5 self-stretch pr-8">
-          <div className="flex gap-2">{tagss}</div>
-          <div className="flex items-center justify-center gap-4">
-            <GoComment />
-            <span>{post.commentCnt > 0 ? post.commentCnt : 0}</span>
-            <GoEye />
-            <span>{post.viewCnt}</span>
-            {post.likeUser === useruuid ? (
-              <GoHeartFill
-                className="scale-150 transform text-red-600 hover:scale-150"
-                onClick={handleLikeClick}
-              />
-            ) : (
-              <GoHeart className="hover:scale-150" onClick={handleLikeClick} />
-            )}
+      <div className="flex items-start justify-between gap-2.5 self-stretch pr-16">
+        <div className="flex gap-2">{tagss}</div>
+        <div className="flex items-center justify-center gap-4">
+          <GoComment />
+          <span>{post.commentCnt > 0 ? post.commentCnt : 0}</span>
+          <GoEye />
+          <span>{post.viewCnt}</span>
+          {post.likeUser === useruuid ? (
+            <GoHeartFill
+              className="scale-150 transform text-red-600 hover:scale-150"
+              onClick={handleLikeClick}
+            />
+          ) : (
+            <GoHeart className="hover:scale-150" onClick={handleLikeClick} />
+          )}
 
-            <span>{post.likeCnt}</span>
-          </div>
+          <span>{post.likeCnt}</span>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

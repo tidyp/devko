@@ -79,9 +79,19 @@ router.get("/callback", async (req, res) => {
         [googleId, googleEmail, googleImage]
       );
 
+<<<<<<< Updated upstream
       res.cookie("googleId", googleId, {secure: true});
       res.cookie("googleImage", googleImage, {secure: true});
       res.redirect("http://localhost:5173/signup");
+=======
+      res.cookie("googleId", googleId, {
+        secure: true,
+      });
+      res.cookie("googleImage", googleImage, {
+        secure: true,
+      });
+      res.redirect("http://localhost:5173/addinfo");
+>>>>>>> Stashed changes
     }
   } catch (error) {
     console.error("Database query error: ", error);
