@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 });
 
 // 해당 게시글 보기
-router.get("/:id", async (req, res) => {
+router.get("/:category/:id", async (req, res) => {
   try {
     const postId = req.params.id;
 
@@ -37,7 +37,7 @@ router.get("/:id", async (req, res) => {
 router.get("/:category/:page", async (req, res) => {
   try {
     const category = categoryFinder(req.params.category);
-    console.log(category);
+
     const sql = `SELECT * FROM postsView WHERE category = ? ORDER BY createdAt DESC`;
 
     const [rows, fields] = await db.query(sql, [category]);
@@ -106,7 +106,7 @@ router.post("/", async (req, res) => {
 });
 
 // 게시글 수정
-router.put("/:id", async (req, res) => {
+router.put("/:category/:id", async (req, res) => {
   try {
     const postId = req.params.id;
     const title = req.body.title;
@@ -128,11 +128,12 @@ router.put("/:id", async (req, res) => {
 });
 
 // 게시글 삭제
-router.delete("/:id", async (req, res) => {
+router.delete("/:category/:id", async (req, res) => {
   try {
     const postId = req.params.id;
+    let category = categoryFinder(req.body.category);
 
-    const postSql = `DELETE FROM posts WHERE id = ?`;
+    const postSql = `DELETE FROM ${category} WHERE id = ?`;
 
     const [rows, fields] = await db.query(postSql, [postId]);
 

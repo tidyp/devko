@@ -8,7 +8,7 @@ router.get("/tag", (req, res) => {
     try {
       console.log("데이터 스케쥴러", new Date());
 
-      const sql = "SELECT * FROM posts LIMIT 5";
+      const sql = "SELECT * FROM postView LIMIT 5";
 
       const result = await db.query(sql);
       res.send(result);
