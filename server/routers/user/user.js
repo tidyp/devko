@@ -5,16 +5,17 @@ const multer = require('multer');
 const db = require('../../config/db');
 require('dotenv').config();
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, 'uploads'));
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
+// 파일 업로드를 위한 하수 정의
+const upload = multer({
+  dest: '../src/profileimage/',
+  limits: { fileSize: 10 * 512 * 512 }, // 10mb 제한
+  fileFilter: (req, file, cb) => {
+      if (!file.mimetype.startsWith('image/')) {
+          return cb(new Error('사진 파일만 첨부하세요.'), false);
+      };
+      cb(null, true);
+  }
 });
-
-const upload = multer({ storage: storage });
 
 router.post('/', upload.single('profileImage'), (req, res) => {
   const { username, email } = req.body;
@@ -41,10 +42,11 @@ router.post('/', upload.single('profileImage'), (req, res) => {
 
 router.get('/:id', async (req, res) => {
   const sql = `
-  SELECT * FROM users
+  SELECT * FROM users u WHERE u.id = ?
   `;
+  const userId = req.params.id
   try {
-    const [row, fields] = await db.query(sql);
+    const [row, fields] = await db.query(sql, [userId]);
 
     res.json({ users: row });
   } catch (err) {
@@ -55,12 +57,12 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', upload.single('profileImage'), (req, res) => {
   const userId = req.params.id;
-  const { username } = req.body;
+  const { userName, interestPosition, interestArea, selfDescription } = req.body;
   const profileImage = req.file ? req.file.filename : null;
   if (profileImage) {
     db.query(
-      'UPDATE users SET userName = ?, profileImage = ? WHERE id = ?',
-      [username, profileImage, userId],
+      'UPDATE users SET userName = ?, profileImage = ?, interestPosition = ?, interestArea = ?, selfDescription = ? WHERE id = ?',
+      [userName, profileImage, interestPosition, interestArea, selfDescription, userId],
       (err) => {
         if (err) {
           console.error(err);
@@ -72,8 +74,8 @@ router.put('/:id', upload.single('profileImage'), (req, res) => {
     );
   } else {
     db.query(
-      'UPDATE users SET userName = ? WHERE id = ?',
-      [username, userId],
+      'UPDATE users SET userName = ?, interestPosition = ?, interestArea = ?, selfDescription = ? WHERE id = ?',
+      [userName, interestPosition, interestArea, selfDescription, userId],
       (err) => {
         if (err) {
           console.error(err);

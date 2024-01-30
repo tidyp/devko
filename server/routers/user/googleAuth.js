@@ -53,18 +53,7 @@ router.get("/callback", async (req, res) => {
     // 이미 가입된 회원, 로그인
     if (rows[0]) {
       const userSql = `
-        SELECT u.id AS id
-          , u.userName AS userName
-          , u.profileImage AS profileImage
-          , u.grade AS grade
-          , ug.googleId AS googleId
-          , ug.googleEmail AS googleEmail
-          , un.naverId AS naverId
-          , un.naverEmail AS naverEmail
-        FROM users u
-        LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
-        LEFT OUTER JOIN usersnaver un ON u.naverId = un.id
-        WHERE ug.googleId = ?
+        SELECT * FROM usersView uv WHERE uv.googleId = ?
       `;
       const [rows, field] = await db.query(userSql, [googleId]);
       res.cookie("uuid", rows[0].id, {secure: true});

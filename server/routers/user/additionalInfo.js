@@ -29,7 +29,7 @@ router.post("/step3", async (req, res) => {
   //   console.log(req.body.naverImage)
   //   console.log(req.body.googleImage)
   const INSERT_USER_QUERY = `
-    INSERT INTO users (id, userName, profileImage, workPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification, googleId, naverId)
+    INSERT INTO users (id, userName, profileImage, interestPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification, googleId, naverId)
     VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 5, 1, (SELECT id FROM usersgoogle WHERE googleId = ?), (SELECT id FROM usersnaver WHERE naverId = ?))
     `;
   console.log(

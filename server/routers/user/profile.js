@@ -10,7 +10,7 @@ router.get("/:userId", async (req, res) => {
     const usersql = `
       SELECT u.userName AS userName,
              u.profileImage AS profileImage,
-             u.workPosition AS workPosition,
+             u.interestPosition AS interestPosition,
              u.interestArea AS interestArea,
              u.selfDescription AS selfDescription,
              u.grade AS grade
@@ -83,27 +83,15 @@ router.get("/image", async (req, res) => {
 
 router.get("/:userId/point", async (req, res) => {
   const sql = `
-    SELECT p.count AS postCnt,
+    SELECT uv.id AS userId, 
+          p.count AS postCnt,
           c.count AS commentCnt,
           pt.count AS teamCnt
-    FROM (
-        SELECT u.id AS id
-          , u.userName AS userName
-          , u.profileImage AS profileImage
-          , u.grade AS grade
-          , ug.googleId AS googleId
-          , ug.googleEmail AS googleEmail
-          , ug.googleImage AS googleImage
-          , un.naverId AS naverId
-          , un.naverEmail AS naverEmail
-          , un.naverImage AS naverImage
-        FROM users u
-        LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
-        LEFT OUTER JOIN usersnaver un ON u.naverId = un.id) u
-    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM posts  GROUP BY userId) p ON u.id = p.userId
-    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM posts  WHERE posts.category = 'group' GROUP BY userId) pt ON u.id = pt. userId
-    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM comments   GROUP BY userId) c ON u.id = c.userId
-    WHERE u.id =?
+    FROM usersView uv
+    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM posts GROUP BY userId) p ON uv.id = p.userId
+    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM posts WHERE posts.category = 'group' GROUP BY userId) pt ON uv.id = pt. userId
+    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM comments GROUP BY userId) c ON uv.id = c.userId
+    WHERE uv.id =?
   `;
   const userId = req.params.userId;
   // const userId = 'd77faaa9-b197-4d8f-b897-eae3a4cd9b71';
