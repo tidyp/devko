@@ -19,6 +19,7 @@ import { Link } from "react-router-dom";
 const PostdetailPage = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const { post, comments } = useLoaderData();
+  console.log(post)
   const { pathname } = useLocation();
   let [data] = post;
   const commentsData = comments.currPageRows.slice().reverse();

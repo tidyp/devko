@@ -113,7 +113,8 @@ const NaviBar = () => {
                 <Link to={`/userinfo/${useruuid}`}>
                   <img
                     className="w-8 rounded-full"
-                    src={`${userImage}`}
+                    src={userImage}
+                    // src={`${userImage}`}
                     alt=""
                   />
                 </Link>

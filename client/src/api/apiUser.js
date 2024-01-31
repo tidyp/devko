@@ -24,7 +24,7 @@ export async function updateUserinfo({ id, username, profileImage }) {
   const formData = new FormData();
   formData.append("username", username);
   // formData.append("email", email);
-  // formData.append("profileImage", profileImage);
+  formData.append("profileImage", profileImage);
 
   const res = await fetch(`${API_URL}/user/${id}`, {
     method: "PUT",
@@ -38,3 +38,4 @@ export async function updateUserinfo({ id, username, profileImage }) {
   const data = await res.json();
   return data;
 }
+
