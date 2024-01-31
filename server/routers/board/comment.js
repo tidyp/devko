@@ -52,13 +52,13 @@ router.get("/:category/:postId", async (req, res) => {
 // 댓글 작성
 router.post("/:category/:postId/:id", async (req, res) => {
   try {
+    const mainId = commentId || 0;
     let category = categoryFinder(req.params.category);
     const postId = req.params.postId;
     const commentId = req.params.id;
-    const mainId = commentId || 0;
     const { userId, content } = req.body;
 
-    const sql = `INSERT INTO comments (category, mainId, content, createdAt, updatedAt, userId, postId) VALUES (?, ?, ?, NOW(), NOW(), ?, ?)`;
+    const sql = `INSERT INTO comments (mainId, content, createdAt, updatedAt, category, userId, postId) VALUES (?, ?, ?, NOW(), NOW(), ?, ?)`;
 
     const result = await db.query(sql, [
       category,

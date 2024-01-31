@@ -129,19 +129,31 @@ router.post("/", async (req, res) => {
 // 게시글 수정
 router.put("/:category/:id", async (req, res) => {
   try {
+    let category = categoryFinder(req.params.category);
     const postId = req.params.id;
+    const userId = req.body.userId;
     const title = req.body.title;
     const content = req.body.content;
     const tags = req.body.tags;
 
-    const postSql = `UPDATE posts SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?`;
-    const tagSql = `UPDATE tags SET name = ? WHERE postId = ? AND id = ?`;
+    const selectSql = `SELECT * FROM boardsview bv WHERE bv.category = ? AND bv.id = ? AND bv.userId = ?;`;
 
-    const [rows, fields] = await db.query(postSql, [title, content, postId]);
-    // for (let key in tags) {
-    //   const [rows, fields] = await db.query(sql, [tags[key], postId, tagId]);
-    // }
-    res.send(rows);
+    const [rows, fields] = await db.query(selectSql, [
+      category,
+      postId,
+      userId,
+    ]);
+
+    if (rows > 0) {
+      const postSql = `UPDATE posts SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?`;
+      const tagSql = `UPDATE tags SET name = ? WHERE postId = ? AND id = ?`;
+
+      const [rows, fields] = await db.query(postSql, [title, content, postId]);
+      // for (let key in tags) {
+      //   const [rows, fields] = await db.query(sql, [tags[key], postId, tagId]);
+      // }
+      res.send(rows);
+    }
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).send("Internal Server Error");
@@ -151,14 +163,24 @@ router.put("/:category/:id", async (req, res) => {
 // 게시글 삭제
 router.delete("/:category/:id", async (req, res) => {
   try {
+    let category = categoryFinder(req.params.category);
     const postId = req.params.id;
-    let category = categoryFinder(req.body.category);
+    const userId = req.body.userId;
 
-    const postSql = `DELETE FROM ${category} WHERE id = ?`;
+    const selectSql = `SELECT * FROM boardsview bv WHERE bv.category = ? AND bv.id = ? AND bv.userId = ?;`;
 
-    const [rows, fields] = await db.query(postSql, [postId]);
+    const [rows, fields] = await db.query(selectSql, [
+      category,
+      postId,
+      userId,
+    ]);
 
-    res.send(rows);
+    if (rows > 0) {
+      const postSql = `DELETE FROM ${category} WHERE category = ? AND id = ?`;
+
+      const [rows, fields] = await db.query(postSql, [category, postId]);
+      res.send(rows);
+    }
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).send("Internal Server Error");
