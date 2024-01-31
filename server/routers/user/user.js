@@ -59,7 +59,10 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', upload.single('profileImage'), (req, res) => {
   const userId = req.params.id;
   const { userName, interestPosition, interestArea, selfDescription } = req.body;
-  const profileImage = req.file ? req.file.filename : null;
+  const profileImage = req.file ? req.file.path : null;
+  const profileImage2 = profileImage ? `${req.file.filename}` : null;
+  console.log(req.file)
+  console.log(req.body)
   if (profileImage) {
     db.query(
       'UPDATE users SET userName = ?, profileImage = ?, interestPosition = ?, interestArea = ?, selfDescription = ? WHERE id = ?',
@@ -69,8 +72,8 @@ router.put('/:id', upload.single('profileImage'), (req, res) => {
           console.error(err);
           return res.status(500).json({ error: 'Internal Server Error' });
         }
-
-        res.status(200).json({ message: 'User updated successfully' });
+        res.redirect('/:id');
+        // res.status(200).json({ message: 'User updated successfully' });
       }
     );
   } else {
@@ -82,11 +85,18 @@ router.put('/:id', upload.single('profileImage'), (req, res) => {
           console.error(err);
           return res.status(500).json({ error: 'Internal Server Error' });
         }
-
-        res.status(200).json({ message: 'User updated successfully' });
+        res.redirect('/:id');
+        // res.status(200).json({ message: 'User updated successfully' });
       }
     );
   }
+});
+
+router.get('/images/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const filepath = path.join(__dirname, '..', '..', 'src', 'profileimages', profileImage2);
+  res.setHeader('Content-Type', 'image/png');
+  res.sendFile(filepath);
 });
 
 router.delete('/:id', (req, res) => {
