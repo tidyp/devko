@@ -226,6 +226,7 @@ export async function updatePost(params) {
 
 // Delete: 게시글 삭제
 export async function deletePost(id) {
+  
   const res = await fetch(`${API_URL}/post/${id}`, {
     method: "DELETE",
     headers: {
@@ -275,8 +276,13 @@ export async function createComment({
   userId,
   commentId,
   commentContent,
+  category
 }) {
-  const res = await fetch(`${API_URL}/comment/${postId}/${commentId}`, {
+  console.log(postId,
+    userId,
+    commentId,
+    commentContent)
+  const res = await fetch(`${API_URL}/comment/${commentId}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -286,6 +292,7 @@ export async function createComment({
       userId,
       commentId,
       content: commentContent,
+      category: category,
     }),
   });
 

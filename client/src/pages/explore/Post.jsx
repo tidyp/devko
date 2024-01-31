@@ -90,7 +90,7 @@ const Post = ({ post }) => {
   };
 
   const clickdeletePost = async () => {
-    await deletePost(post.postId);
+    await deletePost(post.id);
     navigate("/");
   };
 

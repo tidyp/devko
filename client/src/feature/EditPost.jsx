@@ -13,10 +13,10 @@ const categories = [
   { id: "group", label: "Group" },
 ];
 
-const Post = () => {
+const EditPostForm = () => {
   const navigate = useNavigate();
   const username = cookie.load("uuid");
-  const {params} = useParams()
+  const { params } = useParams();
 
   // 데이터 load
   const [post] = useLoaderData().post;
@@ -43,7 +43,7 @@ const Post = () => {
 
     try {
       // const response = await updatePost({ ...postData, userId: username });
-      const response = await updatePost({ ...postData});
+      const response = await updatePost({ ...postData });
       navigate("/");
     } catch (error) {
       console.error("Error:", error);
@@ -78,7 +78,7 @@ const Post = () => {
             type="text"
             name="title"
             placeholder="제목을 입력하세요"
-            className="w-full rounded-lg border bg-gary-100 p-2"
+            className="bg-gary-100 w-full rounded-lg border p-2"
             required
             value={postData.title}
             onChange={handleChange}
@@ -90,7 +90,7 @@ const Post = () => {
               type="date"
               name="startDate"
               placeholder="시작 날짜"
-              className="w-full rounded-lg border bg-gary-100 p-2"
+              className="bg-gary-100 w-full rounded-lg border p-2"
               required
               value={postData.startDate}
               onChange={handleChange}
@@ -99,7 +99,7 @@ const Post = () => {
               type="date"
               name="endDate"
               placeholder="종료 날짜"
-              className="w-full rounded-lg border bg-gary-100 p-2"
+              className="bg-gary-100 w-full rounded-lg border p-2"
               required
               value={postData.endDate}
               onChange={handleChange}
@@ -109,7 +109,7 @@ const Post = () => {
         <div>
           <textarea
             name="content"
-            className="h-96 w-full rounded-md border bg-gary-100 p-2"
+            className="bg-gary-100 h-96 w-full rounded-md border p-2"
             placeholder="내용을 입력하세요"
             required
             value={postData.content}
@@ -130,7 +130,7 @@ const Post = () => {
   );
 };
 
-export default Post;
+export default EditPostForm;
 export async function loader({ params }) {
   try {
     const post = await readPost(params.id);

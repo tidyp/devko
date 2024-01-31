@@ -1,6 +1,4 @@
-import {
-  readDetailPost,
-} from "../api/apiDevko";
+import { readDetailPost, createComment } from "../api/apiDevko";
 import {
   useLoaderData,
   useLocation,
@@ -18,11 +16,13 @@ const PostDetailPage = () => {
   const { discussDetail, discussComments } = useLoaderData();
   const { pathname } = useLocation();
 
-  console.log(discussDetail, discussComments)
+  console.log(discussDetail, discussComments);
 
   const postData = discussDetail[0];
   const commentsData = discussComments.currPageRows.slice().reverse();
   console.log(postData, commentsData);
+  console.log(postData)
+  console.log(postData.id);
 
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -40,10 +40,11 @@ const PostDetailPage = () => {
 
     try {
       const res = await createComment({
-        postId: data.postId,
+        postId: postData.id,
         commentId: Math.round(Math.random() * 100000),
         userId: username,
         commentContent: commentContent,
+        category: postData.category,
       });
       setCommentContent("");
       navigate(pathname);
@@ -79,7 +80,6 @@ const PostDetailPage = () => {
       console.error("Error deleting post:", error);
     }
   };
-
 
   return (
     <>
@@ -139,7 +139,7 @@ const PostDetailPage = () => {
           </div>
 
           <div className="mt-4 flex w-full flex-col">
-            <div className="rounded-md bg-slate-50 p-4 pl-8 text-start">
+            <div className=" rounded-md bg-slate-50 p-4 pl-8 text-start">
               <h2 className="mb-4 text-2xl font-bold">댓글</h2>
               <form>
                 <div>
