@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
 const xss = require("xss");
-const categoryFinder = require("../../utils/categoryFinder");
 
 // 게시글 전체 보기
 router.get("/", async (req, res) => {
@@ -129,7 +128,6 @@ router.post("/", async (req, res) => {
 // 게시글 수정
 router.put("/:category/:id", async (req, res) => {
   try {
-    let category = categoryFinder(req.params.category);
     const postId = req.params.id;
 
     const { userId } = req.body;
@@ -162,17 +160,13 @@ router.put("/:category/:id", async (req, res) => {
 // 게시글 삭제
 router.delete("/:category/:id", async (req, res) => {
   try {
-    let category = categoryFinder(req.params.category);
     const postId = req.params.id;
     const { userId } = req.body;
+    let category = categoryFinder(req.body.category);
 
-    const selectSql = `SELECT * FROM boardsview bv WHERE bv.category = ? AND bv.id = ? AND bv.userId = ?;`;
+    const postSql = `DELETE FROM ${category} WHERE id = ?`;
 
-    const [rows, fields] = await db.query(selectSql, [
-      category,
-      postId,
-      userId,
-    ]);
+    const [rows, fields] = await db.query(postSql, [postId]);
 
     if (rows > 0) {
       const postSql = `DELETE FROM ${category} WHERE category = ? AND id = ?`;
@@ -180,10 +174,28 @@ router.delete("/:category/:id", async (req, res) => {
       const [rows, fields] = await db.query(postSql, [category, postId]);
       res.json(rows);
     }
+    res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).json("Internal Server Error");
   }
 });
+
+function categoryFinder(category) {
+  switch (category) {
+    case "discuss":
+      return "discuss";
+    case "qna":
+      return "questions";
+    case "group":
+      return "teams";
+    case "event":
+      return "calendars";
+    case "articles":
+      return "articles";
+    default:
+      return category;
+  }
+}
 
 module.exports = router;

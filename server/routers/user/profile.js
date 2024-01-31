@@ -19,12 +19,12 @@ router.get("/:userId", async (req, res) => {
     `;
 
     const postsql = `
-      Select p.userId AS postID,
-             p.category AS category,
-             p.title AS title,
-             p.content AS postContent
-      FROM users u
-      LEFT JOIN posts p ON p.userId = u.id
+      Select bv.userId AS postID,
+             bv.category AS category,
+             bv.title AS title,
+             bv.content AS postContent
+      FROM boardsView bv
+      LEFT JOIN users u ON bv.userId = u.id
       WHERE u.id = ?
     `;
 
@@ -32,7 +32,7 @@ router.get("/:userId", async (req, res) => {
       Select c.userId As commentID,
              c.content AS commentContent
       FROM users u
-      LEFT JOIN posts p ON p.userId = u.id
+      LEFT JOIN boardView bv ON bv.userId = u.id
       LEFT JOIN comments c ON c.userId = u.id
       WHERE u.id = ?
     `;
@@ -64,32 +64,32 @@ router.get("/:userId", async (req, res) => {
 });
 
 // 프로필 이미지 수정 구현
-router.get("/image", async (req, res) => {
-  const filePath = req.file.path; // 파일 데이터를 Path로 가져옴
-  const sql = 'UPDATE users u SET profileImage = ? WHERE u.id = ?';
-    // const userId = req.body.userId;
-  const userId = 'd77faaa9-b197-4d8f-b897-eae3a4cd9b71';
+// router.get("/image", async (req, res) => {
+//   const filePath = req.file.path; // 파일 데이터를 Path로 가져옴
+//   const sql = 'UPDATE users u SET profileImage = ? WHERE u.id = ?';
+//     // const userId = req.body.userId;
+//   const userId = 'd77faaa9-b197-4d8f-b897-eae3a4cd9b71';
 
-  try {
-    const [rows, fields] = await db.query(sql, [filePath, userId]);
-    res.redirect("http://localhost:5173/userinfo/d77faaa9-b197-4d8f-b897-eae3a4cd9b71");
-  } catch (err) {
-    console.error("Query execution error:", err);
-    res.status(500).send("Internal Server Error");
-  };
-});
+//   try {
+//     const [rows, fields] = await db.query(sql, [filePath, userId]);
+//     res.redirect("http://localhost:5173/userinfo/d77faaa9-b197-4d8f-b897-eae3a4cd9b71");
+//   } catch (err) {
+//     console.error("Query execution error:", err);
+//     res.status(500).send("Internal Server Error");
+//   };
+// });
 
 // 커뮤니티 포인트 구현
 
 router.get("/:userId/point", async (req, res) => {
   const sql = `
     SELECT uv.id AS userId, 
-          p.count AS postCnt,
+          bv.count AS postCnt,
           c.count AS commentCnt,
-          pt.count AS teamCnt
+          bvt.count AS teamCnt
     FROM usersView uv
-    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM posts GROUP BY userId) p ON uv.id = p.userId
-    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM posts WHERE posts.category = 'group' GROUP BY userId) pt ON uv.id = pt. userId
+    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM boardView GROUP BY userId) p ON uv.id = p.userId
+    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM boardView WHERE posts.category = 'group' GROUP BY userId) bvt ON uv.id = pt. userId
     LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM comments GROUP BY userId) c ON uv.id = c.userId
     WHERE uv.id =?
   `;
