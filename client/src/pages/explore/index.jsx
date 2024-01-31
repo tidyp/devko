@@ -10,14 +10,14 @@ import TopWriters from "../../components/TopWriters";
 import cookie from "react-cookies";
 import PostList from "./PostList";
 import AlertsBox from "../../components/AlertsBox";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 const index = () => {
   const posts = useLoaderData();
   const isLogin = cookie.load("uuid");
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);  
 
   const handleOpen = () => {
     setIsOpen((prev) => !prev);

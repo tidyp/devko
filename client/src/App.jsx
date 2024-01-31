@@ -11,7 +11,7 @@ import SearchResultPage, {
 } from "./pages/searchResultPage";
 
 import DiscussPage, { loader as discussesLoader } from "./pages/DiscussPage";
-import QnaPage, { loader as qnasLoader } from "./pages/QnaPage";
+import QuestionsPage, { loader as qnasLoader } from "./pages/QuestionsPage";
 
 import ArticlePage, { loader as articleLoader } from "./pages/ArticlePage";
 import EventPage, { loader as eventLoader } from "./pages/EventPape";
@@ -63,22 +63,28 @@ const router = createBrowserRouter([
         children: [{ path: "write", element: <NewPost /> }],
       },
       {
-        path: "/discuss/detail/:id",
+        path: "/discuss/detail/:id/",
         element: <PostdetailPage />,
         loader: postLoader,
+        children: [
+          { path: "edit", element: <EditPost />, loader: editPostLoader },
+        ],
       },
 
       // Q&A
       {
-        path: "/qna/:id",
-        element: <QnaPage />,
+        path: "/questions/:id",
+        element: <QuestionsPage />,
         loader: qnasLoader,
         children: [{ path: "write", element: <NewPost /> }],
       },
       {
-        path: "/qna/detail/:id",
+        path: "/questions/detail/:id",
         element: <PostdetailPage />,
         loader: postLoader,
+        children: [
+          { path: "edit", element: <EditPost />, loader: editPostLoader },
+        ],
       },
 
       // Article ------------------------------------------

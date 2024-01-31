@@ -90,7 +90,9 @@ const Post = ({ post }) => {
   };
 
   const clickdeletePost = async () => {
-    await deletePost(post.postId);
+    console.log(post);
+    console.log(post.postId);
+    await deletePost(post.category, post.postId);
     navigate("/");
   };
 
@@ -99,7 +101,9 @@ const Post = ({ post }) => {
       {/* 프로필, 글 */}
       <div className="flex w-full flex-col justify-between gap-8">
         <div>
-          <span className="bg-black font-bold uppercase text-white rounded-full px-4">{post.category}</span>
+          <span className="rounded-full bg-black px-4 font-bold uppercase text-white">
+            {post.category}
+          </span>
         </div>
         <div className="flex items-center justify-start gap-3">
           <Link className="h-12 w-12" to={`/userinfo/${post.userId}`}>
@@ -147,11 +151,14 @@ const Post = ({ post }) => {
         <div className="flex gap-4">
           {post.userId === useruuid && (
             <>
-              <Link to={`/edit/${post.postId}`}>
+              <Link to={`${post.category}/detail/${post.postId}/edit`}>
                 <TbEdit />
               </Link>
 
-              <TbTrash onClick={() => clickdeletePost(post.postId)} />
+              <TbTrash
+                className="cursor-pointer"
+                onClick={() => clickdeletePost(post.postId)}
+              />
             </>
           )}
 

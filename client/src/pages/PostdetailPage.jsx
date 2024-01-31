@@ -1,7 +1,6 @@
+import { readDetailPost, createComment } from "../api/apiDevko";
 import {
-  readDetailPost,
-} from "../api/apiDevko";
-import {
+  Outlet,
   useLoaderData,
   useLocation,
   useNavigate,
@@ -18,11 +17,13 @@ const PostDetailPage = () => {
   const { discussDetail, discussComments } = useLoaderData();
   const { pathname } = useLocation();
 
-  console.log(discussDetail, discussComments)
+  console.log(discussDetail, discussComments);
 
   const postData = discussDetail[0];
   const commentsData = discussComments.currPageRows.slice().reverse();
   console.log(postData, commentsData);
+  console.log(postData);
+  console.log(postData.id);
 
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -40,10 +41,11 @@ const PostDetailPage = () => {
 
     try {
       const res = await createComment({
-        postId: data.postId,
+        postId: postData.id,
         commentId: Math.round(Math.random() * 100000),
         userId: username,
         commentContent: commentContent,
+        category: postData.category,
       });
       setCommentContent("");
       navigate(pathname);
@@ -80,9 +82,9 @@ const PostDetailPage = () => {
     }
   };
 
-
   return (
     <>
+      <Outlet />
       <div className="flex flex-col items-center justify-center gap-2 pt-8">
         <div className="flex w-[80rem] flex-col  items-start justify-center gap-4">
           <div className="flex w-full flex-col ">
@@ -113,7 +115,7 @@ const PostDetailPage = () => {
                   {isDropdownOpen && (
                     <div className="item translate3d absolute right-2 flex flex-col items-center justify-center rounded border bg-white p-2 px-4 shadow-md">
                       <span className="w-12 cursor-pointer">
-                        <Link to={`/edit/${postData.postId}`}>수정</Link>
+                        <Link to={`edit`}>수정</Link>
                       </span>
                       <span
                         className="w-12 cursor-pointer"
@@ -139,7 +141,7 @@ const PostDetailPage = () => {
           </div>
 
           <div className="mt-4 flex w-full flex-col">
-            <div className="rounded-md bg-slate-50 p-4 pl-8 text-start">
+            <div className=" rounded-md bg-slate-50 p-4 pl-8 text-start">
               <h2 className="mb-4 text-2xl font-bold">댓글</h2>
               <form>
                 <div>

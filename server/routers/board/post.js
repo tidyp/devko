@@ -94,7 +94,7 @@ router.post("/", async (req, res) => {
     const postSql = `INSERT INTO ${category} (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
     const setSql = `SET @postId = LAST_INSERT_ID();`;
     const likeSql = `INSERT INTO likes (postId) VALUES (@postId)`;
-    const viewSql = `INSERT INTO views (postId) VALUES (@postId)`;
+    const viewSql = `INSERT INTO views (postId, category) VALUES (@postId, ?)`;
     const tagSql = `INSERT INTO tags (postId, id, name) VALUES (@postId, ?, ?);`;
 
     await db.query(`START TRANSACTION;`);
@@ -106,7 +106,7 @@ router.post("/", async (req, res) => {
     ]);
     await db.query(setSql);
     await db.query(likeSql);
-    await db.query(viewSql);
+    await db.query(viewSql, [category]);
     await db.query(`COMMIT;`);
 
     // const result = tags.split("#").filter(function (item) {
@@ -127,8 +127,10 @@ router.post("/", async (req, res) => {
 
 // 게시글 수정
 router.put("/:category/:id", async (req, res) => {
+  console.log('요청옴')
   try {
     const postId = req.params.id;
+    let category = categoryFinder(req.params.category);
 
     const { userId } = req.body;
     const title = xss(req.body.title);
@@ -141,9 +143,11 @@ router.put("/:category/:id", async (req, res) => {
       postId,
       userId,
     ]);
-
-    if (rows > 0) {
-      const postSql = `UPDATE posts SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?`;
+    console.log(rows)
+    console.log(postId, category, userId, title, content)
+    if (rows.length > 0) {
+      console.log('1231321')
+      const postSql = `UPDATE ${category} SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?`;
       const tagSql = `UPDATE tags SET name = ? WHERE postId = ? AND id = ?`;
       const [rows, fields] = await db.query(postSql, [title, content, postId]);
       // for (let key in tags) {
@@ -162,7 +166,7 @@ router.delete("/:category/:id", async (req, res) => {
   try {
     const postId = req.params.id;
     const { userId } = req.body;
-    let category = categoryFinder(req.body.category);
+    let category = categoryFinder(req.params.category);
 
     const postSql = `DELETE FROM ${category} WHERE id = ?`;
 
