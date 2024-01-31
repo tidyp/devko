@@ -103,7 +103,7 @@ router.get("/:userId/point", async (req, res) => {
     let postPoint = Math.floor((1/3 * rows[0].postCnt) * 100) / 100;
     let commentPoint = Math.floor((1/5 * rows[0].commentCnt) * 100) / 100;
     const teamPoint = Math.floor((rows[0].teamCnt) * 100) / 100;
-    
+
     if (postPoint - Math.floor(1/3 * rows[0].postCnt) < 0.25 ||
         commentPoint - Math.floor(1/5 * rows[0].commentCnt) < 0.25
     ) {
