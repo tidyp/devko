@@ -6,9 +6,7 @@ const db = require("../../config/db");
 router.get("/", async (req, res) => {
   try {
     const sql = `Select * FROM tags`;
-
     const [rows, fields] = await db.query(sql);
-
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -20,7 +18,7 @@ router.get("/", async (req, res) => {
 router.get("/:category/:postId", async (req, res) => {
   try {
     const postId = req.params.postId;
-    let category = categoryFinder(req.body.category);
+    let category = categoryFinder(req.params.category);
 
     const sql = `Select * FROM tags WHERE category = ? AND postId = ?`;
     const [rows, fields] = await db.query(sql, [category, postId]);
@@ -34,6 +32,7 @@ router.get("/:category/:postId", async (req, res) => {
 // 태그 쓰기
 router.post("/", async (req, res) => {
   try {
+    let category = categoryFinder(req.params.category);
     const postId = req.body.postId;
     let tags = req.body.tags;
 
@@ -55,7 +54,7 @@ router.post("/", async (req, res) => {
 // 태그 수정
 router.put("/:category/:postId", async (req, res) => {
   const postId = req.params.postId;
-  let category = categoryFinder(req.body.category);
+  let category = categoryFinder(req.params.category);
   const tags = req.body.tags;
 
   const sql = `UPDATE tags SET name = ? WHERE category = ? AND postId = ? AND id = ?`;
@@ -75,10 +74,10 @@ router.put("/:category/:postId", async (req, res) => {
 // 태그 삭제
 router.delete("/:category/:postId/:tagId", async (req, res) => {
   const postId = req.params.postId;
-  let category = categoryFinder(req.body.category);
+  let category = categoryFinder(req.params.category);
   const tagId = req.params.tagId;
 
-  const sql = `DELETE FROM tags WHERE postId = ? AND id = ?`;
+  const sql = `DELETE FROM tags WHERE category = ? AND postId = ? AND id = ?`;
 
   try {
     const [rows, fields] = await db.query(sql, [postId, tagId]);
