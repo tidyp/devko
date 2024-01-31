@@ -19,9 +19,10 @@ router.get("/", async (req, res) => {
 router.get("/:category/:id", async (req, res) => {
   try {
     const postId = req.params.id;
+    const category = categoryFinder(req.params.category);
 
     const viewSql = `UPDATE views SET count = count + 1 WHERE postId = ?`;
-    const postSql = `SELECT * FROM postsView WHERE id = ? ORDER BY createdAt DESC`;
+    const postSql = `SELECT * FROM ${category} WHERE id = ? ORDER BY createdAt DESC`;
 
     await db.query(viewSql, [postId]);
     const [rows, fields] = await db.query(postSql, [postId]);
@@ -66,9 +67,10 @@ router.get("/:category/page/:page", async (req, res) => {
 router.get("/:category/:id", async (req, res) => {
   try {
     const postId = req.params.id;
+    const category = categoryFinder(req.params.category);
 
     const viewSql = `UPDATE views SET count = count + 1 WHERE postId = ?`;
-    const postSql = `SELECT * FROM postsView WHERE id = ? ORDER BY createdAt DESC`;
+    const postSql = `SELECT * FROM ${category} WHERE id = ? ORDER BY createdAt DESC`;
 
     await db.query(viewSql, [postId]);
     const [rows, fields] = await db.query(postSql, [postId]);
