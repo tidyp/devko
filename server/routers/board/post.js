@@ -127,7 +127,6 @@ router.post("/", async (req, res) => {
 
 // 게시글 수정
 router.put("/:category/:id", async (req, res) => {
-  console.log('요청옴')
   try {
     const postId = req.params.id;
     let category = categoryFinder(req.params.category);
@@ -143,10 +142,7 @@ router.put("/:category/:id", async (req, res) => {
       postId,
       userId,
     ]);
-    console.log(rows)
-    console.log(postId, category, userId, title, content)
     if (rows.length > 0) {
-      console.log('1231321')
       const postSql = `UPDATE ${category} SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?`;
       const tagSql = `UPDATE tags SET name = ? WHERE postId = ? AND id = ?`;
       const [rows, fields] = await db.query(postSql, [title, content, postId]);

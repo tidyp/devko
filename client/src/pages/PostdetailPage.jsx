@@ -1,12 +1,25 @@
 import { useState } from "react";
-import { Link, Outlet, useLoaderData, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import cookie from "react-cookies";
 
-import { readDetailPost, createComment } from "../api/apiDevko";
+import {
+  readDetailPost,
+  createComment,
+  deleteComment,
+  deletePost,
+} from "../api/apiDevko";
 import { VscKebabVertical } from "react-icons/vsc";
 
+import { TbTrash, TbEdit } from "react-icons/tb";
+
 import Button from "../components/Button";
-import {formatDateDash} from '../utils/utils'
+import { formatDateDash } from "../utils/utils";
 
 const PostDetailPage = () => {
   const navigate = useNavigate();
@@ -27,7 +40,6 @@ const PostDetailPage = () => {
   const handleChange = (e) => {
     setCommentContent(e.target.value);
   };
-
   // 댓글 작성
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +50,7 @@ const PostDetailPage = () => {
         commentId: Math.round(Math.random() * 100000),
         userId: username,
         commentContent: commentContent,
-        category: postData.category,
+        category: postData.category === "questions" ? "qna" : postData.category,
       });
 
       navigate(pathname);
@@ -54,6 +66,16 @@ const PostDetailPage = () => {
     setDropdownOpen((prev) => !prev);
   };
 
+  const clickdeleteComment = async (id) => {
+    try {
+      await deleteComment(id);
+      // window.location.reload();
+      navigate("");
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
   const clickdeletePost = async () => {
     try {
       await deletePost(postData.postId);
@@ -67,11 +89,15 @@ const PostDetailPage = () => {
   return (
     <>
       <Outlet />
-      <div className="flex flex-col items-center justify-center gap-2 pt-8 h-fit">
+      <div className="flex h-fit flex-col items-center justify-center gap-2 pt-8">
         <div className="flex w-[80rem] flex-col  items-start justify-center gap-4">
           <div className="flex w-full flex-col ">
             <div className="flex flex-col gap-8 rounded-md bg-slate-50 p-12 text-start">
-              <p className="text-gray-700">카테고리: {postData.category}</p>
+              <p className="text-gray-700">
+                <span className="rounded-full bg-black px-4 font-bold uppercase text-white">
+                  {postData.category}
+                </span>{" "}
+              </p>
               <header className="flex items-center justify-between text-xl">
                 <div className="flex items-center gap-4">
                   <img
@@ -183,7 +209,26 @@ const PostDetailPage = () => {
                 alt=""
               />
               <p className="text-gray-700">{el.content}</p>
-              <p className="font-semibold text-gray-700">{formatDateDash(el.createdAt)}</p>
+              <p className="font-semibold text-gray-700">
+                {formatDateDash(el.createdAt)}
+              </p>
+              <div className="flex items-center gap-4">
+                {el.userId === username && (
+                  <>
+                    {/* <Link to={`${post.category}/detail/${post.postId}/edit`}> */}
+                    {/* <TbEdit /> */}
+                    {/* </Link> */}
+                    <TbTrash
+                      className="cursor-pointer"
+                      onClick={() => clickdeleteComment(el.commentId)}
+                    />
+                  </>
+                )}
+
+                {/* <Link>
+            <PiSiren />
+          </Link> */}
+              </div>
             </div>
           ))}
           {/* </div> */}

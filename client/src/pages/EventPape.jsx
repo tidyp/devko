@@ -11,7 +11,6 @@ import Button from "../components/Button";
 
 const EventPape = () => {
   const data = useLoaderData();
-  console.log(data.currPageRows);
   const filterData = data.currPageRows.filter(
     (item) => item.category === "calendars",
   );
@@ -27,7 +26,6 @@ const EventPape = () => {
 
   const [today, setToday] = useState(new Date());
   const [eventData, setEventData] = useState([]);
-  console.log(eventData);
 
   useEffect(() => {
     const events = [];
@@ -98,7 +96,6 @@ const EventPape = () => {
 
   return (
     <>
-      {console.log(generateCalendar())}
       <Outlet />
       <div className="mt-16 flex w-full flex-col items-center justify-center gap-2 ">
         <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold">

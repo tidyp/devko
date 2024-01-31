@@ -7,7 +7,6 @@ import Button from "../components/Button";
 
 const ArticlePage = () => {
   const data = useLoaderData();
-  console.log(data.currPageRows);
 
   return (
     <>

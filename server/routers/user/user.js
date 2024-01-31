@@ -84,8 +84,6 @@ router.put('/:id', upload.single('profileImage'), (req, res) => {
   const userId = req.params.id;
   const { userName, interestPosition, interestArea, selfDescription } = req.body;
   const profileImage = req.file ? req.file.path : null;
-  console.log(req.file)
-  console.log(req.body)
   if (profileImage) {
     db.query(
       'UPDATE users SET userName = ?, profileImage = ?, interestPosition = ?, interestArea = ?, selfDescription = ?, updatedAt = NOW(), WHERE id = ?',

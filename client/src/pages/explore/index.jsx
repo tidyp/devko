@@ -51,7 +51,6 @@ const index = () => {
         </div>
         {/* Posts */}
         <div className="flex w-full items-start justify-center">
-          {console.log(posts)}
           {!(posts === "연결실패") && posts.length > 0 && (
             <PostList posts={posts} />
           )}

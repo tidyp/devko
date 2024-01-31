@@ -6,8 +6,6 @@ import { useLoaderData, Link, useParams } from "react-router-dom";
 const searchResultPage = () => {
   const result = useLoaderData();
   const query = useParams();
-  console.log(query);
-  console.log(result);
 
   const isData = result.currPageRows.length > 0;
   const numData = result.currPageRows.length;

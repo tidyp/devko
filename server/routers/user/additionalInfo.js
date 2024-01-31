@@ -9,7 +9,6 @@ router.get("/step2", (req, res) => {
 });
 
 router.post("/step3", async (req, res) => {
-  console.log(req.body)
   const userId = uuidv4();
   const userName = req.body.userName;
   const profileImage = req.body.googleImage || req.body.naverImage;

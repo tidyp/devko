@@ -25,7 +25,7 @@ const MainBackGround = ({ children }) => {
   };
 
   const particlesInit = useCallback(async (engine) => {
-    console.log(engine);
+    // console.log(engine);
 
     await loadSlim(engine);
   }, []);

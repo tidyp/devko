@@ -48,7 +48,11 @@ const NaviBar = () => {
 
   return (
     <>
-      <nav className=" z-50 flex items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4">
+    
+      <nav className="z-50 flex items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4 sm:visible">
+
+      </nav>
+      <nav className="z-50 flex items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4 sm:invisible">
         <div className="flex w-[80rem] items-center justify-between px-8">
           {/* <div className="flex w-full items-center justify-between px-8"> */}
           <div className="text-base">

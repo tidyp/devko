@@ -98,7 +98,6 @@ router.get("/:userId/point", async (req, res) => {
 
   try {
     const [rows, fields] = await db.query(sql, [userId]);
-    console.log(rows);
 
     let postPoint = Math.floor((1/3 * rows[0].postCnt) * 100) / 100;
     let commentPoint = Math.floor((1/5 * rows[0].commentCnt) * 100) / 100;

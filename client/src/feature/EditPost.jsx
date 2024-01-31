@@ -22,22 +22,16 @@ const categories = [
 
 const EditPostForm = () => {
   const data = useLoaderData();
-  console.log(data)
   const { discussDetail, discussComments } = useLoaderData();
-  console.log(discussDetail, discussComments)
-  console.log(discussDetail)
   const postData = discussDetail[0];
 
   const loca = useLocation();
-  console.log(loca);
   const postId = loca.pathname.split("/")[3]
-  console.log(postId)
 
   const tab =
     loca.pathname.split("/")[1] !== "write"
       ? loca.pathname.split("/")[1]
       : "discuss";
-  console.log(tab);
   const username = cookie.load("uuid");
   const navigate = useNavigate("/");
   const [newTag, setNewTag] = useState("");

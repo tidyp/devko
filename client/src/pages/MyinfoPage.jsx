@@ -6,7 +6,6 @@ import Button from "../components/Button";
 
 const MyinfoPage = () => {
   const data = useLoaderData();
-  console.log(data);
   const [userInfo, setUserInfo] = useState({
     profileImage: data.users[0].profileImage,
     username: data.users[0].userName,
@@ -144,7 +143,6 @@ const MyinfoPage = () => {
           />
         </div>
         <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
-          {console.log(userInfo)}
           <label>workPosition:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"

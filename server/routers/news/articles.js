@@ -19,7 +19,6 @@ async function fetchArticles(blog) {
     });
   });
 
-  console.log(result);
 
   await db.query("START TRANSACTION;");
 

@@ -3,7 +3,6 @@ const API_URL = "http://localhost:3000/api";
 // READ: userinfo
 // -----------------------------------------------------------------
 export async function readUserinfo(id) {
-  console.log(id)
   try {
     const res = await fetch(`${API_URL}/user/${id}`);
     if (!res.ok) {
@@ -20,7 +19,6 @@ export async function readUserinfo(id) {
 // UPDATE: userinfo
 // -----------------------------------------------------------------
 export async function updateUserinfo({ id, username, profileImage }) {
-  console.log(id, username, profileImage);
   const formData = new FormData();
   formData.append("username", username);
   // formData.append("email", email);

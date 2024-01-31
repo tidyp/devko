@@ -90,8 +90,6 @@ const Post = ({ post }) => {
   };
 
   const clickdeletePost = async () => {
-    console.log(post);
-    console.log(post.postId);
     await deletePost(post.category, post.postId);
     navigate("/");
   };

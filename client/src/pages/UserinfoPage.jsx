@@ -6,13 +6,12 @@ import ProfileBox from "../components/ProfileBox";
 
 const UserinfoPage = () => {
   const userdata = useLoaderData();
-  console.log(userdata)
   const { postrows, commentrows } = userdata;
+  console.log(postrows);
 
   // 사용자체크
   const checkUser = cookie.load("uuid");
   const user = useParams();
-  console.log(postrows);
 
   const postClassify = (catogory, tab) => {
     // const userPost =
@@ -47,7 +46,7 @@ const UserinfoPage = () => {
 
   return (
     <>
-      <div className="mt-8 h-fit flex flex-col items-center justify-center gap-2">
+      <div className="mt-8 flex h-fit flex-col items-center justify-center gap-2">
         <div className="flex w-[80rem] items-start justify-center gap-4">
           <ProfileBox />
           <div className="flex w-full flex-col items-center justify-center">
@@ -70,7 +69,7 @@ const UserinfoPage = () => {
               {tabs[activeTabIndex] === "discuss" &&
                 postClassify("discuss", "작성한 글")}
               {tabs[activeTabIndex] === "q&a" &&
-                postClassify("q&a", "질문한 글")}
+                postClassify("questions", "질문한 글")}
               {tabs[activeTabIndex] === "comment" &&
                 commentrows.map((el) => (
                   <p class="mb-4 flex w-full items-center justify-start border-stone-500 p-2">

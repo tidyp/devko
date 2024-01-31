@@ -10,7 +10,6 @@ export async function readPosts() {
     const data = await res.json();
     return data;
   } catch (error) {
-    console.log(error.message);
     console.error(`Error: ${error.message}`);
     throw error;
   }
@@ -124,7 +123,6 @@ export async function readComments(id) {
 
 // Read: Post detail 게시글 조회
 export async function readDetailPost(catogory, id) {
-  console.log(catogory, id);
   try {
     const [detailResponse, commentsResponse] = await Promise.all([
       fetch(`${API_URL}/post/${catogory}/${id}`),
@@ -203,20 +201,20 @@ export async function createGroupPost(postData) {
 
 // Update: 게시글 수정
 export async function updatePost(params) {
-  console.log(params)
-  console.log(params)
-  console.log(params)
-  const res = await fetch(`${API_URL}/post/${params.category}/${params.postId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
+  const res = await fetch(
+    `${API_URL}/post/${params.category}/${params.postId}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: params.userId,
+        title: params.title,
+        content: params.content,
+      }),
     },
-    body: JSON.stringify({
-      userId: params.userId,
-      title: params.title,
-      content: params.content,
-    }),
-  });
+  );
 
   if (!res.ok) {
     throw new Error(`Failed to create post. Status: ${res.status}`);
@@ -228,7 +226,6 @@ export async function updatePost(params) {
 
 // Delete: 게시글 삭제
 export async function deletePost(category, id) {
-  console.log(`${category}, ${id}`);
 
   const res = await fetch(`${API_URL}/post/${category}/${id}`, {
     method: "DELETE",
@@ -281,7 +278,6 @@ export async function createComment({
   commentContent,
   category,
 }) {
-  console.log(postId, userId, commentId, commentContent);
   const res = await fetch(`${API_URL}/comment/${commentId}`, {
     method: "POST",
     headers: {
@@ -309,8 +305,12 @@ export async function updateComment() {
   const data = await res.json();
   return data;
 }
-export async function deleteComment() {
-  const res = await fetch(`${API_URL}/comment/:id`);
+
+// 댓글 삭제
+export async function deleteComment(id) {
+  const res = await fetch(`${API_URL}/comment/${id}`, {
+    method: "DELETE",
+  });
   const data = await res.json();
   return data;
 }

@@ -69,7 +69,6 @@ router.post('/:id', async (req, res) => {
     const { userId, content, postId } = req.body;
     let category = categoryFinder(req.body.category);
 
-    console.log(mainId, content, category, userId, postId);
     const sql = `INSERT INTO comments (mainId, content, createdAt, updatedAt, category, userId, postId) VALUES (?, ?, NOW(), NOW(), ?, ?, ?)`;
 
     const result = await db.query(sql, [

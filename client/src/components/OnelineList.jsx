@@ -29,7 +29,11 @@ const OnelineList = (post) => {
 
   return (
     <li key={post.postId} className="group mb-4 w-full">
-      <Link to={`/${post.category === "questions" ? "qna" : post.category}/detail/${post.postId}`}>
+      <Link
+        to={`/${post.category}/detail/${
+          post.postId
+        }`}
+      >
         <div className="flex transform items-center justify-between rounded-lg border bg-white p-4 transition-all duration-300 ease-in-out hover:scale-105 group-hover:bg-gray-100 group-hover:shadow-lg">
           <div className="flex gap-2">
             <img className="w-8 rounded-full" src={post.profileImage} alt="" />
@@ -55,7 +59,9 @@ const OnelineList = (post) => {
             <span>{post.likeCnt}</span>
           </div>
 
-          <span className="text-gray-700">{formatDate(post.createdAt)}</span>
+          <span className="flex-2 flex text-gray-700">
+            {formatDate(post.createdAt)}
+          </span>
         </div>
       </Link>
     </li>
