@@ -3,11 +3,17 @@ const router = express.Router();
 const path = require('path');
 const multer = require('multer');
 const db = require('../../config/db');
+const fs = require('fs');
 require('dotenv').config();
+
+const uploadPath = path.join(__dirname, '..', '..', 'src', 'profileimages');
+if (!fs.existsSync(uploadPath)) {
+  fs.mkdirSync(uploadPath, { recursive: true });
+}
 
 // 파일 업로드를 위한 하수 정의
 const upload = multer({
-  dest: '../../src/profileimages/',
+  dest: uploadPath,
   limits: { fileSize: 10 * 512 * 512 }, // 10mb 제한
   fileFilter: (req, file, cb) => {
       if (!file.mimetype.startsWith('image/')) {
@@ -59,8 +65,7 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', upload.single('profileImage'), (req, res) => {
   const userId = req.params.id;
   const { userName, interestPosition, interestArea, selfDescription } = req.body;
-  const profileImage = req.file ? req.file.path : null;
-  const profileImage2 = profileImage ? `${req.file.filename}` : null;
+  const profileImage = req.file ? req.file.filename : null;
   console.log(req.file)
   console.log(req.body)
   if (profileImage) {
@@ -94,7 +99,7 @@ router.put('/:id', upload.single('profileImage'), (req, res) => {
 
 router.get('/images/:filename', (req, res) => {
   const filename = req.params.filename;
-  const filepath = path.join(__dirname, '..', '..', 'src', 'profileimages', profileImage2);
+  const filepath = path.join(__dirname, '..', '..', 'src', 'profileimages', filename);
   res.setHeader('Content-Type', 'image/png');
   res.sendFile(filepath);
 });
