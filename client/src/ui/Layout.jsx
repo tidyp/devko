@@ -5,7 +5,7 @@ import NaviBar from "./NaviBar";
 
 const Layout = () => {
   return (
-    <div className="sticky top-0 flex h-lvh flex-col bg-white">
+    <div className="flex py-auto h-fit flex-col bg-white">
       <NaviBar />
       <Outlet />
     </div>

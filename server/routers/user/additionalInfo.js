@@ -9,6 +9,7 @@ router.get("/step2", (req, res) => {
 });
 
 router.post("/step3", async (req, res) => {
+  console.log(req.body)
   const userId = uuidv4();
   const userName = req.body.userName;
   const profileImage = req.body.googleImage || req.body.naverImage;
@@ -17,11 +18,11 @@ router.post("/step3", async (req, res) => {
   const selfDescription = req.body.selfDescription;
   const googleId = req.body.googleId || 0;
   const naverId = req.body.naverId || 0;
-  // let notification = req.body.notification;
+  const notification = req.body.notification === "ON" ? 1 : 0;
 
   const sql = `
     INSERT INTO users (id, userName, profileImage, interestPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification, googleId, naverId)
-    VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 5, 1, (SELECT id FROM usersgoogle WHERE googleId = ?), (SELECT id FROM usersnaver WHERE naverId = ?))
+    VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 5, ?, (SELECT id FROM usersgoogle WHERE googleId = ?), (SELECT id FROM usersnaver WHERE naverId = ?))
   `;
 
   try {
@@ -32,6 +33,7 @@ router.post("/step3", async (req, res) => {
       interestPosition,
       interestArea,
       selfDescription,
+      notification,
       googleId,
       naverId,
     ]);

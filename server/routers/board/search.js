@@ -19,7 +19,7 @@ router.get("/:input", async (req, res) => {
         , uv.grade AS grade
     FROM boardsView bv
     LEFT OUTER JOIN usersView uv ON bv.userId = uv.id
-    WHERE u.userName LIKE ? OR bv.title LIKE ? OR bv.content LIKE ?
+    WHERE uv.userName LIKE ? OR bv.title LIKE ? OR bv.content LIKE ?
     `;
 
     const [rows, fields] = await db.query(sql, [

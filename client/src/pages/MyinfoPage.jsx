@@ -50,15 +50,18 @@ const MyinfoPage = () => {
     try {
       const formData = new FormData();
       formData.append("id", useruuid);
-      formData.append("file", imageFile);
+      formData.append("profileImage", imageFile);
       formData.append("username", userInfo.username);
       // formData.append("email", userInfo.email);
-
-      await updateUserinfo({
-        id: useruuid,
-        username: userInfo.username,
-        profileImage: imageFile,
+      const res = await fetch(`http://localhost:3000/api/user/${useruuid}`, {
+        method: "PUT",
+        body: formData,
       });
+      // await updateUserinfo({
+      //   id: useruuid,
+      //   username: userInfo.username,
+      //   profileImage: imageFile,
+      // });
     } catch (error) {
       console.error("Failed to update user profile", error);
     }
@@ -106,7 +109,7 @@ const MyinfoPage = () => {
       </button>
 
       <form
-        encType='multipart/form-data'
+        encType="multipart/form-data"
         className="mt-8 flex flex-col gap-8"
         onSubmit={handleEditSubmit}
       >

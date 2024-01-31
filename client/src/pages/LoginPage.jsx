@@ -3,7 +3,7 @@ import { ReactComponent as Google } from "../assets/google.svg";
 
 const LoginPage = () => {
   return (
-    <div className="m-auto flex h-screen flex-col items-center justify-center gap-8 text-center">
+    <div className="m-auto flex h-fit flex-col items-center justify-center gap-8 text-center">
       <img className="h-64" src="/images/logo2.png" alt="logo" />
       <div className="text-xl">Lets get started</div>
       <div>

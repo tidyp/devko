@@ -1,41 +1,34 @@
-import { readDetailPost, createComment } from "../api/apiDevko";
-import {
-  Outlet,
-  useLoaderData,
-  useLocation,
-  useNavigate,
-  useNavigation,
-} from "react-router-dom";
-import { VscKebabVertical } from "react-icons/vsc";
-import Button from "../components/Button";
+import { useState } from "react";
+import { Link, Outlet, useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
-import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+
+import { readDetailPost, createComment } from "../api/apiDevko";
+import { VscKebabVertical } from "react-icons/vsc";
+
+import Button from "../components/Button";
+import {formatDateDash} from '../utils/utils'
 
 const PostDetailPage = () => {
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const { discussDetail, discussComments } = useLoaderData();
-  const { pathname } = useLocation();
-
-  console.log(discussDetail, discussComments);
-
+  const navigate = useNavigate();
+  const { discussDetail, discussComments } = useLoaderData(); // Load Data
   const postData = discussDetail[0];
   const commentsData = discussComments.currPageRows.slice().reverse();
-  console.log(postData, commentsData);
-  console.log(postData);
-  console.log(postData.id);
-
-  const navigate = useNavigate();
-  const navigation = useNavigation();
 
   const username = cookie.load("uuid");
+  const userimage = cookie.load("userImage");
+  const userNickname = cookie.load("userName");
 
-  // 댓
-  const [commentContent, setCommentContent] = useState("");
+  const [commentContent, setCommentContent] = useState(""); // 댓글 입력 state
+  const [isInputFocused, setIsInputFocused] = useState(false); // 댓글 focus state
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-  const handleCommentChange = (e) => {
+  const { pathname } = useLocation();
+
+  const handleChange = (e) => {
     setCommentContent(e.target.value);
   };
+
+  // 댓글 작성
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -47,26 +40,15 @@ const PostDetailPage = () => {
         commentContent: commentContent,
         category: postData.category,
       });
-      setCommentContent("");
+
       navigate(pathname);
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+
+    setCommentContent("");
+    setIsInputFocused(false);
   };
-
-  const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
 
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
@@ -85,7 +67,7 @@ const PostDetailPage = () => {
   return (
     <>
       <Outlet />
-      <div className="flex flex-col items-center justify-center gap-2 pt-8">
+      <div className="flex flex-col items-center justify-center gap-2 pt-8 h-fit">
         <div className="flex w-[80rem] flex-col  items-start justify-center gap-4">
           <div className="flex w-full flex-col ">
             <div className="flex flex-col gap-8 rounded-md bg-slate-50 p-12 text-start">
@@ -139,51 +121,72 @@ const PostDetailPage = () => {
               </div>
             </div>
           </div>
-
-          <div className="mt-4 flex w-full flex-col">
-            <div className=" rounded-md bg-slate-50 p-4 pl-8 text-start">
-              <h2 className="mb-4 text-2xl font-bold">댓글</h2>
-              <form>
-                <div>
-                  <input
-                    className="h-24 w-full"
-                    type="text"
-                    value={commentContent}
-                    onChange={handleCommentChange}
-                    placeholder="댓글을 작성하세요"
-                  />
-                </div>
-                <div>
-                  <Button
-                    color="bg-blue-500"
-                    type="submit"
-                    onClick={handleSubmit}
-                  >
-                    작성하기
-                  </Button>
-                </div>
-              </form>
-
-              <div>
-                {commentsData.map((el) => (
-                  <div
-                    key={el.commentId}
-                    className=" mb-4 flex justify-between rounded-md bg-gray-100 p-4"
-                  >
-                    <img
-                      className="className=h-8 w-8 rounded-full bg-gray-300"
-                      src={postData.profileImage}
-                      alt=""
-                    />
-                    <p className="text-gray-700">{el.content}</p>
-                    <p className="font-semibold text-gray-700">
-                      {el.createdAt}
-                    </p>
-                  </div>
-                ))}
+          <div
+            className={`flex-rows mt-4 flex w-full gap-8 duration-300 ${
+              isInputFocused ? "flex-col" : ""
+            }`}
+          >
+            <div className="flex items-center gap-4">
+              <img
+                className={`${
+                  isInputFocused ? "h-12 w-12" : "h-16 w-16"
+                } rounded-full focus:flex-col`}
+                src={`${userimage}`}
+                alt=""
+              />
+              <div className={`${isInputFocused ? "" : "hidden"}`}>
+                {userNickname}
               </div>
             </div>
+            <form className="flex w-full flex-col justify-center">
+              <input
+                onFocus={() => setIsInputFocused(true)}
+                className="border-b-2 outline-none focus:border-black"
+                value={commentContent}
+                onChange={handleChange}
+                type="text"
+                placeholder="댓글 추가..."
+              />
+              <div
+                className={`mt-2 flex justify-end gap-4 text-black duration-300 ${
+                  isInputFocused ? "" : "hidden"
+                }`}
+              >
+                <button
+                  color="bg-white"
+                  px="8"
+                  type="submit"
+                  onClick={() => setIsInputFocused(false)}
+                >
+                  취소
+                </button>
+                <Button
+                  color="bg-black"
+                  px="4"
+                  type="submit"
+                  onClick={handleSubmit}
+                >
+                  작성
+                </Button>
+              </div>
+            </form>
           </div>
+          {/* <div className="w-full rounded-md bg-slate-50 p-4 pl-8 text-start"> */}
+          {commentsData.map((el) => (
+            <div
+              key={el.commentId}
+              className="mb-4 flex w-full justify-between rounded-md bg-gray-100 p-4"
+            >
+              <img
+                className="className=h-8 w-8 rounded-full bg-gray-300"
+                src={el.profileImage}
+                alt=""
+              />
+              <p className="text-gray-700">{el.content}</p>
+              <p className="font-semibold text-gray-700">{formatDateDash(el.createdAt)}</p>
+            </div>
+          ))}
+          {/* </div> */}
         </div>
       </div>
     </>

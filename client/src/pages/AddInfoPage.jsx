@@ -12,9 +12,10 @@ const AddinfoPage = () => {
   const [formData, setFormData] = useState({
     workPosition: "",
     interestArea: "",
+    interestPosition: "",
     selfDescription: "",
     userName: "",
-    notification: "",
+    notification: false,
     googleId: googleID,
     naverId: naverID,
     googleImage: googleImage,
@@ -74,7 +75,7 @@ const AddinfoPage = () => {
   };
 
   return (
-    <div className="flex h-screen flex-col items-center justify-center gap-8 p-4">
+    <div className="flex h-fit flex-col items-center justify-center gap-8 p-4">
       <h1 className="text-2xl">내 정보</h1>
       <div className="w-20">
         {!googleImage && !naverImage && (
@@ -88,16 +89,16 @@ const AddinfoPage = () => {
           />
         )}
         {googleImage && (
-          <imgx
+          <img
             className="2 rounded-full"
-            src={googleImage || userInfo.profileImage}
+            src={googleImage || formData.userImage}
             alt="Preview"
           />
         )}
         {naverImage && (
           <img
             className="4 rounded-full"
-            src={naverImage || userInfo.profileImage}
+            src={naverImage || formData.userImage}
             alt="Preview"
           />
         )}
@@ -160,9 +161,33 @@ const AddinfoPage = () => {
             onChange={handleChange}
           />
         </div>
+        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
+          <label>interestPosition:</label>
+          <input
+            className="border-b-[1px] border-[#e5e5e5]"
+            type="text"
+            name="interestPosition"
+            value={formData.interestPosition}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="flex w-[30rem] items-center  gap-12 text-xl uppercase">
+          <label>Email Notification:</label>
+          <label>
+            Send
+            <input
+              className="h-6 w-12"
+              type="checkbox"
+              name="notification"
+              checked={formData.notification}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
+
         <div
           onClick={handleSubmit}
-          className="flex items-center justify-center rounded-full  bg-black p-2 text-white"
+          className="flex cursor-pointer items-center justify-center rounded-full  bg-black p-2 text-white"
         >
           완료
         </div>
