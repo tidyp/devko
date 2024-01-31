@@ -7,33 +7,6 @@ const parser = new Parser();
 const blogs = require("./blog.json");
 const db = require("../../config/db");
 
-// router.get("/", async (req, res) => {
-//   try {
-//     const sql = `
-//     SELECT p.id AS postId
-//         , p.category AS category
-//         , p.title AS title
-//         , p.content AS content
-//         , p.createdAt AS createdAt
-//         , p.updatedAt AS updatedAt
-//         , n.id AS newsId
-//         , t.id AS tagId
-//         , t.name AS tagName
-//         , v.count AS viewCnt
-//         , l.count AS likeCnt
-//     FROM posts p
-//     LEFT OUTER JOIN news n ON p.id = n.postId
-//     LEFT OUTER JOIN tags t ON p.id = t.postId
-//     LEFT OUTER JOIN views v ON p.id = v.postId
-//     LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM likes GROUP BY postId) l ON p.id = l.postId
-//     LEFT OUTER JOIN (SELECT postId, COUNT(*) AS count FROM comments GROUP BY postId) c ON p.id = c.postId
-//     `;
-//   } catch (err) {
-//     console.error("Query execution error:", err);
-//     res.status(500).send("Internal Server Error");
-//   }
-// });
-
 router.get("/", async (req, res) => {
   try {
     const blog = "https://helloworld.kurly.com/feed.xml";
