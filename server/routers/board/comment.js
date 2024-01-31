@@ -3,6 +3,18 @@ const router = express.Router();
 const db = require("../../config/db");
 const categoryFinder = require("../../utils/categoryFinder");
 
+// 전체 댓글 보기
+router.get("/", async (req, res) => {
+  try {
+    const sql = `SELECT * FROM comments ORDER BY createdAt ASC`;
+    const [rows, fields] = await db.query(sql);
+    res.json(rows);
+  } catch (err) {
+    console.error("Query execution error:", err);
+    res.status(500).json("Internal Server Error");
+  }
+});
+
 // 메뉴별 댓글 목록 보기
 router.get("/:category/:postId", async (req, res) => {
   try {
@@ -45,25 +57,24 @@ router.get("/:category/:postId", async (req, res) => {
     });
   } catch (err) {
     console.error("Query execution error:", err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json("Internal Server Error");
   }
 });
 
 // 댓글 작성
-router.post("/:category/:postId/:id", async (req, res) => {
+router.post("/:id", async (req, res) => {
   try {
-    const mainId = commentId || 0;
-    let category = categoryFinder(req.params.category);
-    const postId = req.params.postId;
     const commentId = req.params.id;
-    const { userId, content } = req.body;
+    const mainId = commentId || 0;
+    const { userId, content, postId } = req.body;
+    let category = categoryFinder(req.body.category);
 
     const sql = `INSERT INTO comments (mainId, content, createdAt, updatedAt, category, userId, postId) VALUES (?, ?, ?, NOW(), NOW(), ?, ?)`;
 
     const result = await db.query(sql, [
-      category,
       mainId,
       content,
+      category,
       userId,
       postId,
     ]);
@@ -71,31 +82,40 @@ router.post("/:category/:postId/:id", async (req, res) => {
     res.json(result);
   } catch (err) {
     console.error("Query execution error:", err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json("Internal Server Error");
   }
 });
 
 // 댓글 수정
-router.put("/:category/:postId/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
-    let category = categoryFinder(req.params.category);
-    const postId = req.params.postId;
     const commentId = req.params.id;
-    const content = req.body.content;
+    const { userId, content } = req.body;
     const updatedAt = new Date();
 
-    const updateSql = `UPDATE comments SET category = ?, postId = ?, commentId = ?, content = ?, updatedAt = ? WHERE id = ?`;
-
-    const [rows, fields] = await db.query(updateSql, [
-      content,
-      updatedAt,
-      commentId,
+    const selectSql = `SELECT * FROM comments WHERE id = ? AND userId = ?;`;
+    const [rows, fields] = await db.query(selectSql, [
+      category,
+      postId,
+      userId,
     ]);
 
-    res.send(rows);
+    if (rows > 0) {
+      const updateSql = `UPDATE comments SET category = ?, postId = ?, commentId = ?, content = ?, updatedAt = ? WHERE id = ?`;
+      const [rows, fields] = await db.query(updateSql, [
+        category,
+        postId,
+        commentId,
+        content,
+        updatedAt,
+        commentId,
+      ]);
+
+      res.json(rows);
+    }
   } catch (err) {
     console.error("Query execution error:", err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json("Internal Server Error");
   }
 });
 
@@ -107,10 +127,10 @@ router.delete("/:id", async (req, res) => {
 
     const [rows, fields] = await db.query(sql, [commentId]);
 
-    res.send(rows);
+    res.json(rows);
   } catch (err) {
     console.error("Query execution error:", err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json("Internal Server Error");
   }
 });
 

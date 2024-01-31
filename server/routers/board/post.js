@@ -2,9 +2,8 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
 const xss = require("xss");
-const categoryFinder = require("../../utils/categoryFinder");
 
-// Explore 메뉴 - 게시글 전체 목록 보기
+// 게시글 전체 보기
 router.get("/", async (req, res) => {
   try {
     const sql = `SELECT * FROM postsView ORDER BY createdAt DESC`;
@@ -12,7 +11,7 @@ router.get("/", async (req, res) => {
     res.json(rows);
   } catch (err) {
     console.error("Query execution error:", err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json("Internal Server Error");
   }
 });
 
@@ -28,10 +27,10 @@ router.get("/:category/:id", async (req, res) => {
     await db.query(viewSql, [postId]);
     const [rows, fields] = await db.query(postSql, [postId]);
 
-    res.send(rows);
+    res.json(rows);
   } catch (err) {
     console.error("Query execution error:", err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json("Internal Server Error");
   }
 });
 
@@ -60,7 +59,7 @@ router.get("/:category/page/:page", async (req, res) => {
     });
   } catch (err) {
     console.error("Query execution error:", err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json("Internal Server Error");
   }
 });
 
@@ -76,17 +75,17 @@ router.get("/:category/:id", async (req, res) => {
     await db.query(viewSql, [postId]);
     const [rows, fields] = await db.query(postSql, [postId]);
 
-    res.send(rows);
+    res.json(rows);
   } catch (err) {
     console.error("Query execution error:", err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json("Internal Server Error");
   }
 });
 
 // 게시글 쓰기
 router.post("/", async (req, res) => {
   try {
-    const userId = req.body.userId;
+    const { userId } = req.body;
     const title = xss(req.body.title);
     const content = xss(req.body.content);
     const tags = xss(req.body.tags);
@@ -118,26 +117,25 @@ router.post("/", async (req, res) => {
     //   await db.query(tagSql, [i + 1, result[i]]);
     // }
 
-    res.send(rows);
+    res.json(rows);
   } catch (err) {
     await db.query(`ROLLBACK;`);
     console.error("Query execution error:", err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json("Internal Server Error");
   }
 });
 
 // 게시글 수정
 router.put("/:category/:id", async (req, res) => {
   try {
-    let category = categoryFinder(req.params.category);
     const postId = req.params.id;
-    const userId = req.body.userId;
-    const title = req.body.title;
-    const content = req.body.content;
-    const tags = req.body.tags;
+
+    const { userId } = req.body;
+    const title = xss(req.body.title);
+    const content = xss(req.body.content);
+    const tags = xss(req.body.tags);
 
     const selectSql = `SELECT * FROM boardsview bv WHERE bv.category = ? AND bv.id = ? AND bv.userId = ?;`;
-
     const [rows, fields] = await db.query(selectSql, [
       category,
       postId,
@@ -147,44 +145,57 @@ router.put("/:category/:id", async (req, res) => {
     if (rows > 0) {
       const postSql = `UPDATE posts SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?`;
       const tagSql = `UPDATE tags SET name = ? WHERE postId = ? AND id = ?`;
-
       const [rows, fields] = await db.query(postSql, [title, content, postId]);
       // for (let key in tags) {
       //   const [rows, fields] = await db.query(sql, [tags[key], postId, tagId]);
       // }
-      res.send(rows);
+      res.json(rows);
     }
   } catch (err) {
     console.error("Query execution error:", err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json("Internal Server Error");
   }
 });
 
 // 게시글 삭제
 router.delete("/:category/:id", async (req, res) => {
   try {
-    let category = categoryFinder(req.params.category);
     const postId = req.params.id;
-    const userId = req.body.userId;
+    const { userId } = req.body;
+    let category = categoryFinder(req.body.category);
 
-    const selectSql = `SELECT * FROM boardsview bv WHERE bv.category = ? AND bv.id = ? AND bv.userId = ?;`;
+    const postSql = `DELETE FROM ${category} WHERE id = ?`;
 
-    const [rows, fields] = await db.query(selectSql, [
-      category,
-      postId,
-      userId,
-    ]);
+    const [rows, fields] = await db.query(postSql, [postId]);
 
     if (rows > 0) {
       const postSql = `DELETE FROM ${category} WHERE category = ? AND id = ?`;
 
       const [rows, fields] = await db.query(postSql, [category, postId]);
-      res.send(rows);
+      res.json(rows);
     }
+    res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json("Internal Server Error");
   }
 });
+
+function categoryFinder(category) {
+  switch (category) {
+    case "discuss":
+      return "discuss";
+    case "qna":
+      return "questions";
+    case "group":
+      return "teams";
+    case "event":
+      return "calendars";
+    case "articles":
+      return "articles";
+    default:
+      return category;
+  }
+}
 
 module.exports = router;

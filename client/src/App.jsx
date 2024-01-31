@@ -21,7 +21,7 @@ import GroupPage, { loader as GroupLoader } from "./pages/group";
 // import SignupPage from "./pages/addinfo";
 
 // import Postdetail from "./pages/Postdetail";
-import PostdetailPage, { loader as postLoader } from "./pages/PostdetailPage";
+import PostdetailPage, { loader as postLoader } from "./pages/PostDetailPage";
 import GroupdetailPage, {
   loader as groupLoader,
 } from "./pages/GroupdetailPage";
