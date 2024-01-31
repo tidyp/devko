@@ -1,14 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const categoryFinder = require("../../utils/categoryFinder");
 
-// 댓글 목록 보기
-router.get("/:postId", async (req, res) => {
+// 메뉴별 댓글 목록 보기
+router.get("/:category/:postId", async (req, res) => {
   try {
+    let category = categoryFinder(req.params.category);
     const postId = req.params.postId;
 
     const sql = `
-    SELECT c.postId AS postId
+    SELECT c.category
+        , c.postId AS postId
         , c.id AS commentId
         , c.mainId AS mainId
         , c.content AS content
@@ -20,11 +23,11 @@ router.get("/:postId", async (req, res) => {
         , uv.grade AS grade
     FROM comments c
     LEFT OUTER JOIN usersView uv ON c.userId = uv.id
-    WHERE c.postId = ?
-    ORDER BY c.postId, c.id, c.mainId, c.createdAt ASC
+    WHERE c.category = ? AND c.postId = ?
+    ORDER BY c.category, c.postId, c.id, c.mainId, c.createdAt ASC
     `;
 
-    const [rows, fields] = await db.query(sql, [postId]);
+    const [rows, fields] = await db.query(sql, [category, postId]);
 
     const itemsPerPage = 10;
     const page = parseInt(req.params.page) || 1;
@@ -47,16 +50,23 @@ router.get("/:postId", async (req, res) => {
 });
 
 // 댓글 작성
-router.post("/:postId/:id", async (req, res) => {
+router.post("/:category/:postId/:id", async (req, res) => {
   try {
+    let category = categoryFinder(req.params.category);
     const postId = req.params.postId;
     const commentId = req.params.id;
     const mainId = commentId || 0;
     const { userId, content } = req.body;
 
-    const sql = `INSERT INTO comments (userId, postId, mainId, content, createdAt, updatedAt) VALUES (?, ?, ?, ?, NOW(), NOW())`;
+    const sql = `INSERT INTO comments (category, mainId, content, createdAt, updatedAt, userId, postId) VALUES (?, ?, ?, NOW(), NOW(), ?, ?)`;
 
-    const result = await db.query(sql, [userId, postId, mainId, content]);
+    const result = await db.query(sql, [
+      category,
+      mainId,
+      content,
+      userId,
+      postId,
+    ]);
 
     res.json(result);
   } catch (err) {
@@ -66,13 +76,15 @@ router.post("/:postId/:id", async (req, res) => {
 });
 
 // 댓글 수정
-router.put("/:id", async (req, res) => {
+router.put("/:category/:postId/:id", async (req, res) => {
   try {
+    let category = categoryFinder(req.params.category);
+    const postId = req.params.postId;
     const commentId = req.params.id;
     const content = req.body.content;
     const updatedAt = new Date();
 
-    const updateSql = `UPDATE comments SET content = ?, updatedAt = ? WHERE id = ?`;
+    const updateSql = `UPDATE comments SET category = ?, postId = ?, commentId = ?, content = ?, updatedAt = ? WHERE id = ?`;
 
     const [rows, fields] = await db.query(updateSql, [
       content,

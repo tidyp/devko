@@ -16,12 +16,14 @@ router.get("/", async (req, res) => {
   }
 });
 
-// 포스트별 태그 보기
-router.get("/:postId", async (req, res) => {
+// 각 메뉴 포스트별 태그 보기
+router.get("/:category/:postId", async (req, res) => {
   try {
     const postId = req.params.postId;
-    const sql = `Select * FROM tags WHERE postId = ?`;
-    const [rows, fields] = await db.query(sql, [postId]);
+    let category = categoryFinder(req.body.category);
+
+    const sql = `Select * FROM tags WHERE category = ? AND postId = ?`;
+    const [rows, fields] = await db.query(sql, [category, postId]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
@@ -51,11 +53,12 @@ router.post("/", async (req, res) => {
 });
 
 // 태그 수정
-router.put("/:postId", async (req, res) => {
+router.put("/:category/:postId", async (req, res) => {
   const postId = req.params.postId;
+  let category = categoryFinder(req.body.category);
   const tags = req.body.tags;
 
-  const sql = `UPDATE tags SET name = ? WHERE postId = ? AND id = ?`;
+  const sql = `UPDATE tags SET name = ? WHERE category = ? AND postId = ? AND id = ?`;
 
   try {
     for (let key in tags) {
@@ -70,8 +73,9 @@ router.put("/:postId", async (req, res) => {
 });
 
 // 태그 삭제
-router.delete("/:postId/:tagId", async (req, res) => {
+router.delete("/:category/:postId/:tagId", async (req, res) => {
   const postId = req.params.postId;
+  let category = categoryFinder(req.body.category);
   const tagId = req.params.tagId;
 
   const sql = `DELETE FROM tags WHERE postId = ? AND id = ?`;

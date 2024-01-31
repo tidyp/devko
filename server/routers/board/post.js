@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
 const xss = require("xss");
+const categoryFinder = require("../../utils/categoryFinder");
 
 // Explore 메뉴 - 게시글 전체 목록 보기
 router.get("/", async (req, res) => {
@@ -163,22 +164,5 @@ router.delete("/:category/:id", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
-function categoryFinder(category) {
-  switch (category) {
-    case "discuss":
-      return "discuss";
-    case "qna":
-      return "questions";
-    case "group":
-      return "teams";
-    case "event":
-      return "calendars";
-    case "articles":
-      return "articles";
-    default:
-      return category;
-  }
-}
 
 module.exports = router;
