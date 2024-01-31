@@ -48,12 +48,12 @@ const NaviBar = () => {
 
   return (
     <>
-      <nav className=" flex z-50 items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4">
+      <nav className=" z-50 flex items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4">
         <div className="flex w-[80rem] items-center justify-between px-8">
           {/* <div className="flex w-full items-center justify-between px-8"> */}
           <div className="text-base">
             <Link to="/">
-              <span className="font-semibold px-4">DEVKO</span>
+              <span className="px-4 font-semibold">DEVKO</span>
               {/* <img className="w-6" src="/images/logo2.png" alt="logo" /> */}
             </Link>
           </div>
@@ -71,7 +71,7 @@ const NaviBar = () => {
               discuss
             </NavLink>
             <NavLink
-              to="/qna/1"
+              to="/questions/1"
               className={({ isActive }) => (isActive ? activeLink : "")}
             >
               Q&amp;A
@@ -105,16 +105,15 @@ const NaviBar = () => {
                 onChange={handleSearchChange}
               />
             </form>
-            <VscBell className="text-xl"/>
-            <VscBellDot className="text-xl text-blue-70 animate-bounce"/>
+            <VscBell className="text-xl" />
+            <VscBellDot className="text-blue-70 animate-bounce text-xl" />
             {useruuid && (
               <div className="flex flex-row items-center gap-2 text-3xl">
                 {/* <Link to={`/userinfo`}> */}
                 <Link to={`/userinfo/${useruuid}`}>
                   <img
                     className="w-8 rounded-full"
-                    src={userImage}
-                    // src={`${userImage}`}
+                    src={userImage || `${userImage}`}
                     alt=""
                   />
                 </Link>
@@ -124,7 +123,11 @@ const NaviBar = () => {
               </div>
             )}
 
-            {!useruuid && <Link className="text-sm" to="login">로그인/회원가입</Link>}
+            {!useruuid && (
+              <Link className="text-sm" to="login">
+                로그인/회원가입
+              </Link>
+            )}
             {isDropdownOpen && (
               <div className=" w-30 item translate3d absolute right-0 top-10 flex flex-col rounded border bg-white p-2 px-4 shadow-md">
                 {userName && (

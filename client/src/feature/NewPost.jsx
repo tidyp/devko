@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import cookie from "react-cookies";
 import Button from "../components/Button";
 import Modal from "../components/Modal";
-import { useLocation, useNavigate } from "react-router-dom";
+import { redirect, useLocation, useNavigate } from "react-router-dom";
 
 import { formatDateDash } from "../utils/utils";
 
@@ -23,7 +23,7 @@ const NewPostForm = () => {
       : "discuss";
   console.log(tab);
   const username = cookie.load("uuid");
-  const navigate = useNavigate();
+  const navigate = useNavigate('/');
   const [newTag, setNewTag] = useState("");
   const [isEmpty, setIsEmpty] = useState(true);
 
@@ -42,6 +42,8 @@ const NewPostForm = () => {
     members: "",
     workPosition: "",
   });
+
+  useEffect(() => {}, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -81,6 +83,7 @@ const NewPostForm = () => {
     } catch (error) {
       console.error("Error creating post:", error);
     }
+    navigate("../");
   };
 
   const handleCancel = () => {

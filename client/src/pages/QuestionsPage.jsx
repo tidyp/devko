@@ -19,7 +19,7 @@ import AlertsBox from "../components/AlertsBox";
 import OnelineList from "../components/OnelineList";
 import Button from "../components/Button";
 
-const QnaPage = () => {
+const QuestionsPage = () => {
   const navigate = useNavigate();
 
   const posts = useLoaderData();
@@ -34,7 +34,7 @@ const QnaPage = () => {
 
   // 페이지이동
   const handlePageChange = (item) => {
-    navigate(`/Qna/${item}`);
+    navigate(`/questions/${item}`);
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -117,7 +117,7 @@ const QnaPage = () => {
   );
 };
 
-export default QnaPage;
+export default QuestionsPage;
 
 export async function loader({ params }) {
   console.log(params.id);

@@ -33,7 +33,7 @@ export async function readDiscussPosts(id) {
 // Reads: Qna 게시글 조회
 export async function readQnaPosts(id) {
   try {
-    const res = await fetch(`${API_URL}/post/qna/page/${id}`);
+    const res = await fetch(`${API_URL}/post/questions/page/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -124,7 +124,7 @@ export async function readComments(id) {
 
 // Read: Post detail 게시글 조회
 export async function readDetailPost(catogory, id) {
-  console.log(catogory, id)
+  console.log(catogory, id);
   try {
     const [detailResponse, commentsResponse] = await Promise.all([
       fetch(`${API_URL}/post/${catogory}/${id}`),
@@ -144,7 +144,6 @@ export async function readDetailPost(catogory, id) {
     const commentsData = await commentsResponse.json();
 
     return { discussDetail: detailData, discussComments: commentsData };
-
   } catch (error) {
     console.error(`Error: ${error.message}`);
     throw error;
@@ -204,13 +203,16 @@ export async function createGroupPost(postData) {
 
 // Update: 게시글 수정
 export async function updatePost(params) {
-  const res = await fetch(`${API_URL}/post/${params.postId}`, {
+  console.log(params)
+  console.log(params)
+  console.log(params)
+  const res = await fetch(`${API_URL}/post/${params.category}/${params.postId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      id: params.postId,
+      userId: params.userId,
       title: params.title,
       content: params.content,
     }),
@@ -225,9 +227,10 @@ export async function updatePost(params) {
 }
 
 // Delete: 게시글 삭제
-export async function deletePost(id) {
-  
-  const res = await fetch(`${API_URL}/post/${id}`, {
+export async function deletePost(category, id) {
+  console.log(`${category}, ${id}`);
+
+  const res = await fetch(`${API_URL}/post/${category}/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -276,12 +279,9 @@ export async function createComment({
   userId,
   commentId,
   commentContent,
-  category
+  category,
 }) {
-  console.log(postId,
-    userId,
-    commentId,
-    commentContent)
+  console.log(postId, userId, commentId, commentContent);
   const res = await fetch(`${API_URL}/comment/${commentId}`, {
     method: "POST",
     headers: {

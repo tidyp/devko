@@ -1,5 +1,6 @@
 import { readDetailPost, createComment } from "../api/apiDevko";
 import {
+  Outlet,
   useLoaderData,
   useLocation,
   useNavigate,
@@ -21,7 +22,7 @@ const PostDetailPage = () => {
   const postData = discussDetail[0];
   const commentsData = discussComments.currPageRows.slice().reverse();
   console.log(postData, commentsData);
-  console.log(postData)
+  console.log(postData);
   console.log(postData.id);
 
   const navigate = useNavigate();
@@ -83,6 +84,7 @@ const PostDetailPage = () => {
 
   return (
     <>
+      <Outlet />
       <div className="flex flex-col items-center justify-center gap-2 pt-8">
         <div className="flex w-[80rem] flex-col  items-start justify-center gap-4">
           <div className="flex w-full flex-col ">
@@ -113,7 +115,7 @@ const PostDetailPage = () => {
                   {isDropdownOpen && (
                     <div className="item translate3d absolute right-2 flex flex-col items-center justify-center rounded border bg-white p-2 px-4 shadow-md">
                       <span className="w-12 cursor-pointer">
-                        <Link to={`/edit/${postData.postId}`}>수정</Link>
+                        <Link to={`edit`}>수정</Link>
                       </span>
                       <span
                         className="w-12 cursor-pointer"
