@@ -47,7 +47,7 @@ const UserinfoPage = () => {
 
   return (
     <>
-      <div className="mt-8 flex flex-col items-center justify-center gap-2">
+      <div className="mt-8 h-fit flex flex-col items-center justify-center gap-2">
         <div className="flex w-[80rem] items-start justify-center gap-4">
           <ProfileBox />
           <div className="flex w-full flex-col items-center justify-center">

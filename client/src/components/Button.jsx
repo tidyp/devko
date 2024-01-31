@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-const Button = ({ color, onClick, children, px }) => {
+const Button = ({ color, onClick, children, px}) => {
   return (
     <button
       type="button"

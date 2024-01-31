@@ -17,7 +17,7 @@ import ArticlePage, { loader as articleLoader } from "./pages/ArticlePage";
 import EventPage, { loader as eventLoader } from "./pages/EventPape";
 // import Newevent  from "./feature/Newevent";
 
-import GroupPage from "./pages/group";
+import GroupPage, { loader as GroupLoader } from "./pages/group";
 // import SignupPage from "./pages/addinfo";
 
 // import Postdetail from "./pages/Postdetail";
@@ -110,6 +110,7 @@ const router = createBrowserRouter([
       {
         path: "/group",
         element: <GroupPage />,
+        loader: GroupLoader,
         children: [{ path: "write", element: <NewPost /> }],
       },
       {

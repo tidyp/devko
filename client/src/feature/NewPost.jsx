@@ -14,11 +14,14 @@ const categories = [
   { id: "group", label: "Group" },
 ];
 
-
 const NewPostForm = () => {
-  const loca = useLocation()
-  console.log(loca)
-  const tab = loca.pathname.split('/')[1] ? loca.pathname.split('/')[1] : 'discuss'
+  const loca = useLocation();
+  console.log(loca);
+  const tab =
+    loca.pathname.split("/")[1] !== "write"
+      ? loca.pathname.split("/")[1]
+      : "discuss";
+  console.log(tab);
   const username = cookie.load("uuid");
   const navigate = useNavigate();
   const [newTag, setNewTag] = useState("");
@@ -73,19 +76,8 @@ const NewPostForm = () => {
         return;
       }
 
-      if (formData.category === "group") {
-        const res = await axios.post(
-          "http://localhost:3000/api/team",
-          formData,
-        );
-        navigate("../");
-      } else {
-        const res = await axios.post(
-          "http://localhost:3000/api/post",
-          formData,
-        );
-        navigate("../");
-      }
+      const res = await axios.post("http://localhost:3000/api/post", formData);
+      navigate("../");
     } catch (error) {
       console.error("Error creating post:", error);
     }

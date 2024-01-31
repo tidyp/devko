@@ -45,10 +45,10 @@ export async function readQnaPosts(id) {
   }
 }
 
-// Reads: Event 게시글 조회
-export async function readEventPosts(id) {
+// Reads: Article 게시글 조회
+export async function readArticlePosts(id) {
   try {
-    const res = await fetch(`${API_URL}/post/event/${id}`);
+    const res = await fetch(`${API_URL}/post/articles/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -59,10 +59,27 @@ export async function readEventPosts(id) {
     throw error;
   }
 }
-// Reads: Article 게시글 조회
-export async function readArticlePosts(id) {
+
+
+// Reads: Event 게시글 조회
+export async function readEventPosts(id) {
   try {
-    const res = await fetch(`${API_URL}/post/articles/${id}`);
+    const res = await fetch(`${API_URL}/post/group/${id}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data. Status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    throw error;
+  }
+}
+
+// Reads: Event 게시글 조회
+export async function readTeamsPosts(id) {
+  try {
+    const res = await fetch(`${API_URL}/post/group/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
