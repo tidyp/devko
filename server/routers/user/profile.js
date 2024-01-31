@@ -32,7 +32,7 @@ router.get("/:userId", async (req, res) => {
       Select c.userId As commentID,
              c.content AS commentContent
       FROM users u
-      LEFT JOIN posts p ON p.userId = u.id
+      LEFT JOIN boardView bv ON bv.userId = u.id
       LEFT JOIN comments c ON c.userId = u.id
       WHERE u.id = ?
     `;
@@ -84,12 +84,12 @@ router.get("/:userId", async (req, res) => {
 router.get("/:userId/point", async (req, res) => {
   const sql = `
     SELECT uv.id AS userId, 
-          p.count AS postCnt,
+          bv.count AS postCnt,
           c.count AS commentCnt,
-          pt.count AS teamCnt
+          bvt.count AS teamCnt
     FROM usersView uv
-    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM posts GROUP BY userId) p ON uv.id = p.userId
-    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM posts WHERE posts.category = 'group' GROUP BY userId) pt ON uv.id = pt. userId
+    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM boardView GROUP BY userId) p ON uv.id = p.userId
+    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM boardView WHERE posts.category = 'group' GROUP BY userId) bvt ON uv.id = pt. userId
     LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM comments GROUP BY userId) c ON uv.id = c.userId
     WHERE uv.id =?
   `;
