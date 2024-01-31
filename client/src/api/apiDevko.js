@@ -60,7 +60,6 @@ export async function readArticlePosts(id) {
   }
 }
 
-
 // Reads: Event 게시글 조회
 export async function readEventPosts(id) {
   try {
@@ -99,6 +98,64 @@ export async function readTeamsPosts(id) {
 export async function readPost(id) {
   try {
     const res = await fetch(`${API_URL}/post/discuss/${id}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data. Status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    throw error;
+  }
+}
+export async function readComments(id) {
+  try {
+    const res = await fetch(`${API_URL}/post/discuss/${id}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data. Status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    throw error;
+  }
+}
+
+// Read: Post detail 게시글 조회
+export async function readDetailPost(catogory, id) {
+  console.log(catogory, id)
+  try {
+    const [detailResponse, commentsResponse] = await Promise.all([
+      fetch(`${API_URL}/post/${catogory}/${id}`),
+      fetch(`${API_URL}/comment/${catogory}/${id}`),
+    ]);
+    if (!detailResponse.ok) {
+      throw new Error(
+        `Failed to fetch qna details. Status: ${detailResponse.status}`,
+      );
+    }
+    if (!commentsResponse.ok) {
+      throw new Error(
+        `Failed to fetch comments. Status: ${commentsResponse.status}`,
+      );
+    }
+    const detailData = await detailResponse.json();
+    const commentsData = await commentsResponse.json();
+
+    return { discussDetail: detailData, discussComments: commentsData };
+
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    throw error;
+  }
+}
+
+// Read: Discuss 게시글 조회
+
+export async function readDiscussComments(id) {
+  try {
+    const res = await fetch(`${API_URL}/comment/discuss/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -201,22 +258,6 @@ export async function readUser(id) {
 export async function searchResult(id) {
   try {
     const res = await fetch(`${API_URL}/search/${id}`);
-    if (!res.ok) {
-      throw new Error(`Failed to fetch data. Status: ${res.status}`);
-    }
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.error(`Error: ${error.message}`);
-    throw error;
-  }
-}
-
-// Reads: 댓글 조회
-
-export async function readComments(id) {
-  try {
-    const res = await fetch(`${API_URL}/comment/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }

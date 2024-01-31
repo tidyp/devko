@@ -10,8 +10,8 @@ const categoryFinder = (category) => {
       return "calendars";
     case "articles":
       return "articles";
-    default:
-      return category;
+    // default:
+    //   return category;
   }
 };
 
