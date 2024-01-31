@@ -7,18 +7,19 @@ router.get("/:input", async (req, res) => {
   try {
     const input = req.params.input;
     const sql = `
-    SELECT p.id AS id
-        , p.category AS category
-        , p.title AS title
-        , p.content AS content
-        , p.createdAt AS createdAt
-        , p.updatedAt AS updatedAt
-        , u.id AS userId
-        , u.userName AS userName
-        , u.profileImage AS profileImage
-    FROM posts p
-    LEFT OUTER JOIN users u ON p.userId = u.id
-    WHERE u.userName LIKE ? OR p.title LIKE ? OR p.content LIKE ?
+    SELECT bv.id AS id
+        , bv.category AS category
+        , bv.title AS title
+        , bv.content AS content
+        , bv.createdAt AS createdAt
+        , bv.updatedAt AS updatedAt
+        , uv.id AS userId
+        , uv.userName AS userName
+        , uv.profileImage AS profileImage
+        , uv.grade AS grade
+    FROM boardsView bv
+    LEFT OUTER JOIN usersView uv ON bv.userId = uv.id
+    WHERE u.userName LIKE ? OR bv.title LIKE ? OR bv.content LIKE ?
     `;
 
     const [rows, fields] = await db.query(sql, [
