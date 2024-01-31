@@ -15,7 +15,7 @@ const Post = ({ post }) => {
 
   const useruuid = cookie.load("uuid");
 
-  const data = formatDate(post.createdAt);
+  const date = formatDate(post.createdAt);
 
   function getRandomColor() {
     const letters = "0123456789ABCDEF";
@@ -95,11 +95,13 @@ const Post = ({ post }) => {
   };
 
   return (
-    <div className="m-2 flex h-fit w-full items-start justify-start gap-5 rounded-[10px] bg-slate-50 box-border p-12">
-
+    <div className="m-2 box-border flex h-fit w-full items-start justify-start rounded-2xl bg-slate-50 p-12">
       {/* 프로필, 글 */}
       <div className="flex w-full flex-col justify-between gap-8">
-        <div className="flex items-center justify-center gap-2.5 self-stretch">
+        <div>
+          <span className="bg-black font-bold uppercase text-white rounded-full px-4">{post.category}</span>
+        </div>
+        <div className="flex items-center justify-start gap-3">
           <Link className="h-12 w-12" to={`/userinfo/${post.userId}`}>
             {/* <img
                 className="h-12 w-12 rounded-lg"
@@ -120,14 +122,14 @@ const Post = ({ post }) => {
           </Link>
 
           <div className="flex h-14  basis-0 flex-col items-start justify-center">
-            <div className="w-[50rem] truncate text-2xl font-semibold text-black">
+            <div className="w-[50rem] truncate text-xl font-semibold text-black">
               {post.title}
             </div>
             <div className="flex items-center justify-end gap-2.5">
               <div className="text-sm font-semibold text-blue-700">
                 {post.userName || `DevKo`}
               </div>
-              <div className="text-sm font-semibold text-zinc-500">{data}</div>
+              <div className="text-sm font-semibold text-zinc-500">{date}</div>
             </div>
           </div>
         </div>
@@ -162,7 +164,7 @@ const Post = ({ post }) => {
           <GoComment />
           <span>{post.commentCnt > 0 ? post.commentCnt : 0}</span>
           <GoEye />
-          <span>{post.viewCnt}</span>
+          <span>{post.viewCnt > 0 ? post.viewCnt : 0}</span>
           {post.likeUser === useruuid ? (
             <GoHeartFill
               className="scale-150 transform text-red-600 hover:scale-150"
@@ -171,7 +173,7 @@ const Post = ({ post }) => {
           ) : (
             <GoHeart className="hover:scale-150" onClick={handleLikeClick} />
           )}
-          <span>{post.likeCnt}</span>
+          <span>{post.likeCnt > 0 ? post.likeCnt : 0}</span>
         </div>
       </div>
     </div>

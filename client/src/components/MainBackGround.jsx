@@ -6,6 +6,7 @@ import Banner from "../components/Banner";
 import { loadSlim } from "tsparticles-slim";
 import { Link } from "react-router-dom";
 import cookie from "react-cookies";
+import Button from "./Button";
 
 const MainBackGround = ({ children }) => {
   const [mainText, setMainText] = useState();
@@ -43,11 +44,9 @@ const MainBackGround = ({ children }) => {
 
         {isLogin ? (
           <Link to="/write">
-            <button className="rounded-full bg-black px-12 py-2 text-sm text-white shadow-lg">
-              <div className="flex items-center">
-                <div>Add Post</div>
-              </div>
-            </button>
+            <Button color="bg-black" px="12" className="text-3xl">
+              Add Post
+            </Button>
           </Link>
         ) : (
           <button

@@ -11,7 +11,10 @@ import Button from "../components/Button";
 
 const EventPape = () => {
   const data = useLoaderData();
-  const filterData = data.filter((item) => item.category === "event");
+  console.log(data.currPageRows);
+  const filterData = data.currPageRows.filter(
+    (item) => item.category === "calendars",
+  );
 
   function transformData(data) {
     return {
@@ -24,6 +27,7 @@ const EventPape = () => {
 
   const [today, setToday] = useState(new Date());
   const [eventData, setEventData] = useState([]);
+  console.log(eventData);
 
   useEffect(() => {
     const events = [];
@@ -71,7 +75,10 @@ const EventPape = () => {
           dayCounter++;
         }
       }
-      calendar.push(week);
+      // Add this filter to remove arrays containing only null values
+      if (!week.every((day) => day === null)) {
+        calendar.push(week);
+      }
     }
 
     return calendar;
@@ -91,10 +98,11 @@ const EventPape = () => {
 
   return (
     <>
+      {console.log(generateCalendar())}
       <Outlet />
       <div className="mt-16 flex w-full flex-col items-center justify-center gap-2 ">
         <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold">
-          <h2>GROUP</h2>
+          <h2>EVENT</h2>
         </div>
         <div className="my- flex w-[80rem] items-center justify-between px-4">
           <ul className="flex items-start gap-2 text-left text-xl font-semibold">
@@ -102,10 +110,14 @@ const EventPape = () => {
             <li>채용공고</li>
             <li>직업교육</li>
           </ul>
-          <Button color="bg-black">글 작성</Button>
+          <Link to="write">
+            <Button color="bg-black" px="8">
+              글 작성
+            </Button>
+          </Link>
         </div>
         <div className="flex w-[82rem] flex-col items-start justify-center gap-4">
-          <div className="mt-2 w-full rounded bg-white ">
+          <div className="mt-2 flex w-full flex-col rounded bg-white ">
             <div className="mt-2 flex justify-between border-b p-2">
               <span className="text-lg font-bold">
                 {today.toLocaleString("default", {
@@ -144,18 +156,17 @@ const EventPape = () => {
                 {generateCalendar().map((week, rowEventPape) => (
                   <tr className="h-20 text-center" key={rowEventPape}>
                     {week.map((day, dayEventPape) => (
-                      // TODO: 주간 컴포넌트
                       <td
                         key={dayEventPape}
-                        className="flex-40 cursor-pointer overflow-auto border p-1 transition duration-500 hover:bg-gray-300"
+                        className="w-44 cursor-pointer overflow-auto border transition duration-500 hover:bg-gray-300"
                       >
                         <div className="flex-col overflow-hidden">
                           <div>
-                            <span className="text-gray-500 ">
+                            <span className="text-gray-500">
                               {day !== null ? day.day : ""}
                             </span>
                           </div>
-                          <div className="bottom h-30 flex w-44 flex-grow cursor-pointer py-1 ">
+                          <div className="bottom h-30 flex  flex-grow cursor-pointer py-1">
                             {day && day.data && (
                               // TODO: 링크
                               <div
@@ -164,6 +175,18 @@ const EventPape = () => {
                                 <span>{day.data.title}</span>
                               </div>
                             )}
+                            {/* {day &&
+                              day.data &&
+                              (<span>{day.date.title}</span>)[day.data].map(
+                                (event) => (
+                                  <div
+                                    key={event.title}
+                                    className={`w-full bg-blue-400 text-sm text-white`}
+                                  >
+                                    <span>{event.title}</span>
+                                  </div>
+                                ),
+                              )} */}
                           </div>
                         </div>
                       </td>
@@ -194,13 +217,11 @@ const EventPape = () => {
 
 export default EventPape;
 
-export async function loader() {
+export async function loader({ params }) {
   try {
-    const board = await readEventPosts();
-    return board;
+    const data = await readEventPosts(params.id);
+    return data;
   } catch (error) {
-    console.error("Error fetching posts:", error);
-    // loader-fetch-요청실패
     return "연결실패";
   }
 }

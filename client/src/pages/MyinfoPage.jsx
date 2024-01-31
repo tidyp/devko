@@ -84,13 +84,32 @@ const MyinfoPage = () => {
         )}
       </div>
 
+      {/* <input
+        type="file"
+        name="profileImage"
+        onChange={handleInputChangeImage}
+      /> */}
+
       <input
+        id="hiddenInput"
+        className="hidden"
         type="file"
         name="profileImage"
         onChange={handleInputChangeImage}
       />
+      <button
+        className="mt-8 rounded-full border bg-black px-8 py-2 text-white shadow-2xl duration-300 hover:scale-105 hover:bg-white hover:text-black"
+        type="button"
+        onClick={() => document.getElementById("hiddenInput").click()}
+      >
+        프로필 파일 선택
+      </button>
 
-      <form className="mt-8 flex flex-col gap-8" onSubmit={handleEditSubmit}>
+      <form
+        encType="multipart/form-data"
+        className="mt-8 flex flex-col gap-8"
+        onSubmit={handleEditSubmit}
+      >
         <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
           <label>username:</label>
           <input

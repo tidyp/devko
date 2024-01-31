@@ -23,6 +23,10 @@ const NaviBar = () => {
   const userImage = cookie.load("userImage");
 
   const clickLogout = () => {
+    cookie.remove("googleImage", { path: "/" });
+    cookie.remove("googleId", { path: "/" });
+    cookie.remove("naverImage", { path: "/" });
+    cookie.remove("naverId", { path: "/" });
     cookie.remove("uuid", { path: "/" });
     cookie.remove("userName", { path: "/" });
     cookie.remove("userImage", { path: "/" });
@@ -73,10 +77,10 @@ const NaviBar = () => {
               Q&amp;A
             </NavLink>
             <NavLink
-              to="/news"
+              to="/article"
               className={({ isActive }) => (isActive ? activeLink : "")}
             >
-              news
+              article
             </NavLink>
             <NavLink
               to="event"
@@ -127,7 +131,7 @@ const NaviBar = () => {
                     <span className=" cursor-pointer" onClick={clickLogout}>
                       로그아웃
                     </span>
-                    <Link className="" to={`/myinfo`}>
+                    <Link className="" to={`/myinfo/${useruuid}`}>
                       내 정보
                     </Link>
                   </>

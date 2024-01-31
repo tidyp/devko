@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
 
-const Button = ({ color, onClick, children }) => {
+const Button = ({ color, onClick, children, px}) => {
   return (
     <button
       type="button"
-      className={`rounded-full border text-white px-4 py-2 ${color}`}
+      className={`rounded-full border text-white px-${px} py-2 ${color} shadow-md`}
       onClick={onClick}
     >
       {children}

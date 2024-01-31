@@ -1,6 +1,22 @@
 const API_URL = "http://localhost:3000/api";
 
-// Reads: 게시글 조회
+// Reads: 전체 게시글 조회
+export async function readPosts() {
+  try {
+    const res = await fetch(`${API_URL}/post`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data. Status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.log(error.message);
+    console.error(`Error: ${error.message}`);
+    throw error;
+  }
+}
+
+// Reads: Discuss 게시글 조회
 export async function readDiscussPosts(id) {
   try {
     const res = await fetch(`${API_URL}/post/discuss/${id}`);
@@ -14,7 +30,7 @@ export async function readDiscussPosts(id) {
     throw error;
   }
 }
-// Reads: 게시글 조회
+// Reads: Qna 게시글 조회
 export async function readQnaPosts(id) {
   try {
     const res = await fetch(`${API_URL}/post/qna/${id}`);
@@ -28,10 +44,11 @@ export async function readQnaPosts(id) {
     throw error;
   }
 }
-// Reads: 게시글 조회
-export async function readPosts() {
+
+// Reads: Article 게시글 조회
+export async function readArticlePosts(id) {
   try {
-    const res = await fetch(`${API_URL}/post`);
+    const res = await fetch(`${API_URL}/post/articles/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -42,6 +59,41 @@ export async function readPosts() {
     throw error;
   }
 }
+
+
+// Reads: Event 게시글 조회
+export async function readEventPosts(id) {
+  try {
+    const res = await fetch(`${API_URL}/post/group/${id}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data. Status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    throw error;
+  }
+}
+
+// Reads: Event 게시글 조회
+export async function readTeamsPosts(id) {
+  try {
+    const res = await fetch(`${API_URL}/post/group/${id}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data. Status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    throw error;
+  }
+}
+
+// ------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
 
 // Read: 게시글 조회
 export async function readPost(id) {
@@ -68,7 +120,6 @@ export async function createPost(postData) {
     body: JSON.stringify(postData),
   });
 
-  
   if (!res.ok) {
     throw new Error(`Failed to create post. Status: ${res.status}`);
   }
@@ -86,7 +137,6 @@ export async function createGroupPost(postData) {
     body: JSON.stringify(postData),
   });
 
-  
   if (!res.ok) {
     throw new Error(`Failed to create post. Status: ${res.status}`);
   }
@@ -217,7 +267,6 @@ export async function deleteComment() {
   return data;
 }
 
-
 // READ: userinfo
 // -----------------------------------------------------------------
 export async function readUserinfo(id) {
@@ -234,18 +283,18 @@ export async function readUserinfo(id) {
   }
 }
 
-// READ: Event
-// -----------------------------------------------------------------
-export async function readEventPosts() {
-  try {
-    const res = await fetch(`${API_URL}/calendar`);
-    if (!res.ok) {
-      throw new Error(`Failed to fetch data. Status: ${res.status}`);
-    }
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.error(`Error: ${error.message}`);
-    throw error;
-  }
-}
+// // READ: Event
+// // -----------------------------------------------------------------
+// export async function readEventPosts() {
+//   try {
+//     const res = await fetch(`${API_URL}/calendar`);
+//     if (!res.ok) {
+//       throw new Error(`Failed to fetch data. Status: ${res.status}`);
+//     }
+//     const data = await res.json();
+//     return data;
+//   } catch (error) {
+//     console.error(`Error: ${error.message}`);
+//     throw error;
+//   }
+// }

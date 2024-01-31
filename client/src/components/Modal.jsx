@@ -14,7 +14,7 @@ const Modal = ({ children, onClose }) => {
   }, []);
 
   return createPortal(
-    <dialog className="modal" ref={dialog} onClose={onClose}>
+    <dialog className="modal bg-none" ref={dialog} onClose={onClose}>
       {children}
     </dialog>,
     document.getElementById("modal"),
