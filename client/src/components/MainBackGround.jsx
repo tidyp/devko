@@ -7,6 +7,7 @@ import { loadSlim } from "tsparticles-slim";
 import { Link } from "react-router-dom";
 import cookie from "react-cookies";
 import Button from "./Button";
+import Modal from "./Modal";
 
 const MainBackGround = ({ children }) => {
   const [mainText, setMainText] = useState();
@@ -49,14 +50,21 @@ const MainBackGround = ({ children }) => {
             </Button>
           </Link>
         ) : (
-          <button
-            className="rounded-full bg-black px-12 py-2 text-sm text-white shadow-lg"
-            onClick={handleOpen}
-          >
-            <div className="flex items-center">
-              <div>Add Post</div>
-            </div>
-          </button>
+          <>
+            {/* <Modal>
+            dwd
+          </Modal> */}
+            <button
+              className="rounded-full bg-black px-12 py-2 text-sm text-white shadow-lg"
+              onClick={handleOpen}
+            >
+              <div className="flex items-center">
+                <div>Add Post</div>
+              </div>
+            </button>
+            <div className="mt-12 text-left w-[80rem]">
+              <strong>Particles</strong> by Vincent Garreau</div>
+            </>
         )}
       </div>
       <Particles

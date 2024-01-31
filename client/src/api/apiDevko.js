@@ -19,7 +19,7 @@ export async function readPosts() {
 // Reads: Discuss 게시글 조회
 export async function readDiscussPosts(id) {
   try {
-    const res = await fetch(`${API_URL}/post/discuss/${id}`);
+    const res = await fetch(`${API_URL}/post/discuss/page/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -33,7 +33,7 @@ export async function readDiscussPosts(id) {
 // Reads: Qna 게시글 조회
 export async function readQnaPosts(id) {
   try {
-    const res = await fetch(`${API_URL}/post/qna/${id}`);
+    const res = await fetch(`${API_URL}/post/qna/page/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -48,7 +48,7 @@ export async function readQnaPosts(id) {
 // Reads: Article 게시글 조회
 export async function readArticlePosts(id) {
   try {
-    const res = await fetch(`${API_URL}/post/articles/${id}`);
+    const res = await fetch(`${API_URL}/post/articles/page/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -64,7 +64,7 @@ export async function readArticlePosts(id) {
 // Reads: Event 게시글 조회
 export async function readEventPosts(id) {
   try {
-    const res = await fetch(`${API_URL}/post/group/${id}`);
+    const res = await fetch(`${API_URL}/post/event/page/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -79,7 +79,7 @@ export async function readEventPosts(id) {
 // Reads: Event 게시글 조회
 export async function readTeamsPosts(id) {
   try {
-    const res = await fetch(`${API_URL}/post/group/${id}`);
+    const res = await fetch(`${API_URL}/post/group/page/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -98,7 +98,7 @@ export async function readTeamsPosts(id) {
 // Read: 게시글 조회
 export async function readPost(id) {
   try {
-    const res = await fetch(`${API_URL}/post/${id}`);
+    const res = await fetch(`${API_URL}/post/discuss/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
