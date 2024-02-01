@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const PopTag = ({ name }) => {
+const PopTag = ({ name, tagCnt }) => {
   return (
     <>
       <div className="flex flex-col items-start justify-start gap-2.5">
@@ -9,7 +9,7 @@ const PopTag = ({ name }) => {
           <Link to={`search/${name}`}>{`# ${name}`}</Link>
         </div>
         <div className="inline-flex items-center justify-start gap-2">
-          {`${name.toLocaleString()} posted`}
+          {`${tagCnt.toLocaleString()} posted`}
         </div>
       </div>
     </>

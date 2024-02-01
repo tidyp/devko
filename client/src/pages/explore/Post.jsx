@@ -47,9 +47,10 @@ const Post = ({ post }) => {
           } else {
             return (
               <span
+                // className="rounded-lg px-4 py-1 bg-gray-100"
                 className="rounded-lg px-4 py-1"
                 key={index}
-                style={{ backgroundColor: getRandomColor() }}
+                // style={{ backgroundColor: getRandomColor() }}
               >
                 #{el.trim()}
               </span>

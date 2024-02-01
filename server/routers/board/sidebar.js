@@ -6,7 +6,7 @@ const db = require("../../config/db");
 router.get("/", async (req, res) => {
   try {
     const tagsql = `
-        Select name, Count(name) FROM tags GROUP BY name ORDER BY Count(name) DESC LIMIT 5
+        Select name, Count(name) AS tagCnt FROM tags GROUP BY name ORDER BY Count(name) DESC LIMIT 5
     `;
     const toppostsql = `
         Select tv.userName, Count(tv.postCnt) 
