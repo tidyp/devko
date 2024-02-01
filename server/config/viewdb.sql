@@ -62,3 +62,21 @@ LEFT OUTER JOIN (SELECT category, postId, SUM(count) AS count FROM likes GROUP B
 LEFT OUTER JOIN views v ON b.id = v.postId AND b.category = v.category
 ORDER BY b.createdAt ASC
 ;
+
+SELECT * FROM postsView;
+
+-- 커뮤니티 점수 보기
+DROP VIEW IF EXISTS devko.totalwritesView;
+
+CREATE VIEW totalwritesView AS
+SELECT uv.id AS userId, 
+          bv.count AS postCnt,
+          c.count AS commentCnt,
+          bvt.count AS teamCnt
+FROM usersView uv
+LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM boardsView GROUP BY userId) bv ON uv.id = bv.userId
+LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM boardsView bv WHERE bv.category = 'group' GROUP BY userId) bvt ON uv.id = bvt. userId
+LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM comments GROUP BY userId)
+;
+
+SELECT * FROM totalwritesView;
