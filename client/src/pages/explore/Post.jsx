@@ -67,7 +67,7 @@ const Post = ({ post }) => {
         },
         body: JSON.stringify({
           userId: id,
-          isLiked: true,
+          isLiked: false,
         }),
       });
 

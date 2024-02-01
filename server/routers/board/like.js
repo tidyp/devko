@@ -21,16 +21,20 @@ router.get("/:category/:postId", async (req, res) => {
 router.post("/:category/:postId", async (req, res) => {
   console.log(req.params.category)
   console.log(req.params.postId)
+  console.log(req.body.isLiked)
   try {
     const postId = req.params.postId;
     const category = categoryFinder(req.params.category);
     const userId = req.body.userId;
     const { isLiked } = req.body;
     const increment = isLiked ? 1 : -1;
+    console.log(increment)
 
-    const sql = `UPDATE likes SET count = count + ?, userId = ? WHERE category = ? AND postId = ?`;
+    console.log(increment, userId, category, +postId)
+    const sql = `INSERT INTO likes (count, userId, category, postId) VALUSE (?, ?, ?, ?)`;
+    // const sql = `UPDATE likes SET count = count + ?, userId = ? WHERE category = ? AND postId = ?`;
 
-    const [rows, fields] = await db.query(sql, [increment, userId, postId]);
+    const [rows, fields] = await db.query(sql, [increment, userId, category, postId]);
     res.send(rows);
   } catch (err) {
     console.error("Query execution error:", err);
