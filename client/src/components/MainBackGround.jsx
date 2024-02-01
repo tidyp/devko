@@ -38,22 +38,27 @@ const MainBackGround = ({ children }) => {
     <div className="relative w-full">
       <div className="absolute mt-24 flex w-full flex-col items-center justify-center gap-8 rounded-3xl">
         {/* <span className="m-auto flex text-7xl text-black">Devko</span> */}
-        <div className="flex flex-col gap-4 text-sm tracking-widest	">
+        <div className="flex flex-col items-center gap-4 text-sm	tracking-widest">
           <span>혁신적인 아이디어와 열정을 공유하는 개발자들의 공간,</span>
-          <span>"함께 성장하며 협업하는 개발자 커뮤니티입니다."</span>
+          <span>함께 성장하며 협업하는 개발자 커뮤니티</span>
         </div>
 
         {isLogin ? (
-          <Link to="/write">
-            <Button color="bg-black" px="12" className="text-3xl">
-              Add Post
-            </Button>
-          </Link>
+          <>
+            <Link to="/write">
+              <Button color="bg-black" px="12" className="text-3xl">
+                Add Post
+              </Button>
+            </Link>
+            <div className="mt-12 w-[80rem] text-left text-sm">
+              <strong>Particles</strong> by Vincent Garreau
+            </div>
+          </>
         ) : (
           <>
             {/* <Modal>
-            dwd
-          </Modal> */}
+              <dialog>dwd</dialog>
+            </Modal> */}
             <button
               className="rounded-full bg-black px-12 py-2 text-sm text-white shadow-lg"
               onClick={handleOpen}
@@ -62,13 +67,14 @@ const MainBackGround = ({ children }) => {
                 <div>Add Post</div>
               </div>
             </button>
-            <div className="mt-12 text-left w-[80rem]">
-              <strong>Particles</strong> by Vincent Garreau</div>
-            </>
+            <div className="mt-12 w-[80rem] text-left text-sm">
+              <strong>Particles</strong> by Vincent Garreau
+            </div>
+          </>
         )}
       </div>
       <Particles
-        className="my-12 h-72  border-b border-b-[#d3d3d3]"
+        className="my-12 h-72  border-b border-b-gray-300"
         id="tsparticles"
         init={particlesInit}
         loaded={particlesLoaded}

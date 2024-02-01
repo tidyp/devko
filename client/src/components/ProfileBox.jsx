@@ -38,7 +38,7 @@ const ProfileBox = () => {
 
   return (
     <>
-      <div className="box-border flex h-auto w-[30rem] flex-col items-center justify-center gap-2 rounded-2xl bg-slate-50 p-4">
+      <div className="box-border flex h-auto w-[30rem] flex-col items-center justify-center gap-2 rounded-2xl bg-neutral-50 p-4">
         <div className="text-base font-semibold text-black">
           {data.userName}
         </div>
@@ -75,23 +75,23 @@ const ProfileBox = () => {
             <p>{data.selfDescription}</p>
           </section>
           <footer>
-            <p className="font-semibold">커뮤니티 활동</p>
+            <p className="font-semibold flex">커뮤니티 활동</p>
             <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-lg bg-slate-50 py-4">
+              <div className="rounded-lg bg-neutral-100 p-4">
                 <p>postPoint</p>
                 <p className="text-xl font-semibold">{userPoint.postPoint}</p>
               </div>
-              <div className="rounded-lg bg-slate-50 py-4">
+              <div className="rounded-lg bg-neutral-100 p-4">
                 <p>commentPoint</p>
                 <p className="text-xl font-semibold">
                   {userPoint.commentPoint}
                 </p>
               </div>
-              <div className="rounded-lg bg-slate-50 py-4">
+              <div className="rounded-lg bg-neutral-100 p-4">
                 <p>teamPoint</p>
                 <p className="text-xl font-semibold">{userPoint.teamPoint}</p>
               </div>
-              <div className="rounded-lg bg-slate-50 py-4">
+              <div className="rounded-lg bg-neutral-100 p-4">
                 <p>totalPoint</p>
                 <p className="text-xl font-semibold">{userPoint.totalPoint}</p>
               </div>

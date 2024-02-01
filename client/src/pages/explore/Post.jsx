@@ -60,14 +60,14 @@ const Post = ({ post }) => {
 
   const fetchData = async (id, isLike) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/like/${post.postId}`, {
+      const res = await fetch(`http://localhost:3000/api/like/${post.category}/${post.postId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           userId: id,
-          isLiked: isLike,
+          isLiked: true,
         }),
       });
 
@@ -95,7 +95,7 @@ const Post = ({ post }) => {
   };
 
   return (
-    <div className="m-2 box-border flex h-fit w-full items-start justify-start rounded-2xl bg-slate-50 p-12">
+    <div className="mx-2 mb-4 box-border flex h-fit w-full items-start justify-start rounded-2xl bg-neutral-50 p-12">
       {/* 프로필, 글 */}
       <div className="flex w-full flex-col justify-between gap-8">
         <div>
@@ -170,6 +170,14 @@ const Post = ({ post }) => {
           <span>{post.commentCnt > 0 ? post.commentCnt : 0}</span>
           <GoEye />
           <span>{post.viewCnt > 0 ? post.viewCnt : 0}</span>
+          {isClickLike ? (
+            <GoHeartFill
+              className="scale-150 transform text-red-600 hover:scale-150"
+              onClick={handleLikeClick}
+            />
+          ) : (
+            <GoHeart className="hover:scale-150" onClick={handleLikeClick} />
+          )}
           {post.likeUser === useruuid ? (
             <GoHeartFill
               className="scale-150 transform text-red-600 hover:scale-150"

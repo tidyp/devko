@@ -100,7 +100,7 @@ const MyinfoPage = () => {
         onChange={handleInputChangeImage}
       />
       <button
-        className="mt-8 rounded-full border bg-black px-8 py-2 text-white shadow-2xl duration-300 hover:scale-105 hover:bg-white hover:text-black"
+        className="mt-8 rounded-full border bg-black px-8 py-2 text-white shadow-2xl"
         type="button"
         onClick={() => document.getElementById("hiddenInput").click()}
       >

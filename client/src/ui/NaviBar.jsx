@@ -8,12 +8,34 @@ import { VscBell, VscBellDot } from "react-icons/vsc";
 
 import { useState } from "react";
 
+const dummy = [
+  {
+    isRead: true,
+    profileImage:
+      "https://th.bing.com/th/id/OIG3.dtxuqRx_wh5efePBGiVs?w=1024&h=1024&rs=1&pid=ImgDetMain",
+    title: "공지사항",
+    content: "가입을 환영합니다.",
+  },
+  {
+    isRead: false,
+    profileImage:
+      "https://th.bing.com/th/id/OIG3.dtxuqRx_wh5efePBGiVs?w=1024&h=1024&rs=1&pid=ImgDetMain",
+    title: "안내사항",
+    content: "새로운 소식이 있어요.",
+  },
+];
+const unreadCount = dummy.filter((item) => !item.isRead).length;
+
 const NaviBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
+  const [isNotificationOpen, setNotificationOpen] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
 
+  const toggleNotification = () => {
+    setNotificationOpen((prev) => !prev);
+  };
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
   };
@@ -48,16 +70,15 @@ const NaviBar = () => {
 
   return (
     <>
-    
-      <nav className="z-50 flex items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4 sm:visible">
+      {/* <nav className="z-50 flex items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4"> */}
 
-      </nav>
+      {/* </nav> */}
       <nav className="z-50 flex items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4 sm:invisible">
         <div className="flex w-[80rem] items-center justify-between px-8">
           {/* <div className="flex w-full items-center justify-between px-8"> */}
           <div className="text-base">
             <Link to="/">
-              <span className="px-4 font-semibold">DEVKO</span>
+              <span className="px-4 text-lg font-semibold">DEVKO</span>
               {/* <img className="w-6" src="/images/logo2.png" alt="logo" /> */}
             </Link>
           </div>
@@ -109,8 +130,39 @@ const NaviBar = () => {
                 onChange={handleSearchChange}
               />
             </form>
-            <VscBell className="text-xl" />
-            <VscBellDot className="text-blue-70 animate-bounce text-xl" />
+            <div className="cursor-pointer" onClick={toggleNotification}>
+              {unreadCount > 0 && (
+                <VscBellDot className="text-blue-70 animate-bounce text-xl" />
+              )}
+              {unreadCount < 0 && <VscBell className="text-xl" />}
+            </div>
+            {/* {!isNotificationOpen && (
+            )} */}
+            {isNotificationOpen && (
+              <div className=" w-30 item translate3d absolute right-4 top-14 flex flex-col rounded border bg-white p-2 shadow-md">
+                <p className="font-bold mb-4">알림</p>
+                {dummy.map((item) => (
+                  <div className="flex border-b-2 gap-2">
+                    <img
+                      className="h-12 w-12 rounded-full"
+                      src={item.profileImage}
+                      alt=""
+                    />
+                    <div className="flex w-fit flex-col border-b-2">
+                      <span>{item.title}</span>
+                      <span>{item.content}</span>
+                    </div>
+                  </div>
+                ))}
+                {/* {userName && (
+                  <>
+                    <div>뭐</div>
+                    <div>뭐</div>
+                  </>
+                )} */}
+              </div>
+            )}
+
             {useruuid && (
               <div className="flex flex-row items-center gap-2 text-3xl">
                 {/* <Link to={`/userinfo`}> */}
@@ -133,7 +185,7 @@ const NaviBar = () => {
               </Link>
             )}
             {isDropdownOpen && (
-              <div className=" w-30 item translate3d absolute right-0 top-10 flex flex-col rounded border bg-white p-2 px-4 shadow-md">
+              <div className=" w-30 item translate3d absolute right-0 top-14 flex flex-col rounded border bg-white p-2 px-4 shadow-md">
                 {userName && (
                   <>
                     <span className=" cursor-pointer" onClick={clickLogout}>
