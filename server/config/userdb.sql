@@ -1,7 +1,7 @@
 -- VSCode Mysql 접속: mysql.exe -uroot -p
 -- SQL CLI COMMAND: mysql -u root -p devko < userdb.sql
 
-DROP DATABASE IF EXISTS devko;
+-- DROP DATABASE IF EXISTS devko;
 CREATE DATABASE IF NOT EXISTS devko;
 USE devko;
 

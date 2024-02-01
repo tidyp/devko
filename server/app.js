@@ -40,7 +40,7 @@ app.use("/api/like", require("./routers/board/like"));
 app.use("/api/search", require("./routers/board/search"));
 app.use("/api/team", require("./routers/board/team"));
 app.use("/api/calendar", require("./routers/board/calendar"));
-app.use("/api/news", require("./routers/news/news"));
+app.use("/api/article", require("./routers/article/article"));
 
 app.use("/api/user", require("./routers/user/user"));
 

@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const categoryFinder = require("../../utils/categoryFinder");
 
 // 게시글 좋아요 보기
 router.get("/:category/:postId", async (req, res) => {

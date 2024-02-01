@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
+const categoryFinder = require("../../utils/categoryFinder");
 const xss = require("xss");
 
 // 게시글 전체 보기
@@ -88,14 +89,14 @@ router.post("/", async (req, res) => {
     const { userId } = req.body;
     const title = xss(req.body.title);
     const content = xss(req.body.content);
-    const tags = xss(req.body.tags);
+    const tags = xss(req.body.tags).split("#").slice(1);
     let category = categoryFinder(req.body.category);
 
     const postSql = `INSERT INTO ${category} (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
     const setSql = `SET @postId = LAST_INSERT_ID();`;
     const likeSql = `INSERT INTO likes (postId) VALUES (@postId)`;
     const viewSql = `INSERT INTO views (postId, category) VALUES (@postId, ?)`;
-    const tagSql = `INSERT INTO tags (postId, id, name) VALUES (@postId, ?, ?);`;
+    const tagSql = `INSERT INTO tags (postId, category, id, name) VALUES (@postId, ?, ?, ?);`;
 
     await db.query(`START TRANSACTION;`);
     const [rows, fields] = await db.query(postSql, [
@@ -107,15 +108,12 @@ router.post("/", async (req, res) => {
     await db.query(setSql);
     await db.query(likeSql);
     await db.query(viewSql, [category]);
+
+    for (i = 0; i < tags.length; i++) {
+      await db.query(tagSql, [category, i + 1, tags[i]]);
+    }
+
     await db.query(`COMMIT;`);
-
-    // const result = tags.split("#").filter(function (item) {
-    //   return item.length > 0;
-    // });
-
-    // for (i = 0; i < result.length; i++) {
-    //   await db.query(tagSql, [i + 1, result[i]]);
-    // }
 
     res.json(rows);
   } catch (err) {
@@ -161,12 +159,13 @@ router.put("/:category/:id", async (req, res) => {
 router.delete("/:category/:id", async (req, res) => {
   try {
     const postId = req.params.id;
-    const { userId } = req.body;
     let category = categoryFinder(req.params.category);
+    const { userId } = req.body;
 
-    const postSql = `DELETE FROM ${category} WHERE id = ?`;
+    const postSql = `DELETE FROM ${category} WHERE ${category} = ? AND id = ?`;
+    const tagSql = `DELETE FROM ${category} WHERE ${category} = ? AND postId = ? AND id = ?`;
 
-    const [rows, fields] = await db.query(postSql, [postId]);
+    const [rows, fields] = await db.query(postSql, [category, postId]);
 
     if (rows > 0) {
       const postSql = `DELETE FROM ${category} WHERE category = ? AND id = ?`;
@@ -180,22 +179,5 @@ router.delete("/:category/:id", async (req, res) => {
     res.status(500).json("Internal Server Error");
   }
 });
-
-function categoryFinder(category) {
-  switch (category) {
-    case "discuss":
-      return "discuss";
-    case "qna":
-      return "questions";
-    case "group":
-      return "teams";
-    case "event":
-      return "calendars";
-    case "articles":
-      return "articles";
-    default:
-      return category;
-  }
-}
 
 module.exports = router;

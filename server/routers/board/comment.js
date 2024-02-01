@@ -1,22 +1,22 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const db = require('../../config/db');
-const categoryFinder = require('../../utils/categoryFinder');
+const db = require("../../config/db");
+const categoryFinder = require("../../utils/categoryFinder");
 
 // 전체 댓글 보기
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const sql = `SELECT * FROM comments ORDER BY createdAt ASC`;
     const [rows, fields] = await db.query(sql);
     res.json(rows);
   } catch (err) {
-    console.error('Query execution error:', err);
-    res.status(500).json('Internal Server Error');
+    console.error("Query execution error:", err);
+    res.status(500).json("Internal Server Error");
   }
 });
 
 // 메뉴별 댓글 목록 보기
-router.get('/:category/:postId', async (req, res) => {
+router.get("/:category/:postId", async (req, res) => {
   try {
     let category = categoryFinder(req.params.category);
     const postId = req.params.postId;
@@ -56,13 +56,13 @@ router.get('/:category/:postId', async (req, res) => {
       page,
     });
   } catch (err) {
-    console.error('Query execution error:', err);
-    res.status(500).json('Internal Server Error');
+    console.error("Query execution error:", err);
+    res.status(500).json("Internal Server Error");
   }
 });
 
 // 댓글 작성
-router.post('/:id', async (req, res) => {
+router.post("/:id", async (req, res) => {
   try {
     const commentId = req.params.id;
     const mainId = commentId || 0;
@@ -81,13 +81,13 @@ router.post('/:id', async (req, res) => {
 
     res.json(result);
   } catch (err) {
-    console.error('Query execution error:', err);
-    res.status(500).json('Internal Server Error');
+    console.error("Query execution error:", err);
+    res.status(500).json("Internal Server Error");
   }
 });
 
 // 댓글 수정
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const commentId = req.params.id;
     const { userId, content } = req.body;
@@ -114,13 +114,13 @@ router.put('/:id', async (req, res) => {
       res.json(rows);
     }
   } catch (err) {
-    console.error('Query execution error:', err);
-    res.status(500).json('Internal Server Error');
+    console.error("Query execution error:", err);
+    res.status(500).json("Internal Server Error");
   }
 });
 
 // 댓글 삭제
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const commentId = req.params.id;
     const sql = `DELETE FROM comments WHERE id = ?`;
@@ -129,8 +129,8 @@ router.delete('/:id', async (req, res) => {
 
     res.json(rows);
   } catch (err) {
-    console.error('Query execution error:', err);
-    res.status(500).json('Internal Server Error');
+    console.error("Query execution error:", err);
+    res.status(500).json("Internal Server Error");
   }
 });
 
