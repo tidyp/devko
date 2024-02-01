@@ -86,7 +86,7 @@ router.get("/:category/:id", async (req, res) => {
 // 게시글 쓰기
 router.post("/", async (req, res) => {
   try {
-    console.log(req.body.tags)
+    console.log(req.body.tags);
     const { userId } = req.body;
     const title = xss(req.body.title);
     const content = xss(req.body.content);
@@ -94,10 +94,9 @@ router.post("/", async (req, res) => {
     let category = categoryFinder(req.body.category);
 
     const postSql = `INSERT INTO ${category} (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, now(), now());`;
-    const setSql = `SET @postId = LAST_INSERT_ID();`;
-    const likeSql = `INSERT INTO likes (postId) VALUES (@postId)`;
+    const setSql = `SET @postId = LAST_INSERT_ID()`;
     const viewSql = `INSERT INTO views (postId, category) VALUES (@postId, ?)`;
-    const tagSql = `INSERT INTO tags (postId, category, id, name) VALUES (@postId, ?, ?, ?);`;
+    const tagSql = `INSERT INTO tags (postId, category, name) VALUES (@postId, ?, ?)`;
 
     await db.query(`START TRANSACTION;`);
     const [rows, fields] = await db.query(postSql, [
@@ -107,7 +106,6 @@ router.post("/", async (req, res) => {
       category,
     ]);
     await db.query(setSql);
-    await db.query(likeSql);
     await db.query(viewSql, [category]);
 
     for (i = 0; i < tags.length; i++) {
@@ -163,15 +161,17 @@ router.delete("/:category/:id", async (req, res) => {
     let category = categoryFinder(req.params.category);
     const { userId } = req.body;
 
-    const postSql = `DELETE FROM ${category} WHERE ${category} = ? AND id = ?`;
-    const tagSql = `DELETE FROM ${category} WHERE ${category} = ? AND postId = ? AND id = ?`;
+    const postSql = `DELETE FROM ${category} WHERE category = ? AND id = ?`;
 
     const [rows, fields] = await db.query(postSql, [category, postId]);
 
     if (rows > 0) {
       const postSql = `DELETE FROM ${category} WHERE category = ? AND id = ?`;
+      const tagSql = `DELETE FROM ${category} WHERE category = ? AND postId = ?`;
 
       const [rows, fields] = await db.query(postSql, [category, postId]);
+      await db.query(tagSql, [category, postId]);
+
       res.json(rows);
     }
     res.send(rows);

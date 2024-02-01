@@ -19,23 +19,28 @@ router.get("/:category/:postId", async (req, res) => {
 
 // 게시글 좋아요 한번 클릭하면 추가, 두번 클릭하면 삭제
 router.post("/:category/:postId", async (req, res) => {
-  console.log(req.params.category)
-  console.log(req.params.postId)
-  console.log(req.body.isLiked)
   try {
+    const userId = req.body.userId;
     const postId = req.params.postId;
     const category = categoryFinder(req.params.category);
-    const userId = req.body.userId;
-    const { isLiked } = req.body;
-    const increment = isLiked ? 1 : -1;
-    console.log(increment)
 
-    console.log(increment, userId, category, +postId)
-    const sql = `INSERT INTO likes (count, userId, category, postId) VALUSE (?, ?, ?, ?)`;
-    // const sql = `UPDATE likes SET count = count + ?, userId = ? WHERE category = ? AND postId = ?`;
+    const selectSql = `SELECT * FROM likes WHERE category = ? AND postId = ? AND userId = ?`;
 
-    const [rows, fields] = await db.query(sql, [increment, userId, category, postId]);
-    res.send(rows);
+    const [rows, fields] = await db.query(selectSql, [
+      category,
+      postId,
+      userId,
+    ]);
+
+    if (rows.length > 0) {
+      const deleteSql = `DELETE FROM likes WHERE category = ? AND postId = ? AND userId = ?`;
+      await db.query(deleteSql, [category, postId, userId]);
+      res.json("좋아요 취소");
+    } else {
+      const insertSql = `INSERT INTO likes (category, postId, userId) VALUES (?, ?, ?)`;
+      await db.query(insertSql, [category, postId, userId]);
+      res.json("좋아요");
+    }
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).send("Internal Server Error");

@@ -56,7 +56,7 @@ router.delete("/:category/:postId/:tagId", async (req, res) => {
   let category = categoryFinder(req.params.category);
   const tagId = req.params.tagId;
 
-  const sql = `DELETE FROM tags WHERE category = ? AND postId = ? AND id = ?`;
+  const tagSql = `DELETE FROM tags WHERE category = ? AND postId = ? AND id = ?`;
 
   try {
     const [rows, fields] = await db.query(sql, [postId, tagId]);
