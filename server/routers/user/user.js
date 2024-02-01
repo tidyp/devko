@@ -107,7 +107,7 @@ router.put('/:id', upload.single('profileImage'), async (req, res) => {
 
 router.get('/images/:filename', (req, res) => {
   const filename = req.params.filename;
-  const filepath = path.join(__dirname, '..', '..', 'src', 'profileimages', filename);
+  const filepath = path.join(__dirname, 'public', 'src', 'profileimages', filename);
 
   res.setHeader('Content-Type', 'image/png');
   res.sendFile(filepath);
