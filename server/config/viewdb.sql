@@ -57,7 +57,7 @@ SELECT b.id AS postId
 FROM boardsView b
 LEFT OUTER JOIN usersView u ON b.userId = u.id
 LEFT OUTER JOIN (SELECT category, postId, COUNT(id) AS count FROM comments GROUP BY category, postId) c ON b.id = c.postId AND b.category = c.category
-LEFT OUTER JOIN tags t ON b.id = t.postId AND b.category = t.category
+LEFT OUTER JOIN (SELECT category, postId, GROUP_CONCAT(name) AS name FROM devko.tags GROUP BY category, postId) t ON b.id = t.postId AND b.category = t.category
 LEFT OUTER JOIN (SELECT category, postId, SUM(count) AS count FROM likes GROUP BY category, postId) l ON b.id = l.postId AND b.category = l.category
 LEFT OUTER JOIN views v ON b.id = v.postId AND b.category = v.category
 ORDER BY b.createdAt ASC
