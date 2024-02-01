@@ -67,9 +67,10 @@ router.post('/', upload.single('profileImage'), async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   const sql = `
-  SELECT * FROM users u WHERE u.id = ?
+    SELECT * FROM users u WHERE u.id = ?
   `;
-  const userId = req.params.id
+  const userId = req.params.id;
+
   try {
     const [row, fields] = await db.query(sql, [userId]);
 
@@ -77,40 +78,31 @@ router.get('/:id', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
-  }
+  };
 });
 
-router.put('/:id', upload.single('profileImage'), (req, res) => {
+router.put('/:id', upload.single('profileImage'), async (req, res) => {
   const userId = req.params.id;
   const { userName, interestPosition, interestArea, selfDescription } = req.body;
-  const profileImage = req.file ? req.file.path : null;
-  if (profileImage) {
-    db.query(
-      'UPDATE users SET userName = ?, profileImage = ?, interestPosition = ?, interestArea = ?, selfDescription = ?, updatedAt = NOW(), WHERE id = ?',
-      [userName, profileImage, interestPosition, interestArea, selfDescription, userId],
-      (err) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).json({ error: 'Internal Server Error' });
-        };
-        res.redirect('/');
-        // res.status(200).json({ message: 'User updated successfully' });
-      }
-    );
-  } else {
-    db.query(
-      'UPDATE users SET userName = ?, interestPosition = ?, interestArea = ?, selfDescription = ? WHERE id = ?',
-      [userName, interestPosition, interestArea, selfDescription, userId],
-      (err) => {
-        if (err) {
-          console.error(err);
-          return res.status(500).json({ error: 'Internal Server Error' });
-        }
-        res.redirect('/:id');
-        // res.status(200).json({ message: 'User updated successfully' });
-      }
-    );
+
+  const oldProfileImage = path.join(__dirname, "public", "src", "profileimages", req.body.path);
+
+  if (oldProfileImage) {
+    fs.unlinkSync(oldProfileImage);
   };
+
+  const profileImage = req.file ? req.file.path : null;
+  const updateSql = profileImage
+      ? 'UPDATE users SET userName = ?, profileImage = ?, interestPosition = ?, interestArea = ?, selfDescription = ?, updatedAt = NOW() WHERE id = ?'
+      : 'UPDATE users SET userName = ?, interestPosition = ?, interestArea = ?, selfDescription = ?, updatedAt = NOW() WHERE id = ?';
+
+    const updateParams = profileImage
+      ? [userName, profileImage, interestPosition, interestArea, selfDescription, userId]
+      : [userName, interestPosition, interestArea, selfDescription, userId];
+
+    await db.query(updateSql, updateParams);
+
+    res.redirect('/');
 });
 
 router.get('/images/:filename', (req, res) => {
