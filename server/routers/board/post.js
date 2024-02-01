@@ -86,6 +86,7 @@ router.get("/:category/:id", async (req, res) => {
 // 게시글 쓰기
 router.post("/", async (req, res) => {
   try {
+    console.log(req.body.tags)
     const { userId } = req.body;
     const title = xss(req.body.title);
     const content = xss(req.body.content);

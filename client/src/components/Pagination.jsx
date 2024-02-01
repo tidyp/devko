@@ -24,7 +24,7 @@ const Pagination = ({ tab, curPage, totalPage }) => {
           className={`rounded-md px-4 py-2 ${
             curPage === 1
               ? "cursor-not-allowed bg-gray-300 text-gray-500"
-              : "focus:shadow-outline-blue bg-blue-500 text-white hover:bg-blue-600 focus:outline-none active:bg-blue-800"
+              : "focus:shadow-outline-blue bg-black text-white hover:bg-blue-600 focus:outline-none active:bg-blue-800"
           }`}
         >
           <MdKeyboardArrowLeft />
@@ -38,7 +38,7 @@ const Pagination = ({ tab, curPage, totalPage }) => {
           className={`rounded-md px-4 py-2 ${
             curPage === totalPages
               ? "cursor-not-allowed bg-gray-300 text-gray-500"
-              : "focus:shadow-outline-blue bg-blue-500 text-white hover:bg-blue-600 focus:outline-none active:bg-blue-800"
+              : "focus:shadow-outline-blue bg-black text-white hover:bg-blue-600 focus:outline-none active:bg-blue-800"
           }`}
         >
           <MdKeyboardArrowRight />

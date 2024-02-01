@@ -92,7 +92,7 @@ const PostDetailPage = () => {
       <div className="flex h-fit flex-col items-center justify-center gap-2 pt-8">
         <div className="flex w-[80rem] flex-col  items-start justify-center gap-4">
           <div className="flex w-full flex-col ">
-            <div className="flex flex-col gap-8 rounded-md bg-slate-50 p-12 text-start">
+            <div className="flex flex-col gap-8 rounded-md bg-neutral-50 p-12 text-start">
               <p className="text-gray-700">
                 <span className="rounded-full bg-black px-4 font-bold uppercase text-white">
                   {postData.category}
@@ -201,10 +201,10 @@ const PostDetailPage = () => {
           {commentsData.map((el) => (
             <div
               key={el.commentId}
-              className="mb-4 flex w-full justify-between rounded-md bg-gray-100 p-4"
+              className="flex w-full justify-between gap-2 rounded-md bg-neutral-50 p-4"
             >
               <img
-                className="className=h-8 w-8 rounded-full bg-gray-300"
+                className="className=h-8 w-8 rounded-full bg-neutral-50"
                 src={el.profileImage}
                 alt=""
               />
