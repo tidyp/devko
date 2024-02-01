@@ -5,13 +5,15 @@ import { Outlet, useLoaderData } from "react-router-dom";
 import Banner from "../../components/Banner";
 import MainBackGround from "../../components/MainBackGround";
 import ModalOld from "../../components/ModalOld";
-import PopTags from "../../components/PopTags";
-import TopWriters from "../../components/TopWriters";
+import Sidebar from "../../components/Sidebar";
+// import PopTags from "../../components/PopTags";
+// import TopWriters from "../../components/TopWriters";
 import cookie from "react-cookies";
 import PostList from "./PostList";
 import AlertsBox from "../../components/AlertsBox";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+
 
 const index = () => {
   const posts = useLoaderData();
@@ -35,8 +37,9 @@ const index = () => {
       <div className="flex w-[80rem] items-start justify-center gap-4">
         <div className="flex gap-2">
           <div className="flex flex-col gap-4">
-            <PopTags />
-            <TopWriters />
+            <Sidebar />
+            {/* <PopTags />
+            <TopWriters /> */}
           </div>
           {!isLogin && isOpen && (
             <ModalOld onClose={handleClose}>

@@ -35,6 +35,7 @@ app.use("/api/find", require("./routers/user/find"));
 
 app.use("/api/post", require("./routers/board/post"));
 app.use("/api/tag", require("./routers/board/tag"));
+app.use("/api/sidebar", require("./routers/board/sidebar"));
 app.use("/api/comment", require("./routers/board/comment"));
 app.use("/api/like", require("./routers/board/like"));
 app.use("/api/search", require("./routers/board/search"));

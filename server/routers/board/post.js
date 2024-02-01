@@ -109,7 +109,7 @@ router.post("/", async (req, res) => {
     await db.query(viewSql, [category]);
 
     for (i = 0; i < tags.length; i++) {
-      await db.query(tagSql, [category, i + 1, tags[i]]);
+      await db.query(tagSql, [category, tags[i]]);
     }
 
     await db.query(`COMMIT;`);

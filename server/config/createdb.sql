@@ -197,7 +197,7 @@ UNION (SELECT id, category, title, content, createdAt, updatedAt, userId FROM ar
 SELECT * FROM boardsView;
 
 -- 게시글 보기
--- DROP VIEW IF EXISTS devko.postsView;
+DROP VIEW IF EXISTS devko.postsView;
 
 CREATE VIEW postsView AS 
 SELECT b.id AS postId
