@@ -74,8 +74,8 @@ SELECT uv.id AS userId,
           bvt.count AS teamCnt
 FROM usersView uv
 LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM boardsView GROUP BY userId) bv ON uv.id = bv.userId
-LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM boardsView bv WHERE bv.category = 'group' GROUP BY userId) bvt ON uv.id = bvt. userId
-LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM comments GROUP BY userId)
+LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM boardsView bv WHERE bv.category = 'group' GROUP BY userId) bvt ON uv.id = bvt.userId
+LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM comments GROUP BY userId) c ON uv.id = c.userId
 ;
 
 SELECT * FROM totalwritesView;

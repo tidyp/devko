@@ -83,15 +83,7 @@ router.get("/:userId", async (req, res) => {
 
 router.get("/:userId/point", async (req, res) => {
   const sql = `
-    SELECT uv.id AS userId, 
-          bv.count AS postCnt,
-          c.count AS commentCnt,
-          bvt.count AS teamCnt
-    FROM usersView uv
-    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM boardsView GROUP BY userId) bv ON uv.id = bv.userId
-    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM boardsView bv WHERE bv.category = 'group' GROUP BY userId) bvt ON uv.id = bvt. userId
-    LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM comments GROUP BY userId) c ON uv.id = c.userId
-    WHERE uv.id =?
+    SELECT * FROM totalwritesView tv WHERE tv.userid =?
   `;
   const userId = req.params.userId;
   // const userId = 'd77faaa9-b197-4d8f-b897-eae3a4cd9b71';
