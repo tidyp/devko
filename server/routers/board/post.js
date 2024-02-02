@@ -162,14 +162,18 @@ router.delete("/:category/:id", async (req, res) => {
     const { userId } = req.body;
 
     const postSql = `DELETE FROM ${category} WHERE category = ? AND id = ?`;
+    const postSql = `DELETE FROM ${category} WHERE category = ? AND id = ?`;
 
     const [rows, fields] = await db.query(postSql, [category, postId]);
 
     if (rows > 0) {
       const postSql = `DELETE FROM ${category} WHERE category = ? AND id = ?`;
       const tagSql = `DELETE FROM ${category} WHERE category = ? AND postId = ?`;
+      const tagSql = `DELETE FROM ${category} WHERE category = ? AND postId = ?`;
 
       const [rows, fields] = await db.query(postSql, [category, postId]);
+      await db.query(tagSql, [category, postId]);
+
       await db.query(tagSql, [category, postId]);
 
       res.json(rows);
