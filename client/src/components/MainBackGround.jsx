@@ -13,8 +13,8 @@ const MainBackGround = ({ children }) => {
   const [mainText, setMainText] = useState();
 
   const isLogin = cookie.load("uuid");
-  console.log(isLogin);
   const [isOpen, setIsOpen] = useState(false);
+  console.log(isLogin, isOpen);
 
   const handleOpen = () => {
     setIsOpen((prev) => !prev);
@@ -42,17 +42,19 @@ const MainBackGround = ({ children }) => {
           <span>혁신적인 아이디어와 열정을 공유하는 개발자들의 공간,</span>
           <span>함께 성장하며 협업하는 개발자 커뮤니티</span>
         </div>
-        {!isLogin && isOpen && (
-          <Modal onClose={handleClose}>
-            <p className="py-10">로그인이 필요합니다.</p>
-            <Link to="/login" onClick={handleOpen}>
-              <button className="rounded-xl bg-indigo-700 p-4 text-white">
-                로그인하러가기
-              </button>
-            </Link>
+        {isOpen && !isLogin && (
+          <Modal>
+            <>
+              <p className="py-10">로그인이 필요합니다.</p>
+              <Link to="/login">
+                <button className="rounded-xl bg-indigo-700 p-4 text-white">
+                  로그인하러가기
+                </button>
+              </Link>
+            </>
           </Modal>
         )}
-        {!isLogin && isOpen ? (
+        {isLogin ? (
           <>
             <Link to="/write">
               <Button

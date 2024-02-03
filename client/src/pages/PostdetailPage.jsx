@@ -24,6 +24,7 @@ import { formatDateDash } from "../utils/utils";
 const PostDetailPage = () => {
   const navigate = useNavigate();
   const { discussDetail, discussComments } = useLoaderData(); // Load Data
+  console.log(discussDetail);
   const postData = discussDetail[0];
   const commentsData = discussComments.currPageRows.slice().reverse();
 
@@ -86,6 +87,9 @@ const PostDetailPage = () => {
     }
   };
 
+  const profileimg = `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${Math.floor(
+    Math.random() * 16,
+  )}`;
   return (
     <>
       <Outlet />
@@ -102,12 +106,7 @@ const PostDetailPage = () => {
                 <div className="flex items-center gap-4">
                   <img
                     className="className=h-16 w-16 rounded-full bg-gray-300"
-                    src={
-                      postData.profileImage ||
-                      `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${Math.floor(
-                        Math.random() * 16,
-                      )}`
-                    }
+                    src={postData.profileImage || profileimg}
                     alt=""
                   />
                   <div>

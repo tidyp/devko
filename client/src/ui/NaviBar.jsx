@@ -114,7 +114,7 @@ const NaviBar = () => {
               event
             </NavLink>
             <NavLink
-              to="group"
+              to="teams/1"
               className={({ isActive }) => (isActive ? activeLink : "")}
             >
               group

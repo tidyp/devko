@@ -18,6 +18,7 @@ router.get("/", async (req, res) => {
 
 // 해당 게시글 보기
 router.get("/:category/:id", async (req, res) => {
+  console.log(req.params.id, req.params.category)
   try {
     const postId = req.params.id;
     const category = categoryFinder(req.params.category);

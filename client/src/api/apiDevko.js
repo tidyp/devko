@@ -32,7 +32,7 @@ export async function readDiscussPosts(id) {
 // Reads: Qna 게시글 조회
 export async function readQnaPosts(id) {
   try {
-    const res = await fetch(`${API_URL}/post/questions/page/${id}`);
+    const res = await fetch(`${API_URL}/post/qna/page/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -62,7 +62,7 @@ export async function readArticlePosts(id) {
 // Reads: Event 게시글 조회
 export async function readEventPosts(id) {
   try {
-    const res = await fetch(`${API_URL}/post/event/page/${id}`);
+    const res = await fetch(`${API_URL}/calendar`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -74,10 +74,10 @@ export async function readEventPosts(id) {
   }
 }
 
-// Reads: Event 게시글 조회
+// Reads: Team 게시글 조회
 export async function readTeamsPosts(id) {
   try {
-    const res = await fetch(`${API_URL}/post/group/page/${id}`);
+    const res = await fetch(`${API_URL}/post/teams/page/${id}`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }
@@ -122,11 +122,12 @@ export async function readComments(id) {
 }
 
 // Read: Post detail 게시글 조회
-export async function readDetailPost(catogory, id) {
+export async function readDetailPost(category, id) {
+  console.log(category, id)
   try {
     const [detailResponse, commentsResponse] = await Promise.all([
-      fetch(`${API_URL}/post/${catogory}/${id}`),
-      fetch(`${API_URL}/comment/${catogory}/${id}`),
+      fetch(`${API_URL}/post/${category}/${id}`),
+      fetch(`${API_URL}/comment/${category}/${id}`),
     ]);
     if (!detailResponse.ok) {
       throw new Error(
@@ -138,6 +139,7 @@ export async function readDetailPost(catogory, id) {
         `Failed to fetch comments. Status: ${commentsResponse.status}`,
       );
     }
+    console.log(detailResponse);
     const detailData = await detailResponse.json();
     const commentsData = await commentsResponse.json();
 
@@ -201,20 +203,20 @@ export async function createGroupPost(postData) {
 
 // Update: 게시글 수정
 export async function updatePost(params) {
-  const res = await fetch(
-    `${API_URL}/post/${params.category}/${params.postId}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: params.userId,
-        title: params.title,
-        content: params.content,
-      }),
+  const url = `${API_URL}/post/${params.category}/${params.postId}`;
+  console.log(url);
+  const res = await fetch(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify({
+      userId: params.userId,
+      title: params.title,
+      content: params.content,
+    }),
+  });
+  console.log(res);
 
   if (!res.ok) {
     throw new Error(`Failed to create post. Status: ${res.status}`);
@@ -226,7 +228,6 @@ export async function updatePost(params) {
 
 // Delete: 게시글 삭제
 export async function deletePost(category, id) {
-
   const res = await fetch(`${API_URL}/post/${category}/${id}`, {
     method: "DELETE",
     headers: {
