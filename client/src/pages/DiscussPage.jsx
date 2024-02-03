@@ -31,7 +31,8 @@ const DiscussPage = () => {
       <div className="flex w-[80rem] items-start justify-center gap-4">
         {/* Posts */}
         <div className="flex w-full items-start justify-center">
-          {posts.length >= 0 && <AlertsBox>작성된 글이 없 습니다.</AlertsBox>}
+          {console.log(posts.length)}
+
           {posts.length < 0 && posts === "연결실패" ? (
             // connect fail
             <AlertsBox>서버에 연결되어있지 않습니다.</AlertsBox>
@@ -48,11 +49,16 @@ const DiscussPage = () => {
           )}
         </div>
       </div>
-      <Pagination
-        tab={pageTab}
-        curPage={posts.page}
-        totalPage={posts.totalPages}
-      />
+      {posts.length === undefined && posts.length <= 0 && (
+        <AlertsBox>작성된 글이 없 습니다.</AlertsBox>
+      )}
+      {posts.length !== undefined && (
+        <Pagination
+          tab={pageTab}
+          curPage={posts.page}
+          totalPage={posts.totalPages}
+        />
+      )}
     </div>
   );
 };
