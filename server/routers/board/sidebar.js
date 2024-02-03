@@ -9,23 +9,26 @@ router.get("/", async (req, res) => {
         Select name, Count(name) AS tagCnt FROM tags GROUP BY name ORDER BY Count(name) DESC LIMIT 5
     `;
     const toppostsql = `
-        Select tv.userName, Count(tv.postCnt) 
+        Select uv.userName, Count(tv.postCnt) 
         FROM totalwritesView tv
-        GROUP BY tv.userName
+        LEFT OUTER JOIN usersview uv ON tv.userId = uv.id
+        GROUP BY uv.userName
         ORDER BY Count(tv.postCnt) DESC LIMIT 5
     `;
 
     const topcommentsql = `
-        Select tv.userName, Count(tv.commentCnt) 
+        Select uv.userName, Count(tv.commentCnt) 
         FROM totalwritesView tv
-        GROUP BY tv.userName
+        LEFT OUTER JOIN usersview uv ON tv.userId = uv.id
+        GROUP BY uv.userName
         ORDER BY Count(tv.commentCnt) DESC LIMIT 5
     `;
 
     const topteamsql = `
-        Select tv.userName, Count(tv.teamCnt) 
+        Select uv.userName, Count(tv.teamCnt) 
         FROM totalwritesView tv
-        GROUP BY tv.userName
+        LEFT OUTER JOIN usersview uv ON tv.userId = uv.id
+        GROUP BY uv.userName
         ORDER BY Count(tv.teamcnt) DESC LIMIT 5
     `;
 
