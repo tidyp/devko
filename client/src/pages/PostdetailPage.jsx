@@ -76,12 +76,12 @@ const PostDetailPage = () => {
       console.error("Error deleting post:", error);
     }
   };
-
+console.log(postData)
   const clickdeletePost = async () => {
     try {
-      await deletePost(postData.postId);
-      window.location.reload();
-      // navigate("/");
+      await deletePost(postData.category, postData.id);
+      // window.location.reload();
+      navigate("/");
     } catch (error) {
       console.error("Error deleting post:", error);
     }
@@ -232,6 +232,7 @@ const PostDetailPage = () => {
           ))}
           {/* </div> */}
         </div>
+        
       </div>
     </>
   );

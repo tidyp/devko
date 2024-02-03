@@ -15,9 +15,9 @@ import { formatDateDash } from "../utils/utils";
 
 const categories = [
   { id: "discuss", label: "Discuss" },
-  { id: "questions", label: "questions" },
-  { id: "calendars", label: "calendars" },
-  { id: "teams", label: "teams" },
+  { id: "questions", label: "Q&A" },
+  { id: "event", label: "Event" },
+  { id: "teams", label: "Group" },
 ];
 
 const EditPostForm = () => {
@@ -254,7 +254,7 @@ const EditPostForm = () => {
             <div className="flex items-center justify-between gap-2">
               <input
                 name="tags"
-                placeholder="태그을 입력하세요(#으로 구분 최대 5개)"
+                placeholder="태그를 입력하세요(#으로 구분 최대 5개)"
                 className="w-full rounded-md border bg-gray-200 p-2"
                 required
                 value={formData.tags}

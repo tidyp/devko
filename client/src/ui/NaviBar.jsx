@@ -1,4 +1,6 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { FaUserCircle } from "react-icons/fa";
 
 import cookie from "react-cookies";
 
@@ -6,7 +8,7 @@ import { GoTriangleDown } from "react-icons/go";
 import { FaSearch } from "react-icons/fa";
 import { VscBell, VscBellDot } from "react-icons/vsc";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const dummy = [
   {
@@ -27,8 +29,11 @@ const dummy = [
 const unreadCount = dummy.filter((item) => !item.isRead).length;
 
 const NaviBar = () => {
+  const dropdownRef = useRef();
+
   const [searchQuery, setSearchQuery] = useState("");
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNotificationOpen, setNotificationOpen] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -57,6 +62,7 @@ const NaviBar = () => {
   };
 
   //
+  //
   const activeLink = "text-black font-bold";
   // 검색
   const handleSearchChange = (e) => {
@@ -68,21 +74,57 @@ const NaviBar = () => {
     navigate(`/search/${searchQuery}`);
   };
 
+  const handleMenuOpen = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
+  const mv = !isMenuOpen ? "hidden" : "block";
   return (
     <>
       {/* <nav className="z-50 flex items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4"> */}
 
       {/* </nav> */}
-      <nav className="z-50 flex items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4 sm:invisible">
-        <div className="flex w-[80rem] items-center justify-between px-8">
+
+      <nav className="z-50 flex items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4">
+        <div className="flex w-[80rem] items-center justify-between px-8 sm:flex-col">
           {/* <div className="flex w-full items-center justify-between px-8"> */}
-          <div className="text-base">
+          <div className="text-base sm:flex sm:w-full sm:items-center sm:justify-between">
+            <span
+              onClick={handleMenuOpen}
+              className="hidden text-lg font-semibold sm:block"
+            >
+              <GiHamburgerMenu />
+            </span>
             <Link to="/">
               <span className="px-4 text-lg font-semibold">DEVKO</span>
               {/* <img className="w-6" src="/images/logo2.png" alt="logo" /> */}
             </Link>
+            <span className="hidden text-lg font-semibold sm:block">
+              {!useruuid && (
+                <Link className="text-sm" to="login">
+                  <FaUserCircle />
+                </Link>
+              )}
+            </span>
+            {useruuid && (
+              <div className="flex hidden flex-row items-center gap-2 text-3xl sm:flex sm:text-sm">
+                {/* <Link to={`/userinfo`}> */}
+                <Link to={`/userinfo/${useruuid}`}>
+                  <img
+                    className="w-8 rounded-full sm:w-6"
+                    src={userImage || `${userImage}`}
+                    alt=""
+                  />
+                </Link>
+                <div onClick={toggleDropdown} className="cursor-pointer">
+                  <GoTriangleDown />
+                </div>
+              </div>
+            )}
           </div>
-          <div className="flex gap-12 text-base uppercase">
+          <div
+            className={`flex gap-12 text-base uppercase sm:w-full sm:flex-col sm:items-start sm:gap-2 sm:${mv} sm:flex`}
+          >
             <NavLink
               to="/"
               className={({ isActive }) => (isActive ? activeLink : "")}
@@ -120,7 +162,7 @@ const NaviBar = () => {
               group
             </NavLink>
           </div>
-          <div className="relative flex  items-center gap-4">
+          <div className="relative flex  items-center gap-4 sm:hidden">
             <FaSearch />
             <form onSubmit={handleSearchSubmit}>
               <input
@@ -140,9 +182,9 @@ const NaviBar = () => {
             )} */}
             {isNotificationOpen && (
               <div className=" w-30 item translate3d absolute right-4 top-14 flex flex-col rounded border bg-white p-2 shadow-md">
-                <p className="font-bold mb-4">알림</p>
+                <p className="mb-4 font-bold">알림</p>
                 {dummy.map((item) => (
-                  <div className="flex border-b-2 gap-2">
+                  <div className="flex gap-2 border-b-2">
                     <img
                       className="h-12 w-12 rounded-full"
                       src={item.profileImage}
@@ -185,7 +227,10 @@ const NaviBar = () => {
               </Link>
             )}
             {isDropdownOpen && (
-              <div className=" w-30 item translate3d absolute right-0 top-14 flex flex-col rounded border bg-white p-2 px-4 shadow-md">
+              <div
+                ref={dropdownRef}
+                className=" w-30 item translate3d absolute right-0 top-14 flex flex-col rounded border bg-white p-2 px-4 shadow-md"
+              >
                 {userName && (
                   <>
                     <span className=" cursor-pointer" onClick={clickLogout}>

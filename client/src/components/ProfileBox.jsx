@@ -34,6 +34,10 @@ const ProfileBox = () => {
     );
   }
 
+  const notWorking = () => {
+    alert("서비스 준비중 입니다.");
+  };
+
   const data = userData[0];
 
   return (
@@ -63,10 +67,16 @@ const ProfileBox = () => {
             </div>
           </header>
           <section className="flex items-center justify-center gap-2">
-            <button className="w-full rounded-md bg-black px-1 py-1 text-white tracking-widest">
+            <button
+              onClick={notWorking}
+              className="w-full rounded-md bg-black px-1 py-1 tracking-widest text-white"
+            >
               1:1챗
             </button>
-            <button className="w-full rounded-lg bg-black px-1 py-1 text-white tracking-widest">
+            <button
+              onClick={notWorking}
+              className="w-full rounded-lg bg-black px-1 py-1 tracking-widest text-white"
+            >
               팔로우
             </button>
           </section>
@@ -75,7 +85,7 @@ const ProfileBox = () => {
             <p>{data.selfDescription}</p>
           </section>
           <footer>
-            <p className="font-semibold flex">커뮤니티 활동</p>
+            <p className="flex font-semibold">커뮤니티 활동</p>
             <div className="grid grid-cols-2 gap-4">
               <div className="rounded-lg bg-neutral-100 p-4">
                 <p>postPoint</p>

@@ -7,45 +7,35 @@ import {
   FaRegArrowAltCircleRight,
 } from "react-icons/fa";
 
-const dummy = [
-  {
-    id: 6,
-    category: "event",
-    title: "dqwd",
-    content: "dwqdwq",
-    section: "qwdwq",
-    startDate: "2024-02-03T15:00:00.000Z",
-    endDate: "2024-02-14T15:00:00.000Z",
-    location: "wqd",
-    createdAt: "2024-02-03T16:47:08.000Z",
-    updatedAt: "2024-02-03T16:47:08.000Z",
-    userId: "d5dff2f2-98d6-4807-9496-0bba7c1ee9f6",
-  },
-  {
-    category: "event",
-    content: "dwqdwq",
-    createdAt: "2024-02-03T16:47:30.000Z",
-    endDate: "2024-02-14T15:00:00.000Z",
-    id: 7,
-    location: "wqd",
-    section: "qwdwq",
-    startDate: "2024-02-03T15:00:00.000Z",
-    title: "dqwd",
-    updatedAt: "2024-02-03T16:47:30.000Z",
-    userId: "d5dff2f2-98d6-4807-9496-0bba7c1ee9f6",
-  },
-];
 import Button from "../components/Button";
+
+import cookie from "react-cookies";
+
+import Modal from "../components/Modal";
 
 const EventPape = () => {
   const data = useLoaderData();
+  console.log(data[0]);
   const filterData = data[0];
-  const [selectday, setSelectday] = useState(new Date().getDate());
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const [selectday, setSelectday] = useState(null);
   const [today, setToday] = useState(new Date());
   const [eventData, setEventData] = useState([]);
   const [selectEvent, setSelectEvent] = useState([]);
+  console.log(eventData);
+  console.log(selectEvent);
 
   console.log(`selectday: ${selectday}`);
+
+  const isLogin = cookie.load("uuid");
+  const [isOpen, setIsOpen] = useState(false);
+  const handleOpen = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     const events = [];
@@ -64,7 +54,7 @@ const EventPape = () => {
       }
     });
     setEventData(events);
-  }, []);
+  }, [filterData]);
 
   function transformData(data) {
     return {
@@ -73,6 +63,9 @@ const EventPape = () => {
       day: new Date(data.startDate).getDate(),
       title: data.title,
       content: data.content,
+      location: data.location,
+      section: data.section,
+      detail: `/${data.category}/detail/${data.id}`,
     };
   }
 
@@ -121,17 +114,11 @@ const EventPape = () => {
     setToday(new Date(today.getFullYear(), today.getMonth() + 1, 1));
   };
   const handleDayEvent = (day) => {
-    // setSelectday({
-    //   day: day.day,
-    // });
+    setSelectday(day.day);
 
     const newSelectEvent = eventData.filter((event) => event.day === day.day);
     setSelectEvent(newSelectEvent);
   };
-
-  console.log(selectEvent);
-  console.log(eventData.filter((event) => event.day === 4));
-  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   return (
     <>
@@ -146,11 +133,39 @@ const EventPape = () => {
             <li>채용공고</li>
             <li>직업교육</li>
           </ul>
-          <Link to="write">
-            <Button color="bg-black" px="8">
-              글 작성
-            </Button>
-          </Link>
+          {isOpen && !isLogin && (
+            <Modal>
+              <div className="flex flex-col items-center justify-center">
+                <p className="py-10">로그인이 필요합니다.</p>
+                <Link className="flex flex-col gap-2 px-12" to="/login">
+                  <button className="rounded-xl bg-black p-4 text-white">
+                    로그인하러가기
+                  </button>
+                </Link>
+                <button
+                  className="rounded-xl bg-white p-4 text-black "
+                  onClick={handleClose}
+                >
+                  취소
+                </button>
+              </div>
+            </Modal>
+          )}
+          {isLogin ? (
+            <>
+              <Link to="write">
+                <Button color="bg-black" px="8" onClick={handleOpen}>
+                  글 작성
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Button color="bg-black" px="8" onClick={handleOpen}>
+                글 작성
+              </Button>
+            </>
+          )}
         </div>
         <div className="flex w-[82rem] flex-col items-start justify-center gap-4">
           <div className="mt-2 flex w-full flex-col rounded bg-white ">
@@ -175,11 +190,11 @@ const EventPape = () => {
             <table>
               <thead>
                 <tr>
-                  {dayNames.map((el, EventPape) => (
+                  {dayNames.map((el, index) => (
                     <th
-                      key={EventPape}
+                      key={index}
                       className={`w-auto border-r p-2 text-xs ${
-                        EventPape === dayNames.length - 1 ? "border-r-0" : ""
+                        index === dayNames.length - 1 ? "border-r-0" : ""
                       }`}
                     >
                       <span>{el}</span>
@@ -189,23 +204,31 @@ const EventPape = () => {
               </thead>
 
               <tbody>
-                {generateCalendar().map((week, rowEventPape) => (
-                  <tr className="h-20 text-center" key={rowEventPape}>
-                    {/* {console.log(week)}
-                    {console.log(week.dayEventPape)} */}
+                {generateCalendar().map((week, index) => (
+                  <tr className="h-20 text-center" key={`row-${index}`}>
                     {week.map((day, dayEventPape) => (
-                      <td className="w-44 border-2 p-4" key={dayEventPape}>
+                      <td
+                        className="w-44 border-2 p-4"
+                        key={`day-${index}-${dayEventPape}`}
+                      >
                         <div className="flex items-center justify-center">
-                          {/* 일 */}
                           <div>
                             <span
                               onClick={() => handleDayEvent(day)}
                               className={`flex h-16 w-16 cursor-pointer items-center justify-center overflow-auto  border transition duration-500 hover:bg-blue-200 ${
-                                day && day.data ? "bg-gray-200 rounded-full" : "border-none"
+                                day && day.data
+                                  ? "rounded-full border-none"
+                                  : "border-none"
                               }`}
                             >
-                              {/* 일-num */}
-                              {day !== null ? day.day : ""}
+                              <span className={`relative`}>
+                                {day !== null ? day.day : ""}
+                                {day && day.data && (
+                                  <sup
+                                    className={`absolute ml-1 rounded-full bg-rose-400 p-1`}
+                                  ></sup>
+                                )}
+                              </span>
                             </span>
                           </div>
                         </div>
@@ -216,25 +239,40 @@ const EventPape = () => {
               </tbody>
             </table>
           </div>
-          {/* 게시판 */}
-          <div className="flex w-full flex-col items-center justify-center">
-            <h2 className="text-lg ">{selectday.day}일 행사일정</h2>
-            <div className="flex flex-col gap-2">
-              {selectEvent.map((el) => (
-                <div className="flex gap-4" key={el.day}>
-                  <span>{el.year}</span>
-                  <span>{el.month}</span>
-                  <span>{el.day}</span>
-                  <span>{el.title}</span>
-                  <span>{el.content}</span>
-                </div>
-              ))}
 
-              {/* {selectday.date.map((el) => (
-                <li className="rounded-sm bg-blue-400 text-white">
-                  <span>{el.title}</span>
-                </li>
-              ))} */}
+          <div className="flex w-full flex-col items-center justify-center">
+            {console.log(selectEvent)}
+            {console.log(selectday)}
+
+            {!selectday && selectEvent.length <= 0 && (
+              <h2>달력을 눌러 일정을 확인하세요.</h2>
+            )}
+            {selectday && selectEvent.length <= 0 && (
+              <h2>{selectday}일 행사일정이 없습니다.</h2>
+            )}
+            {selectEvent.length > 0 && (
+              <h2 className="text-lg ">{selectday}일 행사일정</h2>
+            )}
+
+            <div className="flex w-full flex-col gap-2">
+              {selectEvent.map((el, index) => (
+                <Link to={`${el.detail}`}>
+                  <div
+                    className="flex w-full items-center justify-between gap-4 bg-gray-100 px-32"
+                    key={index}
+                  >
+                    <span>{el.title}</span>
+                    <span>{el.content}</span>
+                    <span>{el.location}</span>
+                    <span>{el.section}</span>
+                    <div>
+                      <span>{el.year}</span>
+                      <span>{el.month}</span>
+                      <span>{el.day}</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         </div>

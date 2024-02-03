@@ -9,9 +9,9 @@ import { formatDateDash } from "../utils/utils";
 
 const categories = [
   { id: "discuss", label: "Discuss" },
-  { id: "qna", label: "Q&A" },
+  { id: "questions", label: "Q&A" },
   { id: "event", label: "Event" },
-  { id: "group", label: "Group" },
+  { id: "teams", label: "Group" },
 ];
 
 const NewPostForm = () => {
@@ -95,9 +95,17 @@ const NewPostForm = () => {
   const handleCancel = () => {
     navigate("../");
   };
+  const handleTag = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      tags: "#",
+    }));
+  };
 
   return (
     <Modal>
+      {!username && navigate("/")}
+
       <div className="flex w-[50rem] flex-col items-center p-8">
         {/* <h2>Create a New Post</h2> */}
         {!isEmpty && (
@@ -141,7 +149,7 @@ const NewPostForm = () => {
             />
           </div>
 
-          {(formData.category === "event" || formData.category === "group") && (
+          {(formData.category === "event" || formData.category === "teams") && (
             <>
               <div className="flex w-full items-center justify-between gap-2">
                 <div className="flex  w-full items-center justify-between">
@@ -204,7 +212,7 @@ const NewPostForm = () => {
             </div>
           )}
 
-          {formData.category === "group" && (
+          {formData.category === "teams" && (
             <>
               <div className="flex  w-full items-center justify-between">
                 <input
@@ -244,7 +252,7 @@ const NewPostForm = () => {
           </div>
           {/* )} */}
 
-          {formData.category !== "event" && (
+          {formData.category && (
             <div className="flex items-center justify-between gap-2">
               <input
                 name="tags"
@@ -253,6 +261,7 @@ const NewPostForm = () => {
                 required
                 value={formData.tags}
                 onChange={handleChange}
+                onClick={handleTag}
               />
             </div>
           )}

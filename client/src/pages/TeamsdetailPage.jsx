@@ -139,6 +139,7 @@ const TeamsdetailPage = () => {
             </div>
           </div>
 
+          {/* 채팅 */}
           <div className="flex h-[50rem] w-full flex-col rounded-md">
             <div className="flex flex-col gap-4 rounded-md bg-slate-50 p-4 pl-8 text-start">
               <h2 className="mb-4 text-2xl font-bold">채팅</h2>

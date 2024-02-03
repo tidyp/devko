@@ -86,6 +86,10 @@ const Post = ({ post }) => {
   // 좋아요 클릭 이벤트
   const handleLikeClick = async () => {
     // 좋아요 상태 변경
+    if(!useruuid) {
+      return
+    }
+
     await setIsClickLike((prev) => !prev);
     await fetchData(useruuid, isClickLike);
   };
@@ -99,7 +103,7 @@ const Post = ({ post }) => {
   // console.log(profileimg)
 
   return (
-    <div className="mx-2 mb-4 box-border flex h-fit w-full items-start justify-start rounded-2xl bg-neutral-50 p-12">
+    <div className="mx-2 mb-4 box-border flex h-fit w-[70rem] items-start justify-start rounded-2xl bg-neutral-50 p-12">
       {/* 프로필, 글 */}
       <div className="flex w-full flex-col justify-between gap-8">
         <div>
@@ -115,7 +119,7 @@ const Post = ({ post }) => {
                 alt={post.profileImage}
               /> */}
             <img
-              className="h-full w-full rounded-lg"
+              className="h-12 w-12 rounded-lg"
               src={
                 post.profileImage
                   ? `${post.profileImage}`
@@ -182,14 +186,14 @@ const Post = ({ post }) => {
           ) : (
             <GoHeart className="hover:scale-150" onClick={handleLikeClick} />
           )}
-          {post.likeUser === useruuid ? (
+          {/* {post.likeUser === useruuid ? (
             <GoHeartFill
               className="scale-150 transform text-red-600 hover:scale-150"
               onClick={handleLikeClick}
             />
           ) : (
             <GoHeart className="hover:scale-150" onClick={handleLikeClick} />
-          )}
+          )} */}
           <span>{post.likeCnt > 0 ? post.likeCnt : 0}</span>
         </div>
       </div>

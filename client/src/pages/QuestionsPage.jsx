@@ -7,11 +7,23 @@ import OnelineList from "../components/OnelineList";
 import Button from "../components/Button";
 import Pagination from "../components/Pagination";
 
+import cookie from "react-cookies";
+import { useState } from "react";
+import Modal from "../components/Modal";
+
 const QuestionsPage = () => {
   const posts = useLoaderData();
   const postsList = posts.currPageRows;
-  console.log(posts)
-  console.log(postsList)
+
+  const isLogin = cookie.load("uuid");
+  const [isOpen, setIsOpen] = useState(false);
+  const handleOpen = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -24,11 +36,39 @@ const QuestionsPage = () => {
           <ul className="flex items-start gap-2 text-left text-xl font-semibold">
             <li>정렬기준</li>
           </ul>
-          <Link to="write">
-            <Button color="bg-black" px="8">
-              글 작성
-            </Button>
-          </Link>
+          {isOpen && !isLogin && (
+            <Modal>
+              <div className="flex flex-col items-center justify-center">
+                <p className="py-10">로그인이 필요합니다.</p>
+                <Link className="flex flex-col gap-2 px-12" to="/login">
+                  <button className="rounded-xl bg-black p-4 text-white">
+                    로그인하러가기
+                  </button>
+                </Link>
+                <button
+                  className="rounded-xl bg-white p-4 text-black "
+                  onClick={handleClose}
+                >
+                  취소
+                </button>
+              </div>
+            </Modal>
+          )}
+          {isLogin ? (
+            <>
+              <Link to="write">
+                <Button color="bg-black" px="8" onClick={handleOpen}>
+                  글 작성
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Button color="bg-black" px="8" onClick={handleOpen}>
+                글 작성
+              </Button>
+            </>
+          )}
         </div>
         <div className="flex w-[80rem] items-start justify-center gap-4">
           {/* Posts */}

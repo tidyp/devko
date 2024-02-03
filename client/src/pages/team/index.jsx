@@ -4,13 +4,27 @@ import Button from "../../components/Button";
 import { useState } from "react";
 import { readTeamsPosts } from "../../api/apiDevko";
 
+import cookie from "react-cookies";
+import Modal from "../../components/Modal";
+
 const index = () => {
   const posts = useLoaderData();
-  console.log(posts)
+  console.log(posts);
+  const isLogin = cookie.load("uuid");
+  const [isOpen, setIsOpen] = useState(false);
+  const handleOpen = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
 
   const [tab, setTab] = useState(null);
   // const filteredPosts = posts.currPageRows.filter((el) => (tab ? el.section === tab : true));
-  const filteredPosts = posts.currPageRows.filter((el) => (tab ? el.title === tab : true));
+  const filteredPosts = posts.currPageRows.filter((el) =>
+    tab ? el.title === tab : true,
+  );
 
   const handleTab = (selectedTab) => {
     setTab(selectedTab);
@@ -35,18 +49,48 @@ const index = () => {
             {tabItems.map((item) => (
               <li
                 key={item.value}
-                className={`${tab === item.value ? "font-semibold" : ""} cursor-pointer`}
+                className={`${
+                  tab === item.value ? "font-semibold" : ""
+                } cursor-pointer`}
                 onClick={() => handleTab(item.value)}
               >
                 {item.label}
               </li>
             ))}
           </ul>
-          <Link to="write">
-            <Button color="bg-black" px="8">
-              글 작성
-            </Button>
-          </Link>
+          {isOpen && !isLogin && (
+            <Modal>
+              <div className="flex flex-col items-center justify-center">
+                <p className="py-10">로그인이 필요합니다.</p>
+                <Link className="flex flex-col gap-2 px-12" to="/login">
+                  <button className="rounded-xl bg-black p-4 text-white">
+                    로그인하러가기
+                  </button>
+                </Link>
+                <button
+                  className="rounded-xl bg-white p-4 text-black "
+                  onClick={handleClose}
+                >
+                  취소
+                </button>
+              </div>
+            </Modal>
+          )}
+          {isLogin ? (
+            <>
+              <Link to="write">
+                <Button color="bg-black" px="8" onClick={handleOpen}>
+                  글 작성
+                </Button>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Button color="bg-black" px="8" onClick={handleOpen}>
+                글 작성
+              </Button>
+            </>
+          )}
         </div>
         <div className="flex w-[80rem] flex-col items-center justify-center gap-4">
           <div className="box-border grid w-full grid-cols-4  flex-wrap items-start">

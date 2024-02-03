@@ -28,9 +28,9 @@ const OnelineList = (post) => {
   };
 
   return (
-    <li key={post.postId} className="group mb-4 w-full">
+    <li key={post.postId} className="group mb-4 w-full sm:w-96">
       <Link to={`/${post.category}/detail/${post.postId}`}>
-        <div className="flex transform items-center justify-between rounded-lg border bg-white p-4 transition-all duration-300 ease-in-out hover:scale-105 group-hover:bg-gray-100 group-hover:shadow-lg">
+        <div className="sm:w-96 flex transform items-center justify-between rounded-lg border bg-white p-4 transition-all duration-300 ease-in-out">
           <div className="flex gap-2">
             <img className="w-8 rounded-full" src={post.profileImage} alt="" />
             <span className="text-blue-700">{post.userName}</span>
@@ -45,11 +45,11 @@ const OnelineList = (post) => {
 
             {post.likeUser === useruuid ? (
               <GoHeartFill
-                className="scale-150 transform text-red-600 hover:scale-150"
+                className="scale-150 transform text-red-600"
                 onClick={handleLikeClick}
               />
             ) : (
-              <GoHeart className="hover:scale-150" onClick={handleLikeClick} />
+              <GoHeart onClick={handleLikeClick} />
             )}
 
             <span>{post.likeCnt}</span>

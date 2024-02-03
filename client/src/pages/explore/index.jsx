@@ -1,31 +1,50 @@
+import { BiUpArrowAlt } from "react-icons/bi";
 import { readPosts } from "../../api/apiDevko";
 import { Outlet, useLoaderData } from "react-router-dom";
 import MainBackGround from "../../components/MainBackGround";
 import Sidebar from "../../components/Sidebar";
-// import PopTags from "../../components/PopTags";
-// import TopWriters from "../../components/TopWriters";
 import PostList from "./PostList";
 import AlertsBox from "../../components/AlertsBox";
+import { useEffect, useState } from "react";
 
-const index = () => {
+const Index = () => {
   const posts = useLoaderData();
+  const [showScrollButton, setShowScrollButton] = useState(false);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  const handleScroll = () => {
+    // Check if the user has scrolled down, then show the button
+    setShowScrollButton(window.scrollY > 100);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center gap-2">
       <Outlet />
       <MainBackGround />
-      {/* Sidebar */}
+
       <div className="flex w-[80rem] items-start justify-center gap-4">
         <div className="flex gap-2">
           <div className="flex flex-col gap-4">
             <Sidebar />
-            {/* <PopTags />
-            <TopWriters /> */}
             <div>TopWriters</div>
           </div>
         </div>
-        {/* Posts */}
-        <div className="flex w-full items-start justify-center">
+
+        <div className="flex w-full items-start justify-center relative">
           {!(posts === "연결실패") && posts.length > 0 && (
             <PostList posts={posts} />
           )}
@@ -36,14 +55,21 @@ const index = () => {
             <AlertsBox>서버에 연결되어있지 않습니다.</AlertsBox>
           )}
 
-          {/* // connect fail */}
+          {showScrollButton && (
+            <button
+              className="fixed bottom-4 right-44 flex h-12 w-12 items-center justify-center rounded-full bg-black text-2xl text-white"
+              onClick={scrollToTop}
+            >
+              <BiUpArrowAlt />
+            </button>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default index;
+export default Index;
 
 export async function loader() {
   try {
@@ -51,7 +77,6 @@ export async function loader() {
     return board;
   } catch (error) {
     console.error("Error fetching posts:", error);
-    // loader-fetch-요청실패
     return "연결실패";
   }
 }
