@@ -7,25 +7,45 @@ import {
   FaRegArrowAltCircleRight,
 } from "react-icons/fa";
 
+const dummy = [
+  {
+    id: 6,
+    category: "event",
+    title: "dqwd",
+    content: "dwqdwq",
+    section: "qwdwq",
+    startDate: "2024-02-03T15:00:00.000Z",
+    endDate: "2024-02-14T15:00:00.000Z",
+    location: "wqd",
+    createdAt: "2024-02-03T16:47:08.000Z",
+    updatedAt: "2024-02-03T16:47:08.000Z",
+    userId: "d5dff2f2-98d6-4807-9496-0bba7c1ee9f6",
+  },
+  {
+    category: "event",
+    content: "dwqdwq",
+    createdAt: "2024-02-03T16:47:30.000Z",
+    endDate: "2024-02-14T15:00:00.000Z",
+    id: 7,
+    location: "wqd",
+    section: "qwdwq",
+    startDate: "2024-02-03T15:00:00.000Z",
+    title: "dqwd",
+    updatedAt: "2024-02-03T16:47:30.000Z",
+    userId: "d5dff2f2-98d6-4807-9496-0bba7c1ee9f6",
+  },
+];
 import Button from "../components/Button";
 
 const EventPape = () => {
   const data = useLoaderData();
-  const filterData = data.currPageRows.filter(
-    (item) => item.category === "calendars",
-  );
-
-  function transformData(data) {
-    return {
-      year: new Date(data.startDate).getFullYear(),
-      month: new Date(data.startDate).getMonth() + 1,
-      day: new Date(data.startDate).getDate(),
-      title: data.title,
-    };
-  }
-
+  const filterData = data[0];
+  const [selectday, setSelectday] = useState(new Date().getDate());
   const [today, setToday] = useState(new Date());
   const [eventData, setEventData] = useState([]);
+  const [selectEvent, setSelectEvent] = useState([]);
+
+  console.log(`selectday: ${selectday}`);
 
   useEffect(() => {
     const events = [];
@@ -46,6 +66,16 @@ const EventPape = () => {
     setEventData(events);
   }, []);
 
+  function transformData(data) {
+    return {
+      year: new Date(data.startDate).getFullYear(),
+      month: new Date(data.startDate).getMonth() + 1,
+      day: new Date(data.startDate).getDate(),
+      title: data.title,
+      content: data.content,
+    };
+  }
+
   const generateCalendar = () => {
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const lastDayOfMonth = new Date(
@@ -53,6 +83,7 @@ const EventPape = () => {
       today.getMonth() + 1,
       0,
     );
+
     const startingDayOfWeek = firstDayOfMonth.getDay();
     const totalDays = lastDayOfMonth.getDate();
     let calendar = [];
@@ -73,7 +104,7 @@ const EventPape = () => {
           dayCounter++;
         }
       }
-      // Add this filter to remove arrays containing only null values
+
       if (!week.every((day) => day === null)) {
         calendar.push(week);
       }
@@ -89,9 +120,17 @@ const EventPape = () => {
   const handleNextMonth = () => {
     setToday(new Date(today.getFullYear(), today.getMonth() + 1, 1));
   };
+  const handleDayEvent = (day) => {
+    // setSelectday({
+    //   day: day.day,
+    // });
 
-  useEffect(() => {}, [today]);
+    const newSelectEvent = eventData.filter((event) => event.day === day.day);
+    setSelectEvent(newSelectEvent);
+  };
 
+  console.log(selectEvent);
+  console.log(eventData.filter((event) => event.day === 4));
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   return (
@@ -152,38 +191,22 @@ const EventPape = () => {
               <tbody>
                 {generateCalendar().map((week, rowEventPape) => (
                   <tr className="h-20 text-center" key={rowEventPape}>
+                    {/* {console.log(week)}
+                    {console.log(week.dayEventPape)} */}
                     {week.map((day, dayEventPape) => (
-                      <td
-                        key={dayEventPape}
-                        className="w-44 cursor-pointer overflow-auto border transition duration-500 hover:bg-gray-300"
-                      >
-                        <div className="flex-col overflow-hidden">
+                      <td className="w-44 border-2 p-4" key={dayEventPape}>
+                        <div className="flex items-center justify-center">
+                          {/* 일 */}
                           <div>
-                            <span className="text-gray-500">
+                            <span
+                              onClick={() => handleDayEvent(day)}
+                              className={`flex h-16 w-16 cursor-pointer items-center justify-center overflow-auto  border transition duration-500 hover:bg-blue-200 ${
+                                day && day.data ? "bg-gray-200 rounded-full" : "border-none"
+                              }`}
+                            >
+                              {/* 일-num */}
                               {day !== null ? day.day : ""}
                             </span>
-                          </div>
-                          <div className="bottom h-30 flex  flex-grow cursor-pointer py-1">
-                            {day && day.data && (
-                              // TODO: 링크
-                              <div
-                                className={`mb-1 w-full rounded bg-purple-400 p-1 text-sm text-white`}
-                              >
-                                <span>{day.data.title}</span>
-                              </div>
-                            )}
-                            {/* {day &&
-                              day.data &&
-                              (<span>{day.date.title}</span>)[day.data].map(
-                                (event) => (
-                                  <div
-                                    key={event.title}
-                                    className={`w-full bg-blue-400 text-sm text-white`}
-                                  >
-                                    <span>{event.title}</span>
-                                  </div>
-                                ),
-                              )} */}
                           </div>
                         </div>
                       </td>
@@ -194,17 +217,25 @@ const EventPape = () => {
             </table>
           </div>
           {/* 게시판 */}
-          <div className="w-full">
-            <h2>게시판</h2>
-            <ul className="flex flex-col gap-2">
-              {filterData.map((el) => (
+          <div className="flex w-full flex-col items-center justify-center">
+            <h2 className="text-lg ">{selectday.day}일 행사일정</h2>
+            <div className="flex flex-col gap-2">
+              {selectEvent.map((el) => (
+                <div className="flex gap-4" key={el.day}>
+                  <span>{el.year}</span>
+                  <span>{el.month}</span>
+                  <span>{el.day}</span>
+                  <span>{el.title}</span>
+                  <span>{el.content}</span>
+                </div>
+              ))}
+
+              {/* {selectday.date.map((el) => (
                 <li className="rounded-sm bg-blue-400 text-white">
                   <span>{el.title}</span>
-                  <span>{el.section}</span>
-                  <span>{el.location}</span>
                 </li>
-              ))}
-            </ul>
+              ))} */}
+            </div>
           </div>
         </div>
       </div>

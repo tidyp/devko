@@ -6,6 +6,7 @@ import { readTeamsPosts } from "../../api/apiDevko";
 
 const index = () => {
   const posts = useLoaderData();
+  console.log(posts)
 
   const [tab, setTab] = useState(null);
   // const filteredPosts = posts.currPageRows.filter((el) => (tab ? el.section === tab : true));

@@ -3,6 +3,7 @@ import {
   readComments,
   createComment,
   deletePost,
+  readTeamsPosts,
 } from "../api/apiDevko";
 import {
   useLoaderData,
@@ -16,11 +17,15 @@ import cookie from "react-cookies";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-const PostdetailPage = () => {
+const TeamsdetailPage = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const { post, comments } = useLoaderData();
+  // const { post, comments } = useLoaderData();
+  // const { post, comments } = useLoaderData();
+  const { discussDetail, discussComments } = useLoaderData();
   const { pathname } = useLocation();
-  let [data] = post;
+  console.log(discussDetail);
+  let [data] = discussDetail;
+  console.log(data);
   const commentsData = comments.currPageRows.slice().reverse();
 
   const navigate = useNavigate();
@@ -156,13 +161,12 @@ const PostdetailPage = () => {
   );
 };
 
-export default PostdetailPage;
+export default TeamsdetailPage;
 
 export async function loader({ params }) {
   try {
-    const post = await readPost(params.id);
-    const comments = await readComments(params.id);
-    return { post, comments };
+    const data = await readTeamsPosts(params.id);
+    return data;
   } catch (error) {
     // console.error("Error fetching posts:", error);
 

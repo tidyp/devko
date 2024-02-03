@@ -7,14 +7,14 @@ import { loadSlim } from "tsparticles-slim";
 import { Link } from "react-router-dom";
 import cookie from "react-cookies";
 import Button from "./Button";
-import Modal from "./Modal";
+import Modal from "../components/Modal";
 
 const MainBackGround = ({ children }) => {
   const [mainText, setMainText] = useState();
 
   const isLogin = cookie.load("uuid");
-
   const [isOpen, setIsOpen] = useState(false);
+  console.log(isLogin, isOpen);
 
   const handleOpen = () => {
     setIsOpen((prev) => !prev);
@@ -42,11 +42,27 @@ const MainBackGround = ({ children }) => {
           <span>혁신적인 아이디어와 열정을 공유하는 개발자들의 공간,</span>
           <span>함께 성장하며 협업하는 개발자 커뮤니티</span>
         </div>
-
+        {isOpen && !isLogin && (
+          <Modal>
+            <>
+              <p className="py-10">로그인이 필요합니다.</p>
+              <Link to="/login">
+                <button className="rounded-xl bg-indigo-700 p-4 text-white">
+                  로그인하러가기
+                </button>
+              </Link>
+            </>
+          </Modal>
+        )}
         {isLogin ? (
           <>
             <Link to="/write">
-              <Button color="bg-black" px="12" className="text-3xl">
+              <Button
+                onClick={handleOpen}
+                color="bg-black"
+                px="12"
+                className="text-3xl"
+              >
                 Add Post
               </Button>
             </Link>
@@ -56,9 +72,6 @@ const MainBackGround = ({ children }) => {
           </>
         ) : (
           <>
-            {/* <Modal>
-              <dialog>dwd</dialog>
-            </Modal> */}
             <button
               className="rounded-full bg-black px-12 py-2 text-sm text-white shadow-lg"
               onClick={handleOpen}

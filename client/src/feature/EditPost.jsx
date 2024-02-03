@@ -15,9 +15,9 @@ import { formatDateDash } from "../utils/utils";
 
 const categories = [
   { id: "discuss", label: "Discuss" },
-  { id: "qna", label: "Q&A" },
-  { id: "event", label: "Event" },
-  { id: "group", label: "Group" },
+  { id: "questions", label: "questions" },
+  { id: "calendars", label: "calendars" },
+  { id: "teams", label: "teams" },
 ];
 
 const EditPostForm = () => {
@@ -147,7 +147,7 @@ const EditPostForm = () => {
             />
           </div>
 
-          {(formData.category === "event" || formData.category === "group") && (
+          {(formData.category === "calendars" || formData.category === "teams") && (
             <>
               <div className="flex w-full items-center justify-between gap-2">
                 <div className="flex  w-full items-center justify-between">
@@ -196,7 +196,7 @@ const EditPostForm = () => {
             </>
           )}
 
-          {formData.category === "event" && (
+          {formData.category === "calendars" && (
             <div className="flex  w-full items-center justify-between">
               <input
                 type="text"
@@ -210,7 +210,7 @@ const EditPostForm = () => {
             </div>
           )}
 
-          {formData.category === "group" && (
+          {formData.category === "teams" && (
             <>
               <div className="flex  w-full items-center justify-between">
                 <input
@@ -237,7 +237,7 @@ const EditPostForm = () => {
             </>
           )}
 
-          {/* {formData.category !== "event" && ( */}
+          {/* {formData.category !== "calendars" && ( */}
           <div className="flex items-center justify-between gap-2">
             <textarea
               name="content"
@@ -250,7 +250,7 @@ const EditPostForm = () => {
           </div>
           {/* )} */}
 
-          {formData.category !== "event" && (
+          {formData.category !== "calendars" && (
             <div className="flex items-center justify-between gap-2">
               <input
                 name="tags"

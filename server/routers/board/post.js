@@ -18,6 +18,7 @@ router.get("/", async (req, res) => {
 
 // 해당 게시글 보기
 router.get("/:category/:id", async (req, res) => {
+  console.log(req.params.id, req.params.category)
   try {
     const postId = req.params.id;
     const category = categoryFinder(req.params.category);
@@ -170,6 +171,8 @@ router.delete("/:category/:id", async (req, res) => {
       const tagSql = `DELETE FROM ${category} WHERE category = ? AND postId = ?`;
 
       const [rows, fields] = await db.query(postSql, [category, postId]);
+      await db.query(tagSql, [category, postId]);
+
       await db.query(tagSql, [category, postId]);
 
       res.json(rows);

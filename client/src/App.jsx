@@ -17,14 +17,12 @@ import ArticlePage, { loader as articleLoader } from "./pages/ArticlePage";
 import EventPage, { loader as eventLoader } from "./pages/EventPape";
 // import Newevent  from "./feature/Newevent";
 
-import GroupPage, { loader as GroupLoader } from "./pages/group";
+import TeamsPage, { loader as teamsLoader } from "./pages/team";
 // import SignupPage from "./pages/addinfo";
 
 // import Postdetail from "./pages/Postdetail";
 import PostdetailPage, { loader as postLoader } from "./pages/PostDetailPage";
-import GroupdetailPage, {
-  loader as groupLoader,
-} from "./pages/GroupdetailPage";
+// import TeamsdetailPage, { loader as teamLoader } from "./pages/TeamsdetailPage";
 
 import LoginPage from "./pages/LoginPage";
 import MyinfoPage, { loader as myinfoLoader } from "./pages/MyinfoPage";
@@ -112,17 +110,18 @@ const router = createBrowserRouter([
         element: <PostdetailPage />,
         loader: postLoader,
       },
-      // GROUP
+      // Team
       {
-        path: "/group",
-        element: <GroupPage />,
-        loader: GroupLoader,
+        path: "/teams/:id/",
+        element: <TeamsPage />,
+        loader: teamsLoader,
         children: [{ path: "write", element: <NewPost /> }],
       },
       {
-        path: "/group/detail/:id",
-        element: <GroupdetailPage />,
-        loader: groupLoader,
+        path: "/teams/detail/:id",
+        element: <PostdetailPage />,
+        // element: <GroupdetailPage />,
+        loader: postLoader,
       },
       // LOGIN
       { path: "/login", element: <LoginPage /> },
@@ -146,7 +145,7 @@ const queryClient = new QueryClient();
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />;
+      <RouterProvider router={router} />
     </QueryClientProvider>
   );
 };

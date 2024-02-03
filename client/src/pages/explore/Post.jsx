@@ -95,6 +95,9 @@ const Post = ({ post }) => {
     navigate("/");
   };
 
+  const profileimg = post.profileImage
+  // console.log(profileimg)
+
   return (
     <div className="mx-2 mb-4 box-border flex h-fit w-full items-start justify-start rounded-2xl bg-neutral-50 p-12">
       {/* 프로필, 글 */}

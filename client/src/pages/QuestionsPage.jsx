@@ -10,6 +10,8 @@ import Pagination from "../components/Pagination";
 const QuestionsPage = () => {
   const posts = useLoaderData();
   const postsList = posts.currPageRows;
+  console.log(posts)
+  console.log(postsList)
 
   return (
     <>

@@ -21,7 +21,7 @@ const NewPostForm = () => {
       ? loca.pathname.split("/")[1]
       : "discuss";
   const username = cookie.load("uuid");
-  const navigate = useNavigate('/');
+  const navigate = useNavigate("/");
   const [newTag, setNewTag] = useState("");
   const [isEmpty, setIsEmpty] = useState(true);
 
@@ -63,6 +63,14 @@ const NewPostForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.category === "event") {
+      const res = await axios.post(
+        "http://localhost:3000/api/calendar",
+        formData,
+      );
+      navigate("../");
+      return;
+    }
 
     try {
       // 공백 예외처리

@@ -19,6 +19,7 @@ router.get("/:category/:postId", async (req, res) => {
 
 // 게시글 좋아요 한번 클릭하면 추가, 두번 클릭하면 삭제
 router.post("/:category/:postId", async (req, res) => {
+  console.log(req.body);
   try {
     const userId = req.body.userId;
     const postId = req.params.postId;
