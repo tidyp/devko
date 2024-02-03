@@ -85,10 +85,14 @@ router.put('/:id', upload.single('profileImage'), async (req, res) => {
   const userId = req.params.id;
   const { userName, interestPosition, interestArea, selfDescription } = req.body;
 
-  const oldProfileImage = path.join(__dirname, "public", "src", "profileimages", req.body.path);
+  // const oldProfileImage = path.join(__dirname, "public", "src", "profileimages", req.body.path);
 
-  if (oldProfileImage) {
-    fs.unlinkSync(oldProfileImage);
+  if (req.body.path && typeof req.body.path === 'string') {
+    const oldProfileImage = path.join(__dirname, "public", "src", "profileimages", req.body.path);
+
+    if (oldProfileImage) {
+      fs.unlinkSync(oldProfileImage);
+    };
   };
 
   const profileImage = req.file ? req.file.path : null;
@@ -97,11 +101,11 @@ router.put('/:id', upload.single('profileImage'), async (req, res) => {
       : 'UPDATE users SET userName = ?, interestPosition = ?, interestArea = ?, selfDescription = ?, updatedAt = NOW() WHERE id = ?';
 
     const updateParams = profileImage
-      ? [userName, profileImage, interestPosition, interestArea, selfDescription, userId]
+      ? [{userName}, profileImage, interestPosition, interestArea, selfDescription, userId]
       : [userName, interestPosition, interestArea, selfDescription, userId];
 
     await db.query(updateSql, updateParams);
-
+    console.log(updateParams)
     res.redirect('/');
 });
 
