@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const cron = require("node-cron");
 
 const Parser = require("rss-parser");
 const parser = new Parser();
@@ -8,52 +9,75 @@ const blogs = require("./blog.json");
 const db = require("../../config/db.js");
 
 router.get("/", async (req, res) => {
-  for (const [company, blog] of Object.entries(blogs)) {
-    let feed = await parser.parseURL(blog);
-    console.log(feed);
+  try {
+    const sql = `SELECT * FROM articles ORDER BY createdAt DESC`;
 
-    feed.items.forEach((data) => {
-      result.push({
-        title: data.title,
-        link: data.link,
-        pubDate: data.pubDate,
-      });
-    });
-    for (const data of result) {
-      const userId = company;
-      const title = data.title;
-      const content = data.link;
-      const category = "articles";
-      const pubDate = new Date(data.pubDate);
-      // const tags = req.body.tags;
-
-      try {
-        const postSql = `INSERT INTO articles (userId, title, content, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?);`;
-        const setSql = `SET @postId = LAST_INSERT_ID();`;
-        const likeSql = `INSERT INTO likes (postId) VALUES (@postId)`;
-        const viewSql = `INSERT INTO views (postId) VALUES (@postId)`;
-        // const tagSql = `INSERT INTO tags (postId, id, name) VALUES (@postId, ?, ?);`;
-
-        await db.query(postSql, [
-          userId,
-          title,
-          content,
-          category,
-          pubDate,
-          pubDate,
-        ]);
-        await db.query(setSql);
-        await db.query(likeSql);
-        await db.query(viewSql);
-        // for (i = 0; i < tags.length; i++) {
-        //   await db.query(tagSql, [i + 1, tags[i]]);
-        // }
-      } catch (error) {
-        throw error;
-      }
-    }
-    res.send("완료");
+    const [rows, field] = await db.query(sql);
+    res.json(rows);
+  } catch (err) {
+    console.error("Query execution error:", err);
+    res.status(500).json("Internal Server Error");
   }
+});
+
+const fetchDataAndInsert = async () => {
+  let totalResult = [];
+  const fetchTimestamp = new Date();
+
+  for (const [company, blog] of Object.entries(blogs)) {
+    try {
+      console.log(`Fetching for ${company} from ${blog}`);
+      let feed = await parser.parseURL(blog);
+
+      let result = [];
+
+      feed.items.forEach((data) => {
+        result.push({
+          title: data.title,
+          link: data.link,
+          pubDate: data.pubDate,
+          fetchedAt: fetchTimestamp,
+        });
+      });
+
+      for (const data of result) {
+        const userId = company;
+        const title = data.title;
+        const link = data.link;
+        const category = "articles";
+        const pubDate = new Date(data.pubDate);
+
+        try {
+          const selectSql = `SELECT * from articles WHERE link = ?`;
+          const insertSql = `INSERT INTO articles (userId, title, link, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?);`;
+          const [rows, field] = await db.query(selectSql, [link]);
+
+          if (!rows) {
+            await db.query(insertSql, [
+              userId,
+              title,
+              link,
+              category,
+              pubDate,
+              data.fetchedAt,
+            ]);
+          }
+        } catch (err) {
+          console.error("Query execution error:", err);
+          res.status(500).json("Internal Server Error");
+          return;
+        }
+        totalResult.push(...result);
+      }
+    } catch (err) {
+      console.error(`Error in ${company}:`, err);
+    }
+  }
+};
+
+cron.schedule("0 */12 * * *", () => {
+  // cron.schedule("*/1 * * * *", () => {
+  fetchDataAndInsert();
 });
 
 module.exports = router;

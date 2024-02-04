@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS articles (
     category VARCHAR(45) DEFAULT 'articles',
     title VARCHAR(100),
     content TEXT,
-    link VARCHAR(100),
+    link TEXT,
     createdAt DATETIME,
     updatedAt DATETIME,
     userId VARCHAR(64)
