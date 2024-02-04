@@ -1,3 +1,5 @@
+-- SQL CLI COMMAND: mysql -u root -p devko < test.sql
+
 INSERT INTO devko.users (id, userName, profileImage, interestPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification, googleId, naverId) VALUES
   ('1', 'User1', 'profile1.jpg', 'Developer', 'Technology', 'Description 1', '2024-02-03 12:00:00', '2024-02-03 12:00:00', 3, 1, 123, 456),
   ('2', 'User2', 'profile2.jpg', 'Designer', 'Art', 'Description 2', '2024-02-03 12:05:00', '2024-02-03 12:05:00', 4, 1, 789, 987),
