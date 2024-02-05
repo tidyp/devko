@@ -71,6 +71,14 @@ const NewPostForm = () => {
       navigate("../");
       return;
     }
+    if (formData.category === "teams") {
+      const res = await axios.post(
+        "http://localhost:3000/api/team",
+        formData,
+      );
+      navigate("../");
+      return;
+    }
 
     try {
       // 공백 예외처리

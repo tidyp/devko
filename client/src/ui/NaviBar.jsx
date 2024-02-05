@@ -48,7 +48,19 @@ const NaviBar = () => {
   const useruuid = cookie.load("uuid");
   const userName = cookie.load("userName");
   const userImage = cookie.load("userImage");
+  let testPopUp;
+  function openPopUp() {
+    testPopUp = window.open(
+      "https://nid.naver.com/nidlogin.logout",
+      "_blank",
+      "toolbar=yes,scrollbars=yes,resizable=yes,width=1,height=1",
+    );
+  }
+  function closePopUp() {
+    testPopUp.close();
+  }
 
+  // const clickLogout = async () => {
   const clickLogout = () => {
     cookie.remove("googleImage", { path: "/" });
     cookie.remove("googleId", { path: "/" });
@@ -57,7 +69,19 @@ const NaviBar = () => {
     cookie.remove("uuid", { path: "/" });
     cookie.remove("userName", { path: "/" });
     cookie.remove("userImage", { path: "/" });
-    toggleDropdown();
+
+    // const logoutUrl = "https://nid.naver.com/nidlogin.logout";
+
+    // await fetch(logoutUrl, {
+    //   method: "GET",
+    //   mode: "no-cors",
+    // });
+
+    openPopUp();
+    setTimeout(function () {
+      closePopUp();
+    }, 300000);
+
     navigate("/");
   };
 
@@ -96,7 +120,9 @@ const NaviBar = () => {
               <GiHamburgerMenu />
             </span>
             <Link to="/">
-              <span className="px-4 text-lg font-bold text-white bg-black">DEVKO</span>
+              <span className="bg-black px-4 text-lg font-bold text-white">
+                DEVKO
+              </span>
               {/* <img className="w-6" src="/images/logo2.png" alt="logo" /> */}
             </Link>
             <span className="hidden text-lg font-semibold sm:block">

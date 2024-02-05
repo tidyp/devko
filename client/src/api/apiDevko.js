@@ -75,9 +75,9 @@ export async function readEventPosts(id) {
 }
 
 // Reads: Team 게시글 조회
-export async function readTeamsPosts(id) {
+export async function readTeamsPosts() {
   try {
-    const res = await fetch(`${API_URL}/post/teams/page/${id}`);
+    const res = await fetch(`${API_URL}/team`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }

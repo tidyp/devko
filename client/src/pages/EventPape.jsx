@@ -16,7 +16,7 @@ import Modal from "../components/Modal";
 const EventPape = () => {
   const data = useLoaderData();
   console.log(data[0]);
-  const filterData = data[0];
+  const filterData = data;
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const [selectday, setSelectday] = useState(null);
   const [today, setToday] = useState(new Date());
