@@ -40,7 +40,6 @@ const Index = () => {
         <div className="flex gap-2">
           <div className="flex flex-col gap-4">
             <Sidebar />
-            <div>TopWriters</div>
           </div>
         </div>
 

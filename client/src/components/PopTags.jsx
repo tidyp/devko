@@ -13,7 +13,7 @@ const PopTags = ({ popTag }) => {
       <div className=" text-base font-semibold text-black">Popular Tags</div>
       
       <div className="flex h-auto flex-col items-start justify-start gap-5 px-2.5">
-        {popTag.length <= 0 && <p>없음</p>}
+        {popTag.length <= 0 && <p>데이터가 없습니다.</p>}
         {popTag.map((el) => (
           <PopTag key={el.name} {...el} />
         ))}

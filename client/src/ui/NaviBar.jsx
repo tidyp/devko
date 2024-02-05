@@ -96,7 +96,7 @@ const NaviBar = () => {
               <GiHamburgerMenu />
             </span>
             <Link to="/">
-              <span className="px-4 text-lg font-semibold">DEVKO</span>
+              <span className="px-4 text-lg font-bold text-white bg-black">DEVKO</span>
               {/* <img className="w-6" src="/images/logo2.png" alt="logo" /> */}
             </Link>
             <span className="hidden text-lg font-semibold sm:block">
@@ -125,12 +125,12 @@ const NaviBar = () => {
           <div
             className={`flex gap-12 text-base uppercase sm:w-full sm:flex-col sm:items-start sm:gap-2 sm:${mv} sm:flex`}
           >
-            <NavLink
+            {/* <NavLink
               to="/"
               className={({ isActive }) => (isActive ? activeLink : "")}
             >
               explore
-            </NavLink>
+            </NavLink> */}
             <NavLink
               to="/discuss/1"
               className={({ isActive }) => (isActive ? activeLink : "")}
