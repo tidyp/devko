@@ -1,6 +1,7 @@
 const express = require('express');
 const expressWs = require('express-ws');
 const WebSocket = require('ws');
+const router = express.Router();
 const path = require('path');
 
 const port = 3001;
@@ -8,7 +9,7 @@ const port = 3001;
 const app = express();
 expressWs(app);
 
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'chat.html'));
 });
 
@@ -16,7 +17,7 @@ const wsClient = new Map(); // 접속자 정보를 저장하기 위한 자료구
 
 // 웹소켓 핸들링 코드
 
-app.ws('/chat', (ws ,req) => {
+router.ws('/chat', (ws ,req) => {
     const clientIp = req.socket.remoteAddress;
     console.log('클라이언트 접속함', clientIp); // 소켓 연결 요청온 것에 대하여 처리함
         
@@ -64,6 +65,4 @@ app.ws('/chat', (ws ,req) => {
     });
 })
 
-app.listen(port, () => {
-    console.log(`${port} 준비 완료`);
-});
+module.exports = router;
