@@ -25,7 +25,7 @@ import LoginPage from "./pages/LoginPage";
 import MyinfoPage, { loader as myinfoLoader } from "./pages/MyinfoPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
-import AddinfoPage from "./pages/AddinfoPage";
+import AddInfoPage from "./pages/AddInfoPage";
 import UserinfoPage, { loader as userLoader } from "./pages/UserinfoPage";
 import TestPage from "./pages/TestPage";
 
@@ -122,7 +122,7 @@ const router = createBrowserRouter([
       },
       // LOGIN
       { path: "/login", element: <LoginPage /> },
-      { path: "/addinfo", element: <AddinfoPage /> },
+      { path: "/addinfo", element: <AddInfoPage /> },
       // USER: INFO
       { path: "/userinfo/:id", element: <UserinfoPage />, loader: userLoader },
       // MY: INFO

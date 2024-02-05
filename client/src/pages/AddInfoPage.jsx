@@ -2,7 +2,7 @@ import { useImperativeHandle, useState } from "react";
 import cookie from "react-cookies";
 import { useNavigate } from "react-router-dom";
 
-const AddinfoPage = () => {
+const AddInfoPage = () => {
   const googleID = cookie.load("googleId");
   const naverID = cookie.load("naverId");
   const googleImage = cookie.load("googleImage");
@@ -196,4 +196,4 @@ const AddinfoPage = () => {
   );
 };
 
-export default AddinfoPage;
+export default AddInfoPage;
