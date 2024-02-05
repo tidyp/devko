@@ -21,14 +21,13 @@ router.get("/", async (req, res) => {
 });
 
 const fetchDataAndInsert = async () => {
-  let totalResult = [];
+  // let totalResult = [];
   const fetchTimestamp = new Date();
 
   for (const [company, blog] of Object.entries(blogs)) {
     try {
       console.log(`Fetching for ${company} from ${blog}`);
       let feed = await parser.parseURL(blog);
-
       let result = [];
 
       feed.items.forEach((data) => {
@@ -52,7 +51,9 @@ const fetchDataAndInsert = async () => {
           const insertSql = `INSERT INTO articles (userId, title, link, category, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?);`;
           const [rows, field] = await db.query(selectSql, [link]);
 
-          if (!rows) {
+          // if (rows[0].link !== link) {
+          // if (rows.length < 1) {
+          if (!rows || rows.length < 1) {
             await db.query(insertSql, [
               userId,
               title,
@@ -67,7 +68,7 @@ const fetchDataAndInsert = async () => {
           res.status(500).json("Internal Server Error");
           return;
         }
-        totalResult.push(...result);
+        // totalResult.push(...result);
       }
     } catch (err) {
       console.error(`Error in ${company}:`, err);
