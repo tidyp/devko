@@ -19,6 +19,7 @@ import EventPage, { loader as eventLoader } from "./pages/EventPape";
 import TeamsPage, { loader as teamsLoader } from "./pages/team";
 
 import PostDetailPage, { loader as postLoader } from "./pages/PostDetailPage";
+import EventDetailPage, { loader as posteventLoader } from "./pages/EventDetailPage";
 // import TeamsdetailPage, { loader as teamLoader } from "./pages/TeamsdetailPage";
 
 import LoginPage from "./pages/LoginPage";
@@ -99,12 +100,12 @@ const router = createBrowserRouter([
       {
         path: "/event",
         element: <EventPage />,
-        loader: eventLoader,
+        loader: posteventLoader,
         children: [{ path: "write", element: <NewPost /> }],
       },
       {
         path: "/event/detail/:id",
-        element: <PostDetailPage />,
+        element: <EventDetailPage />,
         loader: postLoader,
       },
       // Team

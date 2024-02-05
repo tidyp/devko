@@ -14,7 +14,6 @@ const MainBackGround = ({ children }) => {
 
   const isLogin = cookie.load("uuid");
   const [isOpen, setIsOpen] = useState(false);
-  console.log(isLogin, isOpen);
 
   const handleOpen = () => {
     setIsOpen((prev) => !prev);

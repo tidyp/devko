@@ -15,17 +15,14 @@ import Modal from "../components/Modal";
 
 const EventPape = () => {
   const data = useLoaderData();
-  console.log(data[0]);
   const filterData = data;
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const [selectday, setSelectday] = useState(null);
   const [today, setToday] = useState(new Date());
   const [eventData, setEventData] = useState([]);
   const [selectEvent, setSelectEvent] = useState([]);
-  console.log(eventData);
-  console.log(selectEvent);
+  console.log(selectEvent)
 
-  console.log(`selectday: ${selectday}`);
 
   const isLogin = cookie.load("uuid");
   const [isOpen, setIsOpen] = useState(false);
@@ -119,7 +116,7 @@ const EventPape = () => {
     const newSelectEvent = eventData.filter((event) => event.day === day.day);
     setSelectEvent(newSelectEvent);
   };
-
+  
   return (
     <>
       <Outlet />
@@ -127,12 +124,12 @@ const EventPape = () => {
         <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold">
           <h2>EVENT</h2>
         </div>
-        <div className="my- flex w-[80rem] items-center justify-between px-4">
-          <ul className="flex items-start gap-2 text-left text-xl font-semibold">
+        <div className="my- flex w-[80rem] items-center justify-end px-4">
+          {/* <ul className="flex items-start gap-2 text-left text-xl font-semibold">
             <li>전체</li>
             <li>채용공고</li>
             <li>직업교육</li>
-          </ul>
+          </ul> */}
           {isOpen && !isLogin && (
             <Modal>
               <div className="flex flex-col items-center justify-center">
@@ -222,6 +219,7 @@ const EventPape = () => {
                               }`}
                             >
                               <span className={`relative`}>
+
                                 {day !== null ? day.day : ""}
                                 {day && day.data && (
                                   <sup
@@ -241,8 +239,6 @@ const EventPape = () => {
           </div>
 
           <div className="flex w-full flex-col items-center justify-center">
-            {console.log(selectEvent)}
-            {console.log(selectday)}
 
             {!selectday && selectEvent.length <= 0 && (
               <h2>달력을 눌러 일정을 확인하세요.</h2>

@@ -16,12 +16,12 @@ const ArticlePage = () => {
           <h2 className="uppercase">Article</h2>
         </div>
         <div className="my- flex w-[80rem] items-center justify-between px-4">
-          <ul className="flex items-start gap-2 text-left text-xl font-semibold">
+          {/* <ul className="flex items-start gap-2 text-left text-xl font-semibold">
             <li>전체</li>
             <li>프로젝트</li>
             <li>자격증</li>
             <li>코딩테스트</li>
-          </ul>
+          </ul> */}
           {/* <Link to="write">
             <Button color="bg-black" px="8">
               글 작성

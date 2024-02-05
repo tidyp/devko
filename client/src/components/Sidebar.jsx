@@ -24,13 +24,12 @@ const Sidebar = () => {
     fetchData();
   }, []);
 
-  console.log(tagrows);
   const sorttags = tagrows.sort((a, b) => b.tagCnt - a.tagCnt);
   return (
-    <>
+    <div className="flex flex-col gap-4">
       <PopTags popTag={sorttags} />
       <TopWriters/>
-    </>
+    </div>
   );
 };
 

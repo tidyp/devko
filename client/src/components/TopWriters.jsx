@@ -6,12 +6,10 @@ import LoadingSpinner from "./LoadingSpinner";
 
 const TopWriters = () => {
   const [isToppostrows, setisToppostrows] = useState();
-  console.log(isToppostrows);
 
   const fetchData = async () => {
     try {
       const res = await getSideBar();
-      console.log(res);
       const { toppostrows, topcommentrows, topteamrows } = res;
 
       setisToppostrows(toppostrows);

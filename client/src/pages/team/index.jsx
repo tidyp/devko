@@ -9,7 +9,6 @@ import Modal from "../../components/Modal";
 
 const index = () => {
   const posts = useLoaderData();
-  console.log(posts);
   const isLogin = cookie.load("uuid");
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => {

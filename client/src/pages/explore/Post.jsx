@@ -12,11 +12,8 @@ import { formatDate } from "../../utils/utils";
 const Post = ({ post }) => {
   const navigate = useNavigate();
   const useruuid = cookie.load("uuid");
-  console.log(post.likeName)
-  const ln = post.likeName?.includes(`${useruuid}`)
-  console.log(ln)
+  const ln = post.likeName?.includes(`${useruuid}`);
   const [isClickLike, setIsClickLike] = useState(ln);
-
 
   const date = formatDate(post.createdAt);
 
@@ -106,14 +103,13 @@ const Post = ({ post }) => {
   };
 
   const profileimg = post.profileImage;
-  // console.log(profileimg)
 
   const likes = post.likeName ? post.likeName.split(",").length : 0;
 
   return (
-    <div className="mx-2 mb-4 box-border flex h-fit w-[70rem] items-start justify-start rounded-2xl bg-neutral-50 p-12">
+    <div className="mx-2 mb-4 box-border flex h-fit w-[70rem] items-start justify-start rounded-2xl bg-neutral-50 p-12 sm:w-[40rem]">
       {/* 프로필, 글 */}
-      <div className="flex w-full flex-col justify-between gap-8">
+      <div className="flex w-full flex-col justify-between gap-8 sm:w-[20rem]">
         <div>
           <span className="rounded-full bg-black px-4 font-bold uppercase text-white">
             {post.category}
@@ -131,18 +127,18 @@ const Post = ({ post }) => {
               src={
                 post.profileImage
                   ? `${post.profileImage}`
-                  : `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${Math.floor(
-                      Math.random() * 16,
-                    )}`
+                  : `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${post.postId}}`
               }
               alt={post.profileImage}
             />
           </Link>
 
           <div className="flex h-14  basis-0 flex-col items-start justify-center">
-            <div className="w-[50rem] truncate text-xl font-semibold text-black">
-              {post.title}
-            </div>
+            <Link to={`/${post.category}/detail/${post.postId}`}>
+              <div className="w-[50rem] truncate text-xl font-semibold text-black overflow-hidden">
+                {post.title}
+              </div>
+            </Link>
             <div className="flex items-center justify-end gap-2.5">
               <div className="text-sm font-semibold text-blue-700">
                 {post.userName || `DevKo`}
@@ -191,7 +187,7 @@ const Post = ({ post }) => {
               className="scale-150 transform text-red-600 hover:scale-150"
               onClick={handleLikeClick}
             />
-            ) : (
+          ) : (
             <GoHeart className="hover:scale-150" onClick={handleLikeClick} />
           )}
           {/* {post.likeUser === useruuid ? (

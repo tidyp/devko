@@ -23,9 +23,7 @@ const TeamsdetailPage = () => {
   // const { post, comments } = useLoaderData();
   const { discussDetail, discussComments } = useLoaderData();
   const { pathname } = useLocation();
-  console.log(discussDetail);
   let [data] = discussDetail;
-  console.log(data);
   const commentsData = comments.currPageRows.slice().reverse();
 
   const navigate = useNavigate();

@@ -73,7 +73,6 @@ const DiscussPage = () => {
       <div className="flex w-[80rem] items-start justify-center gap-4 sm:w-32">
         {/* Posts */}
         <div className="flex w-full items-start justify-center">
-          {console.log(posts.length)}
 
           {posts.length < 0 && posts === "연결실패" ? (
             // connect fail
@@ -94,7 +93,6 @@ const DiscussPage = () => {
       {posts.length === undefined && posts.length <= 0 && (
         <AlertsBox>작성된 글이 없 습니다.</AlertsBox>
       )}
-      {console.log(postsList.length)}
       {postsList.length !== undefined && (
         <Pagination
           tab={pageTab}

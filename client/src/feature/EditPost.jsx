@@ -43,7 +43,7 @@ const EditPostForm = () => {
     title: postData.title,
     content: postData.content,
     category: postData.category,
-    tags: postData.category,
+    tags: postData.tagName,
     startDate: formatDateDash(new Date()),
     endDate: "",
     location: "",
@@ -250,14 +250,14 @@ const EditPostForm = () => {
           </div>
           {/* )} */}
 
-          {formData.category !== "calendars" && (
+          {formData.category && (
             <div className="flex items-center justify-between gap-2">
               <input
                 name="tags"
                 placeholder="태그를 입력하세요(#으로 구분 최대 5개)"
                 className="w-full rounded-md border bg-gray-200 p-2"
                 required
-                value={formData.tags}
+                value={`#${formData.tags.replaceAll(",", "#")}`}
                 onChange={handleChange}
               />
             </div>

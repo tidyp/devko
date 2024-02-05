@@ -123,7 +123,6 @@ export async function readComments(id) {
 
 // Read: Post detail 게시글 조회
 export async function readDetailPost(category, id) {
-  console.log(category, id)
   try {
     const [detailResponse, commentsResponse] = await Promise.all([
       fetch(`${API_URL}/post/${category}/${id}`),
@@ -139,7 +138,6 @@ export async function readDetailPost(category, id) {
         `Failed to fetch comments. Status: ${commentsResponse.status}`,
       );
     }
-    console.log(detailResponse);
     const detailData = await detailResponse.json();
     const commentsData = await commentsResponse.json();
 
@@ -204,7 +202,6 @@ export async function createGroupPost(postData) {
 // Update: 게시글 수정
 export async function updatePost(params) {
   const url = `${API_URL}/post/${params.category}/${params.postId}`;
-  console.log(url);
   const res = await fetch(url, {
     method: "PUT",
     headers: {
@@ -216,7 +213,6 @@ export async function updatePost(params) {
       content: params.content,
     }),
   });
-  console.log(res);
 
   if (!res.ok) {
     throw new Error(`Failed to create post. Status: ${res.status}`);
@@ -332,8 +328,8 @@ export async function readUserinfo(id) {
   }
 }
 
-// // READ: Event
-// // -----------------------------------------------------------------
+// READ: Event
+// -----------------------------------------------------------------
 // export async function readEventPosts() {
 //   try {
 //     const res = await fetch(`${API_URL}/calendar`);
@@ -342,6 +338,32 @@ export async function readUserinfo(id) {
 //     }
 //     const data = await res.json();
 //     return data;
+//   } catch (error) {
+//     console.error(`Error: ${error.message}`);
+//     throw error;
+//   }
+// }
+
+// export async function readEventDetailPost(category, id) {
+//   try {
+//     const [detailResponse, commentsResponse] = await Promise.all([
+//       fetch(`${API_URL}/calendar/${category}/${id}`),
+//       fetch(`${API_URL}/comment/${category}/${id}`),
+//     ]);
+//     if (!detailResponse.ok) {
+//       throw new Error(
+//         `Failed to fetch qna details. Status: ${detailResponse.status}`,
+//       );
+//     }
+//     if (!commentsResponse.ok) {
+//       throw new Error(
+//         `Failed to fetch comments. Status: ${commentsResponse.status}`,
+//       );
+//     }
+//     const detailData = await detailResponse.json();
+//     const commentsData = await commentsResponse.json();
+
+//     return { discussDetail: detailData, discussComments: commentsData };
 //   } catch (error) {
 //     console.error(`Error: ${error.message}`);
 //     throw error;

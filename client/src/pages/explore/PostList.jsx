@@ -1,8 +1,8 @@
 import Post from "./Post";
 
 const PostList = ({ posts }) => {
-  const reversedPosts = posts.slice();
-  console.log(reversedPosts)
+  const reversedPosts = posts.sort((a, b) => a.postId - b.postId);
+  
 
   return (
     <div className="flex w-full flex-col justify-center">

@@ -12,6 +12,7 @@ import { formatDateDash } from "../utils/utils";
 
 import {
   readDetailPost,
+  readEventPosts,
   createComment,
   deleteComment,
   deletePost,
@@ -22,7 +23,7 @@ import { TbTrash, TbEdit } from "react-icons/tb";
 
 import Button from "../components/Button";
 
-const PostDetailPage = () => {
+const EventDetailPage = () => {
   const navigate = useNavigate();
   const { discussDetail, discussComments } = useLoaderData(); // Load Data
   const postData = discussDetail[0];
@@ -264,13 +265,13 @@ const PostDetailPage = () => {
   );
 };
 
-export default PostDetailPage;
+export default EventDetailPage;
 
 export async function loader({ request }) {
   const category = request.url.split("/")[3];
   const id = request.url.split("/")[5];
   try {
-    const data = await readDetailPost(category, id);
+    const data = await readEventPosts(category, id);
     // const comments = await readDiscussComments(params.id);
     return data;
   } catch (error) {

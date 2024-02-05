@@ -7,7 +7,6 @@ import ProfileBox from "../components/ProfileBox";
 const UserinfoPage = () => {
   const userdata = useLoaderData();
   const { postrows, commentrows } = userdata;
-  console.log(postrows);
 
   // 사용자체크
   const checkUser = cookie.load("uuid");

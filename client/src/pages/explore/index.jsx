@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 const Index = () => {
   const posts = useLoaderData();
   const [showScrollButton, setShowScrollButton] = useState(false);
+  console.log(posts)
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -36,14 +37,14 @@ const Index = () => {
       <Outlet />
       <MainBackGround />
 
-      <div className="flex w-[80rem] items-start justify-center gap-4">
-        <div className="flex gap-2">
-          <div className="flex flex-col gap-4">
+      <div className="flex w-[80rem] items-start justify-center gap-4 sm:w-[40rem]">
+        <div className="flex gap-2 ">
+          <div className="flex-col gap-4 sm:hidden">
             <Sidebar />
           </div>
         </div>
 
-        <div className="flex w-full items-start justify-center relative">
+        <div className="flex w-full items-start justify-center relative sm:w-[40rem]">
           {!(posts === "연결실패") && posts.length > 0 && (
             <PostList posts={posts} />
           )}

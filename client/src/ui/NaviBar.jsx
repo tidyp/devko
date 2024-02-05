@@ -8,7 +8,7 @@ import { GoTriangleDown } from "react-icons/go";
 import { FaSearch } from "react-icons/fa";
 import { VscBell, VscBellDot } from "react-icons/vsc";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const dummy = [
   {
@@ -30,17 +30,32 @@ const unreadCount = dummy.filter((item) => !item.isRead).length;
 
 const NaviBar = () => {
   const dropdownRef = useRef();
+  const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+  const handleDropdownToggle = () => {
+    setDropdownOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, []);
 
   const [searchQuery, setSearchQuery] = useState("");
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isNotificationOpen, setNotificationOpen] = useState(false);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+
   const navigate = useNavigate();
 
-  const toggleNotification = () => {
-    setNotificationOpen((prev) => !prev);
-  };
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
   };
@@ -95,6 +110,12 @@ const NaviBar = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    if (!searchQuery) {
+      alert("검색어를 입력하세요");
+      setSearchQuery("");
+      return;
+    }
+    setSearchQuery("");
     navigate(`/search/${searchQuery}`);
   };
 
@@ -109,7 +130,10 @@ const NaviBar = () => {
 
       {/* </nav> */}
 
-      <nav className="z-50 flex items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4">
+      <nav
+        className="z-50 flex items-center justify-center border-b border-b-[#d3d3d3] bg-white py-4"
+        ref={dropdownRef}
+      >
         <div className="flex w-[80rem] items-center justify-between px-8 sm:flex-col">
           {/* <div className="flex w-full items-center justify-between px-8"> */}
           <div className="text-base sm:flex sm:w-full sm:items-center sm:justify-between">
@@ -189,7 +213,6 @@ const NaviBar = () => {
             </NavLink>
           </div>
           <div className="relative flex  items-center gap-4 sm:hidden">
-            <FaSearch />
             <form onSubmit={handleSearchSubmit}>
               <input
                 type="text"
@@ -197,39 +220,34 @@ const NaviBar = () => {
                 value={searchQuery}
                 onChange={handleSearchChange}
               />
+              <button type="submit">
+                <FaSearch />
+              </button>
             </form>
-            <div className="cursor-pointer" onClick={toggleNotification}>
+
+            {/* 알림 */}
+            {/* <div className="cursor-pointer">
               {unreadCount > 0 && (
                 <VscBellDot className="text-blue-70 animate-bounce text-xl" />
               )}
               {unreadCount < 0 && <VscBell className="text-xl" />}
             </div>
-            {/* {!isNotificationOpen && (
-            )} */}
-            {isNotificationOpen && (
-              <div className=" w-30 item translate3d absolute right-4 top-14 flex flex-col rounded border bg-white p-2 shadow-md">
-                <p className="mb-4 font-bold">알림</p>
-                {dummy.map((item) => (
-                  <div className="flex gap-2 border-b-2">
-                    <img
-                      className="h-12 w-12 rounded-full"
-                      src={item.profileImage}
-                      alt=""
-                    />
-                    <div className="flex w-fit flex-col border-b-2">
-                      <span>{item.title}</span>
-                      <span>{item.content}</span>
-                    </div>
+            <div className=" w-30 item translate3d absolute right-4 top-14 flex flex-col rounded border bg-white p-2 shadow-md">
+              <p className="mb-4 font-bold">알림</p>
+              {dummy.map((item) => (
+                <div className="flex gap-2 border-b-2">
+                  <img
+                    className="h-12 w-12 rounded-full"
+                    src={item.profileImage}
+                    alt=""
+                  />
+                  <div className="flex w-fit flex-col border-b-2">
+                    <span>{item.title}</span>
+                    <span>{item.content}</span>
                   </div>
-                ))}
-                {/* {userName && (
-                  <>
-                    <div>뭐</div>
-                    <div>뭐</div>
-                  </>
-                )} */}
-              </div>
-            )}
+                </div>
+              ))}
+            </div> */}
 
             {useruuid && (
               <div className="flex flex-row items-center gap-2 text-3xl">
@@ -241,7 +259,7 @@ const NaviBar = () => {
                     alt=""
                   />
                 </Link>
-                <div onClick={toggleDropdown} className="cursor-pointer">
+                <div onClick={handleDropdownToggle} className="cursor-pointer">
                   <GoTriangleDown />
                 </div>
               </div>
@@ -253,10 +271,7 @@ const NaviBar = () => {
               </Link>
             )}
             {isDropdownOpen && (
-              <div
-                ref={dropdownRef}
-                className=" w-30 item translate3d absolute right-0 top-14 flex flex-col rounded border bg-white p-2 px-4 shadow-md"
-              >
+              <div className=" w-30 item translate3d absolute right-0 top-14 flex flex-col rounded border bg-white p-2 px-4 shadow-md">
                 {userName && (
                   <>
                     <span className=" cursor-pointer" onClick={clickLogout}>
