@@ -19,14 +19,16 @@ const Sidebar = () => {
     }
   };
 
+
   useEffect(() => {
     fetchData();
   }, []);
 
   console.log(tagrows);
+  const sorttags = tagrows.sort((a, b) => b.tagCnt - a.tagCnt);
   return (
     <>
-      <PopTags popTag={tagrows} />
+      <PopTags popTag={sorttags} />
       <TopWriters/>
     </>
   );

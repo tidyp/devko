@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const path = require("path");
 const db = require("../../config/db");
 require("dotenv").config();
 
@@ -8,46 +7,46 @@ require("dotenv").config();
 router.get("/:userId", async (req, res) => {
   try {
     const usersql = `
-      SELECT u.userName AS userName,
-             u.profileImage AS profileImage,
-             u.interestPosition AS interestPosition,
-             u.interestArea AS interestArea,
-             u.selfDescription AS selfDescription,
-             u.grade AS grade
+      SELECT u.userName AS userName
+           , u.profileImage AS profileImage
+           , u.interestPosition AS interestPosition
+           , u.interestArea AS interestArea
+           , u.selfDescription AS selfDescription
+           , u.grade AS grade
       FROM users u
       WHERE u.id = ?
     `;
 
     const postsql = `
-      Select bv.userId AS postID,
-             bv.category AS category,
-             bv.title AS title,
-             bv.content AS postContent
+      Select bv.userId AS postID
+           , bv.category AS category
+           , bv.title AS title
+           , bv.content AS postContent
       FROM boardsView bv
-      LEFT JOIN users u ON bv.userId = u.id
+      LEFT OUTER JOIN users u ON bv.userId = u.id
       WHERE u.id = ?
     `;
 
     const commentsql = `
-      Select c.userId As commentID,
-             c.content AS commentContent
+      Select c.userId As commentID, c.content AS commentContent
       FROM users u
-      LEFT JOIN boardsView bv ON bv.userId = u.id
-      LEFT JOIN comments c ON c.userId = u.id
+      LEFT OUTER JOIN boardsView bv ON bv.userId = u.id
+      LEFT OUTER JOIN comments c ON c.userId = u.id
       WHERE u.id = ?
     `;
 
     const userId = req.params.userId;
-
     const [userrows, userfields] = await db.query(usersql, [userId]);
     const gradeLevels = {
-      5: 'junior',
-      4: 'middle',
-      3: 'senior',
-      2: 'CTO',
-      1: 'CEO',
-      0: 'admin'
+      5: "junior",
+      4: "middle",
+      3: "senior",
+      2: "CTO",
+      1: "CEO",
+      0: "admin" // 관리자 레벨
     };
+
+    // 등급에 따라 레벨 부여
     userrows.forEach(row => {
       if(row.grade in gradeLevels) {
         row.grade = gradeLevels[row.grade];
@@ -63,30 +62,12 @@ router.get("/:userId", async (req, res) => {
   };
 });
 
-// 프로필 이미지 수정 구현
-// router.get("/image", async (req, res) => {
-//   const filePath = req.file.path; // 파일 데이터를 Path로 가져옴
-//   const sql = 'UPDATE users u SET profileImage = ? WHERE u.id = ?';
-//     // const userId = req.body.userId;
-//   const userId = 'd77faaa9-b197-4d8f-b897-eae3a4cd9b71';
-
-//   try {
-//     const [rows, fields] = await db.query(sql, [filePath, userId]);
-//     res.redirect("http://localhost:5173/userinfo/d77faaa9-b197-4d8f-b897-eae3a4cd9b71");
-//   } catch (err) {
-//     console.error("Query execution error:", err);
-//     res.status(500).send("Internal Server Error");
-//   };
-// });
-
 // 커뮤니티 포인트 구현
-
 router.get("/:userId/point", async (req, res) => {
   const sql = `
     SELECT * FROM totalwritesView tv WHERE tv.userid =?
   `;
   const userId = req.params.userId;
-  // const userId = 'd77faaa9-b197-4d8f-b897-eae3a4cd9b71';
 
   try {
     const [rows, fields] = await db.query(sql, [userId]);
@@ -95,6 +76,7 @@ router.get("/:userId/point", async (req, res) => {
     let commentPoint = Math.floor((1/5 * rows[0].commentCnt) * 100) / 100;
     const teamPoint = Math.floor((rows[0].teamCnt) * 100) / 100;
 
+    // 각각 0.5 단위로 점수 표현
     if (postPoint - Math.floor(1/3 * rows[0].postCnt) < 0.25 ||
         commentPoint - Math.floor(1/5 * rows[0].commentCnt) < 0.25
     ) {

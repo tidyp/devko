@@ -8,16 +8,17 @@ const parser = new Parser();
 const blogs = require("./blog.json");
 const db = require("../../config/db.js");
 
+// 
 router.get("/", async (req, res) => {
   try {
     const sql = `SELECT * FROM articles ORDER BY createdAt DESC`;
-
     const [rows, field] = await db.query(sql);
+
     res.json(rows);
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).json("Internal Server Error");
-  }
+  };
 });
 
 const fetchDataAndInsert = async () => {

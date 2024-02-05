@@ -1,3 +1,4 @@
+// 카테고리 분류
 const categoryFinder = (category) => {
   switch (category) {
     case "discuss":

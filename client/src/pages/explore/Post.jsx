@@ -11,20 +11,23 @@ import { formatDate } from "../../utils/utils";
 
 const Post = ({ post }) => {
   const navigate = useNavigate();
-  const [isClickLike, setIsClickLike] = useState(false);
-
   const useruuid = cookie.load("uuid");
+  console.log(post.likeName)
+  const ln = post.likeName?.includes(`${useruuid}`)
+  console.log(ln)
+  const [isClickLike, setIsClickLike] = useState(ln);
+
 
   const date = formatDate(post.createdAt);
 
-  function getRandomColor() {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
+  // function getRandomColor() {
+  //   const letters = "0123456789ABCDEF";
+  //   let color = "#";
+  //   for (let i = 0; i < 6; i++) {
+  //     color += letters[Math.floor(Math.random() * 16)];
+  //   }
+  //   return color;
+  // }
 
   const tagss =
     typeof post.tagName === "string"
@@ -61,16 +64,19 @@ const Post = ({ post }) => {
 
   const fetchData = async (id, isLike) => {
     try {
-      const res = await fetch(`http://localhost:3000/api/like/${post.category}/${post.postId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `http://localhost:3000/api/like/${post.category}/${post.postId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: id,
+            isLiked: false,
+          }),
         },
-        body: JSON.stringify({
-          userId: id,
-          isLiked: false,
-        }),
-      });
+      );
 
       if (res.ok) {
       } else {
@@ -86,8 +92,8 @@ const Post = ({ post }) => {
   // 좋아요 클릭 이벤트
   const handleLikeClick = async () => {
     // 좋아요 상태 변경
-    if(!useruuid) {
-      return
+    if (!useruuid) {
+      return;
     }
 
     await setIsClickLike((prev) => !prev);
@@ -99,8 +105,10 @@ const Post = ({ post }) => {
     navigate("/");
   };
 
-  const profileimg = post.profileImage
+  const profileimg = post.profileImage;
   // console.log(profileimg)
+
+  const likes = post.likeName ? post.likeName.split(",").length : 0;
 
   return (
     <div className="mx-2 mb-4 box-border flex h-fit w-[70rem] items-start justify-start rounded-2xl bg-neutral-50 p-12">
@@ -183,7 +191,7 @@ const Post = ({ post }) => {
               className="scale-150 transform text-red-600 hover:scale-150"
               onClick={handleLikeClick}
             />
-          ) : (
+            ) : (
             <GoHeart className="hover:scale-150" onClick={handleLikeClick} />
           )}
           {/* {post.likeUser === useruuid ? (
@@ -194,7 +202,7 @@ const Post = ({ post }) => {
           ) : (
             <GoHeart className="hover:scale-150" onClick={handleLikeClick} />
           )} */}
-          <span>{post.likeCnt > 0 ? post.likeCnt : 0}</span>
+          <span>{likes}</span>
         </div>
       </div>
     </div>

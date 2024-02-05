@@ -5,8 +5,7 @@ const db = require("../../config/db");
 const path = require("path");
 require("dotenv").config();
 
-const GOOGLE_LOGIN_REDIRECT_URI =
-  "http://localhost:3000/api/googleAuth/callback";
+const GOOGLE_LOGIN_REDIRECT_URI = "http://localhost:3000/api/googleAuth/callback";
 
 // 회원가입
 router.get("/login", (req, res) => {
@@ -54,30 +53,29 @@ router.get("/callback", async (req, res) => {
 
     // 이미 가입된 회원, 로그인
     if (rows[0]) {
-      const userSql = `
-        SELECT * FROM usersView uv WHERE uv.googleId = ?
-      `;
+      const userSql = `SELECT * FROM usersView uv WHERE uv.googleId = ?`;
       const [rows, field] = await db.query(userSql, [googleId]);
+
       res.cookie("uuid", rows[0].id, { secure: true });
       res.cookie("userName", rows[0].userName, { secure: true });
       res.cookie("userImage", rows[0].profileImage, { secure: true });
       res.redirect("http://localhost:5173");
 
-      // 없는 회원, 신규 회원가입 + 추가 정보 입력
+    // 없는 회원, 신규 회원가입 + 추가 정보 입력
     } else {
       await db.execute(
-        "INSERT INTO usersgoogle (googleId, googleEmail, googleImage) VALUES (?, ?, ?);",
+        "INSERT INTO usersgoogle (googleId, googleEmail, googleImage) VALUES (?, ?, ?)",
         [googleId, googleEmail, googleImage]
       );
 
       res.cookie("googleId", googleId, { secure: true });
       res.cookie("googleImage", googleImage, { secure: true });
       res.redirect("http://localhost:5173/addinfo");
-    }
+    };
   } catch (error) {
     console.error("Database query error: ", error);
     res.status(500).json({ message: "Internal server error" });
-  }
+  };
 });
 
 module.exports = router;
