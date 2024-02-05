@@ -16,26 +16,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// 해당 게시글 보기
-router.get("/:category/:id", async (req, res) => {
-  console.log(req.params.id, req.params.category);
-  try {
-    const postId = req.params.id;
-    const category = categoryFinder(req.params.category);
-
-    const viewSql = `UPDATE views SET count = count + 1 WHERE postId = ?`;
-    const postSql = `SELECT * FROM ${category} WHERE id = ? ORDER BY createdAt DESC`;
-
-    await db.query(viewSql, [postId]);
-    const [rows, fields] = await db.query(postSql, [postId]);
-
-    res.json(rows);
-  } catch (err) {
-    console.error("Query execution error:", err);
-    res.status(500).json("Internal Server Error");
-  }
-});
-
 // 각 메뉴별 페이징된 게시물 보기
 router.get("/:category/page/:page", async (req, res) => {
   try {
@@ -72,7 +52,7 @@ router.get("/:category/:id", async (req, res) => {
     const category = categoryFinder(req.params.category);
 
     const viewSql = `UPDATE views SET count = count + 1 WHERE postId = ?`;
-    const postSql = `
+    const selectSql = `
     SELECT uv.id AS userId
         , uv.userName AS userName
         , uv.profileImage AS profileImage
@@ -84,11 +64,13 @@ router.get("/:category/:id", async (req, res) => {
         , p.updatedAt AS updatedAt
     FROM ${category} p
     LEFT OUTER JOIN usersView uv ON p.userId = uv.id
+    WHERE p.id = ?
     ORDER BY createdAt DESC
     `;
+    console.log(selectSql);
 
     await db.query(viewSql, [postId]);
-    const [rows, fields] = await db.query(postSql, [postId]);
+    const [rows, fields] = await db.query(selectSql, [postId]);
 
     res.json(rows);
   } catch (err) {
