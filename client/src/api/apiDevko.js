@@ -47,7 +47,7 @@ export async function readQnaPosts(id) {
 // Reads: Article 게시글 조회
 export async function readArticlePosts() {
   try {
-    const res = await fetch(`${API_URL}/post/articles`);
+    const res = await fetch(`${API_URL}/article`);
     if (!res.ok) {
       throw new Error(`Failed to fetch data. Status: ${res.status}`);
     }

@@ -29,9 +29,9 @@ const ArticlePage = () => {
           </Link> */}
         </div>
         <ul className="w-[80rem] items-start justify-start text-start ">
-          {data.currPageRows &&
-            data.currPageRows.map((el) => (
-              <Link to={el.content} key={el.title}>
+          {/* {data.currPageRows && */}
+            {data.map((el) => (
+              <Link to={el.link} key={el.title}>
                 <li className="flex flex-col gap-4 border-b-2 border-stone-200 py-8">
                   <div className="flex items-center gap-2 text-xl font-semibold">
                     {<IoMdMail className="text-violet-700" /> || (
@@ -50,6 +50,7 @@ const ArticlePage = () => {
                 </li>
               </Link>
             ))}
+            {/* } */}
         </ul>
       </div>
     </>
