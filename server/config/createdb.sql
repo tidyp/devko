@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS teams  (
     content TEXT,
     section TEXT,
     members INT,
-    workPosition VARCHAR(45),
+    workPosition TEXT,
     startDate DATETIME,
     endDate DATETIME,
     location TEXT,
