@@ -80,7 +80,7 @@ const NaviBar = () => {
     openPopUp();
     setTimeout(function () {
       closePopUp();
-    }, 300000);
+    }, -1);
 
     navigate("/");
   };
