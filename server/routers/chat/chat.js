@@ -8,6 +8,9 @@ router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'chat.html'));
 });
 
+const app = express();
+expressWs(app);
+
 // 접속자 정보를 저장하기 위한 자료구조
 const wsClient = new Map();
 
