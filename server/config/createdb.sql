@@ -211,14 +211,14 @@ SELECT b.id AS postId
 	, u.profileImage AS profileImage
 	, u.grade AS grade
     , c.count AS commentCnt
-    , l.name AS likeName
+    , l.userId AS likeName
     , t.name AS tagName
     , v.count AS viewCnt
 FROM boardsView b
 LEFT OUTER JOIN usersView u ON b.userId = u.id
 LEFT OUTER JOIN (SELECT category, postId, COUNT(id) AS count FROM comments GROUP BY category, postId) c ON b.id = c.postId AND b.category = c.category
 LEFT OUTER JOIN (SELECT category, postId, GROUP_CONCAT(name) AS name FROM tags GROUP BY category, postId) t ON b.id = t.postId AND b.category = t.category
-LEFT OUTER JOIN (SELECT category, postId, GROUP_CONCAT(userId) AS name FROM likes GROUP BY category, postId, userId) l ON b.id = l.postId AND b.category = l.category
+LEFT OUTER JOIN (SELECT category, postId, GROUP_CONCAT(userId) AS userId FROM likes GROUP BY category, postId) l ON b.id = l.postId AND b.category = l.category
 LEFT OUTER JOIN views v ON b.id = v.postId AND b.category = v.category
 ORDER BY b.createdAt ASC
 ;
@@ -241,3 +241,4 @@ LEFT OUTER JOIN (SELECT userId, COUNT(*) AS count FROM comments GROUP BY userId)
 ;
 
 SELECT * FROM totalwritesView;
+
