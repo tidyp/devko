@@ -6,30 +6,30 @@ const db = require("../../config/db");
 router.get("/", async (req, res) => {
   try {
     const tagsql = `
-        Select name, Count(name) AS tagCnt FROM tags GROUP BY name ORDER BY Count(name) DESC LIMIT 5
+        Select name, Count(name) AS tagCnt FROM tags GROUP BY name ORDER BY name DESC LIMIT 5
     `;
     const toppostsql = `
-        Select uv.userName, Count(tv.postCnt) 
+        Select uv.userName, uv.profileImage, Count(tv.postCnt) AS postCnt
         FROM totalwritesView tv
         LEFT OUTER JOIN usersview uv ON tv.userId = uv.id
-        GROUP BY uv.userName
-        ORDER BY Count(tv.postCnt) DESC LIMIT 5
+        GROUP BY uv.userName, uv.profileImage
+        ORDER BY postCnt DESC LIMIT 5
     `;
 
     const topcommentsql = `
-        Select uv.userName, Count(tv.commentCnt) 
+        Select uv.userName, uv.profileImage, Count(tv.commentCnt) AS commentCnt
         FROM totalwritesView tv
         LEFT OUTER JOIN usersview uv ON tv.userId = uv.id
-        GROUP BY uv.userName
-        ORDER BY Count(tv.commentCnt) DESC LIMIT 5
+        GROUP BY uv.userName, uv.profileImage
+        ORDER BY commentCnt DESC LIMIT 5
     `;
 
     const topteamsql = `
-        Select uv.userName, Count(tv.teamCnt) 
+        Select uv.userName, uv.profileImage, Count(tv.teamCnt) AS teamCnt
         FROM totalwritesView tv
         LEFT OUTER JOIN usersview uv ON tv.userId = uv.id
-        GROUP BY uv.userName
-        ORDER BY Count(tv.teamcnt) DESC LIMIT 5
+        GROUP BY uv.userName, uv.profileImage
+        ORDER BY teamCnt DESC LIMIT 5
     `;
 
     const [tagrows, tagfields] = await db.query(tagsql);
