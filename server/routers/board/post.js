@@ -72,7 +72,20 @@ router.get("/:category/:id", async (req, res) => {
     const category = categoryFinder(req.params.category);
 
     const viewSql = `UPDATE views SET count = count + 1 WHERE postId = ?`;
-    const postSql = `SELECT * FROM ${category} WHERE id = ? ORDER BY createdAt DESC`;
+    const postSql = `
+    SELECT uv.id AS userId
+        , uv.userName AS userName
+        , uv.profileImage AS profileImage
+        , p.id AS postId
+        , p.category AS category
+        , p.title AS title
+        , p.content AS content
+        , p.createdAt AS createdAt
+        , p.updatedAt AS updatedAt
+    FROM ${category} p
+    LEFT OUTER JOIN usersView uv ON p.userId = uv.id
+    ORDER BY createdAt DESC
+    `;
 
     await db.query(viewSql, [postId]);
     const [rows, fields] = await db.query(postSql, [postId]);
