@@ -4,24 +4,26 @@ const path = require('path');
 const multer = require('multer');
 const db = require('../../config/db');
 const fs = require('fs');
-const {v4: uuidv4} = require('uuid')
+const {v4: uuidv4} = require('uuid');
 require('dotenv').config();
 
+// 파일 업로드 폴더 정의 및 정의된 폴더 없을시 자동생성
 const uploadPath = ("public/src/profileimages/");
 
 if (!fs.existsSync(uploadPath)) {
   fs.mkdirSync(uploadPath, { recursive: true });
-}
+};
 
 // 파일 업로드를 위한 하수 정의
 const upload = multer({
   dest: uploadPath,
   limits: { fileSize: 10 * 512 * 512 }, // 10mb 제한
   fileFilter: (req, file, cb) => {
-      if (!file.mimetype.startsWith('image/')) {
-          return cb(new Error('사진 파일만 첨부하세요.'), false);
-      };
-      cb(null, true);
+    if (!file.mimetype.startsWith('image/')) {
+        return cb(new Error('사진 파일만 첨부하세요.'), false);
+    };
+
+    cb(null, true);
   }
 });
 
@@ -65,10 +67,9 @@ router.post('/', upload.single('profileImage'), async (req, res) => {
   }
 });
 
+// 내 정보 조회
 router.get('/:id', async (req, res) => {
-  const sql = `
-    SELECT * FROM users u WHERE u.id = ?
-  `;
+  const sql = `SELECT * FROM users u WHERE u.id = ?`;
   const userId = req.params.id;
 
   try {
@@ -81,15 +82,15 @@ router.get('/:id', async (req, res) => {
   };
 });
 
+// 내 정보 수정
 router.put('/:id', upload.single('profileImage'), async (req, res) => {
   const userId = req.params.id;
   const { userName, interestPosition, interestArea, selfDescription } = req.body;
 
-  // const oldProfileImage = path.join(__dirname, "public", "src", "profileimages", req.body.path);
-
   if (req.body.path && typeof req.body.path === 'string') {
     const oldProfileImage = path.join(__dirname, "public", "src", "profileimages", req.body.path);
 
+    // 이전 프로필파일 제거
     if (oldProfileImage) {
       fs.unlinkSync(oldProfileImage);
     };
@@ -97,26 +98,18 @@ router.put('/:id', upload.single('profileImage'), async (req, res) => {
 
   const profileImage = req.file ? req.file.path : null;
   const updateSql = profileImage
-      ? 'UPDATE users SET userName = ?, profileImage = ?, interestPosition = ?, interestArea = ?, selfDescription = ?, updatedAt = NOW() WHERE id = ?'
-      : 'UPDATE users SET userName = ?, interestPosition = ?, interestArea = ?, selfDescription = ?, updatedAt = NOW() WHERE id = ?';
+    ? 'UPDATE users SET userName = ?, profileImage = ?, interestPosition = ?, interestArea = ?, selfDescription = ?, updatedAt = NOW() WHERE id = ?'
+    : 'UPDATE users SET userName = ?, interestPosition = ?, interestArea = ?, selfDescription = ?, updatedAt = NOW() WHERE id = ?';
 
-    const updateParams = profileImage
-      ? [{userName}, profileImage, interestPosition, interestArea, selfDescription, userId]
-      : [userName, interestPosition, interestArea, selfDescription, userId];
+  const updateParams = profileImage
+    ? [{userName}, profileImage, interestPosition, interestArea, selfDescription, userId]
+    : [userName, interestPosition, interestArea, selfDescription, userId];
 
-    await db.query(updateSql, updateParams);
-    console.log(updateParams)
-    res.redirect('/');
+  await db.query(updateSql, updateParams);
+  res.redirect('/');
 });
 
-router.get('/images/:filename', (req, res) => {
-  const filename = req.params.filename;
-  const filepath = path.join(__dirname, 'public', 'src', 'profileimages', filename);
-
-  res.setHeader('Content-Type', 'image/png');
-  res.sendFile(filepath);
-});
-
+// 회원 탈퇴
 router.delete('/:id', (req, res) => {
   const userId = req.params.id;
 
