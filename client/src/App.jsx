@@ -21,7 +21,7 @@ import TeamsPage, { loader as teamsLoader } from "./pages/team";
 // import SignupPage from "./pages/addinfo";
 
 // import Postdetail from "./pages/Postdetail";
-import PostdetailPage, { loader as postLoader } from "./pages/PostDetailPage";
+import PostDetailPage, { loader as postLoader } from "./pages/PostDetailPage";
 // import TeamsdetailPage, { loader as teamLoader } from "./pages/TeamsdetailPage";
 
 import LoginPage from "./pages/LoginPage";
@@ -62,7 +62,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/discuss/detail/:id/",
-        element: <PostdetailPage />,
+        element: <PostDetailPage />,
         loader: postLoader,
         children: [
           { path: "edit", element: <EditPost />, loader: editPostLoader },
@@ -78,7 +78,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/questions/detail/:id",
-        element: <PostdetailPage />,
+        element: <PostDetailPage />,
         loader: postLoader,
         children: [
           { path: "edit", element: <EditPost />, loader: editPostLoader },
@@ -94,7 +94,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/Article/detail/:id",
-        element: <PostdetailPage />,
+        element: <PostDetailPage />,
         loader: postLoader,
       },
 
@@ -107,7 +107,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/event/detail/:id",
-        element: <PostdetailPage />,
+        element: <PostDetailPage />,
         loader: postLoader,
       },
       // Team
@@ -119,7 +119,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/teams/detail/:id",
-        element: <PostdetailPage />,
+        element: <PostDetailPage />,
         // element: <GroupdetailPage />,
         loader: postLoader,
       },

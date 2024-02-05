@@ -21,7 +21,7 @@ import { TbTrash, TbEdit } from "react-icons/tb";
 import Button from "../components/Button";
 import { formatDateDash } from "../utils/utils";
 
-const PostdetailPage = () => {
+const PostDetailPage = () => {
   const navigate = useNavigate();
   const { discussDetail, discussComments } = useLoaderData(); // Load Data
   console.log(discussDetail);
@@ -238,7 +238,7 @@ console.log(postData)
   );
 };
 
-export default PostdetailPage;
+export default PostDetailPage;
 
 export async function loader({ request }) {
   const category = request.url.split("/")[3];
