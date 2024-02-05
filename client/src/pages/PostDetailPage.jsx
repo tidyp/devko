@@ -8,6 +8,8 @@ import {
 } from "react-router-dom";
 import cookie from "react-cookies";
 
+import { formatDateDash } from "../utils/utils";
+
 import {
   readDetailPost,
   createComment,
@@ -19,7 +21,6 @@ import { VscKebabVertical } from "react-icons/vsc";
 import { TbTrash, TbEdit } from "react-icons/tb";
 
 import Button from "../components/Button";
-import { formatDateDash } from "../utils/utils";
 
 const PostDetailPage = () => {
   const navigate = useNavigate();
@@ -76,7 +77,7 @@ const PostDetailPage = () => {
       console.error("Error deleting post:", error);
     }
   };
-console.log(postData)
+  console.log(postData);
   const clickdeletePost = async () => {
     try {
       await deletePost(postData.category, postData.id);
@@ -103,17 +104,47 @@ console.log(postData)
                 </span>{" "}
               </p>
               <header className="flex items-center justify-between text-xl">
-                <div className="flex items-center gap-4">
-                  <img
-                    className="className=h-16 w-16 rounded-full bg-gray-300"
-                    src={postData.profileImage || profileimg}
-                    alt=""
-                  />
-                  <div>
-                    <p className="text-lg font-semibold">id</p>
-                    <p className="text-gray-700">{postData.userId}</p>
+
+                <div className="flex items-center justify-start gap-3">
+                  <Link
+                    className="h-12 w-12"
+                    to={`/userinfo/${postData.userId}`}
+                  >
+                    {/* <img
+                className="h-12 w-12 rounded-lg"
+                src={`${"postData.profileImage"}`}
+                alt={postData.profileImage}
+              /> */}
+                    <img
+                      className="h-12 w-12 rounded-lg"
+                      src={
+                        postData.profileImage
+                          ? `${postData.profileImage}`
+                          : `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${Math.floor(
+                              Math.random() * 16,
+                            )}`
+                      }
+                      alt={postData.profileImage}
+                    />
+                  </Link>
+
+                  <div className="flex h-14  basis-0 flex-col items-start justify-center">
+                    <div className="w-[50rem] truncate text-xl font-semibold text-black">
+                      {postData.title}
+                    </div>
+                    <div className="flex items-center justify-end gap-2.5">
+                      <div className="flex text-lg font-semibold gap-">
+                        <span className="text-blue-700">{postData.userName || `DevKo`}</span>
+                        <span>{formatDateDash(postData.createdAt)}</span>
+                      </div>
+                      <div className="text-sm font-semibold text-zinc-500">
+                        {/* {date} */}
+                      </div>
+                    </div>
                   </div>
                 </div>
+
+
                 <div className="relative cursor-pointer">
                   <VscKebabVertical
                     onClick={toggleDropdown}
@@ -135,13 +166,9 @@ console.log(postData)
                 </div>
               </header>
               <div className="mt-4 flex flex-col gap-8">
-                <h1 className="mb-4 text-2xl font-bold">
-                  제목: {postData.title}
-                </h1>
 
-                <p className="text-gray-700">본문: {postData.content}</p>
-                <p className="text-gray-700">{postData.createdAt}</p>
-                <p className="text-gray-700">{postData.updatedAt}</p>
+                <p className="text-gray-700 text-lg">{postData.content}</p>
+
                 <p className="text-gray-700">{`#${postData.tagName}`}</p>
               </div>
             </div>
@@ -232,7 +259,6 @@ console.log(postData)
           ))}
           {/* </div> */}
         </div>
-        
       </div>
     </>
   );
