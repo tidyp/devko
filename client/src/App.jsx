@@ -8,7 +8,7 @@ import EditPost, { loader as editPostLoader } from "./feature/EditPost";
 import ExplorePage, { loader as postsLoader } from "./pages/explore";
 import SearchResultPage, {
   loader as searchresultLoader,
-} from "./pages/searchResultPage";
+} from "./pages/SearchResultPage";
 
 import DiscussPage, { loader as discussesLoader } from "./pages/DiscussPage";
 import QuestionsPage, { loader as qnasLoader } from "./pages/QuestionsPage";
