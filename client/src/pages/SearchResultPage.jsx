@@ -3,7 +3,7 @@
 import { searchResult } from "../api/apiDevko";
 import { useLoaderData, Link, useParams } from "react-router-dom";
 
-const searchResultPage = () => {
+const SearchResultPage = () => {
   const result = useLoaderData();
   const query = useParams();
 
@@ -55,7 +55,7 @@ const searchResultPage = () => {
   );
 };
 
-export default searchResultPage;
+export default SearchResultPage;
 
 export async function loader({ params }) {
   const { id } = params;
