@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
 
 // 해당 게시글 보기
 router.get("/:category/:id", async (req, res) => {
-  console.log(req.params.id, req.params.category)
+  console.log(req.params.id, req.params.category);
   try {
     const postId = req.params.id;
     const category = categoryFinder(req.params.category);
@@ -87,7 +87,6 @@ router.get("/:category/:id", async (req, res) => {
 // 게시글 쓰기
 router.post("/", async (req, res) => {
   try {
-    console.log(req.body.tags);
     const { userId } = req.body;
     const title = xss(req.body.title);
     const content = xss(req.body.content);
