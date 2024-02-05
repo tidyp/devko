@@ -15,12 +15,9 @@ import QuestionsPage, { loader as qnasLoader } from "./pages/QuestionsPage";
 
 import ArticlePage, { loader as articleLoader } from "./pages/ArticlePage";
 import EventPage, { loader as eventLoader } from "./pages/EventPape";
-// import Newevent  from "./feature/Newevent";
 
 import TeamsPage, { loader as teamsLoader } from "./pages/team";
-// import SignupPage from "./pages/addinfo";
 
-// import Postdetail from "./pages/Postdetail";
 import PostDetailPage, { loader as postLoader } from "./pages/PostDetailPage";
 // import TeamsdetailPage, { loader as teamLoader } from "./pages/TeamsdetailPage";
 
