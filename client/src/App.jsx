@@ -85,13 +85,13 @@ const router = createBrowserRouter([
 
       // Article ------------------------------------------
       {
-        path: "/article",
+        path: "/article/:id",
         element: <ArticlePage />,
         loader: articleLoader,
         children: [{ path: "write", element: <NewPost /> }],
       },
       {
-        path: "/Article/detail/:id",
+        path: "/article/detail/:id",
         element: <PostDetailPage />,
         loader: postLoader,
       },

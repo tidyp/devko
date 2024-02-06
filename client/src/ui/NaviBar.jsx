@@ -194,7 +194,7 @@ const NaviBar = () => {
               Q&amp;A
             </NavLink>
             <NavLink
-              to="/article"
+              to="/article/1"
               className={({ isActive }) => (isActive ? activeLink : "")}
             >
               article
@@ -206,7 +206,7 @@ const NaviBar = () => {
               event
             </NavLink>
             <NavLink
-              to="teams/1"
+              to="/teams/1"
               className={({ isActive }) => (isActive ? activeLink : "")}
             >
               group
