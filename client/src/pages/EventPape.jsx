@@ -21,7 +21,6 @@ const EventPape = () => {
   const [today, setToday] = useState(new Date());
   const [eventData, setEventData] = useState([]);
   const [selectEvent, setSelectEvent] = useState([]);
-  console.log(selectEvent)
 
 
   const isLogin = cookie.load("uuid");
