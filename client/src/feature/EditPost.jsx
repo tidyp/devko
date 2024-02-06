@@ -63,15 +63,7 @@ const EditPostForm = () => {
     }));
   };
 
-  const handleAddTag = () => {
-    if (newTag.trim() !== "") {
-      setFormData((prevData) => ({
-        ...prevData,
-        tags: [...prevData.tags, newTag],
-      }));
-      setNewTag("");
-    }
-  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -102,6 +94,12 @@ const EditPostForm = () => {
     navigate("../");
   };
 
+  const handleTag = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      tags: "#",
+    }));
+  };
   return (
     <Modal>
       <div className="flex w-[50rem] flex-col items-center p-8">
@@ -254,11 +252,12 @@ const EditPostForm = () => {
             <div className="flex items-center justify-between gap-2">
               <input
                 name="tags"
-                placeholder="태그를 입력하세요(#으로 구분 최대 5개)"
+                placeholder="태그를 입력하세요(#으로 구분)"
                 className="w-full rounded-md border bg-gray-200 p-2"
                 required
-                value={`#${formData.tags.replaceAll(",", "#")}`}
+                value={`${formData.tags.replaceAll(",", "#")}`}
                 onChange={handleChange}
+                onClick={handleTag}
               />
             </div>
           )}

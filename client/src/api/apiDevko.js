@@ -211,6 +211,7 @@ export async function updatePost(params) {
       userId: params.userId,
       title: params.title,
       content: params.content,
+      tags: params.tags,
     }),
   });
 
@@ -344,28 +345,17 @@ export async function readUserinfo(id) {
 //   }
 // }
 
-// export async function readEventDetailPost(category, id) {
-//   try {
-//     const [detailResponse, commentsResponse] = await Promise.all([
-//       fetch(`${API_URL}/calendar/${category}/${id}`),
-//       fetch(`${API_URL}/comment/${category}/${id}`),
-//     ]);
-//     if (!detailResponse.ok) {
-//       throw new Error(
-//         `Failed to fetch qna details. Status: ${detailResponse.status}`,
-//       );
-//     }
-//     if (!commentsResponse.ok) {
-//       throw new Error(
-//         `Failed to fetch comments. Status: ${commentsResponse.status}`,
-//       );
-//     }
-//     const detailData = await detailResponse.json();
-//     const commentsData = await commentsResponse.json();
 
-//     return { discussDetail: detailData, discussComments: commentsData };
-//   } catch (error) {
-//     console.error(`Error: ${error.message}`);
-//     throw error;
-//   }
-// }
+export async function readEventDetailPost(id) {
+  try {
+    const res = await fetch(`${API_URL}/calendar/detail/${id}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch data. Status: ${res.status}`);
+    }
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    throw error;
+  }
+}

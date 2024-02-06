@@ -10,7 +10,7 @@ import cookie from "react-cookies";
 
 import { formatDateDash } from "../utils/utils";
 
-import {
+import {readEventDetailPost,
   readDetailPost,
   readEventPosts,
   createComment,
@@ -25,9 +25,10 @@ import Button from "../components/Button";
 
 const EventDetailPage = () => {
   const navigate = useNavigate();
-  const { discussDetail, discussComments } = useLoaderData(); // Load Data
-  const postData = discussDetail[0];
-  const commentsData = discussComments.currPageRows.slice().reverse();
+  const data = useLoaderData(); // Load Data
+  console.log(data)
+  // const postData = discussDetail[0];
+  // const commentsData = discussComments.currPageRows.slice().reverse();
 
   const username = cookie.load("uuid");
   const userimage = cookie.load("userImage");
@@ -48,11 +49,11 @@ const EventDetailPage = () => {
 
     try {
       const res = await createComment({
-        postId: postData.id,
+        postId: data.id,
         commentId: Math.round(Math.random() * 100000),
         userId: username,
         commentContent: commentContent,
-        category: postData.category === "questions" ? "qna" : postData.category,
+        category: data[0].category === "questions" ? "qna" : data.category,
       });
 
       navigate(pathname);
@@ -79,7 +80,7 @@ const EventDetailPage = () => {
   };
   const clickdeletePost = async () => {
     try {
-      await deletePost(postData.category, postData.id);
+      await deletePost(data.category, data.id);
       // window.location.reload();
       navigate("/");
     } catch (error) {
@@ -99,7 +100,7 @@ const EventDetailPage = () => {
             <div className="flex flex-col gap-8 rounded-md bg-neutral-50 p-12 text-start">
               <p className="text-gray-700">
                 <span className="rounded-full bg-black px-4 font-bold uppercase text-white">
-                  {postData.category}
+                  {data[0].category}
                 </span>{" "}
               </p>
               <header className="flex items-center justify-between text-xl">
@@ -107,37 +108,37 @@ const EventDetailPage = () => {
                 <div className="flex items-center justify-start gap-3">
                   <Link
                     className="h-12 w-12"
-                    to={`/userinfo/${postData.userId}`}
+                    to={`/userinfo/${data[0].userId}`}
                   >
                     {/* <img
                 className="h-12 w-12 rounded-lg"
-                src={`${"postData.profileImage"}`}
-                alt={postData.profileImage}
+                src={`${"data.profileImage"}`}
+                alt={data.profileImage}
               /> */}
                     <img
                       className="h-12 w-12 rounded-lg"
                       src={
-                        postData.profileImage
-                          ? `${postData.profileImage}`
+                        data[0].profileImage
+                          ? `${data[0].profileImage}`
                           : `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${Math.floor(
                               Math.random() * 16,
                             )}`
                       }
-                      alt={postData.profileImage}
+                      alt={data.profileImage}
                     />
                   </Link>
 
                   <div className="flex h-14  basis-0 flex-col items-start justify-center">
                     <div className="w-[50rem] truncate text-xl font-semibold text-black">
-                      {postData.title}
+                      {data[0].title}
                     </div>
                     <div className="flex items-center justify-end gap-2.5">
-                      <div className="flex text-lg font-semibold gap-">
-                        <span className="text-blue-700">{postData.userName || `DevKo`}</span>
-                        <span>{formatDateDash(postData.createdAt)}</span>
+                      <div className="flex text-lg font-semibold gap-4">
+                        <span className="text-blue-700">{data[0].userName || `DevKo`}</span>
+                        <span>{formatDateDash(data[0].createdAt)}</span>
                       </div>
                       <div className="text-sm font-semibold text-zinc-500">
-                        {/* {date} */}
+                        {data[0].content}
                       </div>
                     </div>
                   </div>
@@ -156,7 +157,7 @@ const EventDetailPage = () => {
                       </span>
                       <span
                         className="w-12 cursor-pointer"
-                        onClick={() => clickdeletePost(postData.postId)}
+                        onClick={() => clickdeletePost(data[0].postId)}
                       >
                         삭제
                       </span>
@@ -166,9 +167,9 @@ const EventDetailPage = () => {
               </header>
               <div className="mt-4 flex flex-col gap-8">
 
-                <p className="text-gray-700 text-lg">{postData.content}</p>
+                <p className="text-gray-700 text-lg">{data[0].content}</p>
 
-                <p className="text-gray-700">{`#${postData.tagName.replaceAll(",", " #")}`}</p>
+                {/* <p className="text-gray-700">{`#${data.tagName.replaceAll(",", " #")}`}</p> */}
 
               </div>
             </div>
@@ -224,7 +225,7 @@ const EventDetailPage = () => {
             </form>
           </div>
           {/* <div className="w-full rounded-md bg-slate-50 p-4 pl-8 text-start"> */}
-          {commentsData.map((el) => (
+          {data.map((el) => (
             <div
               key={el.commentId}
               className="flex w-full justify-between gap-2 rounded-md bg-neutral-50 p-4"
@@ -266,12 +267,12 @@ const EventDetailPage = () => {
 
 export default EventDetailPage;
 
-export async function loader({ request }) {
-  const category = request.url.split("/")[3];
-  const id = request.url.split("/")[5];
+export async function loader({ params }) {
+
   try {
-    const data = await readEventPosts(category, id);
+    const data = await readEventDetailPost(params.id);
     // const comments = await readDiscussComments(params.id);
+    console.log(data)
     return data;
   } catch (error) {
     console.error("Error fetching posts:", error);

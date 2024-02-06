@@ -26,6 +26,7 @@ const PostDetailPage = () => {
   const navigate = useNavigate();
   const { discussDetail, discussComments } = useLoaderData(); // Load Data
   const postData = discussDetail[0];
+  console.log(postData)
   const commentsData = discussComments.currPageRows.slice().reverse();
 
   const username = cookie.load("uuid");
@@ -47,7 +48,7 @@ const PostDetailPage = () => {
 
     try {
       const res = await createComment({
-        postId: postData.id,
+        postId: postData.postId,
         commentId: Math.round(Math.random() * 100000),
         userId: username,
         commentContent: commentContent,
@@ -172,6 +173,7 @@ const PostDetailPage = () => {
               </div>
             </div>
           </div>
+          
           <div
             className={`flex-rows mt-4 flex w-full gap-8 duration-300 ${
               isInputFocused ? "flex-col" : ""

@@ -140,7 +140,7 @@ router.put("/:category/:id", async (req, res) => {
     const { userId } = req.body;
     const title = xss(req.body.title);
     const content = xss(req.body.content);
-    const tags = xss(req.body.tags);
+    const tags = xss(req.body.tags).split("#").slice(1);;
 
     const selectSql = `SELECT * FROM boardsview bv WHERE bv.category = ? AND bv.id = ? AND bv.userId = ?;`;
     const [rows, fields] = await db.query(selectSql, [
@@ -150,11 +150,11 @@ router.put("/:category/:id", async (req, res) => {
     ]);
     if (rows.length > 0) {
       const postSql = `UPDATE ${category} SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?`;
-      const tagSql = `UPDATE tags SET name = ? WHERE postId = ? AND id = ?`;
+      const tagSql = `UPDATE tags SET name = ? WHERE postId = ?`;
       const [rows, fields] = await db.query(postSql, [title, content, postId]);
-      // for (let key in tags) {
-      //   const [rows, fields] = await db.query(sql, [tags[key], postId, tagId]);
-      // }
+      for (let key in tags) {
+        const [rows, fields] = await db.query(tagSql, [tags[key], postId]);
+      }
       res.json(rows);
     }
   } catch (err) {
