@@ -146,7 +146,7 @@ const AddInfoPage = () => {
           <input
             className="border-b-[1px] border-[#e5e5e5]"
             type="text"
-            name="workposition"
+            name="workPosition"
             value={formData.workPosition}
             onChange={handleChange}
           />
