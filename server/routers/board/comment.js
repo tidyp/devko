@@ -40,22 +40,17 @@ router.get("/:category/:postId", async (req, res) => {
     `;
 
     const [rows, fields] = await db.query(sql, [category, postId]);
-    console.log(rows);
 
-    const itemsPerPage = 10;
-    const page = parseInt(req.params.page) || 1;
+    // const itemsPerPage = 10;
+    // const page = parseInt(req.params.page) || 1;
 
-    const startIndex = (page - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
+    // const startIndex = (page - 1) * itemsPerPage;
+    // const endIndex = startIndex + itemsPerPage;
 
-    const currPageRows = rows.slice(startIndex, endIndex);
-    const totalPages = Math.ceil(rows.length / itemsPerPage);
+    // const currPageRows = rows.slice(startIndex, endIndex);
+    // const totalPages = Math.ceil(rows.length / itemsPerPage);
 
-    res.json({
-      currPageRows,
-      totalPages,
-      page,
-    });
+    res.json({ rows });
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).json("Internal Server Error");
