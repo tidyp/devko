@@ -19,6 +19,7 @@ import { formatDateEvent } from "../utils/utils";
 
 const EventPape = () => {
   const data = useLoaderData();
+  console.log(data)
   const filterData = data;
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const [selectday, setSelectday] = useState(null);

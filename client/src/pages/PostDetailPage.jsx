@@ -171,7 +171,7 @@ const PostDetailPage = () => {
               <div className="mt-4 flex flex-col gap-8">
                 <p className="text-lg text-gray-700">{postData.content}</p>
 
-                <p className="text-gray-700">{`#${postData.tagName.replaceAll(
+                <p className="text-gray-700">{`#${postData.tagName?.replaceAll(
                   ",",
                   " #",
                 )}`}</p>

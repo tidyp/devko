@@ -89,7 +89,7 @@ const fetchDataAndInsert = async () => {
   }
 };
 
-fetchDataAndInsert();
+// fetchDataAndInsert();
 
 // cron.schedule("0 */12 * * *", () => {
 // cron.schedule("*/1 * * * *", () => {

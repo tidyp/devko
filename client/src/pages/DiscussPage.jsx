@@ -15,6 +15,7 @@ const DiscussPage = () => {
   const pageTab = "discuss";
   const posts = useLoaderData();
   const postsList = posts.currPageRows;
+  console.log(posts);
 
   const isLogin = cookie.load("uuid");
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +30,7 @@ const DiscussPage = () => {
   return (
     <div className="mt-16 flex w-full flex-col items-center justify-center gap-2 sm:w-32 ">
       <Outlet />
-      <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold py-6">
+      <div className="flex w-[80rem] items-center justify-center gap-8 px-4 py-6 text-3xl font-bold">
         <h2 className="uppercase">{pageTab}</h2>
       </div>
       <div className="my- flex w-[80rem] items-center justify-between px-4">
@@ -73,33 +74,30 @@ const DiscussPage = () => {
       <div className="flex w-[80rem] items-start justify-center gap-4 sm:w-32">
         {/* Posts */}
         <div className="flex w-full items-start justify-center">
-
-          {posts.length < 0 && posts === "연결실패" ? (
-            // connect fail
+          {posts === "연결실패" && (
             <AlertsBox>서버에 연결되어있지 않습니다.</AlertsBox>
-          ) : (
-            posts && (
-              <div className="box-border flex w-full flex-col items-center justify-center gap-4">
+          )}
+          {posts !== "연결실패" && posts.currPageRows.length <= 0 && (
+            <AlertsBox>작성된 글이 없습니다.</AlertsBox>
+          )}
+          {posts !== "연결실패" && posts.currPageRows.length > 0 && posts && (
+            <div className="flex flex-col">
+              <div className="box-border flex w-[80rem] flex-col items-center justify-center gap-4 sm:w-16">
                 <ul className="flex w-full flex-col sm:w-16">
                   {postsList.map((post) => (
                     <OnelineList key={post.postId} {...post} />
                   ))}
                 </ul>
               </div>
-            )
+              <Pagination
+                tab={pageTab}
+                curPage={posts.page}
+                totalPage={posts.totalPages}
+              />
+            </div>
           )}
         </div>
       </div>
-      {posts.length === undefined && posts.length <= 0 && (
-        <AlertsBox>작성된 글이 없 습니다.</AlertsBox>
-      )}
-      {postsList.length !== undefined && (
-        <Pagination
-          tab={pageTab}
-          curPage={posts.page}
-          totalPage={posts.totalPages}
-        />
-      )}
     </div>
   );
 };

@@ -24,6 +24,7 @@ const EditPostForm = () => {
   const data = useLoaderData();
   const { discussDetail, discussComments } = useLoaderData();
   const postData = discussDetail[0];
+  console.log(postData)
 
   const loca = useLocation();
   const postId = loca.pathname.split("/")[3]
@@ -254,7 +255,7 @@ const EditPostForm = () => {
                 placeholder="태그를 입력하세요(#으로 구분)"
                 className="w-full rounded-md border bg-gray-200 p-2"
                 required
-                value={`${formData.tags.replaceAll(",", "#")}`}
+                value={formData.tags}
                 onChange={handleChange}
                 onClick={handleTag}
               />
