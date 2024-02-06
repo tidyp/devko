@@ -13,7 +13,20 @@ router.get("/", async (req, res) => {
     const sql = `SELECT * FROM articles ORDER BY createdAt DESC`;
     const [rows, field] = await db.query(sql);
 
-    res.json(rows);
+    const itemsPerPage = 10;
+    const page = parseInt(req.params.page) || 1;
+
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+
+    const currPageRows = rows.slice(startIndex, endIndex);
+    const totalPages = Math.ceil(rows.length / itemsPerPage);
+
+    res.json({
+      currPageRows,
+      totalPages,
+      page,
+    });
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).json("Internal Server Error");
