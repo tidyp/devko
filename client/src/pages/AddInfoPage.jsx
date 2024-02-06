@@ -75,7 +75,7 @@ const AddInfoPage = () => {
   };
 
   return (
-    <div className="flex h-fit flex-col items-center justify-center gap-8 p-4">
+    <div className="flex h-fit flex-col items-center justify-center gap-8 p-4 mt-28">
       <h1 className="text-2xl">내 정보</h1>
       <div className="w-20">
         {!googleImage && !naverImage && (
@@ -111,7 +111,7 @@ const AddInfoPage = () => {
       />
 
       <form className="mt-8 flex flex-col gap-8">
-        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
+        <div className="flex w-[30rem] items-center justify-between text-xl ">
           <label>username:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"
@@ -121,7 +121,7 @@ const AddInfoPage = () => {
             onChange={handleChange}
           />
         </div>
-        {/* <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
+        {/* <div className="flex w-[30rem] items-center justify-between text-xl ">
           <label>email:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"
@@ -131,8 +131,8 @@ const AddInfoPage = () => {
             onChange={handleChange}
           />
         </div> */}
-        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
-          <label>selfDescription:</label>
+        <div className="flex w-[30rem] items-center justify-between text-xl ">
+          <label>selfdescription:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"
             type="text"
@@ -141,17 +141,17 @@ const AddInfoPage = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
-          <label>workPosition:</label>
+        <div className="flex w-[30rem] items-center justify-between text-xl ">
+          <label>workposition:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"
             type="text"
-            name="workPosition"
+            name="workposition"
             value={formData.workPosition}
             onChange={handleChange}
           />
         </div>
-        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
+        {/* <div className="flex w-[30rem] items-center justify-between text-xl ">
           <label>interestArea:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"
@@ -160,9 +160,9 @@ const AddInfoPage = () => {
             value={formData.interestArea}
             onChange={handleChange}
           />
-        </div>
-        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
-          <label>interestPosition:</label>
+        </div> */}
+        <div className="flex w-[30rem] items-center justify-between text-xl ">
+          <label>interestposition:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"
             type="text"
@@ -171,7 +171,7 @@ const AddInfoPage = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="flex w-[30rem] items-center  gap-12 text-xl uppercase">
+        {/* <div className="flex w-[30rem] items-center  gap-12 text-xl ">
           <label>Email Notification:</label>
           <label>
             Send
@@ -183,11 +183,11 @@ const AddInfoPage = () => {
               onChange={handleChange}
             />
           </label>
-        </div>
+        </div> */}
 
         <div
           onClick={handleSubmit}
-          className="flex cursor-pointer items-center justify-center rounded-full  bg-black p-2 text-white"
+          className="flex cursor-pointer items-center justify-center rounded-full  bg-black p-2 mt-12 text-white"
         >
           완료
         </div>

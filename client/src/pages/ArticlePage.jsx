@@ -12,7 +12,7 @@ const ArticlePage = () => {
     <>
       <Outlet />
       <div className="mt-16 flex w-full flex-col items-center justify-center gap-2 ">
-        <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold">
+        <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold py-6">
           <h2 className="uppercase">Article</h2>
         </div>
         <div className="my- flex w-[80rem] items-center justify-between px-4">
@@ -31,7 +31,7 @@ const ArticlePage = () => {
         <ul className="w-[80rem] items-start justify-start text-start ">
           {/* {data.currPageRows && */}
             {data.map((el) => (
-              <Link to={el.link} key={el.title}>
+              <Link target="blank" to={el.link} key={el.title}>
                 <li className="flex flex-col gap-4 border-b-2 border-stone-200 py-8">
                   <div className="flex items-center gap-2 text-xl font-semibold">
                     {<IoMdMail className="text-violet-700" /> || (
@@ -43,7 +43,7 @@ const ArticlePage = () => {
                     <div>{el.userId}</div>
                     <div className="flex items-center justify-center gap-2">
                       <div>{formatDate(el.updatedAt)}</div>
-                      <GoEye />
+                      {/* <GoEye /> */}
                       <div>{el.viewCnt}</div>
                     </div>
                   </div>

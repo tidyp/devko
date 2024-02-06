@@ -27,6 +27,7 @@ const PostDetailPage = () => {
   const { discussDetail, discussComments } = useLoaderData(); // Load Data
   const postData = discussDetail[0];
   console.log(postData)
+  console.log(discussComments)
   const commentsData = discussComments.currPageRows.slice().reverse();
 
   const username = cookie.load("uuid");

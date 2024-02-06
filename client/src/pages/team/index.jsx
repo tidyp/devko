@@ -39,8 +39,8 @@ const index = () => {
   return (
     <>
       <Outlet />
-      <div className="mt-16 flex w-full flex-col items-center justify-center gap-2 ">
-        <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold">
+      <div className="mt-16 flex w-full flex-col items-center justify-center gap-2">
+        <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold py-6">
           <h2>GROUP</h2>
         </div>
         <div className="my- flex w-[80rem] items-center justify-between px-4">
@@ -60,7 +60,7 @@ const index = () => {
           {isOpen && !isLogin && (
             <Modal>
               <div className="flex flex-col items-center justify-center">
-                <p className="py-10">로그인이 필요합니다.</p>
+                <p className="py-10">로그인이 필요합니다</p>
                 <Link className="flex flex-col gap-2 px-12" to="/login">
                   <button className="rounded-xl bg-black p-4 text-white">
                     로그인하러가기

@@ -44,7 +44,7 @@ const MainBackGround = ({ children }) => {
         {isOpen && !isLogin && (
           <Modal>
             <div className="flex flex-col items-center justify-center">
-              <p className="py-10">로그인이 필요합니다.</p>
+              <p className="py-10">로그인이 필요합니다</p>
               <Link className="flex flex-col gap-2 px-12" to="/login">
                 <button className="rounded-xl bg-black p-4 text-white">
                   로그인하러가기

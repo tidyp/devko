@@ -121,10 +121,10 @@ const EventPape = () => {
     <>
       <Outlet />
       <div className="mt-16 flex w-full flex-col items-center justify-center gap-2 ">
-        <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold">
+        <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold py-8">
           <h2>EVENT</h2>
         </div>
-        <div className="my- flex w-[80rem] items-center justify-end px-4">
+        <div className="my- flex w-[80rem] items-center justify-end px-4 py-8">
           {/* <ul className="flex items-start gap-2 text-left text-xl font-semibold">
             <li>전체</li>
             <li>채용공고</li>
@@ -133,7 +133,7 @@ const EventPape = () => {
           {isOpen && !isLogin && (
             <Modal>
               <div className="flex flex-col items-center justify-center">
-                <p className="py-10">로그인이 필요합니다.</p>
+                <p className="py-10">로그인이 필요합니다</p>
                 <Link className="flex flex-col gap-2 px-12" to="/login">
                   <button className="rounded-xl bg-black p-4 text-white">
                     로그인하러가기

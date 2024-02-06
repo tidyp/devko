@@ -112,7 +112,7 @@ const MyinfoPage = () => {
         className="mt-8 flex flex-col gap-8"
         onSubmit={handleEditSubmit}
       >
-        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
+        <div className="flex w-[30rem] items-center justify-between text-xl">
           <label>username:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"
@@ -122,7 +122,7 @@ const MyinfoPage = () => {
             onChange={handleInputChange}
           />
         </div>
-        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
+        <div className="flex w-[30rem] items-center justify-between text-xl">
           <label>email:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"
@@ -132,7 +132,7 @@ const MyinfoPage = () => {
             onChange={handleInputChange}
           />
         </div>
-        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
+        <div className="flex w-[30rem] items-center justify-between text-xl">
           <label>selfDescription:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"
@@ -142,7 +142,7 @@ const MyinfoPage = () => {
             onChange={handleInputChange}
           />
         </div>
-        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
+        <div className="flex w-[30rem] items-center justify-between text-xl">
           <label>workPosition:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"
@@ -152,7 +152,7 @@ const MyinfoPage = () => {
             onChange={handleInputChange}
           />
         </div>
-        <div className="flex w-[30rem] items-center justify-between text-xl uppercase">
+        {/* <div className="flex w-[30rem] items-center justify-between text-xl">
           <label>interestArea:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"
@@ -161,7 +161,7 @@ const MyinfoPage = () => {
             value={userInfo.interestArea}
             onChange={handleInputChange}
           />
-        </div>
+        </div> */}
 
         <div className="flex flex-col">
           <button
