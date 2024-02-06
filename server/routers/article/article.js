@@ -8,7 +8,6 @@ const parser = new Parser();
 const blogs = require("./blog.json");
 const db = require("../../config/db.js");
 
-// 
 router.get("/", async (req, res) => {
   try {
     const sql = `SELECT * FROM articles ORDER BY createdAt DESC`;
@@ -18,7 +17,7 @@ router.get("/", async (req, res) => {
   } catch (err) {
     console.error("Query execution error:", err);
     res.status(500).json("Internal Server Error");
-  };
+  }
 });
 
 const fetchDataAndInsert = async () => {
@@ -77,9 +76,11 @@ const fetchDataAndInsert = async () => {
   }
 };
 
+fetchDataAndInsert();
+
 // cron.schedule("0 */12 * * *", () => {
-cron.schedule("*/1 * * * *", () => {
-  fetchDataAndInsert();
-});
+// cron.schedule("*/1 * * * *", () => {
+//   fetchDataAndInsert();
+// });
 
 module.exports = router;

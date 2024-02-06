@@ -40,6 +40,7 @@ router.get("/:category/:postId", async (req, res) => {
     `;
 
     const [rows, fields] = await db.query(sql, [category, postId]);
+    console.log(rows);
 
     const itemsPerPage = 10;
     const page = parseInt(req.params.page) || 1;

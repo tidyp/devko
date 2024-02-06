@@ -191,7 +191,6 @@ CREATE VIEW boardsView AS
 UNION (SELECT id, category, title, content, createdAt, updatedAt, userId FROM questions)
 UNION (SELECT id, category, title, content, createdAt, updatedAt, userId FROM teams)
 UNION (SELECT id, category, title, content, createdAt, updatedAt, userId FROM calendars)
-UNION (SELECT id, category, title, content, createdAt, updatedAt, userId FROM articles)
 ;
 
 SELECT * FROM boardsView;
