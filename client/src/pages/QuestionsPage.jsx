@@ -28,8 +28,8 @@ const QuestionsPage = () => {
   return (
     <>
       <Outlet />
-      <div className="mt-16 flex w-full flex-col items-center justify-center gap-2 ">
-        <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold py-8">
+      <div className="mt-16 flex w-full flex-col items-center justify-center gap-2 sm:w-32 ">
+        <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold py-6">
           <h2>Q&amp;A</h2>
         </div>
         <div className="my- flex w-[80rem] items-center justify-between px-4">

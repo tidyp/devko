@@ -1,7 +1,7 @@
 -- VSCode Mysql 접속: mysql.exe -uroot -p
 -- SQL CLI COMMAND: mysql -u root -p devko < createdb.sql
 
--- DROP DATABASE IF EXISTS devko;
+DROP DATABASE IF EXISTS devko;
 CREATE DATABASE IF NOT EXISTS devko;
 USE devko;
 
@@ -69,7 +69,6 @@ CREATE TABLE IF NOT EXISTS comments (
 -- TAGS 테이블
 DROP TABLE IF EXISTS devko.tags;
 CREATE TABLE IF NOT EXISTS tags (
-    id INT,
     name VARCHAR(100),
     category VARCHAR(45),
     postId INT

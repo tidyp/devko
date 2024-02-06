@@ -32,7 +32,7 @@ const DiscussPage = () => {
       <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold py-6">
         <h2 className="uppercase">{pageTab}</h2>
       </div>
-      <div className="my- flex w-[80rem] items-center justify-between px-4 py-8">
+      <div className="my- flex w-[80rem] items-center justify-between px-4">
         <ul className="flex  items-start gap-2 text-left text-xl font-semibold">
           {/* <li>정렬기준</li> */}
         </ul>
