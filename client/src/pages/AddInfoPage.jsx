@@ -112,7 +112,7 @@ const AddInfoPage = () => {
 
       <form className="mt-8 flex flex-col gap-8">
         <div className="flex w-[30rem] items-center justify-between text-xl ">
-          <label>username:</label>
+          <label>Name:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"
             type="text"
@@ -132,7 +132,7 @@ const AddInfoPage = () => {
           />
         </div> */}
         <div className="flex w-[30rem] items-center justify-between text-xl ">
-          <label>selfdescription:</label>
+          <label>Self Description:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"
             type="text"
@@ -142,7 +142,7 @@ const AddInfoPage = () => {
           />
         </div>
         <div className="flex w-[30rem] items-center justify-between text-xl ">
-          <label>workposition:</label>
+          <label>Work Position:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"
             type="text"
@@ -162,7 +162,7 @@ const AddInfoPage = () => {
           />
         </div> */}
         <div className="flex w-[30rem] items-center justify-between text-xl ">
-          <label>interestposition:</label>
+          <label>Interest Position:</label>
           <input
             className="border-b-[1px] border-[#e5e5e5]"
             type="text"
