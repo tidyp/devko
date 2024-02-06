@@ -1,7 +1,7 @@
 import Post from "./Post";
 
 const PostList = ({ posts }) => {
-  const reversedPosts = posts.sort((a, b) => a.postId - b.postId);
+  const reversedPosts = posts.sort((a, b) =>  b.postId- a.postId);
   
 
   return (

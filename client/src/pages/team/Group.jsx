@@ -25,11 +25,11 @@ const Group = ({
             <div className="flex items-center justify-start gap-8 ">
               <div className="rounded-full bg-blue-200 px-4">
                 D-
-                {(new Date(endDate) - new Date(startDate)) /
+                {Math.round(((new Date(endDate) - new Date(startDate)) /
                   1000 /
                   60 /
                   60 /
-                  24}
+                  24), 0)}
               </div>
               <div className="flex flex-col">
                 <span>마감일: {formatDateDash(endDate)}</span>

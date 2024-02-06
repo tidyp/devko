@@ -132,7 +132,7 @@ const PostDetailPage = () => {
                       {postData.title}
                     </div>
                     <div className="flex items-center justify-end gap-2.5">
-                      <div className="flex text-lg font-semibold gap-">
+                      <div className="flex text-lg font-semibold gap-4">
                         <span className="text-blue-700">{postData.userName || `DevKo`}</span>
                         <span>{formatDateDash(postData.createdAt)}</span>
                       </div>

@@ -1,3 +1,4 @@
+import { API_URL } from '../../config';
 import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import cookie from "react-cookies";
@@ -62,7 +63,7 @@ const Post = ({ post }) => {
   const fetchData = async (id, isLike) => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/like/${post.category}/${post.postId}`,
+        `${API_URL}like/${post.category}/${post.postId}`,
         {
           method: "POST",
           headers: {
@@ -102,7 +103,9 @@ const Post = ({ post }) => {
     navigate("/");
   };
 
-  const profileimg = post.profileImage;
+
+  const pimg = post.profileImage
+  // console.log(pimg.replace('"', ""))
 
   const likes = post.likeName ? post.likeName.split(",").length : 0;
 
@@ -120,8 +123,8 @@ const Post = ({ post }) => {
             <img
               className="h-12 w-12 rounded-lg"
               src={
-                post.profileImage
-                  ? `${post.profileImage}`
+                pimg
+                  ? post.profileImage
                   : `/images/basicprofile.jpg`
               }
               alt={post.profileImage}

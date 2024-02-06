@@ -100,7 +100,7 @@ const router = createBrowserRouter([
       {
         path: "/event",
         element: <EventPage />,
-        loader: posteventLoader,
+        loader: eventLoader,
         children: [{ path: "write", element: <NewPost /> }],
       },
       {

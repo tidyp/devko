@@ -6,9 +6,11 @@ import { readTeamsPosts } from "../../api/apiDevko";
 
 import cookie from "react-cookies";
 import Modal from "../../components/Modal";
+import Pagination from "../../components/Pagination";
 
 const index = () => {
   const posts = useLoaderData();
+  const postsList = posts.currPageRows;
   const isLogin = cookie.load("uuid");
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => {
@@ -40,7 +42,7 @@ const index = () => {
     <>
       <Outlet />
       <div className="mt-16 flex w-full flex-col items-center justify-center gap-2">
-        <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold py-6">
+        <div className="flex w-[80rem] items-center justify-center gap-8 px-4 py-6 text-3xl font-bold">
           <h2>GROUP</h2>
         </div>
         <div className="my- flex w-[80rem] items-center justify-between px-4">
@@ -93,11 +95,16 @@ const index = () => {
         </div>
         <div className="flex w-[80rem] flex-col items-center justify-center gap-4">
           <div className="box-border grid w-full grid-cols-4  flex-wrap items-start">
-            {filteredPosts.map((el, index) => (
+            {postsList.map((el, index) => (
               <Group key={index} {...el} />
             ))}
           </div>
         </div>
+        <Pagination
+          tab={"teams"}
+          curPage={posts.page}
+          totalPage={posts.totalPages}
+        />
       </div>
     </>
   );

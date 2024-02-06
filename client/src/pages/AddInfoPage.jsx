@@ -1,3 +1,4 @@
+import { API_URL } from '../config';
 import { useImperativeHandle, useState } from "react";
 import cookie from "react-cookies";
 import { useNavigate } from "react-router-dom";
@@ -34,7 +35,7 @@ const AddInfoPage = () => {
     cookie.remove("naverID", { path: "/" });
     try {
       const res = await fetch(
-        `http://localhost:3000/api/additionalInfo/step3`,
+        `${API_URL}additionalInfo/step3`,
         {
           method: "POST",
           headers: {

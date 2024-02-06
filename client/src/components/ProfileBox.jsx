@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import LoadingSpinner from "./LoadingSpinner";
 
+import { API_URL } from '../config';
+
 const ProfileBox = () => {
   const { id } = useParams();
   const [userData, setUserData] = useState(null);
@@ -10,9 +12,9 @@ const ProfileBox = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res1 = await fetch(`http://localhost:3000/api/profile/${id}`);
+        const res1 = await fetch(`${API_URL}profile/${id}`);
         const res2 = await fetch(
-          `http://localhost:3000/api/profile/${id}/point`,
+          `${API_URL}profile/${id}/point`,
         );
         const data1 = await res1.json();
         const data2 = await res2.json();

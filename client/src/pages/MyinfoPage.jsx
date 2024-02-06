@@ -1,3 +1,5 @@
+import { API_URL } from '../config';
+
 import React, { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import { readUserinfo, updateUserinfo } from "../api/apiUser";
@@ -52,7 +54,7 @@ const MyinfoPage = () => {
       formData.append("profileImage", imageFile);
       formData.append("username", userInfo.username);
       // formData.append("email", userInfo.email);
-      const res = await fetch(`http://localhost:3000/api/user/${useruuid}`, {
+      const res = await fetch(`${API_URL}user/${useruuid}`, {
         method: "PUT",
         body: formData,
       });

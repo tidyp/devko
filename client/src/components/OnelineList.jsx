@@ -1,3 +1,5 @@
+import { API_URL } from '../config';
+
 import cookie from "react-cookies";
 
 import { Link } from "react-router-dom";
@@ -15,7 +17,7 @@ const OnelineList = (post) => {
   const handleLikeClick = async () => {
     setIsClickLike((prev) => !prev);
     try {
-      const res = await fetch(`http://localhost:3000/api/like/${post.id}`, {
+      const res = await fetch(`${API_URL}like/${post.id}`, {
         method: "POST",
       });
 
@@ -29,7 +31,7 @@ const OnelineList = (post) => {
   };
 
   return (
-    <li key={post.postId} className="group mb-4 w-full sm:w-96 list">
+    <li key={post.postId} className="group mb-4 w-full sm:w-96 none list-none	">
       <Link to={`/${post.category}/detail/${post.postId}`}>
         <div className="sm:w-96 flex transform items-center justify-between rounded-lg border bg-white p-4 transition-all duration-300 ease-in-out">
           <div className="flex gap-2">

@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 const db = require('../../config/db');
 
-router.get('/', async (req, res) => {
+router.get('/:page', async (req, res) => {
   try {
     const sql = `SELECT * FROM teams`;
     const [rows, fields] = await db.query(sql);

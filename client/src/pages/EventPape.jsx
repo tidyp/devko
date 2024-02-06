@@ -13,6 +13,9 @@ import cookie from "react-cookies";
 
 import Modal from "../components/Modal";
 import OnelineList from "../components/OnelineList";
+import EventList from "../components/EventList";
+
+import { formatDateEvent } from "../utils/utils";
 
 const EventPape = () => {
   const data = useLoaderData();
@@ -58,6 +61,7 @@ const EventPape = () => {
       year: new Date(data.startDate).getFullYear(),
       month: new Date(data.startDate).getMonth() + 1,
       day: new Date(data.startDate).getDate(),
+      endDate: formatDateEvent(data.endDate),
       title: data.title,
       content: data.content,
       location: data.location,
@@ -238,7 +242,7 @@ const EventPape = () => {
             </table>
           </div>
 
-          <div className="flex w-full flex-col items-center justify-center">
+          <div className="flex w-full flex-col items-center justify-center mb-4 text-xl">
             {!selectday && selectEvent.length <= 0 && (
               <h2>달력을 눌러 일정을 확인하세요.</h2>
             )}
@@ -246,14 +250,13 @@ const EventPape = () => {
               <h2>{selectday}일 행사일정이 없습니다.</h2>
             )}
             {selectEvent.length > 0 && (
-              <h2 className="text-lg ">{selectday}일 행사일정</h2>
+              <h2 className="text-xl px-4 rounded-full bg-black text-white"><span className="text-2xl">{selectday}</span>일 행사일정</h2>
             )}
-
-            <div className="flex w-full flex-col gap-2">
-              {selectEvent.map((el, index) => (
-                <OnelineList {...el} />
-              ))}
-            </div>
+          </div>
+          <div className="flex w-full flex-col gap-2">
+            {selectEvent.map((el, index) => (
+              <EventList {...el} />
+            ))}
           </div>
         </div>
       </div>

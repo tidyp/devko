@@ -1,3 +1,5 @@
+import { API_URL } from '../config';
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import cookie from "react-cookies";
@@ -65,7 +67,7 @@ const NewPostForm = () => {
     e.preventDefault();
     if (formData.category === "event") {
       const res = await axios.post(
-        "http://localhost:3000/api/calendar",
+        `${API_URL}calendar`,
         formData,
       );
       navigate("../");
@@ -73,7 +75,7 @@ const NewPostForm = () => {
     }
     if (formData.category === "teams") {
       const res = await axios.post(
-        "http://localhost:3000/api/team",
+        `${API_URL}team`,
         formData,
       );
       navigate("../");
@@ -92,7 +94,7 @@ const NewPostForm = () => {
         return;
       }
 
-      const res = await axios.post("http://localhost:3000/api/post", formData);
+      const res = await axios.post(`${API_URL}post`, formData);
       navigate("../");
     } catch (error) {
       console.error("Error creating post:", error);

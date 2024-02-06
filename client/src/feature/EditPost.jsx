@@ -82,7 +82,6 @@ const EditPostForm = () => {
 
 
       const res = await updatePost({ postId, ...formData });
-      // const res = await axios.post("http://localhost:3000/api/post", formData);
       navigate("../");
     } catch (error) {
       console.error("Error creating post:", error);

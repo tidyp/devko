@@ -174,7 +174,7 @@ const EventDetailPage = () => {
               </div>
             </div>
           </div>
-          <div
+          {/* <div
             className={`flex-rows mt-4 flex w-full gap-8 duration-300 ${
               isInputFocused ? "flex-col" : ""
             }`}
@@ -223,7 +223,7 @@ const EventDetailPage = () => {
                 </Button>
               </div>
             </form>
-          </div>
+          </div> */}
           {/* <div className="w-full rounded-md bg-slate-50 p-4 pl-8 text-start"> */}
           {data.map((el) => (
             <div
