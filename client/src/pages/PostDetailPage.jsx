@@ -26,8 +26,12 @@ const PostDetailPage = () => {
   const navigate = useNavigate();
   const { discussDetail, discussComments } = useLoaderData(); // Load Data
   const postData = discussDetail[0];
-  console.log(postData)
-  const commentsData = discussComments.currPageRows.slice().reverse();
+  console.log(postData);
+  console.log(discussComments);
+  const commentsData =
+    discussComments.rows.length > 0 ? discussComments.rows.slice().reverse() : "";
+    console.log(commentsData)
+    
 
   const username = cookie.load("uuid");
   const userimage = cookie.load("userImage");
@@ -79,7 +83,7 @@ const PostDetailPage = () => {
   };
   const clickdeletePost = async () => {
     try {
-      await deletePost(postData.category, postData.id);
+      await deletePost(postData.category, postData.postId);
       // window.location.reload();
       navigate("/");
     } catch (error) {
@@ -103,7 +107,6 @@ const PostDetailPage = () => {
                 </span>{" "}
               </p>
               <header className="flex items-center justify-between text-xl">
-
                 <div className="flex items-center justify-start gap-3">
                   <Link
                     className="h-12 w-12"
@@ -132,8 +135,10 @@ const PostDetailPage = () => {
                       {postData.title}
                     </div>
                     <div className="flex items-center justify-end gap-2.5">
-                      <div className="flex text-lg font-semibold gap-4">
-                        <span className="text-blue-700">{postData.userName || `DevKo`}</span>
+                      <div className="flex gap-4 text-lg font-semibold">
+                        <span className="text-blue-700">
+                          {postData.userName || `DevKo`}
+                        </span>
                         <span>{formatDateDash(postData.createdAt)}</span>
                       </div>
                       <div className="text-sm font-semibold text-zinc-500">
@@ -142,7 +147,6 @@ const PostDetailPage = () => {
                     </div>
                   </div>
                 </div>
-
 
                 <div className="relative cursor-pointer">
                   <VscKebabVertical
@@ -165,15 +169,16 @@ const PostDetailPage = () => {
                 </div>
               </header>
               <div className="mt-4 flex flex-col gap-8">
+                <p className="text-lg text-gray-700">{postData.content}</p>
 
-                <p className="text-gray-700 text-lg">{postData.content}</p>
-
-                <p className="text-gray-700">{`#${postData.tagName.replaceAll(",", " #")}`}</p>
-
+                <p className="text-gray-700">{`#${postData.tagName.replaceAll(
+                  ",",
+                  " #",
+                )}`}</p>
               </div>
             </div>
           </div>
-          
+
           <div
             className={`flex-rows mt-4 flex w-full gap-8 duration-300 ${
               isInputFocused ? "flex-col" : ""
@@ -225,39 +230,40 @@ const PostDetailPage = () => {
             </form>
           </div>
           {/* <div className="w-full rounded-md bg-slate-50 p-4 pl-8 text-start"> */}
-          {commentsData.map((el) => (
-            <div
-              key={el.commentId}
-              className="flex w-full justify-between gap-2 rounded-md bg-neutral-50 p-4"
-            >
-              <img
-                className="className=h-8 w-8 rounded-full bg-neutral-50"
-                src={el.profileImage}
-                alt=""
-              />
-              <p className="text-gray-700">{el.content}</p>
-              <p className="font-semibold text-gray-700">
-                {formatDateDash(el.createdAt)}
-              </p>
-              <div className="flex items-center gap-4">
-                {el.userId === username && (
-                  <>
-                    {/* <Link to={`${post.category}/detail/${post.postId}/edit`}> */}
-                    {/* <TbEdit /> */}
-                    {/* </Link> */}
-                    <TbTrash
-                      className="cursor-pointer"
-                      onClick={() => clickdeleteComment(el.commentId)}
-                    />
-                  </>
-                )}
+          {commentsData.length > 0 &&
+            commentsData.map((el) => (
+              <div
+                key={el.commentId}
+                className="flex w-full justify-between gap-2 rounded-md bg-neutral-50 p-4"
+              >
+                <img
+                  className="className=h-8 w-8 rounded-full bg-neutral-50"
+                  src={el.profileImage}
+                  alt=""
+                />
+                <p className="text-gray-700">{el.content}</p>
+                <p className="font-semibold text-gray-700">
+                  {formatDateDash(el.createdAt)}
+                </p>
+                <div className="flex items-center gap-4">
+                  {el.userId === username && (
+                    <>
+                      {/* <Link to={`${post.category}/detail/${post.postId}/edit`}> */}
+                      {/* <TbEdit /> */}
+                      {/* </Link> */}
+                      <TbTrash
+                        className="cursor-pointer"
+                        onClick={() => clickdeleteComment(el.commentId)}
+                      />
+                    </>
+                  )}
 
-                {/* <Link>
+                  {/* <Link>
             <PiSiren />
           </Link> */}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
           {/* </div> */}
         </div>
       </div>
