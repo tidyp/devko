@@ -106,7 +106,7 @@ const router = createBrowserRouter([
       {
         path: "/event/detail/:id",
         element: <EventDetailPage />,
-        loader: postLoader,
+        loader: posteventLoader,
       },
       // Team
       {

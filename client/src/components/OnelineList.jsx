@@ -6,6 +6,7 @@ import { useState } from "react";
 import { formatDate } from "../utils/utils";
 
 const OnelineList = (post) => {
+  console.log(post)
   const useruuid = cookie.load("uuid");
 
   const [isClickLike, setIsClickLike] = useState(false);
@@ -28,7 +29,7 @@ const OnelineList = (post) => {
   };
 
   return (
-    <li key={post.postId} className="group mb-4 w-full sm:w-96">
+    <li key={post.postId} className="group mb-4 w-full sm:w-96 list">
       <Link to={`/${post.category}/detail/${post.postId}`}>
         <div className="sm:w-96 flex transform items-center justify-between rounded-lg border bg-white p-4 transition-all duration-300 ease-in-out">
           <div className="flex gap-2">

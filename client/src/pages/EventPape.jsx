@@ -12,6 +12,7 @@ import Button from "../components/Button";
 import cookie from "react-cookies";
 
 import Modal from "../components/Modal";
+import OnelineList from "../components/OnelineList";
 
 const EventPape = () => {
   const data = useLoaderData();
@@ -21,7 +22,6 @@ const EventPape = () => {
   const [today, setToday] = useState(new Date());
   const [eventData, setEventData] = useState([]);
   const [selectEvent, setSelectEvent] = useState([]);
-
 
   const isLogin = cookie.load("uuid");
   const [isOpen, setIsOpen] = useState(false);
@@ -52,6 +52,7 @@ const EventPape = () => {
     setEventData(events);
   }, [filterData]);
 
+  console.log(data);
   function transformData(data) {
     return {
       year: new Date(data.startDate).getFullYear(),
@@ -61,7 +62,8 @@ const EventPape = () => {
       content: data.content,
       location: data.location,
       section: data.section,
-      detail: `/${data.category}/detail/${data.id}`,
+      category: data.category,
+      postId: data.id,
     };
   }
 
@@ -115,12 +117,12 @@ const EventPape = () => {
     const newSelectEvent = eventData.filter((event) => event.day === day.day);
     setSelectEvent(newSelectEvent);
   };
-  
+
   return (
     <>
       <Outlet />
       <div className="mt-16 flex w-full flex-col items-center justify-center gap-2 ">
-        <div className="flex w-[80rem] items-center justify-center gap-8 px-4 text-3xl font-bold py-8">
+        <div className="flex w-[80rem] items-center justify-center gap-8 px-4 py-8 text-3xl font-bold">
           <h2>EVENT</h2>
         </div>
         <div className="my- flex w-[80rem] items-center justify-end px-4 py-8">
@@ -218,7 +220,6 @@ const EventPape = () => {
                               }`}
                             >
                               <span className={`relative`}>
-
                                 {day !== null ? day.day : ""}
                                 {day && day.data && (
                                   <sup
@@ -238,7 +239,6 @@ const EventPape = () => {
           </div>
 
           <div className="flex w-full flex-col items-center justify-center">
-
             {!selectday && selectEvent.length <= 0 && (
               <h2>달력을 눌러 일정을 확인하세요.</h2>
             )}
@@ -251,22 +251,7 @@ const EventPape = () => {
 
             <div className="flex w-full flex-col gap-2">
               {selectEvent.map((el, index) => (
-                <Link to={`${el.detail}`}>
-                  <div
-                    className="flex w-full items-center justify-between gap-4 bg-gray-100 px-32"
-                    key={index}
-                  >
-                    <span>{el.title}</span>
-                    <span>{el.content}</span>
-                    <span>{el.location}</span>
-                    <span>{el.section}</span>
-                    <div>
-                      <span>{el.year}</span>
-                      <span>{el.month}</span>
-                      <span>{el.day}</span>
-                    </div>
-                  </div>
-                </Link>
+                <OnelineList {...el} />
               ))}
             </div>
           </div>

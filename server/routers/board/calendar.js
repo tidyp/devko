@@ -2,6 +2,20 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../config/db");
 
+router.get("/detail/:id", async (req, res) => {
+  const id = req.params.id
+  console.log('요청옴')
+  try {
+    const sql = `SELECT * FROM calendars WHERE id = ?`;
+    const [rows, fields] = await db.query(sql, [id]);
+    res.status(200).json(rows);
+  } catch (err) {
+    console.error("Query execution error:", err);
+    res.status(500).json("Internal Server Error");
+  }
+});
+
+
 router.get("/", async (req, res) => {
   try {
     const sql = `SELECT * FROM calendars`;
@@ -12,6 +26,8 @@ router.get("/", async (req, res) => {
     res.status(500).json("Internal Server Error");
   }
 });
+
+
 
 router.post("/", async (req, res) => {
   try {

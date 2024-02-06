@@ -117,17 +117,12 @@ const Post = ({ post }) => {
         </div>
         <div className="flex items-center justify-start gap-3">
           <Link className="h-12 w-12" to={`/userinfo/${post.userId}`}>
-            {/* <img
-                className="h-12 w-12 rounded-lg"
-                src={`${"post.profileImage"}`}
-                alt={post.profileImage}
-              /> */}
             <img
               className="h-12 w-12 rounded-lg"
               src={
                 post.profileImage
                   ? `${post.profileImage}`
-                  : `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${post.postId}}`
+                  : `/images/basicprofile.jpg`
               }
               alt={post.profileImage}
             />
@@ -135,7 +130,7 @@ const Post = ({ post }) => {
 
           <div className="flex h-14  basis-0 flex-col items-start justify-center">
             <Link to={`/${post.category}/detail/${post.postId}`}>
-              <div className="w-[50rem] truncate text-xl font-semibold text-black overflow-hidden">
+              <div className="w-[50rem] overflow-hidden truncate text-xl font-semibold text-black">
                 {post.title}
               </div>
             </Link>
