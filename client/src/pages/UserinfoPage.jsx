@@ -11,7 +11,6 @@ const UserinfoPage = () => {
   // 사용자체크
   const checkUser = cookie.load("uuid");
   const user = useParams();
-  console.log(postrows);
 
   const postClassify = (catogory, tab) => {
     // const userPost =
@@ -46,7 +45,7 @@ const UserinfoPage = () => {
 
   return (
     <>
-      <div className="mt-8 flex flex-col items-center justify-center gap-2">
+      <div className="mt-8 flex h-fit flex-col items-center justify-center gap-2">
         <div className="flex w-[80rem] items-start justify-center gap-4">
           <ProfileBox />
           <div className="flex w-full flex-col items-center justify-center">
@@ -55,7 +54,7 @@ const UserinfoPage = () => {
                 <div
                   className={`w-full cursor-pointer p-4 text-center uppercase  ${
                     index === activeTabIndex
-                      ? "border-b-4 border-black text-black font-semibold"
+                      ? "border-b-4 border-black font-semibold text-black"
                       : ""
                   }`}
                   key={index}
@@ -69,10 +68,10 @@ const UserinfoPage = () => {
               {tabs[activeTabIndex] === "discuss" &&
                 postClassify("discuss", "작성한 글")}
               {tabs[activeTabIndex] === "q&a" &&
-                postClassify("q&a", "질문한 글")}
+                postClassify("questions", "질문한 글")}
               {tabs[activeTabIndex] === "comment" &&
                 commentrows.map((el) => (
-                  <p class="mb-4 flex w-full items-center justify-start border-b-2 border-stone-500 p-2">
+                  <p class="mb-4 flex w-full items-center justify-start border-stone-500 p-2">
                     <div class="w-24 font-bold uppercase text-blue-500">
                       {el.commentContent}
                     </div>

@@ -27,15 +27,16 @@ router.get("/callback", async (req, res) => {
     client_id: process.env.GOOGLE_CLIENT_ID,
     client_secret: process.env.GOOGLE_CLIENT_SECRET,
     redirect_uri: GOOGLE_LOGIN_REDIRECT_URI,
-    grant_type: "authorization_code"
+    grant_type: "authorization_code",
   });
 
   // 사용자의 구글 계정 정보
   const resp2 = await axios.get(
-    "https://www.googleapis.com/oauth2/v2/userinfo", {
+    "https://www.googleapis.com/oauth2/v2/userinfo",
+    {
       headers: {
-        Authorization: `Bearer ${resp.data.access_token}`
-      }
+        Authorization: `Bearer ${resp.data.access_token}`,
+      },
     }
   );
 
@@ -44,49 +45,37 @@ router.get("/callback", async (req, res) => {
   const googleEmail = resp2.data.email;
   const googleImage = resp2.data.picture;
 
-  console.log(googleId, googleEmail, googleImage);
   try {
     const [rows, fields] = await db.query(
-      "SELECT * FROM usersgoogle WHERE googleId = ? OR googleEmail = ?", [googleId, googleEmail]
+      "SELECT * FROM usersgoogle WHERE googleId = ? OR googleEmail = ?",
+      [googleId, googleEmail]
     );
 
     // 이미 가입된 회원, 로그인
     if (rows[0]) {
-      const userSql = `
-        SELECT u.id AS id
-          , u.userName AS userName
-          , u.profileImage AS profileImage
-          , u.grade AS grade
-          , ug.googleId AS googleId
-          , ug.googleEmail AS googleEmail
-          , un.naverId AS naverId
-          , un.naverEmail AS naverEmail
-        FROM users u
-        LEFT OUTER JOIN usersgoogle ug ON u.googleId = ug.id
-        LEFT OUTER JOIN usersnaver un ON u.naverId = un.id
-        WHERE ug.googleId = ?
-      `;
+      const userSql = `SELECT * FROM usersView uv WHERE uv.googleId = ?`;
       const [rows, field] = await db.query(userSql, [googleId]);
-      res.cookie("uuid", rows[0].id, {secure: true});
-      res.cookie("userName", rows[0].userName, {secure: true});
-      res.cookie("userImage", rows[0].profileImage, {secure: true,});
+
+      res.cookie("uuid", rows[0].id, { secure: true });
+      res.cookie("userName", rows[0].userName, { secure: true });
+      res.cookie("userImage", rows[0].profileImage, { secure: true });
       res.redirect("http://localhost:5173");
 
-      // 없는 회원, 신규 회원가입 + 추가 정보 입력
+    // 없는 회원, 신규 회원가입 + 추가 정보 입력
     } else {
       await db.execute(
-        "INSERT INTO usersgoogle (googleId, googleEmail, googleImage) VALUES (?, ?, ?);",
+        "INSERT INTO usersgoogle (googleId, googleEmail, googleImage) VALUES (?, ?, ?)",
         [googleId, googleEmail, googleImage]
       );
 
-      res.cookie("googleId", googleId, {secure: true});
-      res.cookie("googleImage", googleImage, {secure: true});
-      res.redirect("http://localhost:5173/signup");
-    }
+      res.cookie("googleId", googleId, { secure: true });
+      res.cookie("googleImage", googleImage, { secure: true });
+      res.redirect("http://localhost:5173/addinfo");
+    };
   } catch (error) {
     console.error("Database query error: ", error);
     res.status(500).json({ message: "Internal server error" });
-  }
+  };
 });
 
 module.exports = router;

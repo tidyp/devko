@@ -12,50 +12,33 @@ router.post("/step3", async (req, res) => {
   const userId = uuidv4();
   const userName = req.body.userName;
   const profileImage = req.body.googleImage || req.body.naverImage;
-  const workPosition = req.body.workPosition;
+  const interestPosition = req.body.interestPosition;
   const interestArea = req.body.interestArea;
   const selfDescription = req.body.selfDescription;
   const googleId = req.body.googleId || 0;
   const naverId = req.body.naverId || 0;
-  // let notification = req.body.notification;
+  const notification = req.body.notification === "ON" ? 1 : 0;
 
-  // if (req.body.googleImage) {
-  //   profileImage = req.body.googleImage;
-  // } else if (req.body.naverImage) {
-  //   profileImage = req.body.naverImage;
-  // }
+  const sql = `
+    INSERT INTO users (id, userName, profileImage, interestPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification, googleId, naverId)
+    VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 5, ?, (SELECT id FROM usersgoogle WHERE googleId = ?), (SELECT id FROM usersnaver WHERE naverId = ?))
+  `;
 
-  console.log(req.body);
-  //   console.log(req.body.naverImage)
-  //   console.log(req.body.googleImage)
-  const INSERT_USER_QUERY = `
-    INSERT INTO users (id, userName, profileImage, workPosition, interestArea, selfDescription, createdAt, updatedAt, grade, notification, googleId, naverId)
-    VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW(), 5, 1, (SELECT id FROM usersgoogle WHERE googleId = ?), (SELECT id FROM usersnaver WHERE naverId = ?))
-    `;
-  console.log(
-    userId,
-    userName,
-    profileImage,
-    workPosition,
-    interestArea,
-    selfDescription,
-    googleId,
-    naverId
-  );
   try {
-    const [rows, fields] = await db.execute(INSERT_USER_QUERY, [
+    const [rows, fields] = await db.execute(sql, [
       userId,
       userName,
       profileImage,
-      workPosition,
+      interestPosition,
       interestArea,
       selfDescription,
+      notification,
       googleId,
       naverId,
     ]);
-    res.cookie("uuid", userId, {secure: true});
-    res.cookie("userName", userName, {secure: true});
-    res.cookie("userImage", profileImage, {secure: true});
+    res.cookie("uuid", userId, { secure: true });
+    res.cookie("userName", userName, { secure: true });
+    res.cookie("userImage", profileImage, { secure: true });
     res.json({ uuid: userId, userName: userName, userImage: profileImage });
 
     // res.redirect("http://localhost:5173");

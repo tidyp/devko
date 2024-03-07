@@ -1,40 +1,23 @@
-import { useState } from "react";
-import cookie from "react-cookies";
-
-import {
-  useLoaderData,
-  Link,
-  Navigate,
-  useNavigate,
-  useLocation,
-} from "react-router-dom";
+import { useLoaderData, Link, Outlet } from "react-router-dom";
 
 import { readDiscussPosts } from "../api/apiDevko";
 
-import ModalOld from "../components/ModalOld";
-import PopTags from "../components/PopTags";
-import TopWriters from "../components/TopWriters";
 import AlertsBox from "../components/AlertsBox";
 import OnelineList from "../components/OnelineList";
+import Button from "../components/Button";
+import Pagination from "../components/Pagination";
+
+import cookie from "react-cookies";
+import { useState } from "react";
+import Modal from "../components/Modal";
 
 const DiscussPage = () => {
-  const navigate = useNavigate();
-
+  const pageTab = "discuss";
   const posts = useLoaderData();
-  console.log(posts);
   const postsList = posts.currPageRows;
-  const curPage = posts.page;
-  const totalPage = posts.totalPages;
-
-  const useruuid = cookie.load("uuid");
+  console.log(posts);
 
   const isLogin = cookie.load("uuid");
-
-  // 페이지이동
-  const handlePageChange = (item) => {
-    navigate(`/discuss/${item}`);
-  };
-
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => {
     setIsOpen((prev) => !prev);
@@ -45,88 +28,74 @@ const DiscussPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-2 pt-8">
-      <div className="flex w-[80rem] items-start justify-center gap-4">
-        <div className="flex gap-2">
-          <div className="flex flex-col gap-4">
-            {isLogin ? (
-              <Link to="/write">
-                <button className="flex h-12 w-full flex-col items-center justify-center rounded-full  bg-black text-xl text-white">
-                  <div className="flex items-center">
-                    <div>게시글 작성</div>
-                  </div>
-                </button>
-              </Link>
-            ) : (
-              <button
-                className="flex h-12 w-full flex-col items-center justify-center rounded-full  bg-black text-xl text-white"
-                onClick={handleOpen}
-              >
-                <div className="flex items-center">
-                  <div>게시글 작성</div>
-                </div>
-              </button>
-            )}
-            <PopTags />
-            <TopWriters />
-          </div>
-          {!isLogin && isOpen && (
-            <ModalOld onClose={handleClose}>
-              <p className="py-10">로그인이 필요합니다.</p>
-              <Link to="/login" onClick={handleOpen}>
+    <div className="mt-16 flex w-full flex-col items-center justify-center gap-2 sm:w-32 ">
+      <Outlet />
+      <div className="flex w-[80rem] items-center justify-center gap-8 px-4 py-6 text-3xl font-bold">
+        <h2 className="uppercase">{pageTab}</h2>
+      </div>
+      <div className="my- flex w-[80rem] items-center justify-between px-4">
+        <ul className="flex  items-start gap-2 text-left text-xl font-semibold">
+          {/* <li>정렬기준</li> */}
+        </ul>
+        {isOpen && !isLogin && (
+          <Modal>
+            <div className="flex flex-col items-center justify-center">
+              <p className="py-10">로그인이 필요합니다</p>
+              <Link className="flex flex-col gap-2 px-12" to="/login">
                 <button className="rounded-xl bg-black p-4 text-white">
                   로그인하러가기
                 </button>
               </Link>
-            </ModalOld>
-          )}
-        </div>
+              <button
+                className="rounded-xl bg-white p-4 text-black "
+                onClick={handleClose}
+              >
+                취소
+              </button>
+            </div>
+          </Modal>
+        )}
+        {isLogin ? (
+          <>
+            <Link to="write">
+              <Button color="bg-black" px="8" onClick={handleOpen}>
+                글 작성
+              </Button>
+            </Link>
+          </>
+        ) : (
+          <>
+            <Button color="bg-black" px="8" onClick={handleOpen}>
+              글 작성
+            </Button>
+          </>
+        )}
+      </div>
+      <div className="flex w-[80rem] items-start justify-center gap-4 sm:w-32">
         {/* Posts */}
         <div className="flex w-full items-start justify-center">
-          {posts.length >= 0 && <AlertsBox>작성된 글이 없습니다.</AlertsBox>}
-          {posts.length < 0 && posts === "연결실패" ? (
-            // connect fail
+          {posts === "연결실패" && (
             <AlertsBox>서버에 연결되어있지 않습니다.</AlertsBox>
-          ) : (
-            posts && (
-              <div className="box-border flex w-full flex-col items-center justify-center gap-4">
-                <ul className="flex w-full flex-col">
+          )}
+          {posts !== "연결실패" && posts.currPageRows.length <= 0 && (
+            <AlertsBox>작성된 글이 없습니다.</AlertsBox>
+          )}
+          {posts !== "연결실패" && posts.currPageRows.length > 0 && posts && (
+            <div className="flex flex-col">
+              <div className="box-border flex w-[80rem] flex-col items-center justify-center gap-4 sm:w-16">
+                <ul className="flex w-full flex-col sm:w-16">
                   {postsList.map((post) => (
                     <OnelineList key={post.postId} {...post} />
                   ))}
                 </ul>
               </div>
-            )
+              <Pagination
+                tab={pageTab}
+                curPage={posts.page}
+                totalPage={posts.totalPages}
+              />
+            </div>
           )}
-        </div>
-      </div>
-      <div className="box-border flex w-full flex-col items-center justify-center gap-4">
-        <div className="flex w-full items-center justify-center gap-8 pb-8">
-          <button
-            onClick={() => handlePageChange(curPage - 1)}
-            disabled={curPage === 1}
-            className={`rounded-md px-4 py-2 ${
-              curPage === 1
-                ? "cursor-not-allowed bg-gray-300 text-gray-500"
-                : "focus:shadow-outline-blue bg-blue-500 text-white hover:bg-blue-600 focus:outline-none active:bg-blue-800"
-            }`}
-          >
-            Previous
-          </button>
-          <span className="text-lg">
-            Page {curPage}/{totalPage}
-          </span>
-          <button
-            onClick={() => handlePageChange(curPage + 1)}
-            disabled={curPage === totalPage}
-            className={`rounded-md px-4 py-2 ${
-              curPage === totalPage
-                ? "cursor-not-allowed bg-gray-300 text-gray-500"
-                : "focus:shadow-outline-blue bg-blue-500 text-white hover:bg-blue-600 focus:outline-none active:bg-blue-800"
-            }`}
-          >
-            Next
-          </button>
         </div>
       </div>
     </div>
@@ -136,10 +105,9 @@ const DiscussPage = () => {
 export default DiscussPage;
 
 export async function loader({ params }) {
-  console.log(params.id);
   try {
-    const board = await readDiscussPosts(params.id);
-    return board;
+    const data = await readDiscussPosts(params.id);
+    return data;
   } catch (error) {
     return "연결실패";
   }

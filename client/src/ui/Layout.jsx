@@ -1,11 +1,13 @@
-import { Outlet } from "react-router-dom";
 
-// import Header from "./Header";
+import { Outlet } from "react-router-dom";
 import NaviBar from "./NaviBar";
+import { useEffect } from "react";
 
 const Layout = () => {
+
+
   return (
-    <div className="sticky top-0 z-50 flex h-lvh flex-col bg-white">
+    <div className="py-auto flex h-fit flex-col bg-white">
       <NaviBar />
       <Outlet />
     </div>

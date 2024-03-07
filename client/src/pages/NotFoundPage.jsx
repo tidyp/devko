@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { TbError404 } from "react-icons/tb";
 
 const NotFoundPage = () => {
   return (
-    <div className="flex h-screen w-screen flex-col items-center justify-center gap-4">
+    <div className="flex h-screen w-screen flex-col items-center justify-center gap-2">
+      <TbError404 className="h-96 w-96" />
       <h2 className="text-rose-600">Page not found. :(</h2>
       <div>
         <p>페이지를 찾을 수 없습니다.</p>

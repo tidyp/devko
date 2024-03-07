@@ -1,22 +1,29 @@
-import { useState } from "react";
+import { API_URL } from '../config';
+
+import { useEffect, useState } from "react";
 import axios from "axios";
 import cookie from "react-cookies";
 import Button from "../components/Button";
 import Modal from "../components/Modal";
-import { useNavigate } from "react-router-dom";
+import { redirect, useLocation, useNavigate } from "react-router-dom";
 
 import { formatDateDash } from "../utils/utils";
 
 const categories = [
   { id: "discuss", label: "Discuss" },
-  { id: "qna", label: "Q&A" },
+  { id: "questions", label: "Q&A" },
   { id: "event", label: "Event" },
-  { id: "group", label: "Group" },
+  { id: "teams", label: "Group" },
 ];
 
 const NewPostForm = () => {
+  const loca = useLocation();
+  const tab =
+    loca.pathname.split("/")[1] !== "write"
+      ? loca.pathname.split("/")[1]
+      : "discuss";
   const username = cookie.load("uuid");
-  const navigate = useNavigate();
+  const navigate = useNavigate("/");
   const [newTag, setNewTag] = useState("");
   const [isEmpty, setIsEmpty] = useState(true);
 
@@ -25,7 +32,7 @@ const NewPostForm = () => {
     userId: username,
     title: "",
     content: "",
-    category: "discuss",
+    category: tab,
     tags: "",
     startDate: formatDateDash(new Date()),
     endDate: "",
@@ -35,6 +42,8 @@ const NewPostForm = () => {
     members: "",
     workPosition: "",
   });
+
+  useEffect(() => {}, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,6 +65,22 @@ const NewPostForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.category === "event") {
+      const res = await axios.post(
+        `${API_URL}calendar`,
+        formData,
+      );
+      navigate("../");
+      return;
+    }
+    if (formData.category === "teams") {
+      const res = await axios.post(
+        `${API_URL}team`,
+        formData,
+      );
+      navigate("../");
+      return;
+    }
 
     try {
       // 공백 예외처리
@@ -69,37 +94,29 @@ const NewPostForm = () => {
         return;
       }
 
-      if (formData.category === "event") {
-        const res = await axios.post(
-          "http://localhost:3000/api/calendar",
-          formData,
-        );
-        navigate("/");
-      } else if (formData.category === "group") {
-        const res = await axios.post(
-          "http://localhost:3000/api/team",
-          formData,
-        );
-        navigate("/");
-      } else {
-        const res = await axios.post(
-          "http://localhost:3000/api/post",
-          formData,
-        );
-        navigate("/");
-      }
+      const res = await axios.post(`${API_URL}post`, formData);
+      navigate("../");
     } catch (error) {
       console.error("Error creating post:", error);
     }
+    navigate("../");
   };
 
   const handleCancel = () => {
-    navigate("/");
+    navigate("../");
+  };
+  const handleTag = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      tags: "#",
+    }));
   };
 
   return (
     <Modal>
-      <div className="flex w-full flex-col items-center p-8 rounded-md">
+      {!username && navigate("/")}
+
+      <div className="flex w-[50rem] flex-col items-center p-8">
         {/* <h2>Create a New Post</h2> */}
         {!isEmpty && (
           <p className="text-lg text-rose-600">모든 항목을 작성해주세요.</p>
@@ -142,7 +159,7 @@ const NewPostForm = () => {
             />
           </div>
 
-          {(formData.category === "event" || formData.category === "group") && (
+          {(formData.category === "event" || formData.category === "teams") && (
             <>
               <div className="flex w-full items-center justify-between gap-2">
                 <div className="flex  w-full items-center justify-between">
@@ -205,7 +222,7 @@ const NewPostForm = () => {
             </div>
           )}
 
-          {formData.category === "group" && (
+          {formData.category === "teams" && (
             <>
               <div className="flex  w-full items-center justify-between">
                 <input
@@ -245,15 +262,16 @@ const NewPostForm = () => {
           </div>
           {/* )} */}
 
-          {formData.category !== "event" && (
+          {formData.category && (
             <div className="flex items-center justify-between gap-2">
               <input
                 name="tags"
-                placeholder="태그을 입력하세요(#으로 구분 최대 10개)"
+                placeholder="태그를 입력하세요(#으로 구분)"
                 className="w-full rounded-md border bg-gray-200 p-2"
                 required
                 value={formData.tags}
                 onChange={handleChange}
+                onClick={handleTag}
               />
             </div>
           )}
@@ -290,12 +308,12 @@ const NewPostForm = () => {
           </select>
         </div> */}
 
-          <div className="mt-6">
-            <Button color="bg-blue-500" onClick={handleSubmit}>
-              작성하기
-            </Button>
-            <Button color="bg-blue-500" onClick={handleCancel}>
+          <div className="mt-6 flex justify-end gap-4">
+            <Button color="bg-black" px="4" onClick={handleCancel}>
               취소하기
+            </Button>
+            <Button color="bg-black" px="4" onClick={handleSubmit}>
+              작성하기
             </Button>
           </div>
         </form>

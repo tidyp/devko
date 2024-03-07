@@ -3,11 +3,9 @@
 import { searchResult } from "../api/apiDevko";
 import { useLoaderData, Link, useParams } from "react-router-dom";
 
-const searchResultPage = () => {
+const SearchResultPage = () => {
   const result = useLoaderData();
   const query = useParams();
-  console.log(query);
-  console.log(result);
 
   const isData = result.currPageRows.length > 0;
   const numData = result.currPageRows.length;
@@ -27,7 +25,7 @@ const searchResultPage = () => {
             return (
               <>
                 <li key={el.title} className="group mb-4 w-full">
-                  <Link to={`/${el.category}/${el.id}`}>
+                  <Link to={`/${el.category}/detail/${el.id}`}>
                     <div className="flex transform items-center justify-between rounded-lg border bg-white p-4 transition-all duration-300 ease-in-out hover:scale-105 group-hover:bg-gray-100 group-hover:shadow-lg">
                       <img
                         className="w-8 rounded-full"
@@ -57,7 +55,7 @@ const searchResultPage = () => {
   );
 };
 
-export default searchResultPage;
+export default SearchResultPage;
 
 export async function loader({ params }) {
   const { id } = params;
